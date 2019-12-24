@@ -1,18 +1,22 @@
 $(function () {
   showCode();
-  $('.mytabs a').click(function (e) {
-    e.preventDefault()
-    $(this).tab('show')
-  });
+  // $('.mytabs a').click(function (e) {
+  //   e.preventDefault()
+  //   $(this).tab('show')
+  // });
 });
 
 function setLang(lang) {
-  $.sessionStorage.set('lang', lang);
+  //$.sessionStorage.set('lang', lang);
+  localStorage.setItem('lang', lang);
   showCodeFor(lang);
 }
 
 function showCode() {
-  var lang = $.sessionStorage.get('lang');
+  //const e=null!==localStorage.getItem("darkSwitch")
+  //  &&"dark"===localStorage.getItem("darkSwitch");
+  //var lang = $.sessionStorage.get('lang');
+  var lang = localStorage.getItem('lang');
   showCodeFor(lang);
 }
 

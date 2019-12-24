@@ -5,14 +5,13 @@
   <title>avaje config</title>
 </head>
 <body>
-<div class="container joe">
+<div class="container bd-content">
   <div class="hero">
-    <h1>Avaje Config</h1>
+    <h1>Config</h1>
   </div>
   <div class="row">
-    <div class="col col-8">
-
-      <h2>About</h2>
+    <div class="col col-8 bd-content">
+      <h2 id="about">About</h2>
       <p>
         External configuration for JVM applications.
       </p>
@@ -22,10 +21,10 @@
         <li>For testing reads <a href="#test">application-test.yaml</a> and <a href="#test">.properties</a></li>
         <li>For <a href="#local-dev">local development</a> reads configuration from <code>~/.localdev</code></li>
         <li><A href="#k8s">Kubernetes</a> Env variables</li>
-        <li><a href="#plugin">Plugin API</a> for loading from other sources</li>
+        <li><a href="#plugins">Plugin API</a> for loading from other sources</li>
       </ul>
 
-      <h2>Getting started</h2>
+      <h2 id="start">Getting started</h2>
 
       <h5>1. Add dependency</h5>
       <#include "/_common/dependency.html">
@@ -75,7 +74,7 @@
         java -jar myapp.jar -P/etc/config/myapp.yaml -P/etc/other.yaml
       </pre>
 
-      <h2>Using Config</h2>
+      <h2 id="config">Using Config</h2>
       <p>
         We use <code>Config</code> to access the global configuration. <em>Config</em> can be used
         anywhere in application code - static initialisers, constructors etc. There is no limitation
@@ -156,10 +155,22 @@
         been set.
       </p>
 
-      <h2 id="plugin">Plugins</h2>
+      <h2 id="plugins">Plugins</h2>
       <p>
         TODO: Plugins to load extra configuration (like URL)
       </p>
+    </div>
+    <div class="col col-4">
+      <nav class="side-nav">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#start">Getting started</a></li>
+          <li><a href="#config">Using config</a></li>
+          <li><a href="#local-dev">Local development</a></li>
+          <li><a href="#k8s">Kubernetes env vars</a></li>
+          <li><a href="#plugins">Plugins</a></li>
+        </ul>
+      </nav>
     </div>
   </div>
 
