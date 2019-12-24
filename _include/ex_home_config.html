@@ -1,0 +1,57 @@
+<#include "/_common/lang-buttons.html">
+<div class="code-java">
+  <pre content="java">
+package org.example.domain;
+
+import org.junit.Test;
+
+import io.ebean.DB;
+import io.ebean.Database;
+
+public class CustomerTest {
+
+ @Test
+ public void insertFindDelete() {
+
+  Customer customer = new Customer();
+  customer.setName("Hello world");
+
+  // insert the customer in the DB
+  DB.save(customer);
+
+  // Find by Id
+  Customer foundHello = database.find(Customer.class, 1);
+
+  // delete the customer
+  DB.delete(customer);
+ }
+}
+  </pre>
+</div>
+<div class="code-kt">
+  <pre content="kotlin">
+package org.example.domain
+
+import io.ebean.DB
+import org.junit.Test
+
+class CustomerTest  {
+
+  @Test
+  fun insert_update_delete() {
+
+    val customer = Customer()
+    customer.name  = "Hello entity bean"
+
+    // insert
+    DB.save(customer)
+
+    // find by Id
+    var found = DB.find(Customer::class.java, 1);
+
+    DB.delete(found);
+  }
+}
+  </pre>
+</div>
+</div>
