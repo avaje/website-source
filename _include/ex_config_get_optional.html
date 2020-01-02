@@ -1,0 +1,26 @@
+<div class="code-java">
+ <pre content="java">
+    // if myapp.foo is not defined
+    // ... throws IllegalStateException
+    String value = Config.get("myapp.foo");
+
+    // specify a default
+    String value = Config.get("myapp.foo", "someDefault");
+
+    // or use optional
+    Optional<|String> value = Config.getOptional("myapp.foo");
+ </pre>
+</div>
+<div class="code-kt">
+  <pre content="kotlin">
+    // if myapp.foo is not defined
+    // ... throws IllegalStateException
+    val value = Config.get("myapp.foo");
+
+    // specify a default
+    val value = Config.get("myapp.foo", "someDefault");
+
+    // or use optional
+    val value = Config.getOptional("myapp.foo");
+  </pre>
+</div>

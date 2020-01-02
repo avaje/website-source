@@ -1,0 +1,27 @@
+<#include "/_common/lang-buttons.html">
+<div class="code-java">
+  <pre content="java">
+    // get a String property
+    String value = Config.get("myapp.foo");
+
+    // with a default value
+    String value = Config.get("myapp.foo", "withDefaultValue");
+
+    // also int, long and boolean with and without default values
+    int intVal = Config.getInt("bar");
+    long longVal = Config.getLong("bar", 42);
+  </pre>
+</div>
+<div class="code-kt">
+  <pre content="kotlin">
+    // get a String property
+    val value: String = Config.get("myapp.foo");
+
+    // with a default value
+    val value = Config.get("myapp.foo", "withDefaultValue");
+
+    // also int, long and boolean with and without default values
+    val intVal = Config.getInt("bar");
+    val longVal = Config.getLong("bar", 42);
+  </pre>
+</div>

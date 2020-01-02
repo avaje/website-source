@@ -1,12 +1,12 @@
 <#macro headSection title link>
-  <div class="row head-section">
-    <div class="col col-4">
+  <section class="g2">
+    <div class="c1">
       <h3><a href="${link}">${title}</a></h3>
     </div>
-    <div class="col col-6">
+    <div class="c2">
       <p>
         <#nested>
       </p>
     </div>
-  </div>
+  </section>
 </#macro>

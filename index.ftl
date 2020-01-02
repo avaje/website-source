@@ -1,15 +1,15 @@
 <html>
 <head>
-  <meta name="layout" content="_layout/_base.html"/>
+  <meta name="layout" content="_layout/xbase.html"/>
+  <meta name="bread0" content="config" href="/config/"/>
   <#assign home = "active">
   <title>avaje jvm libraries and utilities</title>
 </head>
 <body>
-<div class="container">
+<div class="container-col1">
   <div class="hero">
     <h1>avaje jvm libraries</h1>
   </div>
-
 
 
   <p>&nbsp;</p>
@@ -28,7 +28,7 @@
     Spring DI but uses APT code generation (like Dagger2).
   </@headSection>
 
-  <@headSection "Javalin controllers" "https://dinject.io/docs/javalin/">
+  <@headSection "Javalin<br/>controllers" "https://dinject.io/docs/javalin/">
     Code generation for Javalin controllers such that we can have JAX-RS style controllers with
     <code>@Path, @Get etc</code> but extremely light and fast.
   </@headSection>

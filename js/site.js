@@ -1,26 +1,36 @@
 $(function () {
-  showCode();
-  // $('.mytabs a').click(function (e) {
-  //   e.preventDefault()
-  //   $(this).tab('show')
-  // });
+  init();
+  $('.code.nav-tabs a').click(function (e) {
+    e.preventDefault()
+    $(this).tab('show')
+  });
+  $('#toggleTheme').click(function (e) {
+    e.preventDefault()
+    toggleTheme();
+  });
 });
-
+function init() {
+  setTheme(localStorage.getItem('theme'));
+  showCodeLang(localStorage.getItem('lang'));
+}
 function setLang(lang) {
-  //$.sessionStorage.set('lang', lang);
   localStorage.setItem('lang', lang);
-  showCodeFor(lang);
+  showCodeLang(lang);
 }
 
-function showCode() {
-  //const e=null!==localStorage.getItem("darkSwitch")
-  //  &&"dark"===localStorage.getItem("darkSwitch");
-  //var lang = $.sessionStorage.get('lang');
-  var lang = localStorage.getItem('lang');
-  showCodeFor(lang);
+function toggleTheme() {
+  const theme = localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('theme', theme);
+  setTheme(theme);
 }
-
-function showCodeFor(lang) {
+function setTheme(theme) {
+  if (theme === 'dark') {
+    document.body.setAttribute("data-theme","dark");
+  } else {
+    document.body.setAttribute("data-theme","light")
+  }
+}
+function showCodeLang(lang) {
   if (lang === 'kt') {
     $('.code-java').hide();
     $('.code-kt').show();
