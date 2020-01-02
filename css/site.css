@@ -62,12 +62,11 @@ header, footer {
 #jumbo {
   color: var(--fg-banner);
   background-color: #132d45;
-  box-shadow: rgba(255, 255, 255, 0.8) 0 1px 0, inset rgba(0, 0, 0, 0.05) 0 1px 0;
-  background-image: url(/images/bg-hero.png);
+  background-image: var(--bg-hero);
   text-align: center;
 }
 .hero {
-  padding-top: 2rem;
+  padding: 2rem;
   margin-bottom: 1.5rem;
 }
 .hero h1 {
@@ -76,10 +75,8 @@ header, footer {
   color: var(--fg-banner);
   text-align: center;
 }
-.hero h3 {
-  padding-bottom: 2rem;
-}
 :root {
+  --bg-hero: url(/images/bg-hero.png);
   --body-color: #212529;
   --body-bg-color: #fff;
   --bg-banner: #132d45; /*#2f3c48;*/
@@ -98,6 +95,7 @@ header, footer {
 }
 
 [data-theme="dark"] {
+  --bg-hero: url(/images/bg-hero-dark.png);
   --body-color: #cecece;
   --body-bg-color: #292929;
   --fg-bright-color: #111;
