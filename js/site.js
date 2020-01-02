@@ -1,13 +1,5 @@
 $(function () {
   init();
-  $('.code.nav-tabs a').click(function (e) {
-    e.preventDefault()
-    $(this).tab('show')
-  });
-  $('#toggleTheme').click(function (e) {
-    e.preventDefault()
-    toggleTheme();
-  });
 });
 function init() {
   setTheme(localStorage.getItem('theme'));
