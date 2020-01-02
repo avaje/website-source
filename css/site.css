@@ -84,7 +84,6 @@ header, footer {
   --fg-banner: #fff;
   --fg-banner-nav: #d07f34;
   --fg-article: #d07f34;
-  --fg-bright-color: #e79b3d;
   --fg-link1-color: #0e84b5;
   --fg-link1Visit-color: #0e6ea1;
   --cd-bg: #f9f9f9;
@@ -98,7 +97,6 @@ header, footer {
   --bg-hero: url(/images/bg-hero-dark.png);
   --body-color: #cecece;
   --body-bg-color: #292929;
-  --fg-bright-color: #111;
   --fg-link1-color: #0e9ccf;
   --fg-link1Visit-color: #0e85be;
   --bg-code: #303030;
