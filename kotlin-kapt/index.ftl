@@ -1,9 +1,10 @@
 <html>
 <head>
-  <meta name="layout" content="_layout/xbase.html"/>
+  <title>avaje kotlin kapt maven tiles</title>
+  <meta name="layout" content="_layout/base-0.html"/>
   <meta name="bread1" content="kotlin kapt" href="/kotlin-kapt"/>
   <#assign config = "active">
-  <title>avaje kotlin kapt maven tiles</title>
+  <template id="gitsource">https://github.com/avaje/kotlin-kapt</template>
 </head>
 <body>
 <div class="grid">

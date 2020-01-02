@@ -1,11 +1,16 @@
 <html>
 <head>
-  <meta name="layout" content="_layout/xbase.html"/>
+  <title>avaje config</title>
+  <meta name="layout" content="_layout/base-0.html"/>
   <meta name="bread1" content="config" href="/config/"/>
   <#assign config = "active">
-  <title>avaje config</title>
+  <template id="gitsource">https://github.com/avaje/config</template>
 </head>
 <body>
+<div id="jumbo" class="hero">
+  <h1>config</h1>
+  <h3>External configuration for JVM apps</h3>
+</div>
 <div class="grid">
   <article>
     <h2 id="about">About</h2>
@@ -23,13 +28,13 @@
 
     <h2 id="start">Getting started</h2>
 
-    <h4>1. Add dependency</h4>
+    <h5>1. Add dependency</h5>
     <#include "/_common/dependency.html">
     <p>
       Add the dependency to your project.
     </p>
 
-    <h4 id="test">2. For <em>Test</em> configuration</h4>
+    <h5 id="test">2. For <em>Test</em> configuration</h5>
     <p>
       For configuration used when running local tests add into <code>src/test/resources</code> either:
     </p>
@@ -37,8 +42,9 @@
       <li><code>application-test.yaml</code> or <code>application-test.properties</code></li>
     </ul>
 
-    <h4>3. For <em>Main</em> configuration</h4>
-    <h5 id="main">3a. Resources</h5>
+
+    <h5>3. For <em>Main</em> configuration</h5>
+    <h6 id="main">3a. Resources</h6>
     <p>
       Optionally provide "default" configuration by adding to <code>src/main/resources</code> either:
     </p>
@@ -49,7 +55,7 @@
       Configuration specified by these files will be overridden by other configuration sources
       (load.properties, command line args or plugins).
     </p>
-    <h5>3b. load.properties</h5>
+    <h6>3b. load.properties</h6>
     <p>
       Optionally specify a <code>load.properties</code> property to define locations to
       load external configuration from. For example:
@@ -62,7 +68,7 @@
       After default configuration files are loaded the <em>load.properties</em> property is read to see
       if it specifies other properties/yaml configuration files to load.
     </p>
-    <h5 id="command-line">3c. Command line arguments</h5>
+    <h6 id="command-line">3c. Command line arguments</h6>
     <p>
       Command line arguments proceeded by <code>-P</code> are considered potential configuration files.
       For example:
@@ -78,9 +84,9 @@
       anywhere in application code - static initialisers, constructors etc. There is no limitation
       on where we can use Config.
     </p>
-    <h5>Example reading properties</h5>
+    <h6>Example reading properties</h6>
     <#include "/_include/ex_config_get.html">
-    <h5>Optional properties</h5>
+    <h6>Optional properties</h6>
     <p>
       If a property is not defined then Config will fail fast
       and throw an IllegalStateException unless a default value
@@ -100,12 +106,12 @@
     <p>
       To do this we need to:
     </p>
-    <h5>1. Specify <em>app.name</em> property</h5>
+    <h6>1. Specify <em>app.name</em> property</h6>
     <p>
       Specify <code>app.name</code> as a configuration property (in application.yaml or similarly loaded
       configuration).
     </p>
-    <h5>2. Add <em>~/.localdev/${r"${app.name}"}.yaml</em></h5>
+    <h6>2. Add <em>~/.localdev/${r"${app.name}"}.yaml</em></h6>
     <p>
       Add a file into <code>~/.localdev</code> called either <em>${r"${app.name}"}.yaml</em> or
       <wm>${r"${app.name}"}.properties</wm>
@@ -139,6 +145,7 @@
       TODO: Plugins to load extra configuration (like URL)
     </p>
   </article>
+
   <aside class="sidebar-right">
     <nav class="side-nav">
       <ul>

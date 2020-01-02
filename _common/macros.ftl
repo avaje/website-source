@@ -1,9 +1,9 @@
 <#macro headSection title link>
-  <section class="g2">
-    <div class="c1">
+  <section>
+    <div class="col">
       <h3><a href="${link}">${title}</a></h3>
     </div>
-    <div class="c2">
+    <div class="col">
       <p>
         <#nested>
       </p>

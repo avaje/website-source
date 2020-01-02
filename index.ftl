@@ -1,22 +1,27 @@
 <html>
 <head>
-  <meta name="layout" content="_layout/xbase.html"/>
-  <meta name="bread0" content="config" href="/config/"/>
+  <meta name="layout" content="_layout/base-home.html"/>
   <#assign home = "active">
   <title>avaje jvm libraries and utilities</title>
 </head>
 <body>
-<div class="container-col1">
+<div id="jumbo">
   <div class="hero">
     <h1>avaje jvm libraries</h1>
   </div>
-
-
-  <p>&nbsp;</p>
-  <@headSection "Config" "/config">
-    Provides external configuration for applications. Loads <em>yaml</em> and <em>properties</em> files,
-    supports dynamic configuration
-  </@headSection>
+</div>
+<div class="c-narrow">
+  <section>
+    <div class="col">
+      <h3><a href="/config">Config</a></h3>
+    </div>
+    <div class="col">
+      <p>
+        Provides external configuration for applications. Loads <em>yaml</em> and <em>properties</em> files,
+        supports dynamic configuration
+      </p>
+    </div>
+  </section>
 
   <@headSection "Metrics" "https://avaje-metrics.github.io">
     APM style metrics for JVM with fast and light timing metrics with <code>@Timed</code>, gauges,
