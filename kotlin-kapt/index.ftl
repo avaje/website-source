@@ -143,7 +143,7 @@
 </article>
 
 <aside class="sidebar-right">
-  <nav class="side-nav">
+  <nav class="side">
     <ul>
       <li><a href="#about">About</a></li>
       <li><a href="#start">Getting started</a></li>
