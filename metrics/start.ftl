@@ -7,7 +7,7 @@
 <body>
 <div class="grid">
 <article>
-  <h2>Add dependency</h2>
+  <h2 id="dependency">Add dependency</h2>
   <p>
     Add the following dependency to the project.
   </p>
@@ -19,10 +19,10 @@
     </dependency>
   </pre>
 
-  <h2>Maven tile</h2>
+  <h2 id="maven">Maven tile</h2>
   <p>
     When using maven add the following maven tile into the <code>build / plugins</code>
-    section. This plugin performs build time enhancement of <code>@Timed</code> classes and methods.
+    section. This plugin performs build time enhancement of <code>@Timed</code> methods.
   </p>
   <pre content="xml">
     <plugin>
@@ -39,12 +39,12 @@
     </plugin>
   </pre>
 
-  <h2>Gradle plugin</h2>
+  <h2 id="gradle">Gradle plugin</h2>
   <p>
     When using Gradle add the following plugin (TODO).
   </p>
 
-  <h2>Register JVM metrics</h2>
+  <h2 id="jvm-metrics">Register JVM metrics</h2>
   <p>
     Via <code>MetricManager.jvmMetrics()</code> specify if we want:
   </p>
@@ -79,7 +79,7 @@
     </pre>
   </div>
 
-  <h2>Add @Timed</h2>
+  <h2 id="timed">Add @Timed</h2>
   <p>
     Add <code>@Timed</code> to classes that we want methods to be timed. By default
     all public methods will have timing added to them.

@@ -52,6 +52,9 @@ article>h2[id]::before, article>h3[id]::before, article>h4[id]::before {
   display: grid;
   grid-template-columns: auto 20rem;
 }
+.g2 {
+  grid-template-columns: 35em 35rem;
+}
 .col {
   padding: 1rem;
 }
