@@ -21,7 +21,7 @@
     </div>
   </section>
 
-  <@headSection "Metrics" "https://avaje-metrics.github.io">
+  <@headSection "Metrics" "/metrics/">
     APM style metrics for JVM with fast and light timing metrics with <code>@Timed</code>, gauges,
     counters with built in JVM and CGroup metrics.
   </@headSection>
