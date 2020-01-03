@@ -3,8 +3,8 @@
   <title>avaje config</title>
   <meta name="layout" content="_layout/base-0.html"/>
   <meta name="bread1" content="config" href="/config/"/>
+  <var id="gitsource">https://github.com/avaje/config</var>
   <#assign config = "active">
-  <template id="gitsource">https://github.com/avaje/config</template>
 </head>
 <body>
 <div id="hero">

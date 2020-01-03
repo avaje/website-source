@@ -219,18 +219,3 @@ article h2 {
 article h2:first-child {
   margin-top: 1rem;
 }
-/*.x-container {*/
-/*  -ms-flex-wrap: nowrap;*/
-/*  flex-wrap: nowrap;*/
-/*  display: -ms-flexbox;*/
-/*  display: flex;*/
-/*  -ms-flex-align: center;*/
-/*  align-items: center;*/
-/*  -ms-flex-pack: justify;*/
-/*  justify-content: space-between;*/
-/*}*/
-/*#home-nav-link {*/
-/*  font-family: 'Amaranth', sans-serif;*/
-/*  font-size: 2em;*/
-/*  color: var(--fg-banner-nav);*/
-/*}*/

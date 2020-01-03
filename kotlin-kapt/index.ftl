@@ -3,8 +3,8 @@
   <title>avaje kotlin kapt maven tiles</title>
   <meta name="layout" content="_layout/base-0.html"/>
   <meta name="bread1" content="kotlin kapt" href="/kotlin-kapt"/>
+  <var id="gitsource">https://github.com/avaje/kotlin-kapt</var>
   <#assign config = "active">
-  <template id="gitsource">https://github.com/avaje/kotlin-kapt</template>
 </head>
 <body>
 <div class="grid">
