@@ -5,7 +5,7 @@
   --bg-banner: #132d45;
   --bg-banner2: #143554;
   --fg-banner: #fff;
-  --fg-banner-nav: #d07f34;
+  --fg-banner-nav: #0e84b5;
   --fg-article: #d07f34;
   --fg-link1-color: #0e84b5;
   --fg-link1Visit-color: #0e6ea1;
@@ -145,6 +145,12 @@ nav.side {
 nav.side ul li {
   list-style: none;
   padding-bottom: 0.3rem;
+  padding-left: 0.3rem;
+  border-left: 3px solid;
+  border-color: transparent;
+}
+nav.side ul li.active {
+  border-left: 3px solid var(--fg-article);
 }
 
 nav#top div {
@@ -209,12 +215,13 @@ nav#top ul li a, nav#top ul li a:visited {
   color: var(--fg-banner-nav);
   text-decoration: none;
   font-family: 'Ubuntu', sans-serif;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
 }
 
 article h2 {
   color: var(--fg-article);
   margin-top: 4rem;
+  font-size: 2rem;
 }
 article h2:first-child {
   margin-top: 1rem;
