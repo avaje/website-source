@@ -7,7 +7,7 @@
   <template id="gitsource">https://github.com/avaje/config</template>
 </head>
 <body>
-<div id="jumbo" class="hero">
+<div id="hero">
   <h1>config</h1>
   <h3>External configuration for JVM apps</h3>
 </div>

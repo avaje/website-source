@@ -5,10 +5,8 @@
   <title>avaje jvm libraries and utilities</title>
 </head>
 <body>
-<div id="jumbo">
-  <div class="hero">
-    <h1>avaje jvm libraries</h1>
-  </div>
+<div id="hero">
+  <h1>avaje jvm libraries</h1>
 </div>
 <div class="c-narrow">
   <section>
