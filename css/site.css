@@ -2,6 +2,7 @@
   --bg-hero: url(/images/bg-hero.png);
   --body-color: #212529;
   --body-bg-color: #fff;
+  --bg-side: #eee;
   --bg-banner: #132d45;
   --bg-banner2: #143554;
   --fg-banner: #fff;
@@ -21,6 +22,7 @@
   --bg-banner2: #2f2f2f;
   --body-color: #cecece;
   --body-bg-color: #292929;
+  --bg-side: #272727;
   --fg-link1-color: #0e9ccf;
   --fg-link1Visit-color: #0e85be;
   --bg-code: #303030;
@@ -78,9 +80,9 @@ article>h2[id]::before, article>h3[id]::before, article>h4[id]::before {
   text-align: right;
 }
 
-header, aside, article, footer {
-  padding: 1em;
-}
+/*header, aside, article, footer {*/
+/*  padding: 1em;*/
+/*}*/
 
 header, footer {
   grid-column: 1 / 3;
@@ -155,7 +157,7 @@ code {
   overflow: auto;
   width: 15em;
   font-size: small;
-  background: #f1f1f1;
+  background: var(--bg-side);
 }
 #sidenav ul {
   margin-block-start: 2px;
@@ -248,7 +250,13 @@ nav#top ul li a, nav#top ul li a:visited {
 .syntax pre {
   font-size: 0.8rem;
 }
-
+.breadcrumb.other {
+  background-color: var(--bg-banner);
+  font-size: 1.2rem;
+}
+.breadcrumb.other a {
+  font-size: 1rem;
+}
 .breadcrumb, .breadcrumb a, .breadcrumb a:visited {
   color: var(--fg-banner-nav);
   text-decoration: none;
@@ -256,10 +264,14 @@ nav#top ul li a, nav#top ul li a:visited {
   font-size: 1.5rem;
 }
 
-article h2 {
+article h2, article h1 {
   color: var(--fg-article);
   margin-top: 4rem;
   font-size: 2rem;
+}
+article h1 {
+  font-size: 2.2rem;
+  font-family: 'Ubuntu', sans-serif;
 }
 article h2:first-child {
   margin-top: 1rem;
