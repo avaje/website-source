@@ -45,7 +45,7 @@ var scroll = {
   current: null,
   list: [],
   init: function () {
-    $("nav.scroll ul li a").each(function () {
+    $("nav.scroll a").each(function () {
       var navItem = $(this);
       navItem.click(function() {
         scroll.navigate(navItem.parent());
