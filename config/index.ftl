@@ -268,16 +268,18 @@
       }
     </pre>
 
-    <#--    <li><a href="#get-list">getList</a></li>-->
-    <#--    <li><a href="#get-set">getSet</a></li>-->
-    <#--    <li><a href="#setProperty">setProperty</a></li>-->
-    <#--    <li><a href="#onchange">onChange</a></li>-->
-    <#--    -->
     <h2 id="config">Config</h2>
     <p>
-      We use <code>Config</code> to access the global configuration. <em>Config</em> can be used
+      We use <code>Config</code> to access the application configuration. <em>Config</em> can be used
       anywhere in application code - static initialisers, constructors etc. There is no limitation
       on where we can use Config.
+    </p>
+    <p>
+      <code>Config</code> has convenient static methods to access the underlying configuration and
+      this is how the majority of applications will use it. It also has
+      <a href="#asConfiguration">asConfiguration()</a> to return the underlying configuration
+      and <a href="#asProperties">asProperties()</a> to return the loaded configuration as standard
+      properties.
     </p>
 
     <h3 id="get-property">Get property</h3>
@@ -304,18 +306,22 @@
     <pre content="java">
       boolean val = Config.getBool("feature.cleanup");
       boolean val = Config.getBool("feature.cleanup", true);
+
+      // Config.enabled() is an alias for Config.getBool()
+      boolean val = Config.enabled("feature.cleanup");
+      boolean val = Config.enabled("feature.cleanup", true);
     </pre>
     <pre content="java">
       BigDecimal val = Config.getDecimal("myapp.tax.rate");
       BigDecimal val = Config.getDecimal("myapp.tax.rate", "12.5");
     </pre>
     <pre content="java">
-      MyEnum val = Config.getDecimal(MyEnum.class, "myapp.code");
-      MyEnum val = Config.getDecimal(MyEnum.class, "myapp.code", MyEnum.DEFAULT);
+      MyEnum val = Config.getEnum(MyEnum.class, "myapp.code");
+      MyEnum val = Config.getEnum(MyEnum.class, "myapp.code", MyEnum.DEFAULT);
     </pre>
     <pre content="java">
-      URL val = Config.getDecimal("other.url");
-      URL val = Config.getDecimal("other.url", "https://other:8090");
+      URL val = Config.getURL("other.url");
+      URL val = Config.getURL("other.url", "https://other:8090");
     </pre>
     <h5>List and Set</h5>
     <p>
@@ -377,7 +383,7 @@
       be much need to access the underlying configuration.
     </p>
     <pre content="java">
-      Properties properties = Config.asProperties();
+      Configuration configuration = Config.asConfiguration();
     </pre>
 
 
