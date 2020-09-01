@@ -50,7 +50,19 @@ var scroll = {
       navItem.click(function() {
         scroll.navigate(navItem.parent());
       });
-      scroll.list.push({'navItem': navItem.parent(), 'anchor': $(navItem.attr("href"))})
+      const ehr = navItem.attr("href");
+      if (ehr && ehr.startsWith("#")) {
+        const navAnchor = $(navItem.attr("href"));
+        if (navAnchor.length === 0) {
+          // /alert("empty for "+navItem.attr("href"));
+        } else {
+          scroll.list.push({'navItem': navItem.parent(), 'anchor': navAnchor})
+        }
+        // var hr = navItem.attr("href");
+        // if (hr) {
+        //   scroll.list.push({'navItem': navItem.parent(), 'anchor': $(hr)})
+        // }
+      }
     });
     $(window).scroll(function () {
       scroll.update();

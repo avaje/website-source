@@ -128,6 +128,10 @@ a {
 a:visited {
   color: var(--fg-link1Visit-color);
 }
+a.x, a.x:visited {
+  color: var(--fg-article);
+}
+
 div.syntax div.highlight pre {
   padding: 0.5rem 1rem;
   border-radius: 0.2rem;
@@ -192,7 +196,6 @@ nav.side ul li {
 nav.side ul li.active {
   border-left: 3px solid var(--fg-article);
 }
-
 nav#top div {
   display: flex;
 }
@@ -268,6 +271,11 @@ article h2, article h1 {
   color: var(--fg-article);
   margin-top: 4rem;
   font-size: 2rem;
+}
+article h3 {
+  color: var(--fg-article);
+  margin-top: 2rem;
+  font-size: 1.5rem;
 }
 article h1 {
   font-size: 2.2rem;

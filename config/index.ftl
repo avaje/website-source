@@ -1,7 +1,7 @@
 <html>
 <head>
   <title>avaje config</title>
-  <meta name="layout" content="_layout/base-0-2.html"/>
+  <meta name="layout" content="_layout/base-config.html"/>
   <meta name="bread1" content="config" href="/config/"/>
   <var id="gitsource">https://github.com/avaje/config</var>
   <#assign config = "active">
