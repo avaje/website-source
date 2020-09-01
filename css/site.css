@@ -284,3 +284,11 @@ article h1 {
 article h2:first-child {
   margin-top: 1rem;
 }
+
+table.index-toc th {
+  vertical-align: top;
+  font-size: 1.5rem;
+}
+table.index-toc td, table.index-toc.th {
+  padding: 0 1rem 1rem 1rem;
+}

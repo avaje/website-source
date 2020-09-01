@@ -9,40 +9,42 @@
   <h1>avaje jvm libraries</h1>
 </div>
 <div class="c-narrow">
-  <section>
-    <div class="col">
-      <h3><a href="/config">Config</a></h3>
-    </div>
-    <div class="col">
-      <p>
-        Provides external configuration for applications. Loads <em>yaml</em> and <em>properties</em> files,
-        supports dynamic configuration
-      </p>
-    </div>
-  </section>
 
-  <@headSection "Metrics" "/metrics/">
-    APM style metrics for JVM with fast and light timing metrics with <code>@Timed</code>, gauges,
-    counters with built in JVM and CGroup metrics.
-  </@headSection>
+  <table class="index-toc">
+    <tr>
+      <th><a href="/config">config</a></th>
+      <td>
+        <p>
+          Provides external configuration for applications. Loads <em>yaml</em> and
+          <em>properties</em> files, supports dynamic configuration.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th><a href="/inject">inject</a></th>
+      <td>
+        <p>
+          Cloud native and kubernetes friendly <a href="/inject">dependency injection</a>
+          by generating source code using Java annotation processing.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th><a href="/http">http</a></th>
+      <td>
+        <p>
+          Light weight jax-rs style http servers using <a href="https://javalin.io">Javalin</a>
+          and <a href="https://helidon.io">Helidon SE</a>. Use annotations
+          like <code>@Path</code>, <code>@Get</code> etc to define a rest api.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th></th>
+      <td></td>
+    </tr>
+  </table>
 
-  <@headSection "DInject" "https://dinject.io">
-    <a href="https://dinject.io">Dependency injection</a> via code generation for server side developers. Similar feature set to
-    Spring DI but uses APT code generation (like Dagger2).
-  </@headSection>
-
-  <@headSection "Javalin<br/>controllers" "https://dinject.io/docs/javalin/">
-    Code generation for Javalin controllers such that we can have JAX-RS style controllers with
-    <code>@Path, @Get etc</code> but extremely light and fast.
-  </@headSection>
-
-  <@headSection "Kotlin KAPT" "/kotlin-kapt">
-    Maven tiles to make it easier to use Kotlin KAPT with maven.
-  </@headSection>
-
-  <@headSection "Maven tiles" "/maven-tiles">
-    Useful maven tiles to drive reuse in maven build definitions.
-  </@headSection>
 
 </div>
 </body>
