@@ -17,6 +17,7 @@
     <li><a href="#inject">@Inject</a></li>
     <li><a href="#constructor">Constructor injection</a></li>
     <li><a href="#field">Field injection</a></li>
+    <li><a href="#circular">Circular dependencies</a></li>
     <li><a href="#optional">Optional</a></li>
     <li><a href="#list">List and Set</a></li>
     <li><a href="#provider">Provider</a></li>
@@ -58,9 +59,13 @@
     <li><a href="#why-comparison">Comparison to other DI</a></li>
   </ul>
 </@nav>
-
+<@nav url="#http" title="http servers">
+  <ul>
+    <li><a href="#http-javalin">Javalin</a></li>
+    <li><a href="#http-helidon">Helidon SE</a></li>
+  </ul>
+</@nav>
 <@nav url="#spring" title="Spring DI"/>
 <@nav url="#aop" title="AOP"/>
-<@nav url="#javalin" title="Javalin"/>
-<@nav url="#history" title="DI History"/>
 </ul>
+<p>&nbsp;</p>

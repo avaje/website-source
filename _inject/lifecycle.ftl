@@ -12,10 +12,8 @@
 @Singleton
 public class CoffeeMaker {
 
-  ...
-
   @PostConstruct
-  public onStartup() {
+  void onStartup() {
     // connect to remote resource ...
     ...
   }
@@ -33,10 +31,8 @@ public class CoffeeMaker {
 @Singleton
 public class CoffeeMaker {
 
-  ...
-
   @PreDestroy
-  public onShutdown() {
+  void onShutdown() {
     // close resources
     ...
   }

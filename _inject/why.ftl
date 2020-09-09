@@ -21,14 +21,21 @@
   creation of Guice which is released in 2009.
 </p>
 <p>
-  In 2009 developers from Spring, Guice and some others got together to define JSR-330
-  - dependency injection for Java.
+  In 2009 developers from Spring, Guice, Redhat and some others got together to
+  define JSR-330 - dependency injection for Java.
 </p>
 <p>
   Some Guice developers went on to develop Dagger which I believe was the first
   dependency injection library that used Java annotation processing to generate code
-  for DI. This made Dagger significantly faster and lighter than Guice and Dagger has
-  become heavily adopted for Android applications.
+  for DI. This moves work that was previously done at runtime to build time and made
+  Dagger significantly faster and lighter than Guice. Dagger becomes heavily
+  adopted for Android applications.
+</p>
+<p>
+  <em>
+  Using Java annotation processing to move dependency injection work from run time
+  to build time is common approach by Dagger, Micronaut, avaje-inject and Quarkus.
+  </em>
 </p>
 <p>
   Around 2018 the pain points of using Spring DI with Kubernetes and resource limited
@@ -41,9 +48,10 @@
   Android space for some years].
 </p>
 <p>
-  In 2018 Micronaut and this library are released which use Java annotation processing
-  to perform most of DI at build time rather than runtime. In 2019 Quarkus is released
-  which similarly uses Java annotation processing but is based on CDI.
+  In 2018 Micronaut and <em>avaje-inject</em> (this library) are released which use
+  Java annotation processing to perform most of DI at build time rather than runtime.
+  In 2019 Quarkus is released which similarly uses Java annotation processing but is
+  based on CDI.
 </p>
 
 <h3 id="why-comparison">Quick comparison to other DI libraries</h3>
@@ -55,12 +63,17 @@
 </p>
 <h5>Why not use Quarkus?</h5>
 <p>
-  Quarkus comes with a DI library that implements CDI. If that is your thing you'd look
+  Quarkus comes with a DI implementation based on CDI. If CDI is your thing you'd look
   at Quarkus.
 </p>
 <h5>Why not Micronaut?</h5>
 <p>
-  Micronaut DI is similar in feature set but also includes AOP and was relatively strongly
-  linked to the rest of the Micronaut framework which is quite large. <em>Avaje inject</em>
-  is relatively small library in comparison and is focused on DI alone.
+  Micronaut DI and <em>avaje-inject</em> are both heavily influenced by Spring ID and
+  look very similar in feature set.
+</p>
+<p>
+  Micronaut DI was relatively strongly linked to the rest of the Micronaut framework
+  where as <em>avaje-inject</em> is relatively small in comparison and focused on DI alone.
+  Micronaut generates bytecode where as <em>avaje-inject</em> generates source code
+  making the functionality of DI fully transparent to developers.
 </p>

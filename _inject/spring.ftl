@@ -1,5 +1,5 @@
 
-<h2 id="spring-di">Spring DI</h2>
+<h2 id="spring">Spring DI</h2>
 
 <h4>@Factory + @Bean</h4>
 <p>
@@ -22,7 +22,7 @@
 <table class="table">
   <tr>
     <th width="45%">Spring</th>
-    <th width="45%">DInject</th>
+    <th width="45%">avaje-inject</th>
     <th width="10%">JSR-330</th>
   </tr>
   <tr>
@@ -77,13 +77,14 @@
 
 <h3 id="aop">AOP</h3>
 <p>
-  Using libraries that provide their own AOP/enhancement makes DInject simpler and lighter.
+  <em>avaje-inject</em> does not include AOP as other libraries provide build time AOP
+  for <code><a href="https://ebean.io/docs/transactions/">@Transactional</a></code>,
+  Metrics <code><a href="https://avaje.io/metrics/">@Timed</a></code>
+  and configuration injection via <a href="https://avaje.io/config/">avaje-config</a>.
 </p>
 <p>
-  Currently DInject does not include AOP and the expectation is that AOP functionality comes
-  with other libraries. For example Ebean ORM has
-  <code><a href="https://ebean.io/docs/transactions/">@Transactional</a></code> and Metrics
-  libraries have their own <code><a href="https://avaje.io/metrics/">@Timed</a></code>.
+  Performing AOP at build time is important as it removes the runtime cost at startup
+  of using dynamic proxies.
 </p>
 <p>
   The following are library recommendations for @Transactional, @Value and @Timed.

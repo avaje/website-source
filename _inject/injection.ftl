@@ -73,10 +73,29 @@ public class CoffeeMaker {
   With field injection the <code>@Inject</code> is placed on the field and the field must not be <code>private</code>
   and it must not be <code>final</code>.
 </p>
+<h4>Constructor injection preferred</h4>
+<p>
+  Generally there is a preference to use constructor injection over field injection as constructor
+  injection:
+</p>
+<ul>
+  <li>Promotes immutability / use of final fields / proper initialisation</li>
+  <li>Communicates required dependencies at compile time. Helps when dependencies
+    change to keep test code in line.</li>
+  <li>Helps identify when there are too many dependencies. Too many constructor
+    arguments is a more obvious code smell compared to field injection.
+    Promotes single responsibility principal.</li>
+</ul>
+
+<h4>Field injection for circular dependencies</h4>
+<p>
+  We use field injection to handle <a href="#circular">circular dependencies</a>.
+  See <a href="#circular">below</a> for more details.
+</p>
 
 <h4>Kotlin field injection</h4>
 <p>
-  For Kotlin we can consider using <em>lateinit</em> on the property.
+  For Kotlin we can consider using <em>lateinit</em> on the property with field injection.
 </p>
 <pre content="kotlin">
 @Singleton
@@ -110,6 +129,82 @@ public class CoffeeMaker {
     this.grinder = grinder;
   }
 </pre>
+
+<h3 id="circular">Circular dependencies</h3>
+<p>
+  When we have a circular dependency then we need to use <a href="#field">field injection</a>
+  on one of the dependencies.
+</p>
+<p>
+  For example, lets say we have A and B where A depends on B and B depends on A. In this case
+  we can't use constructor injection for both A and B like:
+</p>
+<pre content="java">
+@Singleton
+class A {
+  B b;
+  A(B b) {       // constructor for A depends on B
+    this.b = b;
+  }
+}
+
+@Singleton
+class B {
+  A a;
+  B(A a) {       // constructor for B depends on A
+    this.a = a;
+  }
+}
+</pre>
+<p>
+  With the above circular dependencies for A and B constructor injection <em>inject</em>
+  can not determine the order in which to construct the beans. <em>avaje-inject</em> will
+  detect this and product a compilation error outlining the beans involved and ask us
+  to change to use field injection for one of the dependencies.
+</p>
+<p>
+  We can not use constructor injection for both A and B and instead we must use
+  field injection on either A or B like:
+</p>
+<pre content="java">
+@Singleton
+class A {
+  @Inject   // use field injection
+  B b;
+}
+
+@Singleton
+class B {
+  A a;
+  B(A a) {
+    this.a = a;
+  }
+}
+</pre>
+<p>
+  The reason this works is that field injection occurs later after all the
+  dependencies are constructed. <em>avaje-inject</em> uses 2 phases to
+  "wire" the beans and then a 3rd phase to execute the <code>@PostConstruct</code>
+  lifecycle methods:
+</p>
+<ul>
+  <li>Phase 1: Construct all the beans in order based on constructor dependencies</li>
+  <li>Phase 2: Apply field injection on all beans</li>
+  <li>Phase 3: Execute all <code>@PostConstruct</code> lifecycle methods</li>
+</ul>
+<p>
+  Circular dependencies more commonly occur with more than 2 beans. For example,
+  lets say we have A, B and C where:
+</p>
+<ul>
+  <li>A depends on B</li>
+  <li>B depends on C</li>
+  <li>C depends on A</li>
+</ul>
+<p>
+  With A, B, C above they combine to create a circular dependency. To handle this
+  we need to use <a href="#field">field injection</a> on one of the dependencies.
+</p>
 
 <h3 id="optional">Optional</h3>
 <p>
@@ -288,10 +383,11 @@ class Configuration {
 </p>
 <pre content="java">
 class CoffeeMaker {
-  public void init() {
+
+  void init() {
     // lifecycle executed on start/PostConstruct
   }
-  public void close() {
+  void close() {
     // lifecycle executed on shutdown/PreDestroy
   }
   ...

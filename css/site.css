@@ -11,10 +11,12 @@
   --fg-link1-color: #0e84b5;
   --fg-link1Visit-color: #0e6ea1;
   --cd-bg: #f9f9f9;
-  --cd-fg: #333;
+  --cd-fg: #333333;
   --bg-code: #f9f9f9;
   --bg-code-border: #dddddd;
   --bg-code-tab: #f9f9f9;
+  --bg-scrollbar: #ddd;
+  --bg-scrollbar2: #bbb;
 }
 [data-theme="dark"] {
   --bg-hero: url(/images/bg-hero-dark.png);
@@ -28,6 +30,8 @@
   --bg-code: #303030;
   --bg-code-border: #505050;
   --bg-code-tab: #636363;
+  --bg-scrollbar: #636363;
+  --bg-scrollbar2: #202020;
   --cd-bg: #333;
   --cd-fg: #f9f9f9;
 }
@@ -162,6 +166,18 @@ code {
   width: 15em;
   font-size: small;
   background: var(--bg-side);
+  scrollbar-width: thin;
+}
+#sidenav::-webkit-scrollbar {
+  width: 4px;
+}
+*::-webkit-scrollbar-track {
+  background: var(--bg-scrollbar);
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--bg-scrollbar2);
+  /*border-radius: 20px;*/
+  /*border: 3px solid orange;*/
 }
 #sidenav ul {
   margin-block-start: 2px;
@@ -283,6 +299,10 @@ article h1 {
 }
 article h2:first-child {
   margin-top: 1rem;
+}
+h5 em {
+  font-weight: normal;
+  font-style: italic;
 }
 
 table.index-toc th {

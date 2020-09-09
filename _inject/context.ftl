@@ -8,14 +8,13 @@
 </p>
 <h5>example</h5>
 <pre content="java">
-// Get a bean from the context and use it
+// Get a bean from the context
 CoffeeMaker coffeeMaker = SystemContext.getBean(CoffeeMaker.class);
 coffeeMaker.brew();
 </pre>
 
 <pre content="java">
-
-// Get all the webroutes
+// Get all the beans that implement an interface
 List<|WebRoutes> webRoutes = SystemContext.getBeans(WebRoutes.class);
 
 // register them with Javalin
@@ -43,7 +42,7 @@ coffeeMaker.brew();
   The methods on BeanContext that we use to obtain beans out of the context are:
 </p>
 
-<h5>getBean(&lt; type &gt;)</h5>
+<h5>getBean(<em>type</em>)</h5>
 <p>
   Return a single bean given the type.
 </p>
@@ -52,7 +51,7 @@ coffeeMaker.brew();
  StoreManager.processOrders();
 </pre>
 
-<h5>getBean(&lt; type &gt;, &lt; qualifier &gt;) with qualifier</h5>
+<h5>getBean(<em>type</em>, <em>qualifier</em>)</h5>
 <p>
   Return a single bean given the type and name.
 </p>
@@ -61,7 +60,7 @@ coffeeMaker.brew();
  blueStore.checkOrders();
 </pre>
 
-<h5>getBeans(&lt; type &gt;)</h5>
+<h5>getBeans(<em>type</em>)</h5>
 <p>
   Return the list of beans that implement the interface.
 </p>
@@ -72,7 +71,7 @@ coffeeMaker.brew();
    List<|WebRoute> routes = beanContext.getBeans(WebRoute.class);
 </pre>
 
-<h5>getBeansWithAnnotation(&lt; annotation type &gt;)</h5>
+<h5>getBeansWithAnnotation(<em>annotation type</em>)</h5>
 <p>
   Return the list of beans that have an annotation.
 </p>
@@ -87,7 +86,7 @@ The classic use case for this is registering controllers or routes to
  web frameworks like Sparkjava, Javlin, Rapidoid etc.
 </p>
 
-<h5>getBeansByPriority(&lt; type &gt;)</h5>
+<h5>getBeansByPriority(<em>type</em>)</h5>
 <p>
   Return the list of beans that implement the interface sorting by priority.
 </p>
@@ -121,7 +120,7 @@ public void myComponentTest() {
       // setup the mock
       when(grinder.grindBeans()).thenReturn("stub response");
     })
-    .load()) {
+    .build()) {
 
     // Act
     CoffeeMaker coffeeMaker = context.getBean(CoffeeMaker.class);
@@ -150,7 +149,7 @@ public void myComponentTest() {
       // setup the spy, only stub out pumpWater()
       doNothing().when(pump).pumpWater();
     })
-    .load()) {
+    .build()) {
 
     // or setup here ...
     Pump pump = context.getBean(Pump.class);
@@ -181,7 +180,7 @@ public void myComponentTest() {
 
   try (BeanContext context = new BeanContextBuilder()
     .withBeans(pump, grinder)
-    .load()) {
+    .build()) {
 
     // act
     CoffeeMaker coffeeMaker = context.getBean(CoffeeMaker.class);
