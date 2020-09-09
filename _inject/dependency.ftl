@@ -6,92 +6,31 @@
   <a href="https://github.com/dinject/examples/blob/master/basic-di/pom.xml">examples/basic-di/pom.xml</a>
 </p>
 <p>
-  Add <em>dinject</em> as a dependency.
+  Add <em>avaje-inject</em> as a dependency.
 </p>
 <pre content="xml">
 <dependency>
-  <groupId>io.dinject</groupId>
-  <artifactId>dinject</artifactId>
-  <version>2.2</version>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje-inject</artifactId>
+  <version>1.1</version>
 </dependency>
 </pre>
 
 <h4>Java APT - dinject-generator</h4>
 <p>
-  Add <em>dinject-generator</em> as a dependency with <em>provided scope</em>.
+  Add <em>avaje-inject-generator</em> as a dependency with <em>provided scope</em>.
 </p>
 
 <pre content="xml">
 <!-- Annotation processor -->
 <dependency>
-  <groupId>io.dinject</groupId>
-  <artifactId>dinject-generator</artifactId>
-  <version>2.2</version>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje-inject-generator</artifactId>
+  <version>1.1</version>
   <scope>provided</scope>
 </dependency>
 </pre>
 
-<h4>Kotlin KAPT - dinject-generator</h4>
-<p>
-  See example at:
-  <a href="https://github.com/dinject/examples/blob/master/basic-di-kotlin-maven/pom.xml">examples/basic-di-kotlin-maven/pom.xml</a>
-</p>
-<p>
-  For use with Kotlin we register <em>dinject-generator</em> as a KAPT processor
-  to the Kotlin compiler.
-</p>
-<p>
-  The easiest way to do this is to add the <code>io.avaje.kapt</code>
-  maven tiles for <em>compile</em> and <em>dinject-generator</em>
-  in <em>build / plugins</em> like:
-</p>
-<pre content="xml">
-<build>
-  <plugins>
-
-    <plugin>
-      <groupId>io.repaint.maven</groupId>
-      <artifactId>tiles-maven-plugin</artifactId>
-      <version>2.17</version>
-      <extensions>true</extensions>
-      <configuration>
-        <tiles>
-          <!-- kotlin compile with kapt support -->
-          <tile>io.avaje.kapt:compile:1.1</tile>
-          <tile>io.avaje.kapt:dinject-generator:1.1</tile>
-
-          <!-- other annotation processors ... -->
-          <!-- <tile>io.avaje.kapt:javalin-generator:1.1</tile> -->
-          <!-- <tile>io.avaje.kapt:querybean-generator:1.1</tile> -->
-
-          <!-- other tiles -->
-          <!-- <tile>org.avaje.tile:lib-classpath:1.1</tile> -->
-          <!-- <tile>io.ebean.tile:enhancement:12.1.3</tile> -->
-
-        </tiles>
-      </configuration>
-    </plugin>
-
-  </plugins>
-</build>
-</pre>
-<p>
-  The above includes the <em>dinject-generator</em> annotation processor only. For use with <code>Javalin</code>
-  we instead include the <code>io.dinject.kapt:javalin:1.12</code> tile.
-</p>
-
-<p>
-  With Kotlin KAPT the source code isn't generated automatically on compile (as it is with Java)
-  but instead we can specify the source code to be re-generated via:
-</p>
-<p>
-  <em>Maven</em> - <em>Project</em> - <em>Right mouse</em> - <em>Generate Sources and update folders</em>
-</p>
-
-<p>
-  <img src="/images/maven-generate-source.png" width="600px">
-</p>
-<p>&nbsp;</p>
 
 
 <h3 id="gradle">Gradle</h3>
@@ -110,15 +49,16 @@
 
 <h4>Dependencies</h4>
 <p>
-  Add <em>dinject</em> as a compile dependency and <em>dinject-generator</em> as an annotation processor.
+  Add <em>avaje-inject</em> as a compile dependency and <em>avaje-inject-generator</em> as
+  an annotation processor.
 </p>
 
 <pre content="groovy">
 dependencies {
   ...
-  compile('io.dinject:dinject:2.2')
+  compile('io.avaje:avaje-inject:1.1')
 
-  annotationProcessor('io.dinject:dinject-generator:2.2')
+  annotationProcessor('io.avaje:avaje-inject-generator:1.1')
   ...
 }
 </pre>
@@ -128,13 +68,13 @@ dependencies {
   See example at: https://github.com/dinject/examples/blob/master/basic-di-kotlin-maven/pom.xml
 </p>
 <p>
-  For use with Kotlin we register <em>dinject-generator</em> as a <code>kapt</code> processor
+  For use with Kotlin we register <em>avaje-inject-generator</em> as a <code>kapt</code> processor
   to the Kotlin compiler rather than <em>annotationProcessor</em>.
 </p>
 <pre content="groovy">
 dependencies {
     ...
-    kapt('io.dinject:dinject-generator:2.2')
+    kapt('io.avaje:avaje-inject-generator:1.1')
     ...
 }
 </pre>

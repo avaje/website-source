@@ -1,11 +1,37 @@
-<h2 id="overview">Overview</h2>
+
+<h1 id="overview">Avaje Inject</h1>
 <p>
-  <em>avaje inject</em> is a cloud native kubernetes friendly dependency injection library for
-  server-side Java and Kotlin developers.
+  Fast and light dependency injection library for Java and Kotlin developers.
+</p>
+<table width="100%">
+  <tr>
+    <th>License</th>
+    <th>Source</th>
+    <th>API Docs</th>
+    <th>Issues</th>
+    <th>Releases</th>
+  </tr>
+  <tr>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/blob/master/LICENSE">Apache2</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-inject">Github</a></td>
+    <td><a target="_blank" href="/apidocs/avaje-inject">Javadoc</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/issues">Github</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/releases">Latest 1.1</a></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+
+<p>
+  Uses Java annotation processing generating source code for dependency injection.
+  That puts the work of performing dependency injection to build time rather than
+  runtime increasing the speed of application start. There is no use of reflection
+  or classpath scanning.
 </p>
 <p>
-  It uses Java annotation processing generating source code for the dependency injection.
-  That means there is no use of reflection or classpath scanning.
+  DI is generated source code allowing developers to see how it works and we can use
+  existing IDE tools to search where code is called such as constructors and lifecycle
+  methods. We can add debug breakpoints into the DI code as desired and step through
+  it just like it was manually written code.
 </p>
 <p>
   For a <a href="#why">background on why</a> <em>avaje inject</em> exists and a
@@ -32,7 +58,7 @@
 <h3 id="extensions">Spring DI like extensions to JSR-330</h3>
 <h4>@Factory + @Bean</h4>
 <p>
-  In addition to the standard we use <a href="#factory">@Factory</a> + <a href="#bean">@Bean</a>
+  In addition to the JSR-330 standard we use <a href="#factory">@Factory</a> + <a href="#bean">@Bean</a>
   which work the same as Spring DI's <em>@Configuration + @Bean</em> and also Micronaut's
   <em>@Factory + @Bean</em>.
 </p>
@@ -46,6 +72,6 @@
 <p>
   Additionally we use <a href="#primary">@Primary</a> <a href="#secondary">@Secondary</a> annotations
   which work the same as Spring DI's <em>@Primary @Secondary</em> and also Micronaut DI's
-  <em>@Primary @Secondary</em>. These provide injection precedence in the case of injecting an
-  implementation when multiple injection candidates are available.
+  <em>@Primary @Secondary</em>. These provide injection priority in the case of injecting
+  when multiple injection candidates are available.
 </p>
