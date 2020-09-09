@@ -167,6 +167,7 @@ code {
   font-size: small;
   background: var(--bg-side);
   scrollbar-width: thin;
+  scrollbar-color: var(--bg-scrollbar2) var(--bg-scrollbar);
 }
 #sidenav::-webkit-scrollbar {
   width: 4px;
