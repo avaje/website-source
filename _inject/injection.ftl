@@ -140,6 +140,8 @@ public class CoffeeMaker {
   we can't use constructor injection for both A and B like:
 </p>
 <pre content="java">
+// circular dependency with constructor injection, this will not work !!
+
 @Singleton
 class A {
   B b;
@@ -157,7 +159,7 @@ class B {
 }
 </pre>
 <p>
-  With the above circular dependencies for A and B constructor injection <em>inject</em>
+  With the above circular dependencies for A and B constructor injection <em>avaje-inject</em>
   can not determine the order in which to construct the beans. <em>avaje-inject</em> will
   detect this and product a compilation error outlining the beans involved and ask us
   to change to use field injection for one of the dependencies.
@@ -236,7 +238,7 @@ class Pump {
 <h5>Spring DI Note</h5>
 <p>
   Spring users will be familiar with the use of <code>@Autowired(required=false)</code>
-  for wiring optional dependencies. With DInject we instead use <code>Optional</code>
+  for wiring optional dependencies. With <em>avaje-inject</em> we instead use <code>Optional</code>
   to inject optional dependencies.
 </p>
 
@@ -398,15 +400,22 @@ class CoffeeMaker {
 <h2 id="primary">@Primary</h2>
 <p>
   A bean with <code>@Primary</code> is deemed to be highest priority and will be injected and used
-  when it is available.
+  when it is available. This is functionally the same as Spring and Micronaut <em>@Primary</em>.
 </p>
 <p>
   There should only ever be <b>one</b> bean implementation marked as <em>@Primary</em> for
   a given dependency.
 </p>
-<p>
-  This is functionally the same as Spring and Micronaut <em>@Primary</em>.
-</p>
+
+<h4>Example</h4>
+<pre content="java">
+// Highest priority EmailServer
+// Used when available (e.g. module in the class path)
+@Primary
+@Singleton
+public class PreferredEmailSender implements EmailServer {
+  ...
+</pre>
 
 <h2 id="secondary">@Secondary</h2>
 <p>
@@ -417,6 +426,15 @@ class CoffeeMaker {
 <p>
   This is functionally the same as Spring and Micronaut <em>@Secondary</em>.
 </p>
+<h4>Example</h4>
+<pre content="java">
+// Lowest priority EmailServer
+// Only used if no other EmailServer is available
+@Secondary
+@Singleton
+public class DefaultEmailSender implements EmailServer {
+  ...
+</pre>
 
 <h3 id="primary-usage">Use of @Primary and @Secondary</h3>
 <p>
@@ -430,5 +448,5 @@ class CoffeeMaker {
   building multi-module applications. We have multiple modules (jars) that provide implementations.
   We use <em>@Secondary</em> to indicate a "default" or "fallback" implementation to use
   and we use <em>@Primary</em> to indicate the best implementation to use when it is available.
-  DInject DI will then wire depending on which modules (jars) are included in the classpath.
+  <em>avaje-inject</em> DI will then wire depending on which modules (jars) are included in the classpath.
 </p>

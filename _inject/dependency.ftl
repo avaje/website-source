@@ -15,10 +15,9 @@
   <version>1.1</version>
 </dependency>
 </pre>
-
-<h4>Java APT - dinject-generator</h4>
 <p>
-  Add <em>avaje-inject-generator</em> as a dependency with <em>provided scope</em>.
+  Add <em>avaje-inject-generator</em> annotation processor as a dependency with
+  <em>provided scope</em>.
 </p>
 
 <pre content="xml">
@@ -30,7 +29,29 @@
   <scope>provided</scope>
 </dependency>
 </pre>
-
+<p>
+  Note that if there are other annotation processors and they are specified via
+  <em>maven-compiler-plugin</em> <em>annotationProcessorPaths</em>
+  then we add <em>avaje-inject-generator</em> there instead.
+</p>
+<pre content="xml">
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-compiler-plugin</artifactId>
+  <configuration>
+    <annotationProcessorPaths> <!-- All annotation processors specified here -->
+      <path>
+          <groupId>io.avaje</groupId>
+          <artifactId>avaje-inject-generator</artifactId>
+          <version>1.1</version>
+      </path>
+      <path>
+          ... other annotation processor ...
+      </path>
+    </annotationProcessorPaths>
+  </configuration>
+</plugin>
+</pre>
 
 
 <h3 id="gradle">Gradle</h3>
@@ -57,9 +78,7 @@
 dependencies {
   ...
   compile('io.avaje:avaje-inject:1.1')
-
   annotationProcessor('io.avaje:avaje-inject-generator:1.1')
-  ...
 }
 </pre>
 
@@ -73,9 +92,9 @@ dependencies {
 </p>
 <pre content="groovy">
 dependencies {
-    ...
-    kapt('io.avaje:avaje-inject-generator:1.1')
-    ...
+  ...
+  compile('io.avaje:avaje-inject:1.1')
+  kapt('io.avaje:avaje-inject-generator:1.1')
 }
 </pre>
 
