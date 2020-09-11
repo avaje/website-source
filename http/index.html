@@ -1,14 +1,25 @@
 <html>
 <head>
-  <meta name="layout" content="_layout/base-inject.html"/>
+  <meta name="layout" content="_layout/base-http.html"/>
   <meta name="bread1" content="http" href="/http/"/>
   <#assign index="active">
 </head>
 <body>
+<#include "/_http/_header.ftl">
+<#include "/_http/overview.ftl">
+<#include "/_http/dependency.ftl">
+<#include "/_http/controllers.ftl">
+<#include "/_http/path.ftl">
+<#include "/_http/post.ftl">
+<#include "/_http/header.ftl">
+<#include "/_http/get.ftl">
 
-<p>
-  Documentation coming ...
-</p>
+<#include "/_http/type-conversions.ftl">
+<#include "/_http/beanvalidation.ftl">
+<#include "/_http/openapi.ftl">
+<#include "/_http/jaxrs.ftl">
+
+
 
 </body>
 </html>

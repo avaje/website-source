@@ -313,3 +313,24 @@ table.index-toc th {
 table.index-toc td, table.index-toc.th {
   padding: 0 1rem 1rem 1rem;
 }
+table.table {
+  width: 100%;
+  /*background: #ccc;*/
+}
+.table td, .table th {
+  padding: 8px;
+  line-height: 1.42857143;
+  vertical-align: top;
+  border-top: 1px solid #ddd;
+}
+
+.table-striped tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+.table-striped tr:nth-of-type(even) {
+  /*background-color: #999;*/
+}
+.table th.heading {
+  padding-top: 2rem;
+}
+

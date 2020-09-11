@@ -1,0 +1,173 @@
+<html>
+<head>
+  <title>DInject Javalin controllers</title>
+  <meta name="layout" content="_layout/parent_javalin.html"/>
+  <meta name="bread1" content="Javalin" href="/javalin"/>
+<#assign javalin="active">
+</head>
+<body>
+
+<h2>Javalin controllers</h2>
+<p>
+  <em>javalin-generator</em> is an APT processor that allows us to write controllers
+  with annotations like <code>@Path</code> and <code>@Get</code>
+</p>
+
+<h3>Goals</h3>
+<ul>
+  <li>Provide a similar programming style to JAX-RS and Spring</li>
+  <li>Add no extra weight. We generate source code - no reflection, no extra overhead</li>
+  <li>Generate code that we would otherwise write ourselves</li>
+  <li>Controllers should be nice and readable - not overly littered with annotations</li>
+  <li>Expose and use Javalin Context as needed</li>
+  <li>Automatically generate <a href="openapi">Swagger/OpenAPI</a> documentation</li>
+  <li>Support using <a href="beanvalidation">Bean validation</a> on request payloads</li>
+</ul>
+
+<p>
+  In general our controllers should be more testable with dependencies that can be mocked or stubbed
+  and with controller methods having less dependency on 'web constructs' like path, query and form
+  parameters (we can more easily unit test controllers).
+</p>
+
+
+<h3>Examples</h3>
+<p>
+  Example projects found in <a href="https://github.com/dinject/examples">dinject/examples</a> for Gradle and Maven
+  for both Java and Kotlin.
+</p>
+
+
+
+<h3>Introduction</h3>
+<p>
+  Introduction to using <code>javalin-generator</code> to generate web routes for <a href="https://javalin.io">Javalin</a>.
+</p>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3 feature">
+      <iframe  width="250" height="160" src="https://www.youtube.com/embed/A3z7Z8xKsrE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<h3>Example</h3>
+<p>
+  For the controller below:
+</p>
+<pre content="java">
+@Controller
+@Path("/customers")
+class CustomerController {
+
+  final MyDependency myDependency;
+
+  CustomerController(MyDependency myDependency) {
+    this.myDependency = myDependency;
+  }
+
+  @Get(":id")
+  Customer getById(UUID id) {
+    ...
+  }
+
+  @Roles(AppRoles.ADMIN)
+  @Get("/type/:type")
+  List<|Customer> findByType(String type, String orderBy) {
+    ...
+  }
+}
+</pre>
+<p>
+  The <code>javalin-generator</code> generates the code below.
+</p>
+<ul>
+  <li>A bean annotated with <code>@Singleton</code>   <b>(A)</b> ... picked up for Dependency injection</li>
+  <li>A bean that implements <code>WebRoutes</code>   <b>(B)</b> ... so we can register them all with Javalin</li>
+  <li>Registers the web routes to Javalin ApiBuilder   <b>(C)</b></li>
+  <li>Obtains path parameters and query parameters  <b>(D)</b></li>
+  <li>Passes the path and query parameters to the controller methods  <b>(E)</b></li>
+  <li>Converts to and from JSON the controller method response or body  <b>(F)</b></li>
+  <li>Adapter @Roles for the web route <b>(G)</b></li>
+
+</ul>
+
+<pre content="java">
+@Generated("io.dinject.javalin.generator")
+@Singleton                                                       // (A)
+public class CustomerController$route implements WebRoutes {     // (B)
+
+ private final CustomerController controller;
+
+ public CustomerController$route(CustomerController controller) {
+   this.controller = controller;
+ }
+
+  @Override
+  public void registerRoutes() {
+
+    ApiBuilder.get("/customers/:id", ctx -> {                   // (C)
+      ctx.status(200);
+      UUID id = asUUID(ctx.pathParam("id"));                    // (D)
+      ctx.json(controller.getById(id));                         // (E), (F)
+    });
+
+    ApiBuilder.get("/customers/type/:type", ctx -> {            // (C)
+      ctx.status(200);
+      String type = ctx.pathParam("type");                      // (D)
+      String orderBy = ctx.queryParam("orderBy");               // (D)
+      ctx.json(controller.findByType(type, orderBy));           // (E), (F)
+    }, roles(ADMIN));                                           // (E)
+
+  }
+
+}
+
+</pre>
+<p>
+  As the generated bean is a <code>@Singleton</code> DInject puts it into
+  the DI context. All these generated beans implement <code>WebRoutes</code>
+  so we can get them all out of the DI context to register them with Javalin.
+</p>
+
+<p>
+  When can register all the <code>WebRoutes</code> with Javalin.
+</p>
+
+<pre content="java">
+  public static void main(String[] args) {
+
+    Javalin app = Javalin.create().disableStartupBanner();
+
+    // get all WebRoutes from DI Context
+    List<|WebRoutes> webRoutes = SystemContext.getBeans(WebRoutes.class);
+
+    // register all WebRoutes with Javalin
+    app.routes(() -> webRoutes.forEach(WebRoutes::registerRoutes));
+
+    ...
+
+    // start Javalin
+    app.start(8080);
+  }
+</pre>
+
+<h3>Dependency injection</h3>
+<p>
+  The natural way to use the generated "Javalin controller adapters" is to
+  get a DI library to find and wire them. This is what the examples do and
+  they use <em>DInject</em> to do this.
+</p>
+<p>
+  Note that there isn't a strict requirement to use DInject for dependency injection.
+  Any DI library that can find and wire the <em>@Singleton</em> bean generated could
+  be used. We could use Dagger2 or Guice to wire the controllers if we felt that
+  was a better option (but yes I think DInject is the better option for DI and that
+  is what I'd be recommending).
+</p>
+
+<@next "Getting started with Maven" "maven"/>
+
+</body>
+</html>
