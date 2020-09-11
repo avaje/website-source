@@ -20,11 +20,13 @@
 @Path("/")
 class RootController {
 
+  @Produces(MediaType.TEXT_PLAIN)
   @Get
   String hello() {
     return "Hello world";
   }
 
+  @Produces(MediaType.TEXT_PLAIN)
   @Get("foo")
   String helloFoo() {
     return "Hello Foo";
@@ -194,7 +196,7 @@ List<|Cat> findCats(@QueryParam("order-by") String orderBy) {
 // orderBy defaults to "age"
 
 @Get("{bornAfter}")
-public List<|Cat> findCats(LocalDate bornAfter, @Default("age") String orderBy) {
+List<|Cat> findCats(LocalDate bornAfter, @Default("age") String orderBy) {
   ...
 }
 </pre>

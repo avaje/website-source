@@ -25,18 +25,17 @@
       <li><a href="#patch">@Patch</a></li>
     </ul>
   </@nav>
+  <@nav url="#context" title="Context">
+    <ul>
+      <li><a href="#javalin-context">Javalin Context</a></li>
+      <li><a href="#helidon-request">Helidon request</a></li>
+      <li><a href="#helidon-request">Helidon response</a></li>
+      <li><a href="#request-scoped">Request scope</a></li>
+    </ul>
+  </@nav>
   <@nav url="#type-conversions" title="Type conversions"/>
   <@nav url="#bean-validation" title="Bean validation"/>
   <@nav url="#openapi" title="OpenAPI"/>
   <@nav url="#jaxrs" title="JAX-RS comparison"/>
-
-
-  <#--<@nav url="#qualifiers" title="Qualifiers">-->
-  <#--  <ul>-->
-  <#--    <li><a href="#named">@Named</a></li>-->
-  <#--    <li><a href="#qualifier">@Qualifier</a></li>-->
-  <#--  </ul>-->
-  <#--</@nav>-->
-  <#--<@nav url="#aop" title="AOP"/>-->
 </ul>
 <p>&nbsp;</p>
