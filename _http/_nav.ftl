@@ -11,6 +11,7 @@
       <li><a href="#controller">@Controller</a></li>
       <li><a href="#path">@Path</a></li>
       <li><a href="#path-parameters">Path parameters</a></li>
+      <li><a href="#matrix-parameters">Matrix parameters</a></li>
       <li><a href="#query-parameters">@QueryParam</a></li>
       <li><a href="#bean-param">@BeanParam</a></li>
       <li><a href="#post">@Post</a></li>

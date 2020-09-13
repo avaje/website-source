@@ -107,10 +107,70 @@ List<|Bazz> findBazz(@PathParam("id") long id, @PathParam("startDate") LocalDate
 
 }
 </pre>
-<p>
-  Note that <a href="#matrix-parameters">matrix parameters</a> are similarly handled by convention.
-</p>
 
+
+<h2 id="matrix-parameters">Matrix parameters</h2>
+<p>
+  Matrix parameters are optional sub-parameters that relate to a specific segment of the path.
+  They are effectively an alternative to using query parameters where we have optional parameters
+  that relate to a specific path segment.
+</p>
+<pre content="java">
+// 'type' path segment has matrix parameters 'category' and 'vendor'
+
+@Get("/products/{type;category;vendor}/available")
+List<|Product> products(String type, String category, String vendor) {
+  ...
+}
+</pre>
+<pre content="text">
+// example URI's
+
+GET /products/chair/available
+GET /products/chair;category=kitchen/available
+GET /products/chair;category=kitchen;vendor=jfk/available
+</pre>
+
+<pre content="java">
+// 'type' has matrix parameters 'category' and 'vendor'
+// 'range' has matrix parameter 'style'
+
+@Get("/products/{type;category;vendor}/{range;style}")
+List<|Product> products(String type, String category, String vendor, String range, String style) {
+  ...
+}
+</pre>
+<pre content="text">
+// example URI's
+
+GET /products/chair/commercial
+GET /products/chair;category=kitchen/domestic
+GET /products/chair;category=kitchen/commercial;style=contemporary
+GET /products/chair/commercial;style=classical
+</pre>
+
+<h4>JAX-RS @MatrixParam</h4>
+<p>
+  Our matrix parameters are equivalent to JAX-RS except that they relate by convention to
+  method parameters of the same name and we do not need explicit <code>@MatrixParam</code>.
+</p>
+<p>
+  The JAX-RS equivalent to the above is below. The method declaration starts
+  to get long and harder to read quite quickly.
+</p>
+<pre content="java">
+
+// JAX-RS "annotation noise" with @MatrixParam and @PathParam
+
+@GET
+@Path("/products/{type;category;vendor}/{range;style}")
+List<|Product> products(@PathParam("type") String type, @MatrixParam("category") String category, @MatrixParam("vendor") String vendor, @PathParam("type") String range, @MatrixParam("style") String style) {
+
+  // we start getting "annotation noise" ...
+  // making the code hard to read
+  ...
+}
+</pre>
 
 
 <h2 id="query-parameters">@QueryParam</h2>
