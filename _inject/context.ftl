@@ -94,7 +94,7 @@ The classic use case for this is registering controllers or routes to
 
    // e.g. filters that should be applied in @Priority order
 
-   List<|Filter> filters = beanContext.getBeans(Filter.class);
+   List<|Filter> filters = beanContext.getBeansByPriority(Filter.class);
 </pre>
 
 <h3 id="context-builder">BeanContextBuilder</h3>
