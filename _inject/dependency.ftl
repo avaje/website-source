@@ -122,3 +122,22 @@ dependencies {
 
 <img src="/images/gradle-idea-build.png" width="100%">
 
+
+<h3 id="jpms">JPMS - Java module system</h3>
+<p>
+  <em>avaje-inject</em> supports the java module system. Add a <em>requires</em> clause and
+  <em>provides</em> clause like the following:
+</p>
+<pre content="java">
+module org.example {
+
+  requires io.avaje.inject;
+
+  // explicitly register the generated BeanContextFactory
+  provides io.avaje.inject.spi.BeanContextFactory with org.example._di$BeanContextFactory;
+}
+</pre>
+<p>
+  With JPMS we need to explicitly specify the generated <code>BeanContextFactory</code>
+  in a <code>provides</code> clause.
+</p>
