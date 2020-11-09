@@ -77,8 +77,8 @@
 <pre content="groovy">
 dependencies {
   ...
-  compile('io.avaje:avaje-inject:2.0')
-  annotationProcessor('io.avaje:avaje-inject-generator:2.0')
+  compile('io.avaje:avaje-inject:3.0')
+  annotationProcessor('io.avaje:avaje-inject-generator:3.0')
 }
 </pre>
 
@@ -93,8 +93,8 @@ dependencies {
 <pre content="groovy">
 dependencies {
   ...
-  compile('io.avaje:avaje-inject:2.0')
-  kapt('io.avaje:avaje-inject-generator:2.0')
+  compile('io.avaje:avaje-inject:3.0')
+  kapt('io.avaje:avaje-inject-generator:3.0')
 }
 </pre>
 
