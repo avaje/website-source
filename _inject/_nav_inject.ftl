@@ -44,7 +44,7 @@
   <ul>
     <li><a href="#system-context">SystemContext</a></li>
     <li><a href="#bean-context">BeanContext</a></li>
-    <li><a href="#context-builder">BeanContextBuilder</a></li>
+    <li><a href="#context-builder">BeanContext.newBuilder()</a></li>
   </ul>
 </@nav>
 <@nav url="#modules" title="Modules">

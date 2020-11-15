@@ -97,14 +97,14 @@ The classic use case for this is registering controllers or routes to
    List<|Filter> filters = beanContext.getBeansByPriority(Filter.class);
 </pre>
 
-<h3 id="context-builder">BeanContextBuilder</h3>
+<h3 id="context-builder">BeanContext.newBuilder()</h3>
 <p>
   For testing purposes we sometimes want to wire the beans but provide
   test doubles, mocks, spies for some of the dependencies. We do this
-  using BeanContextBuilder.
+  using BeanContext builder.
 </p>
 
-<h4 id="withMock">BeanContextBuilder.withMock()</h4>
+<h4 id="withMock">withMock()</h4>
 <p>
   We can use <code>withMock()</code> to have <a href="https://site.mockito.org/">Mockito mocks</a>
   injected in place of the normal behaviour.
@@ -113,7 +113,7 @@ The classic use case for this is registering controllers or routes to
 @Test
 public void myComponentTest() {
 
-  try (BeanContext context = new BeanContextBuilder()
+  try (BeanContext context = BeanContext.newBuilder()
     .withMock(Pump.class)
     .withMock(Heater.class)
     .withMock(Grinder.class, grinder -> {
@@ -132,7 +132,7 @@ public void myComponentTest() {
 </pre>
 
 
-<h4 id="withSpy">BeanContextBuilder.withSpy()</h4>
+<h4 id="withSpy">withSpy()</h4>
 <p>
   We can use <code>withSpy()</code> to get the beans to be enhanced with <a href="https://www.baeldung.com/mockito-spy">Mockito Spy</a>.
 </p>
@@ -144,7 +144,7 @@ public void myComponentTest() {
 @Test
 public void myComponentTest() {
 
-  try (BeanContext context = new BeanContextBuilder()
+  try (BeanContext context = BeanContext.newBuilder()
     .withSpy(Pump.class, pump -> {
       // setup the spy, only stub out pumpWater()
       doNothing().when(pump).pumpWater();
@@ -166,7 +166,7 @@ public void myComponentTest() {
 }
 </pre>
 
-<h4 id="withBeans">BeanContextBuilder.withBeans()</h4>
+<h4 id="withBeans">withBeans()</h4>
 <p>
   We can use <code>withBeans()</code> to supply our own test doubles.
 </p>
@@ -178,7 +178,7 @@ public void myComponentTest() {
   Pump pump = mock(Pump.class);
   Grinder grinder = mock(Grinder.class);
 
-  try (BeanContext context = new BeanContextBuilder()
+  try (BeanContext context = BeanContext.newBuilder()
     .withBeans(pump, grinder)
     .build()) {
 
