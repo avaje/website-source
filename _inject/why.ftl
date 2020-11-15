@@ -3,18 +3,25 @@
 
 <h3 id="why-history">Short History of DI on the JVM</h3>
 <p>
-  For a very short history of DI on the JVM:
+  For a short history of DI on the JVM see below and refer to
+  <a target="_blank" href="http://picocontainer.com/inversion-of-control-history.html">PicoContainer - inversion of control history</a>
 </p>
 <ul>
-  <li>2003 - spring and picocontainer</li>
-  <li>2005 - guice</li>
+  <li>1998 - Avalon</li>
+  <li>2003 - Spring and PicoContainer</li>
+  <li>2005 - Guice</li>
   <li>2009 - JSR 330 javax.inject</li>
-  <li>2013 - dagger1</li>
-  <li>2015 - dagger2</li>
-  <li>2018 - micronaut</li>
-  <li>2018 - avaje-inject (dinject)</li>
-  <li>2019 - quarkus</li>
+  <li>2013 - Dagger1</li>
+  <li>2015 - Dagger2</li>
+  <li>2018 - Micronaut</li>
+  <li>2018 - Avaje-Inject (dinject)</li>
+  <li>2019 - Quarkus</li>
 </ul>
+<p>
+  Stefano Mazzocchi popularises the term, Inversion of Control and the Apache
+  <a target="_blank" href="http://picocontainer.com/inversion-of-control-history.html#avalon">Avalon</a>
+  project starts.
+</p>
 <p>
   Spring and PicoContainer lead the initial adoption of DI. Java 5 came out with
   new language features which included annotations and generics which lead to the
