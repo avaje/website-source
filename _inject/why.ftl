@@ -6,8 +6,8 @@
   For a very short history of DI on the JVM:
 </p>
 <ul>
-  <li>2005 - spring and picocontainer</li>
-  <li>2009 - guice</li>
+  <li>2003 - spring and picocontainer</li>
+  <li>2005 - guice</li>
   <li>2009 - JSR 330 javax.inject</li>
   <li>2013 - dagger1</li>
   <li>2015 - dagger2</li>
@@ -18,7 +18,7 @@
 <p>
   Spring and PicoContainer lead the initial adoption of DI. Java 5 came out with
   new language features which included annotations and generics which lead to the
-  creation of Guice which is released in 2009.
+  creation of Guice.
 </p>
 <p>
   In 2009 developers from Spring, Guice, Redhat and some others got together to
