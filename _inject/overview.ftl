@@ -16,7 +16,7 @@
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject">Github</a></td>
     <td><a target="_blank" href="/apidocs/avaje-inject">Javadoc</a></td>
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject/issues">Github</a></td>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/releases">Latest 3.0</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/releases">Latest 4.0</a></td>
   </tr>
 </table>
 <p>&nbsp;</p>
@@ -39,10 +39,31 @@
   Dagger2, Micronaut, Quarkus and Spring goto - <a href="#why">Why</a>.
 </p>
 
+<h3 id="releases">Releases for javax and jakarta</h3>
+<p>
+  The move of JEE to the eclipse foundation meant a change in package from <code>javax</code>
+  to <code>jakarta</code> for various APIs including JSR-330 dependency injection API.
+</p>
+<p>
+  Today we have the choice of using the <code>javax.inject</code> dependency or using the new
+  <code>jakarta.inject</code> dependency.
+</p>
+
+<h4>Want to use javax.inject?</h4>
+<p>
+  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-parent-3.0">version 3.0</a> of
+  avaje-inject with the dependency on <code>javax.inject</code> (maintained on master branch).
+</p>
+<h4>Want to use jakarta.inject?</h4>
+<p>
+  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-4.0">version 4.0</a> of
+  avaje-inject with the dependency on <code>jakarta.inject</code> (maintained on jakarta-master branch).
+</p>
+
 <h3 id="jsr-330">Based on JSR-330</h3>
 <p>
   avaje inject is based on <a href="http://javax-inject.github.io/javax-inject/api/index.html">JSR-330: Dependency Injection for Java</a>
-  - <em>javax.inject</em> with some extensions similar to Spring DI.
+  - <em>javax.inject / jakarta.inject</em> with some extensions similar to Spring DI.
 </p>
 <p>
   JSR-330 provides:
