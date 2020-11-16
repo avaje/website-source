@@ -134,7 +134,7 @@ module org.example {
   requires io.avaje.inject;
 
   // explicitly register the generated BeanContextFactory
-  provides io.avaje.inject.spi.BeanContextFactory with org.example._di$BeanContextFactory;
+  provides io.avaje.inject.spi.BeanContextFactory with org.example._DI$BeanContextFactory;
 }
 </pre>
 <p>
