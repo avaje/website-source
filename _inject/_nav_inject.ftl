@@ -18,6 +18,7 @@
     <li><a href="#inject">@Inject</a></li>
     <li><a href="#constructor">Constructor injection</a></li>
     <li><a href="#field">Field injection</a></li>
+    <li><a href="#method">Method injection</a></li>
     <li><a href="#circular">Circular dependencies</a></li>
     <li><a href="#optional">Optional</a></li>
     <li><a href="#list">List and Set</a></li>

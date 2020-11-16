@@ -110,10 +110,28 @@ class Grinder {
 }
 </pre>
 
-<h3 id="mixed">Mixed constructor and field injection</h3>
+<h3 id="method">Method injection</h3>
 <p>
-  We are allowed to mix constructor and field injection. In the below example the Grinder is injected into the constructor
-  and the Pump is injected by field injection.
+  For method injection annotate the method with <code>@Inject</code>.
+</p>
+<pre content="java">
+@Singleton
+public class CoffeeMaker {
+
+  Grinder grinder;
+
+  @Inject
+  void setGrinder(Grinder grinder) {
+    this.grinder = grinder;
+  }
+  ...
+</pre>
+
+
+<h3 id="mixed">Mixed constructor, field and method injection</h3>
+<p>
+  We are allowed to mix constructor, field and method injection. In the below example the Grinder
+  is injected into the constructor and the Pump is injected by field injection.
 </p>
 
 <pre content="java">
