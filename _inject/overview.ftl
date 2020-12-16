@@ -16,7 +16,7 @@
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject">Github</a></td>
     <td><a target="_blank" href="/apidocs/avaje-inject">Javadoc</a></td>
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject/issues">Github</a></td>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/releases">Latest 4.0</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/releases">Latest 4.1</a></td>
   </tr>
 </table>
 <p>&nbsp;</p>
