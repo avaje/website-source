@@ -21,6 +21,7 @@
     <li><a href="#method">Method injection</a></li>
     <li><a href="#circular">Circular dependencies</a></li>
     <li><a href="#optional">Optional</a></li>
+    <li><a href="#nullable">Nullable</a></li>
     <li><a href="#list">List and Set</a></li>
     <li><a href="#provider">Provider</a></li>
     <li><a href="#factory">@Factory</a></li>

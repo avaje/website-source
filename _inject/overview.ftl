@@ -84,7 +84,12 @@
   <em>@Factory + @Bean</em>.
 </p>
 <p>
-  This provides a more convenient alternative to the JSR-330
+  Teams will often use <code>@Factory/@Bean</code> to provide dependencies that
+  are best created programmatically - typically depending on external configuration,
+  environment settings etc.
+</p>
+<p>
+  Factory provides a more convenient alternative to the JSR-330
   <a href="#provider">javax.inject.Provider&lt;T&gt;</a> interface and is also more natural
   for people who familiar with Spring DI or Micronaut DI.
 </p>

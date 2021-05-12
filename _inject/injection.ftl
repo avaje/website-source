@@ -38,8 +38,13 @@ public class CoffeeMaker {
   constructor when the DI creates (or "wires") the CoffeeMaker.
 </p>
 <p>
-  Note that if there is only 1 constructor it is used for dependency injection and we don't need
+  If there is only 1 constructor it is used for dependency injection and we don't need
   to specify <code>@Inject</code>.
+</p>
+<p>
+  In general we do not expect to see logic in constructors as this typically makes it
+  more difficult to write tests. If we see logic in a constructor then it is likely that we
+  should try and move that logic to a <a href="#factory">Factory</a> method instead.
 </p>
 
 <h4>Kotlin constructor</h4>
@@ -229,7 +234,8 @@ class B {
 <h3 id="optional">Optional</h3>
 <p>
   We can use <code>java.util.Optional&lt;T&gt;</code> to inject optional dependencies.
-  These are dependencies that might not be provided / might not have an available implementation.
+  These are dependencies that might not be provided / might not have an available implementation
+  / might only be provided based on configuration (a bit like a feature toggle).
 </p>
 <pre content="java">
 @Singleton
@@ -259,6 +265,35 @@ class Pump {
   for wiring optional dependencies. With <em>avaje-inject</em> we instead use <code>Optional</code>
   to inject optional dependencies.
 </p>
+
+<h3 id="nullable">@Nullable</h3>
+<p>
+  As an alternative to Optional we can use <code>@Nullable</code> to indicate that a dependency
+  is optional / can be null. Any <code>@Nullable</code> annotation can be used, it does not
+  matter which package the annotation is in.
+</p>
+<pre content="java">
+@Singleton
+class Pump {
+
+  private final Heater heater;
+
+  private final Widget widget;
+
+  @Inject
+  Pump(Heater heater, @Nullable widget) {
+    this.heater = heater;
+    this.widget = widget;
+  }
+
+  public void pump() {
+    if (widget != null) {
+      widget.doStuff();
+    }
+    ...
+  }
+}
+</pre>
 
 <h3 id="list">List</h3>
 <p>
@@ -328,12 +363,13 @@ public class FooProvider implements Provider<|Foo> {
 
 <h3 id="factory">@Factory</h3>
 <p>
-  Factory beans allow logic to be used when creating a bean. Often this logic is based
-  on environment variables or system properties (e.g. programmatically create a bean based on AWS region).
+  Factory beans allow us to programmatically creating a bean. Often the logic is based
+  on external configuration, environment variables, system properties etc.
 </p>
 <p>
   We annotate a class with <code>@Factory</code> to tell us that it contains methods
-  that create beans. The factory class can itself have dependencies.
+  that create beans. The factory class can itself have dependencies and the methods
+  can also have dependencies.
 </p>
 <p>
   <em>@Factory</em> <em>@Bean</em> are equivalent to Spring DI <em>@Configuration</em> <em>@Bean</em>
@@ -413,7 +449,50 @@ class CoffeeMaker {
   ...
 }
 </pre>
+<h3 id="optionalBean">Optional @Bean</h3>
+<p>
+  We can use <code>Optional&lt;T&gt;</code> to indicate that the method produces
+  an optional dependency.
+</p>
+<p>
+  Often the dependency is only provided based on external configuration
+  a bit like a feature toggle / config toggle. For example, we might do
+  this in a CI/CD environment until such time that the dependency is
+  always "ON" in all environments and then we change to make the dependency
+  not optional.
+</p>
 
+<h4>Example - Optional dependency</h4>
+<pre content="java">
+@Factory
+class Configuration {
+
+  /**
+   * Optionally provide MessageQueue.
+   */
+  @Bean
+  Optional<|MessageQueue> buildQueue() {
+    if (...) { // maybe read external config etc
+      // Not providing the dependency (kind of like feature toggle)
+      return Optional.empty();
+    }
+    return Optional.of(...);
+  }
+
+}
+</pre>
+<h3 id="useOfFactory">Use of @Factory @Bean</h3>
+<p>
+  It is good to use <code>@Factory</code> for all the dependencies we want to
+  create programmatically. Many teams will have a standard location/package they use to
+  put a "configuration factory bean" where all programmatically created dependencies are
+  defined as a general approach.
+</p>
+<p>
+  If we see logic in constructors then we typically would try to move that logic to a
+  factory bean method and keep the constructors simple. Logic in constructors typically
+  makes it harder from a testing perspective.
+</p>
 
 <h2 id="primary">@Primary</h2>
 <p>
