@@ -16,7 +16,7 @@
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject">Github</a></td>
     <td><a target="_blank" href="/apidocs/avaje-inject">Javadoc</a></td>
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject/issues">Github</a></td>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/releases">Latest 4.1</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/releases">Latest 4.4</a></td>
   </tr>
 </table>
 <p>&nbsp;</p>
@@ -56,7 +56,7 @@
 </p>
 <h4>Want to use jakarta.inject?</h4>
 <p>
-  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-4.1">version 4.1</a> of
+  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-4.4">version 4.4</a> of
   avaje-inject with the dependency on <code>jakarta.inject</code> (maintained on jakarta-master branch).
 </p>
 

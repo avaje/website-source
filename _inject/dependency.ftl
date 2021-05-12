@@ -12,7 +12,7 @@
 <dependency>
   <groupId>io.avaje</groupId>
   <artifactId>avaje-inject</artifactId>
-  <version>4.1</version>
+  <version>4.4</version>
 </dependency>
 </pre>
 <p>
@@ -25,7 +25,7 @@
 <dependency>
   <groupId>io.avaje</groupId>
   <artifactId>avaje-inject-generator</artifactId>
-  <version>4.1</version>
+  <version>4.4</version>
   <scope>provided</scope>
 </dependency>
 </pre>
@@ -43,7 +43,7 @@
       <path>
           <groupId>io.avaje</groupId>
           <artifactId>avaje-inject-generator</artifactId>
-          <version>4.1</version>
+          <version>4.4</version>
       </path>
       <path>
           ... other annotation processor ...
@@ -77,8 +77,8 @@
 <pre content="groovy">
 dependencies {
   ...
-  compile('io.avaje:avaje-inject:4.1')
-  annotationProcessor('io.avaje:avaje-inject-generator:4.1')
+  compile('io.avaje:avaje-inject:4.4')
+  annotationProcessor('io.avaje:avaje-inject-generator:4.4')
 }
 </pre>
 
@@ -93,8 +93,8 @@ dependencies {
 <pre content="groovy">
 dependencies {
   ...
-  compile('io.avaje:avaje-inject:4.1')
-  kapt('io.avaje:avaje-inject-generator:4.1')
+  compile('io.avaje:avaje-inject:4.4')
+  kapt('io.avaje:avaje-inject-generator:4.4')
 }
 </pre>
 
