@@ -51,7 +51,7 @@
 
 <h4>Want to use javax.inject?</h4>
 <p>
-  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-parent-3.1">version 3.1</a> of
+  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-parent-3.4">version 3.4</a> of
   avaje-inject with the dependency on <code>javax.inject</code> (maintained on master branch).
 </p>
 <h4>Want to use jakarta.inject?</h4>
