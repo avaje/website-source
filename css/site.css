@@ -305,7 +305,9 @@ h5 em {
   font-weight: normal;
   font-style: italic;
 }
-
+table.basic td {
+  padding: 0 1rem 1rem 0;
+}
 table.index-toc th {
   vertical-align: top;
   font-size: 1.5rem;

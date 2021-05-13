@@ -39,6 +39,27 @@
   Dagger2, Micronaut, Quarkus and Spring goto - <a href="#why">Why</a>.
 </p>
 
+<h3 id="size">DI Library size</h3>
+<table class="basic">
+  <tr>
+    <td>
+      <p>
+        Do we care about the size of a DI library? Why is dagger and avaje-inject so much
+        smaller?
+      </p>
+      <p>
+        <em>avaje-inject</em> exists with the view that it can be <em>really</em> small and
+        provide JSR-330 dependency injection using source code generation. It does not include
+        AOP (which can be done separately), it does not include external configuration / properties
+        (we can use avaje-config or something else). It just does DI.
+      </p>
+    </td>
+    <td>
+      <img src="/images/di-lib-size.png" alt="DI library size comparison">
+    </td>
+  </tr>
+</table>
+
 <h3 id="releases">Releases for javax and jakarta</h3>
 <p>
   The move of JEE to the eclipse foundation meant a change in package from <code>javax</code>
