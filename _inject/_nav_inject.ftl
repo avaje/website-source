@@ -42,18 +42,18 @@
     <li><a href="#pre-destroy">@PreDestroy</a></li>
   </ul>
 </@nav>
-<@nav url="#context" title="Context">
+<@nav url="#application-scope" title="ApplicationScope">
   <ul>
-    <li><a href="#system-context">SystemContext</a></li>
-    <li><a href="#bean-context">BeanContext</a></li>
-    <li><a href="#context-builder">BeanContext.newBuilder()</a></li>
+    <li><a href="#application-scope">ApplicationScope</a></li>
+    <li><a href="#bean-scope">BeanScope</a></li>
+    <li><a href="#context-builder">BeanScope.newBuilder()</a></li>
   </ul>
 </@nav>
 <@nav url="#modules" title="Modules">
   <ul>
     <li><a href="#single-module">Single module</a></li>
     <li><a href="#multi-module">Multi-module</a></li>
-    <li><a href="#context-module">@ContextModule</a></li>
+    <li><a href="#inject-module">@InjectModule</a></li>
   </ul>
 </@nav>
 <@nav url="#why" title="Why avaje-inject exists?">

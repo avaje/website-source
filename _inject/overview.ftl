@@ -16,7 +16,7 @@
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject">Github</a></td>
     <td><a target="_blank" href="/apidocs/avaje-inject">Javadoc</a></td>
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject/issues">Github</a></td>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/releases">Latest 4.4</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/releases">Latest 6.0.RC3</a></td>
   </tr>
 </table>
 <p>&nbsp;</p>
@@ -60,6 +60,11 @@
   </tr>
 </table>
 
+<h3 id="prior-docs">Older documentation</h3>
+<p>
+  The documentation for versions prior to 6.x is available at <a href="v4">version 4.x docs</a>
+</p>
+
 <h3 id="releases">Releases for javax and jakarta</h3>
 <p>
   The move of JEE to the eclipse foundation meant a change in package from <code>javax</code>
@@ -77,7 +82,7 @@
 </p>
 <h4>Want to use jakarta.inject?</h4>
 <p>
-  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-4.4">version 4.4</a> of
+  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-6.0.RC3">version 6.0.RC3</a> of
   avaje-inject with the dependency on <code>jakarta.inject</code> (maintained on jakarta-master branch).
 </p>
 

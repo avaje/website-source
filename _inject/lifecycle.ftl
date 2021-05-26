@@ -38,3 +38,25 @@ public class CoffeeMaker {
   }
   ...
 </pre>
+
+<h3>AutoCloseable and Closeable</h3>
+<p>
+  Both <code>java.lang.AutoCloseable</code> and <code>java.io.Closeable</code> are treated as <em>PreDestroy</em>
+  lifecycle methods. Types that implement these interfaces do not need to annotate the <code>close()</code> method,
+  it will automatically be treated as if it had a <code>@PreDestroy</code>.
+</p>
+
+<pre content="java">
+@Singleton
+public class CoffeeQueue implements AutoCloseable {
+
+  /**
+   * Automatically treated as a PreDestroy method.
+   */
+  @Override
+  public void close() {
+    // close resources
+    ...
+  }
+  ...
+</pre>
