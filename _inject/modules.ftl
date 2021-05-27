@@ -56,9 +56,9 @@
   available for injecting into it's bean graph.
 </p>
 <p>
-  For <em>avaje-inject</em> internally this defines the order in which the bean contexts in each of the modules are created.
+  For <em>avaje-inject</em> internally this defines the order in which the beans in each of the modules are created.
   <em>avaje-inject</em> finds all the modules in the classpath (via Service loader) and then orders the modules based on the
-  dependsOn values. In the example above the "feature-toggle" bean context must be built first, and then the
-  beans it contains are available when building the "job-system" bean context.
+  dependsOn values. In the example above the "feature-toggle" beans must be built first, and then the
+  beans it contains are available when building the "job-system".
 </p>
 

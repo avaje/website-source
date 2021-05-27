@@ -3,7 +3,7 @@
 <h3 id="singleton">@Singleton</h3>
 <p>
   Put <code>@Singleton</code> on beans that we want dependency injection on.
-  These are beans that are created ("wired") by dependency injection and put into the context.
+  These are beans that are created ("wired") by dependency injection and put into the scope.
   They are then available to be injected into other beans.
 </p>
 

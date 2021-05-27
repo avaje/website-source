@@ -40,13 +40,27 @@
   <ul>
     <li><a href="#post-construct">@PostConstruct</a></li>
     <li><a href="#pre-destroy">@PreDestroy</a></li>
+    <li><a href="#auto-closeable">AutoCloseable</a></li>
+  </ul>
+</@nav>
+<@nav url="#scope" title="Scope">
+  <ul>
+    <li><a href="#scope-singleton">@Singleton</a></li>
+    <li><a href="#scope-request">@Request</a></li>
+    <li><a href="#controller">@Controller</a></li>
   </ul>
 </@nav>
 <@nav url="#application-scope" title="ApplicationScope">
   <ul>
     <li><a href="#application-scope">ApplicationScope</a></li>
     <li><a href="#bean-scope">BeanScope</a></li>
-    <li><a href="#context-builder">BeanScope.newBuilder()</a></li>
+    <li><a href="#request-scope">RequestScope</a></li>
+  </ul>
+</@nav>
+<@nav url="#testing" title="Testing">
+  <ul>
+    <li><a href="#unit-testing">Unit testing</a></li>
+    <li><a href="#component-testing">Component testing</a></li>
   </ul>
 </@nav>
 <@nav url="#modules" title="Modules">

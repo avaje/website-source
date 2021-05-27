@@ -39,7 +39,7 @@ public class CoffeeMaker {
   ...
 </pre>
 
-<h3>AutoCloseable and Closeable</h3>
+<h3 id="auto-closeable">AutoCloseable and Closeable</h3>
 <p>
   Both <code>java.lang.AutoCloseable</code> and <code>java.io.Closeable</code> are treated as <em>PreDestroy</em>
   lifecycle methods. Types that implement these interfaces do not need to annotate the <code>close()</code> method,

@@ -77,19 +77,19 @@
 
 <h4>Want to use javax.inject?</h4>
 <p>
-  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-parent-3.4">version 3.4</a> of
-  avaje-inject with the dependency on <code>javax.inject</code> (maintained on master branch).
+  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-parent-5.0.RC3">version 5.0.RC3</a> of
+  avaje-inject with the dependency on <code>javax.inject</code> (maintained on javax.main branch).
 </p>
 <h4>Want to use jakarta.inject?</h4>
 <p>
   Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-6.0.RC3">version 6.0.RC3</a> of
-  avaje-inject with the dependency on <code>jakarta.inject</code> (maintained on jakarta-master branch).
+  avaje-inject with the dependency on <code>jakarta.inject</code> (maintained on master branch).
 </p>
 
 <h3 id="jsr-330">Based on JSR-330</h3>
 <p>
-  avaje inject is based on <a href="http://javax-inject.github.io/javax-inject/api/index.html">JSR-330: Dependency Injection for Java</a>
-  - <em>javax.inject / jakarta.inject</em> with some extensions similar to Spring DI.
+  avaje inject is based on <a href="http://javax-inject.github.io/javax-inject/api/index.html">JSR-330: Dependency
+    Injection for Java</a> - <em>javax.inject / jakarta.inject</em> with some extensions similar to Spring DI.
 </p>
 <p>
   JSR-330 provides:
@@ -98,20 +98,34 @@
   <li><code><a href="#singleton">@Singleton</a></code></li>
   <li><code><a href="#inject">@Inject</a></code></li>
   <li><code><a href="#named">@Named</a> and <a href="#named">@Qualifier</a></code></li>
+  <li><code><a href="#scope">@Scope</a></code></li>
+</ul>
+<p>
+  JSR 250 - Common Annotations for the Java provides:
+</p>
+<ul>
   <li><code><a href="#post-construct">@PostConstruct</a></code></li>
   <li><code><a href="#pre-destroy">@PreDestroy</a></code></li>
 </ul>
+<p>
+  <code>@PostConstruct</code> and <code>@PreDestroy</code> are part of <em>Common Annotations API</em>.
+  These where in JDK 8 but from JDK 9 onwards are part of JDK module <em>javax.annotation-api</em>.
+</p>
+<p>
+  Noting that at this point neither Dagger2 or Guice support <code>@PostConstruct</code>
+  and <code>@PreDestroy</code> lifecycle annotations.
+</p>
 
 <h3 id="extensions">Spring DI like extensions to JSR-330</h3>
 <h4>@Factory + @Bean</h4>
 <p>
   In addition to the JSR-330 standard we use <a href="#factory">@Factory</a> + <a href="#bean">@Bean</a>
   which work the same as Spring DI's <em>@Configuration + @Bean</em> and also Micronaut's
-  <em>@Factory + @Bean</em>.
+  <em>@Factory + @Bean</em>. This is also similar to a Guice module with <em>@Provides</em> methods.
 </p>
 <p>
-  Teams will often use <code>@Factory/@Bean</code> to provide dependencies that
-  are best created programmatically - typically depending on external configuration,
+  Teams will often use <em>@Factory@Bean</em> to provide dependencies that
+  are best created programmatically. Typically these depend on external configuration,
   environment settings etc.
 </p>
 <p>
