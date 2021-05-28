@@ -1,4 +1,3 @@
-
 <h1 id="overview">Avaje Inject</h1>
 <p>
   Fast and light dependency injection library for Java and Kotlin developers.
@@ -138,6 +137,6 @@
 <p>
   Additionally we use <a href="#primary">@Primary</a> <a href="#secondary">@Secondary</a> annotations
   which work the same as Spring DI's <em>@Primary @Secondary</em> and also Micronaut DI's
-  <em>@Primary @Secondary</em>. These provide injection priority in the case of injecting
-  when multiple injection candidates are available.
+  <em>@Primary @Secondary</em>. These provide injection priority in the case when multiple injection
+  candidates are available.
 </p>

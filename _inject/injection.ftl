@@ -6,6 +6,11 @@
   These are beans that are created ("wired") by dependency injection and put into the scope.
   They are then available to be injected into other beans.
 </p>
+<h5>Spring DI Note</h5>
+<p>
+  Spring <code>@Component</code>, <code>@Service</code> and <code>@Repository</code> are all
+  singleton scoped. With avaje-inject these would map to <code>@Singleton</code>.
+</p>
 
 <h3 id="inject">@Inject</h3>
 <p>
@@ -263,7 +268,7 @@ class Pump {
 <p>
   Spring users will be familiar with the use of <code>@Autowired(required=false)</code>
   for wiring optional dependencies. With <em>avaje-inject</em> we instead use <code>Optional</code>
-  to inject optional dependencies.
+  or <code>@Nullable</code> to inject optional dependencies.
 </p>
 
 <h3 id="nullable">@Nullable</h3>
@@ -281,7 +286,7 @@ class Pump {
   private final Widget widget;
 
   @Inject
-  Pump(Heater heater, @Nullable widget) {
+  Pump(Heater heater, @Nullable Widget widget) {
     this.heater = heater;
     this.widget = widget;
   }
@@ -373,7 +378,8 @@ public class FooProvider implements Provider<|Foo> {
 </p>
 <p>
   <em>@Factory</em> <em>@Bean</em> are equivalent to Spring DI <em>@Configuration</em> <em>@Bean</em>
-  and Micronaut <em>@Factory</em> <em>@Bean</em>.
+  and Micronaut <em>@Factory</em> <em>@Bean</em>. Guice users will see this as similar to Modules with
+  <em>@Provides</em> methods.
 </p>
 
 <h3 id="bean">@Bean</h3>

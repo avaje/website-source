@@ -7,6 +7,9 @@
   they are injected.
 </p>
 <p>
+  Note that qualifier names are treated as case insensitive.
+</p>
+<p>
   Lets say we have a Store interface with multiple implementations. We can have
   multiple implementations with <em>@Named</em> qualifier like the example below.
 </p>

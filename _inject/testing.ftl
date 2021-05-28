@@ -28,7 +28,8 @@
 <p>
   Mockito provides a JUnit 5 extension <code>MockitoExtension</code> which can be used
   with JUnit <code>@ExtendWith</code>. With this extension we can annotate fields with
-  <code>@Mock</code>, <code>@Spy</code> and <code>@Captor</code>.
+  <code>@Mock</code>, <code>@Spy</code> and <code>@Captor</code>. Again, this is all
+  Mockito - no avaje inject is used here.
 </p>
 <pre content="java">
   @ExtendWith(MockitoExtension.class)
@@ -52,26 +53,29 @@
   }
 </pre>
 <p>
-  Avaje-Inject provides a JUnit extension similar to this that
+  avaje-inject is NOT used in the above unit tests (as expected). We will see below that avaje-inject
+  provides a JUnit extension similar to the Mockito one and that uses the Mockito annotations
+  <code>@Mock, @Spy, @Captor</code> and also adds <code>@Inject</code>.
 </p>
 
 <h3 id="component-testing">Component testing</h3>
 <p>
-  Component testing is where we look to run tests that use much of the objects with few of
-  them mocked out or even nothing mocked out. With component testing we are looking to test
-  a scenario / piece of functionality with minimal to no mocking.
+  Component testing is where we look to run tests that use most of the objects with their real
+  behaviour and only a few of the objects with mocked / stubbed behaviour. With component testing
+  we are looking to test a scenario / piece of functionality with minimal to no mocking.
 </p>
 <p>
   With avaje-inject component testing we are getting avaje-inject to "wire" most or all of
   the application with potentially some objects as test doubles (mocks, spies, stubs or dummies).
-  For example, we might wire the entire application only using test double for an object that
-  makes remote rest calls to another system.
+  For example, we might wire the entire application only using test doubles for objects that
+  make remote calls to another system.
 </p>
 
 <h4>JUnit 5 InjectExtension</h4>
 <p>
-  Avaje-inject provides a JUnit 5 extension <code>InjectExtension</code> that we can use to
-  define <code>@Inject</code> as well as mockito <code>@Mock, @Spy, @Captor</code>.
+  avaje-inject provides a JUnit 5 extension <code>InjectExtension</code>. With this we use
+  <code>@Inject</code> as well as mockito's <code>@Mock, @Spy, @Captor</code> to define the
+  objects we wish to use in the test.
 </p>
 <pre content="java">
   @ExtendWith(InjectExtension.class)
@@ -92,10 +96,21 @@
     }
   }
 </pre>
-
 <p>
-
+  With <em>InjectExtension</em> avaje-inject will build a BeanScope will the appropriate mockito
+  mocks and spies and inject back into the test the appropriate objects out of the BeanScope.
 </p>
+<h4>@Named and @Qualifier</h4>
+<p>
+  We can use <code>@Named</code> and qualifiers as needed like below.
+</p>
+<pre content="java">
+
+    @Mock @Blue Store blueStore;
+
+    @Mock @Named("red") Store redStore;
+
+</pre>
 
 <h4>Programmatic style component test</h4>
 <p>

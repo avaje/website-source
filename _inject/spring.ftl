@@ -18,6 +18,7 @@
   injection candidates are available.
 </p>
 
+<p>&nbsp;</p>
 <h4 id="spring-translation">Spring DI translation</h4>
 <table class="table">
   <tr>
@@ -26,7 +27,7 @@
     <th width="10%">JSR-330</th>
   </tr>
   <tr>
-    <td>@Component, @Service, @Controller, @Repository</td>
+    <td>@Component, @Service, @Repository</td>
     <td><a href="#singleton">@Singleton</a></td>
     <td>Yes</td>
   </tr>
@@ -43,17 +44,17 @@
   <tr>
     <td>@Autowired(required=false)</td>
     <td><a href="#optional">@Inject Optional&lt;T&gt;</a></td>
-    <td>Yes</td>
+    <td>-</td>
   </tr>
   <tr>
     <td>@PostConstruct</td>
     <td><a href="#post-construct">@PostConstruct</a></td>
-    <td>Yes</td>
+    <td>JSR 250</td>
   </tr>
   <tr>
     <td>@PreDestroy</td>
     <td><a href="#pre-destroy">@PreDestroy</a></td>
-    <td>Yes</td>
+    <td>JSR 250</td>
   </tr>
   <tr>
     <td colspan="3" align="center" style="padding-top:2em;"><i>Non standard extensions to JSR-330</i></td>
@@ -74,6 +75,33 @@
     <td><b>No</b></td>
   </tr>
 </table>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h4>Spring DI translation <em>NOT</em> part of avaje-inject</h4>
+<table class="table">
+  <tr>
+    <th width="45%">Spring</th>
+    <th width="45%">Other</th>
+    <th width="10%"></th>
+  </tr>
+  <tr>
+    <td>@Value</td>
+    <td><a href="https://avaje.io/config/">avaje-config</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>@Controller</td>
+    <td><a href="/http/#controller">avaje-http @Controller</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>@Transactional</td>
+    <td><a href="https://ebean.io/docs/transactions/">Ebean @Transactional</a></td>
+    <td></td>
+  </tr>
+</table>
+
 
 <h3 id="aop">AOP</h3>
 <p>

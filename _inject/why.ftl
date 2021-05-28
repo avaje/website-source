@@ -75,12 +75,12 @@
 </p>
 <h5>Why not Micronaut?</h5>
 <p>
-  Micronaut DI and <em>avaje-inject</em> are both heavily influenced by Spring ID and
-  look very similar in feature set.
+  Micronaut DI and <em>avaje-inject</em> are both heavily influenced by Spring DI and
+  to some extent look pretty similar. avaje-inject has taken a source code generation
+  approach, excluded AOP and excluded <code>@Value</code> with a preference instead to
+  use a simple <a href="/config">avaje-config</a> style approach to external configuration.
 </p>
 <p>
-  Micronaut DI was relatively strongly linked to the rest of the Micronaut framework
-  where as <em>avaje-inject</em> is relatively small in comparison and focused on DI alone.
-  Micronaut generates bytecode where as <em>avaje-inject</em> generates source code
-  making the functionality of DI fully transparent to developers.
+  Ultimately <em>avaje-inject</em> is a relatively tiny library in comparison to Micronaut
+  DI and focused on DI alone.
 </p>

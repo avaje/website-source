@@ -43,7 +43,7 @@ public class CoffeeMaker {
 <p>
   Both <code>java.lang.AutoCloseable</code> and <code>java.io.Closeable</code> are treated as <em>PreDestroy</em>
   lifecycle methods. Types that implement these interfaces do not need to annotate the <code>close()</code> method,
-  it will automatically be treated as if it had a <code>@PreDestroy</code>.
+  it will automatically be treated as if it had a <code>@PreDestroy</code> and executed when the bean scope is closed.
 </p>
 
 <pre content="java">
@@ -60,3 +60,9 @@ public class CoffeeQueue implements AutoCloseable {
   }
   ...
 </pre>
+
+<h3 id="shutdownHook">Shutdown hook</h3>
+<p>
+  When the <a href="#scope-application">ApplicationScope</a> is initialised it registers a JVM shutdown hook.
+  This is fired when the JVM is shutdown and this in turn invokes the PreDestroy methods.
+</p>

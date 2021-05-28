@@ -26,9 +26,13 @@ app.start(8080);
   We use <em>ApplicationScope.scope()</em> to get the underlying <code>BeanScope</code>.
   We often prefer to use the BeanScope with code to start the application as this
   allows us to have tests that run the entire application with perhaps only a few
-  dependencies stubbed out. For example, run a component test that starts the application
-  but with all real components except for remote calls to another service mocked/stubbed out.
+  dependencies mocked out (component testing).
+
+  For example, run a component test that starts the application using all real
+  components except for ones that make remote calls to another service  which are
+  mocked/stubbed.
 </p>
+
 <h5>example</h5>
 <pre content="java">
 public class App {
@@ -69,7 +73,7 @@ public class App {
 
 <h5>get(<em>type</em>, <em>qualifier</em>)</h5>
 <p>
-  Return a single bean given the type and name.
+  Return a single bean given the type and qualifier name.
 </p>
 <pre content="java">
  Store blueStore = beanScope.get(Store.class, "blue");
@@ -168,6 +172,6 @@ The classic use case for this is registering controllers or routes to
   ApplicationScope.get(MySingletonProcessor.class).process(request);
 </pre>
 <p>
-  As soon as we want request scoped things to be dependencies "injected" by avaje-inject
+  When we want request scoped things to be dependencies that are "injected" by avaje-inject
   rather than passed around via a method argument then we use RequestScope.
 </p>
