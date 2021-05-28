@@ -77,6 +77,18 @@
   <code>@Inject</code> as well as mockito's <code>@Mock, @Spy, @Captor</code> to define the
   objects we wish to use in the test.
 </p>
+<p>
+  Add <em>avaje-inject-test</em> as a test dependency.
+</p>
+<pre content="xml">
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-inject-test</artifactId>
+    <version>6.0.RC3</version>
+    <scope>test</scope>
+  </dependency>
+</pre>
+
 <pre content="java">
   @ExtendWith(InjectExtension.class)
   class CoffeeMakerTest {
