@@ -36,6 +36,12 @@
   </@nav>
   <@nav url="#type-conversions" title="Type conversions"/>
   <@nav url="#bean-validation" title="Bean validation"/>
+  <@nav url="#roles" title="Roles">
+    <ul>
+      <li><a href="#roles-javalin">Javalin</a></li>
+      <li><a href="#roles-jex">Jex</a></li>
+    </ul>
+  </@nav>
   <@nav url="#openapi" title="OpenAPI"/>
   <@nav url="#jaxrs" title="JAX-RS comparison"/>
 </ul>
