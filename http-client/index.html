@@ -1,0 +1,851 @@
+<html>
+<head>
+  <meta name="layout" content="_layout/base-http-client.html"/>
+  <meta name="bread1" content="http" href="/http/"/>
+  <#assign index="active">
+</head>
+<body>
+<h1 id="overview">avaje http client</h1>
+
+<table width="100%">
+  <tr>
+    <th>License</th>
+    <th>Source</th>
+    <th>API Docs</th>
+    <th>Issues</th>
+    <th>Releases</th>
+  </tr>
+  <tr>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-http-client/blob/master/LICENSE">Apache2</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-http-client">Github</a></td>
+    <td><a target="_blank" href="/apidocs/avaje-http-client">Javadoc</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-http-client/issues">Github</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-http-client/releases">Latest 1.8</a></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+
+<h3>Wrap JDK HttpClient</h3>
+<p>
+  A lightweight wrapper to the <a target="_blank" href="http://openjdk.java.net/groups/net/httpclient/intro.html">JDK 11+ Java Http Client</a>.
+</p>
+<ul>
+  <li>Requires Java 11+ (recommend 11.0.8+)</li>
+  <li>Adds a fluid API for building URL and payload</li>
+  <li>Adds JSON marshalling/unmarshalling of request and response using Jackson or Gson</li>
+  <li>Gzip encoding/decoding</li>
+  <li>Logging of request/response logging</li>
+  <li>Interception of request/response</li>
+  <li>Built in support for authorization via Basic Auth and Bearer Token</li>
+  <li>Provides async and sync API</li>
+</ul>
+
+<h3>Client API generation</h3>
+<p>
+  Optionally we can define a java interface with annotations and have a Java
+  annotation processor generate the client implementation (similar to Retrofit,
+  Feign and JAX-RS client).
+</p>
+<ul>
+  <li>Generates the implementation as source code via annotation processing</li>
+  <li>Targets <em>avaje-http-client / JDK HttpClient</em> only</li>
+</ul>
+<p>
+  This is similar to <a target="_blank" href="https://github.com/square/retrofit">Retrofit</a>,
+  <a target="_blank" href="https://github.com/OpenFeign/feign">Feign</a> and JAX-RS client for people familiar with
+  those projects. This client API generation targets <em>avaje-http-client / JDK HttpClient</em> only
+  and uses source code generation via annotation processing.
+</p>
+
+<h5>Example client API</h5>
+<pre content="java">
+  interface GitHub {
+
+    @Get("/repos/{owner}/{repo}/contributors")
+    List<|Contributor> contributors(String owner, String repo);
+
+  }
+</pre>
+
+
+
+<h2 id="dependencies">Dependencies</h2>
+
+<h3 id="maven">Maven</h3>
+<p>
+  Add <em>avaje-http-client</em> as a dependency.
+</p>
+<pre content="xml">
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-http-client</artifactId>
+    <version>1.8</version>
+  </dependency>
+</pre>
+
+<h4>Client API generation</h4>
+<p>
+  For the client API generation we need to add <em>avaje-http-api</em> as a dependency.
+</p>
+<pre content="xml">
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-http-api</artifactId>
+    <version>1.8</version>
+  </dependency>
+</pre>
+
+<h4>Client API - Annotation processor</h4>
+<p>
+  Add the <em>avaje-http-client-generator</em> annotation processor.
+  We can add it as a <em>provided</em> scope dependency or ...
+</p>
+<pre content="xml">
+  <!-- Annotation processors -->
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-http-client-generator</artifactId>
+    <version>1.8</version>
+    <scope>provided</scope>
+  </dependency>
+</pre>
+
+<p>
+  If there are other annotation processors and they are specified via
+  <em>maven-compiler-plugin</em> <em>annotationProcessorPaths</em>
+  then we add <em>avaje-http-client-generator</em> there instead.
+</p>
+<pre content="xml">
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-compiler-plugin</artifactId>
+  <configuration>
+    <annotationProcessorPaths> <!-- All annotation processors specified here -->
+      <path>
+        <groupId>io.avaje</groupId>
+        <artifactId>avaje-http-client-generator</artifactId>
+        <version>1.8</version>
+      </path>
+      <path>
+          ... other annotation processor ...
+      </path>
+    </annotationProcessorPaths>
+  </configuration>
+</plugin>
+</pre>
+
+<h3 id="gradle">Gradle</h3>
+<p>
+  See <a href="gradle">Gradle</a> for adding the dependencies using Gradle.
+</p>
+
+
+
+<h3 id="limitations">Limitations</h3>
+<p>
+  Current notable limitations are:
+</p>
+<ul>
+  <li>No support for multipart-form body</li>
+  <li>Retry (when specified) does not currently apply to <em>async</em> request processing</li>
+</ul>
+
+
+<h3 id="jdk-intro">JDK HttpClient Introduction</h3>
+<p>
+  Some introductions to the JDK HttpClient:
+</p>
+<ul>
+  <li>JDK HttpClient <a target="_blank" href="http://openjdk.java.net/groups/net/httpclient/intro.html">Introduction</a></li>
+  <li>Javadoc for <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html">JDK HttpClient</a> </li>
+  <li>A closer look at the <a target="_blank" href="https://golb.hplar.ch/2019/01/java-11-http-client.html">Java 11 HTTP Client</a></li>
+</ul>
+
+
+<h3 id="quick-overview">Quick overview</h3>
+
+<h4>HttpClientContext</h4>
+<p>
+  Create a HttpClientContext with a base URL plus options for request logging,
+  JSON marshalling via Jackson or Gson, retry etc.
+</p>
+<p>
+  Use the HttpClientContext to create requests. Requests can be executed synchronously or asynchronously with
+  CompletableFuture.
+</p>
+
+<pre content="java">
+  public HttpClientContext client() {
+    return HttpClientContext.newBuilder()
+      .withBaseUrl(baseUrl)
+      .withRequestListener(new RequestLogger())
+      .withBodyAdapter(new JacksonBodyAdapter(new ObjectMapper()))
+      //.withBodyAdapter(new GsonBodyAdapter(new Gson()))
+      .build();
+  }
+</pre>
+
+<h4>Example GET</h4>
+<pre content="java">
+  HttpResponse<|String> hres = httpClientContext.request()
+    .path("hello")
+    .GET()
+    .asString();
+</pre>
+
+<h4>Example GET Async</h4>
+<pre content="java">
+  httpClientContext.request()
+   .path("hello")
+   .GET()
+   .async().asString()  // CompletableFuture<|HttpResponse<|String>>
+   .whenComplete((hres, throwable) -> {
+
+     if (throwable != null) {
+       // CompletionException
+       ...
+     } else {
+       // HttpResponse<|String>
+       int statusCode = hres.statusCode();
+       String body = hres.body();
+       ...
+     }
+   });
+</pre>
+
+
+<h2 id="sync-async">Sync and Async</h2>
+<p>
+  We can make requests in simple blocking manor or via <code>async()</code>
+  in an asynchronous style using <code>CompletableFuture</code>.
+</p>
+<p>
+  JDK HttpClient provides a number of <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpResponse.BodyHandler.html">BodyHandlers</a>
+  including reactive Flow based subscribers. When executing the requests in
+  asynchronous style the responses are processed in a reactive way. Generally
+  <code>CompletableFuture.whenComplete()</code> will be called only when the
+  response is ready.
+</p>
+<p>
+  Using <a href="#withHandler">withHandler(...)</a> we can use any of these or our own
+  <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpResponse.BodyHandler.html">HttpResponse.BodyHandler</a>
+  implementation.
+</p>
+
+<h3>Loom vs Async</h3>
+<p>
+  With Loom we can use simple blocking requests and get the same non-blocking
+  behaviour as the <code>async()</code> requests.
+</p>
+<p>
+  See <a href="#10k">10K requests - Loom vs Async</a>
+</p>
+
+<h2 id="httpClientContext">HttpClientContext</h2>
+<p>
+  HttpClientContext is effectively a wrapper of <a href="">java.net.http.HttpClient</a>
+  with extra features for request interceptors, body adapters, retry.
+</p>
+<p>
+  Create a HttpClientContext with a base URL plus options for request logging,
+  JSON marshalling via Jackson or Gson, retry etc.
+</p>
+<p>
+  From HttpClientContext we create requests and execute them.
+</p>
+
+<h4>Example creating HttpClientContext</h4>
+<pre content="java">
+  HttpClientContext httpClientContext =
+    HttpClientContext.newBuilder()
+      .withBaseUrl(baseUrl)
+      .withRequestListener(new RequestLogger())
+      .withBodyAdapter(new JacksonBodyAdapter(new ObjectMapper()))
+      // .withBodyAdapter(new GsonBodyAdapter(new Gson()))
+      .build();
+</pre>
+<p>
+  Reference <a target="_blank" href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/HttpClientContext.Builder.html">HttpClientContext.Builder</a>
+</p>
+
+
+<h2 id="request-body">Request body</h2>
+<p>
+  <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpRequest.BodyPublisher.html">java.net.http.HttpRequest.BodyPublisher</a>
+  is used for request body content.
+  JDK HttpClient comes with a number of implementations which are great and we use. In
+  addition we can use our own implementations.
+</p>
+<p>
+  <em>avaje-http-client</em> adds URL encoded form and body adapters using Jackson and Gson
+  to convert body content to/from JSON and java beans/types.
+</p>
+
+<h5>Request body</h5>
+<ul>
+  <li>Object which is written as JSON content by default</li>
+  <li>formParam() for url encoded form</li>
+  <li>byte[], String, Path (file), InputStream</li>
+  <li>Any <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpRequest.BodyPublishers.html">HttpRequest.BodyPublisher</a></li>
+</ul>
+
+<h3 id="req-json">Object as JSON</h3>
+<p>
+  When we create the HttpClientContext we register a message body handler.
+  There is a supplied <code>JacksonBodyAdapter</code> and <code>GsonBodyAdapter</code>.
+  When these are registered then when we call <code>body(object)</code> passing
+  an Object this uses that body adapter to write the body content as JSON.
+</p>
+
+<h4>Example: POST object as json</h4>
+<pre content="java">
+  Hello bean = new Hello(42, "rob", "hello world");
+
+  HttpResponse<|Void> res = clientContext.request()
+    .path("hello")
+    .body(bean)
+    .POST()
+    .asDiscarding();
+</pre>
+
+<h3 id="req-formParam">formParam</h3>
+<p>
+  Calling <code>formParam()</code> adds URL encoded name value pairs
+  building request body content as <code>application/x-www-form-urlencoded</code>.
+</p>
+
+<h4>Example: POST using formParams</h4>
+<pre content="java">
+  HttpResponse<|Void> res = clientContext.request()
+    .path("register/user")
+    .formParam("name", "Bazz")
+    .formParam("email", "user@foo.com")
+    .formParam("url", "http://foo.com")
+    .formParam("startDate", "2020-12-03")
+    .POST()
+    .asVoid();
+</pre>
+
+<h3 id="req-path">Path (file)</h3>
+<p>
+  This uses <code>HttpRequest.BodyPublishers.ofFile(file)</code> to
+  stream file content as the request body.
+</p>
+
+<h4>Example: PUT file Path</h4>
+<pre content="java">
+  Path file = ...;
+  HttpResponse<|String> res = clientContext.request()
+    .path("upload")
+    .body(file)
+    .PUT()
+    .asString();
+</pre>
+
+<h3 id="req-inputStream">InputStream</h3>
+<p>
+  This uses <code>HttpRequest.BodyPublishers.ofInputStream(supplier)</code>
+  to stream the request body content from the InputStream.
+</p>
+
+<h4>Example: PUT InputStream</h4>
+<pre content="java">
+  Supplier<|InputStream> supplier = ...;
+
+  HttpResponse<|String> res = clientContext.request()
+    .path("upload")
+    .body(supplier)
+    .PUT()
+    .asString();
+</pre>
+
+<h3 id="req-bodyPublisher">HttpRequest.BodyPublisher</h3>
+<p>
+  We can pass any <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpRequest.BodyPublisher.html">HttpRequest.BodyPublisher</a>
+  into <code>body()</code>. Refer to <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpRequest.BodyPublishers.html">HttpRequest.BodyPublishers</a>
+  for ones that come with JDK HttpClient.
+</p>
+
+<h4>Example: Use any BodyPublisher</h4>
+<pre content="java">
+  HttpResponse<|Void> res = clientContext.request()
+    .path("whazzzup")
+    .body(HttpRequest.BodyPublishers.ofString("silly example"))
+    .PUT()
+    .asVoid();
+</pre>
+
+<h2 id="response-body">Response body</h2>
+<p>
+  <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpResponse.BodyHandler.html">java.net.http.HttpResponse.BodyHandler</a>
+  is the interface used to handle response bodies. JDK HttpClient provides a number of
+  <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpResponse.BodyHandlers.html">HttpResponse.BodyHandlers</a>
+  including reactive Flow based subscribers.
+</p>
+<p>
+  <em>avaje-http-client</em> has API to use the common ones such as String, Void, byte[] etc
+  and we use <code>withHandler()</code> to use any BodyHandler implementation.
+</p>
+
+<h4>Summary of BodyHandlers</h4>
+<table style="width:100%;">
+  <tr><td>discarding()</td><td>Discards the response body</td></tr>
+  <tr><td>ofByteArray()</td><td>byte[]</td></tr>
+  <tr><td>ofString()</td><td>String, additional charset option</td></tr>
+  <tr><td>ofLines()</td><td>Stream&lt;String&gt;</td></tr>
+  <tr><td>ofInputStream()</td><td>InputStream</td></tr>
+  <tr><td>ofFile(Path file)</td><td>Path with various options</td></tr>
+  <tr><td>ofByteArrayConsumer(...)</td><td>&nbsp;</td></tr>
+  <tr><td>fromSubscriber(...)</td><td>various options</td></tr>
+  <tr><td>fromLineSubscriber(...)</td><td>various options</td></tr>
+</table>
+
+<h3 id="bean">bean(Class&lt;T&gt;)</h3>
+<p>
+  Return the response via body adapter as a java bean/type (typically JSON).
+</p>
+<p>
+  If the HTTP status code is in the error range this throws a <a href="#httpException">HttpException</a>.
+  From the HttpException we can get the underlying HttpResponse and error
+  response body.
+</p>
+<pre content="java">
+  Customer customer = clientContext.request()
+    .path("customers/42")
+    .GET()
+    .bean(Customer.class);
+</pre>
+
+<h3 id="list">list(Class&lt;T&gt;)</h3>
+<p>
+  Return the response via body adapter as a list of java beans/type (typically JSON).
+</p>
+<p>
+  If the HTTP status code is in the error range this throws a <a href="#httpException">HttpException</a>.
+  From the HttpException we can get the underlying HttpResponse and error
+  response body.
+</p>
+<pre content="java">
+  List<|Customer> customers = clientContext.request()
+    .path("customers")
+    .GET()
+    .list(Customer.class);
+</pre>
+
+<h3 id="stream">stream(Class&lt;T&gt;)</h3>
+<p>
+  Return the response via body adapter as a stream of java beans/type.
+  The response is expected to be <code>application/x-json-stream</code>.
+  Internally this uses <code>HttpResponse.BodyHandlers.asLines()</code> to
+  get a stream of lines <code>Stream&lt;String&gt;</code>.
+</p>
+<p>
+  If the HTTP status code is in the error range this throws a <a href="#httpException">HttpException</a>.
+  From the HttpException we can get the underlying HttpResponse and error
+  response body.
+</p>
+<pre content="java">
+  Stream<|Customer> customers = clientContext.request()
+    .path("customers")
+    .GET()
+    .stream(Customer.class);
+</pre>
+
+
+<h3 id="asVoid">asVoid()</h3>
+<p>
+  Return the as <code>HttpResponse&lt;Void&gt;</code> but the response
+  content is still available to be read in the case of error response.
+</p>
+<p>
+  If the HTTP status code is in the error range this throws a <a href="#httpException">HttpException</a>.
+  From the HttpException we can get the underlying HttpResponse and error
+  response body.
+</p>
+<pre content="java">
+  HttpResponse<|Void> hres = clientContext.request()
+    .path("hello")
+    .GET()
+    .asVoid();
+</pre>
+
+<h3 id="asDiscarding">asDiscarding()</h3>
+<p>
+  Return the as <code>HttpResponse&lt;Void&gt;</code> but the response
+  content is always discarded. Unlike <code>asVoid()</code> if there is an error
+  response with content error content that content will not be available.
+</p>
+<pre content="java">
+  HttpResponse<|Void> hres = clientContext.request()
+    .path("hello")
+    .GET()
+    .asDiscarding();
+</pre>
+
+<h3 id="asString">asString()</h3>
+<p>
+  Return the as <code>HttpResponse&lt;String&gt;</code>.
+</p>
+<pre content="java">
+  HttpResponse<|String> hres = clientContext.request()
+    .path("hello")
+    .GET()
+    .asString();
+</pre>
+
+<h3 id="withHandler">withHandler()</h3>
+<p>
+  Using <code>withHandler()</code> we can use any BodyHandler to process the response.
+</p>
+<pre content="java">
+   HttpResponse<|InputStream> hres = clientContext.request()
+    .path("hello/stream")
+    .GET()
+    .withHandler(BodyHandlers.ofInputStream());
+</pre>
+
+
+
+<h2 id="httpException">HttpException</h2>
+<p>
+  HttpException is thrown when the status code is >= 300 and the call is one of <a href="#bean">bean</a>,
+  <a href="#list">list</a>, <a href="#stream">stream</a>, <a href="#asVoid">void</a>. Note that by default
+  redirects are automatically followed by HttpClient apart for HTTPS to HTTP so 300 range responses are
+  hence not expected and considered an error.
+</p>
+<p>
+  Reference API javadoc <a target="_blank" href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/HttpException.html">HttpException</a>
+</p>
+<p>
+  HttpException effectively wraps the HttpResponse and provides helper methods to get the response body
+  as String, byte[] or bean (via body adapter typically based on Jackson or Gson).
+</p>
+<pre content="java">
+  int statusCode = httpException.statusCode();
+
+  // the underlying HttpResponse
+  HttpResponse<?> httpResponse = httpException.httpResponse()
+  int statusCode = httpResponse.statusCode();
+
+  // helper methods to read the response body
+  String errorBodyString = httpException.bodyAsString();
+  byte[] errorBodyBytes  = httpException.bodyAsBytes();
+
+  // helper method to read the response body as a bean (typically using Jackson/Gson)
+  MyErrorBean errorResponse = httpException.bean(MyErrorBean.class);
+</pre>
+
+<h2 id="async">Async</h2>
+<p>
+  All requests can be made using <code>async</code> returning <code>CompletableFuture</code>.
+  Commonly the <code>whenComplete()</code> callback will be used to process the async responses.
+</p>
+<p>
+  The <em>bean()</em>, <em>list()</em> and <em>stream()</em> responses throw a
+  <code><a href="#httpException">HttpException</a></code> if the status code >= 300 (noting that by default
+  redirects are followed apart for HTTPS to HTTP).
+</p>
+<p>
+  Reference API javadoc <a href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/HttpAsyncResponse.html">HttpAsyncResponse</a>
+</p>
+
+<h4>Example: async().asString()</h4>
+<pre content="java">
+  clientContext.request()
+   .path("hello/world")
+   .GET()
+   .async().asString()
+   .whenComplete((hres, throwable) -> {
+
+     if (throwable != null) {
+       ...
+     } else {
+       int statusCode = hres.statusCode();
+       String body = hres.body();
+       ...
+     }
+   });
+</pre>
+
+<h4>Example: async().bean(Class&lt;T&gt;)</h4>
+<pre content="java">
+  clientContext.request()
+   .path("customer").path(42)
+   .GET()
+   .async().bean(Customer.class)
+   .whenComplete((customer, throwable) -> {
+
+     if (throwable != null) {
+       HttpException httpException = (HttpException) throwable.getCause();
+       int statusCode = httpException.getStatusCode();
+
+       // maybe convert json error response body to a bean (using Jackson/Gson)
+       MyErrorBean errorResponse = httpException.bean(MyErrorBean.class);
+       ..
+
+     } else {
+       // use customer
+       ...
+     }
+   });
+</pre>
+
+<h4>Example: async().withHandler()</h4>
+<p>
+  The example below is a line subscriber processing response content line by line.
+</p>
+
+<pre content="java">
+  CompletableFuture<|HttpResponse<|Void>> future = clientContext.request()
+   .path("hello/lineStream")
+   .GET().async()
+   .withHandler(HttpResponse.BodyHandlers.fromLineSubscriber(new Flow.Subscriber<>() {
+
+     @Override
+     public void onSubscribe(Flow.Subscription subscription) {
+       subscription.request(Long.MAX_VALUE);
+     }
+     @Override
+     public void onNext(String item) {
+       // process the line of response content
+       ...
+     }
+     @Override
+     public void onError(Throwable throwable) {
+       ...
+     }
+     @Override
+     public void onComplete() {
+       ...
+     }
+   }))
+   .whenComplete((hres, throwable) -> {
+     int statusCode = hres.statusCode();
+     ...
+   });
+</pre>
+
+<h2 id="httpCall">HttpCall</h2>
+<p>
+  If we are creating an API and want the client code to <em>choose</em> to execute
+  the request asynchronously or synchronously then we can use <code>call()</code>.
+  This is similar to <em>Retrofit Call</em> for people who are familiar with that.
+</p>
+<p>
+  The client can then choose to <em>execute()</em> the request synchronously or
+  choose <em>async()</em> to execute the request asynchronously.
+</p>
+<p>
+  Reference API javadoc <a href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/HttpCall.html">HttpCall</a>
+</p>
+
+<pre content="java">
+  HttpCall<|List<|Customer>> call =
+    clientContext.request()
+      .path("customers")
+      .GET()
+      .call().list(Customer.class);
+
+  // Either execute synchronously
+  List<|Customer> customers =  call.execute();
+
+  // Or execute asynchronously
+  call.async()
+    .whenComplete((customers, throwable) -> {
+      ...
+    });
+</pre>
+
+
+<h2 id="auth">Authorisation</h2>
+<p>
+  <em>avaje-http-client</em> has built in support for <a href="#auth-basic">basic auth</a> and
+  <a href="#auth-bearer">bearer token</a> based authorisation.
+</p>
+
+<h3 id="auth-basic">Basic Auth</h3>
+<p>
+  We can use <a target="_blank" href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/BasicAuthIntercept.html"><code>BasicAuthIntercept</code></a>
+  to intercept all requests adding a <code>Authorization: Basic ...</code> header.
+</p>
+
+<h4>Example</h4>
+<pre content="java">
+  HttpClientContext clientContext = HttpClientContext.newBuilder()
+    .withBaseUrl(baseUrl)
+    ...
+    .withRequestIntercept(new BasicAuthIntercept("myUsername", "myPassword"))  <|!-- HERE
+    .build();
+</pre>
+
+
+<h3 id="auth-bearer">Bearer token Authorization - AuthTokenProvider</h3>
+<p>
+  For Authorization using <em>Bearer</em> tokens that are obtained and expire, implement
+  <a target="_blank" href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/AuthTokenProvider.html"><code>AuthTokenProvider</code></a>
+  and register that when building the HttpClientContext.
+</p>
+
+<h4>Step 1. Implement AuthTokenProvider</h4>
+
+<pre content="java">
+  class MyAuthTokenProvider implements AuthTokenProvider {
+
+    @Override
+    public AuthToken obtainToken(HttpClientRequest tokenRequest) {
+      AuthTokenResponse res = tokenRequest
+        .url("https://foo/v2/token")
+        .header("content-type", "application/json")
+        .body(authRequestAsJson())
+        .POST()
+        .bean(AuthTokenResponse.class);
+
+      Instant validUntil = Instant.now().plusSeconds(res.expires_in).minusSeconds(60);
+
+      return AuthToken.of(res.access_token, validUntil);
+    }
+  }
+</pre>
+
+<h4>Step 2. Register with HttpClientContext</h4>
+
+<pre content="java">
+  HttpClientContext ctx = HttpClientContext.newBuilder()
+    .withBaseUrl("https://foo")
+    ...
+    .withAuthTokenProvider(new MyAuthTokenProvider()) <|!-- HERE
+    .build();
+</pre>
+
+<h4>Token obtained and set automatically</h4>
+<p>
+  All requests using the HttpClientContext will automatically get
+  an <em>Authorization</em> header with <em>Bearer</em> token added. The token will be
+  obtained for initial request and then renewed when the token has expired.
+</p>
+
+
+
+<h2 id="10k">10K requests - Loom vs Async</h2>
+<p>
+  The following is a very quick and rough comparison of running 10,000 requests
+  using <em>Async</em> vs <em>Loom</em>.
+</p>
+<p>
+  The intention is to test the thought that in a "future Loom world" the
+  desire to use <code>async()</code> execution with HttpClient reduces.
+</p>
+<p>
+  TLDR: Caveat, caveat, more caveats ... initial testing shows Loom to be just a
+  touch faster (~10%) than async.
+</p>
+<p>
+  To run my tests I use <a href="https://github.com/avaje/avaje-jex">Jex</a> as the server
+  (Jetty based) and have it running using Loom. For whatever testing you do
+  you will need a server that can handle a very large number of concurrent requests.
+</p>
+<p>
+  The Loom blocking request (make 10K of these)
+</p>
+<pre content="java">
+  HttpResponse<|String> hres =  httpClient.request()
+    .path("s200")
+    .GET()
+    .asString();
+</pre>
+<p>
+  The equivalent async request (make 10K of these joining the CompletableFuture's).
+</p>
+<pre content="java">
+  CompletableFuture<|HttpResponse<|String>> future = httpClient.request()
+    .path("s200")
+    .GET()
+    .async()
+    .asString()
+    .whenComplete((hres, throwable) -> {
+      ...
+    });
+</pre>
+
+
+<h3 id="10k-async">10K requests using Async and reactive streams</h3>
+<p>
+  Use <code>.async()</code> to execute the requests which internally is using JDK
+  HttpClient's reactive streams. The <code>whenComplete()</code> callback is invoked
+  when the response is ready. Collect all the resulting CompletableFuture
+  and wait for them all to complete.
+</p>
+<p>
+Outline:
+</p>
+<pre content="java">
+  // Collect all the CompletableFuture's
+  List<|CompletableFuture<|HttpResponse<|String>>> futures = new ArrayList<>();
+
+  for (int i = 0; i < 10_000; i++) {
+    futures.add(httpClient.request().path("s200")
+      .GET()
+      .async().asString()
+      .whenComplete((hres, throwable) -> {
+          // confirm 200 response etc
+          ...
+      }));
+  }
+
+  // wait for all requests to complete via join() ...
+  CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+</pre>
+
+<h3 id="10k-loom">10K requests using Loom</h3>
+<p>
+  With Loom Java 17 EA Release we can use <code>Executors.newVirtualThreadExecutor()</code>
+  to return an ExecutorService that uses Loom Virtual Threads. These are backed
+  by "Carrier threads" (via ForkedJoinPool).
+</p>
+<p>
+Outline:
+</p>
+<pre content="java">
+  // use Loom's Executors.newVirtualThreadExecutor()
+  try (ExecutorService executorService = Executors.newVirtualThreadExecutor()) {
+      for (int i = 0; i < 10_000; i++) {
+          executorService.submit(this::task);
+      }
+  }
+</pre>
+<pre content="java">
+  private void task() {
+    HttpResponse<|String> hres =
+      httpClient.request().path("s200")
+       .GET()
+       .asString();
+
+    // confirm 200 response etc
+    ...
+  }
+</pre>
+<p>
+Caveat: Proper performance benchmarks are really hard and take a lot of effort.
+</p>
+<p>
+  Running some "rough/approx performance comparison tests" using <em>Loom</em>
+  build <code>17 EA 2021-09-14 / (build 17-loom+7-342)</code> vs <em>Async</em> for my environment
+  and 10K request scenarios has loom execution around 10% faster than async.
+</p>
+<p>
+  It looks like Loom and Async run in pretty much the same time although it
+  currently looks that Loom is just a touch faster (perhaps due to how it does
+  park/unpark). More investigation required.
+</p>
+<p>
+  Date: 2021-06 <br/>
+  Build: <code>17 EA 2021-09-14 / (build 17-loom+7-342)</code>.
+</p>
+<pre>
+  openjdk version "17-loom" 2021-09-14
+  OpenJDK Runtime Environment (build 17-loom+7-342)
+  OpenJDK 64-Bit Server VM (build 17-loom+7-342, mixed mode, sharing)
+</pre>
+
+</body>
+</html>

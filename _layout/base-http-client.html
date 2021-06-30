@@ -1,0 +1,20 @@
+<html>
+<head>
+  <meta name="layout" content="_layout/b2.html"/>
+  <meta name="bread0" content="avaje" href="/"/>
+  <meta name="bread1" content="http" href="/http"/>
+  <template id="menuNav"><#include "/_http-client/_nav.ftl"></template>
+</head>
+<body data-theme="light">
+<div class="container">
+  <aside id="sidenav">
+    <nav class="side scroll">
+      $menuNav
+    </nav>
+  </aside>
+  <article id="main-content">
+    <div id="layout-body"></div>
+  </article>
+</div>
+</body>
+</html>
