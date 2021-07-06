@@ -1,4 +1,4 @@
-<h1 id="overview">Avaje Http servers & client</h1>
+<h1 id="overview">avaje http servers & client</h1>
 <p>
   The goal is to be better than JAX-RS by using source code generation (via Java annotation processing).
 </p>
@@ -66,4 +66,11 @@
   A design decision has been to not use JAX-RS annotations at this stage. This is because
   the JAX-RS annotations are a lot more verbose than we desire and because they are not provided
   as a nice clean separate dependency. The JAX-RS API has a lot of stuff that we do not need.
+</p>
+
+<h2>Http client</h2>
+<p>
+  Avaje <a href="/http-client/">http client</a> is a lightweight wrapper of JDK HttpClient
+  that also supports Client API with annotation processing to generate source to implement
+  the API.
 </p>

@@ -1,10 +1,11 @@
 <html>
 <head>
   <meta name="layout" content="_layout/base-http-client.html"/>
-  <meta name="bread1" content="http" href="/http/"/>
+  <meta name="bread2" content="client" href="/http-client/"/>
   <#assign index="active">
 </head>
 <body>
+
 <h1 id="overview">avaje http client</h1>
 
 <table width="100%">
@@ -68,6 +69,10 @@
 </pre>
 
 
+<h2 id="getting-started">Getting started</h2>
+<ul>
+  <li><a href="/http-client/start">Get started with the base client</a></li>
+</ul>
 
 <h2 id="dependencies">Dependencies</h2>
 
@@ -148,6 +153,8 @@
 <ul>
   <li>No support for multipart-form body</li>
   <li>Retry (when specified) does not currently apply to <em>async</em> request processing</li>
+  <li>Currently no swagger/openapi to Client API generator</li>
+  <li>Currently no OpenTelemetry or OpenTracing interceptor/plugins</li>
 </ul>
 
 
@@ -159,6 +166,15 @@
   <li>JDK HttpClient <a target="_blank" href="http://openjdk.java.net/groups/net/httpclient/intro.html">Introduction</a></li>
   <li>Javadoc for <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html">JDK HttpClient</a> </li>
   <li>A closer look at the <a target="_blank" href="https://golb.hplar.ch/2019/01/java-11-http-client.html">Java 11 HTTP Client</a></li>
+</ul>
+
+<h3 id="other-projects">Other JDK HttpClient projects</h3>
+<p>
+  Methanol is another project based on JDK HttpClient. Let me know of others and
+  I'll add them to the list below.
+</p>
+<ul>
+  <li><a href="https://github.com/mizosoft/methanol/">Methanol</a></li>
 </ul>
 
 
@@ -234,8 +250,9 @@
 
 <h3>Loom vs Async</h3>
 <p>
-  With Loom we can use simple blocking requests and get the same non-blocking
-  behaviour as the <code>async()</code> requests.
+  With Loom we will be able to use simple blocking requests and get a similar
+  behaviour as the <code>async()</code> requests. This is an important factor
+  to keep in mind.
 </p>
 <p>
   See <a href="#10k">10K requests - Loom vs Async</a>
@@ -305,7 +322,7 @@
     .path("hello")
     .body(bean)
     .POST()
-    .asDiscarding();
+    .asVoid();
 </pre>
 
 <h3 id="req-formParam">formParam</h3>
@@ -384,7 +401,7 @@
 </p>
 <p>
   <em>avaje-http-client</em> has API to use the common ones such as String, Void, byte[] etc
-  and we use <code>withHandler()</code> to use any BodyHandler implementation.
+  and <code>withHandler()</code> to use any BodyHandler implementation.
 </p>
 
 <h4>Summary of BodyHandlers</h4>
@@ -454,7 +471,7 @@
 
 <h3 id="asVoid">asVoid()</h3>
 <p>
-  Return the as <code>HttpResponse&lt;Void&gt;</code> but the response
+  Return as <code>HttpResponse&lt;Void&gt;</code> but the response
   content is still available to be read in the case of error response.
 </p>
 <p>
@@ -471,9 +488,13 @@
 
 <h3 id="asDiscarding">asDiscarding()</h3>
 <p>
-  Return the as <code>HttpResponse&lt;Void&gt;</code> but the response
+  Return as <code>HttpResponse&lt;Void&gt;</code> but the response
   content is always discarded. Unlike <code>asVoid()</code> if there is an error
   response with content error content that content will not be available.
+</p>
+<p>
+  We use <em>asDiscarding()</em> when we only ever want the status code
+  and headers etc and never want the response body.
 </p>
 <pre content="java">
   HttpResponse<|Void> hres = clientContext.request()
@@ -484,7 +505,7 @@
 
 <h3 id="asString">asString()</h3>
 <p>
-  Return the as <code>HttpResponse&lt;String&gt;</code>.
+  Return as <code>HttpResponse&lt;String&gt;</code>.
 </p>
 <pre content="java">
   HttpResponse<|String> hres = clientContext.request()
@@ -541,7 +562,7 @@
   Commonly the <code>whenComplete()</code> callback will be used to process the async responses.
 </p>
 <p>
-  The <em>bean()</em>, <em>list()</em> and <em>stream()</em> responses throw a
+  The <em>bean()</em>, <em>list()</em>, <em>stream()</em> and <em>asVoid()</em> responses throw a
   <code><a href="#httpException">HttpException</a></code> if the status code >= 300 (noting that by default
   redirects are followed apart for HTTPS to HTTP).
 </p>
@@ -639,6 +660,7 @@
   Reference API javadoc <a href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/HttpCall.html">HttpCall</a>
 </p>
 
+<h4>Example: call()</h4>
 <pre content="java">
   HttpCall<|List<|Customer>> call =
     clientContext.request()
@@ -693,16 +715,16 @@
 
     @Override
     public AuthToken obtainToken(HttpClientRequest tokenRequest) {
-      AuthTokenResponse res = tokenRequest
+      MyAuthTokenResponse res = tokenRequest
         .url("https://foo/v2/token")
         .header("content-type", "application/json")
         .body(authRequestAsJson())
         .POST()
-        .bean(AuthTokenResponse.class);
+        .bean(MyAuthTokenResponse.class);
 
-      Instant validUntil = Instant.now().plusSeconds(res.expires_in).minusSeconds(60);
+      Instant validUntil = Instant.now().plusSeconds(res.expiresIn()).minusSeconds(60);
 
-      return AuthToken.of(res.access_token, validUntil);
+      return AuthToken.of(res.accessToken(), validUntil);
     }
   }
 </pre>
@@ -723,6 +745,240 @@
   an <em>Authorization</em> header with <em>Bearer</em> token added. The token will be
   obtained for initial request and then renewed when the token has expired.
 </p>
+
+
+<h2 id="client-api">Client API</h2>
+<p>
+  We can define an interface and have the implementation generated. Similar to
+  JAX-RS Client, Retrofit, Feign.
+</p>
+<p>
+  When using Client API we need to add a dependency for <em>avaje-http-api</em>
+  which has the annotations and also add the annotation processor <em>avaje-http-client-generator</em>.
+</p>
+
+<h3 id="at-client">@Client</h3>
+<p>
+  If we are creating the interface we can put <code>@Client</code> on the interface
+  to indicate that the generator should generate an implementation for it.
+</p>
+
+<h5>Example client API</h5>
+<pre content="java">
+  @Client
+  interface GitHub {
+
+    @Get("/repos/{owner}/{repo}/contributors")
+    List<|Contributor> contributors(String owner, String repo);
+
+  }
+</pre>
+
+<h3 id="at-client-import">@Client.Import</h3>
+<p>
+  If the interface is already defined (in say another project) then we can instead
+  use <code>@Client.Import</code> to indicate to the generator that it should
+  generate an implementation for the interface defined by <code>@Client.Import</code>.
+</p>
+<p>
+  We can put the <code>@Client.Import</code> on a <code>package-info</code> or any type.
+  Most commonly we would put it on the top level <em>package-info</em>.
+</p>
+
+<h5>Example client import</h5>
+<pre content="java">
+@Client.Import(types = org.foo.MyInterface.class)
+package org.bar;
+
+import io.avaje.http.api.Client;
+</pre>
+
+<h3 id="obtain-api">Obtain/use API</h3>
+<p>
+  We obtain the API implementation via <code>httpClientContext.create(T)</code> passing
+  our client interface type <em>T</em>.
+</p>
+
+<h4 id="client-create">Example: obtain implementation</h4>
+<pre content="java">
+  // create HttpClientContext
+  final HttpClientContext httpClientContext = HttpClientContext.newBuilder()
+          .withBaseUrl("https://api.github.com")
+          .withBodyAdapter(new JacksonBodyAdapter(mapper))
+          .build();
+
+  // obtain API implementation
+  final Github github = httpClientContext.create(Github.class);
+
+  // use it
+  List<|Contributor> contributors = github.contributors("ebean-orm", "ebean");
+</pre>
+
+<h3 id="generated-api">Generated implementation</h3>
+<p>
+  The <em>avaje-http-client-generator</em> annotation processor generates the
+  implementation as java source code. The generated source is typically found in:
+  <code>target/generated-sources/annotations</code>
+</p>
+<img src="/images/http-client-api-sources.png" width="400px">
+
+<p>&nbsp;</p>
+<h3>Example: Generated source</h3>
+<p>
+  The generated code for the <code>Github</code> interface above is:
+</p>
+<pre content="java">
+package org.example.httpclient;
+
+
+import io.avaje.http.api.*;
+import io.avaje.http.client.HttpClientContext;
+import java.util.List;
+import org.example.Contributor;
+import org.example.Github;
+
+@Generated("avaje-http-client-generator")
+public class Github$HttpClient implements Github {
+
+  private final HttpClientContext clientContext;
+
+  public Github$HttpClient(HttpClientContext ctx) {
+    this.clientContext = ctx;
+  }
+
+  // GET /repos/{owner}/{repo}/contributors
+  @Override
+  public List<|Contributor> contributors(String owner, String repo) {
+    return clientContext.request()
+      .path("repos").path(owner).path(repo).path("contributors")
+      .GET()
+      .list(Contributor.class);
+  }
+
+}
+</pre>
+
+<h3 id="api-response-types">Response types</h3>
+<p>
+  Below is a tabe of the API response types can be used and the resulting generated code.
+</p>
+<table width="100%">
+  <tr>
+    <th width="50%">Method response type</th>
+    <th>Generated code</th>
+  </tr>
+
+  <tr><td>void</td><td>asVoid()</td></tr>
+  <tr><td>String</td><td>asPlainString().body()</td></tr>
+
+  <tr><td>T</td><td>bean(T.class)</td></tr>
+  <tr><td>List&lt;T&gt;</td><td>list(T.class)</td></tr>
+  <tr><td>Stream&lt;T&gt;</td><td>stream(T.class)</td></tr>
+  <tr><td>HttpResponse&lt;Void&gt;</td><td>asVoid()</td></tr>
+  <tr><td>HttpResponse&lt;String&gt;</td><td>asString()</td></tr>
+  <tr><td>HttpResponse&lt;byte[]&gt;</td><td>asByteArray()</td></tr>
+  <tr><td>HttpResponse&lt;InputStream&gt;</td><td>asInputStream()</td></tr>
+  <tr><td>HttpResponse&lt;Stream&lt;String&gt;&gt;</td><td>asLines()</td></tr>
+  <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+
+  <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<!--  <tr><td><b>CompletableFuture</b></td><td>&nbsp;</td></tr>-->
+
+  <tr><td>CompletableFuture&lt;T&gt;</T></td><td>async().bean(T.class)</td></tr>
+  <tr><td>CompletableFuture&lt;List&lt;T&gt;&gt;</td><td>async().list(T.class)</td></tr>
+  <tr><td>CompletableFuture&lt;Stream&lt;T&gt;&gt;</td><td>async().stream(T.class)</td></tr>
+
+  <tr><td>CompletableFuture&lt;HttpResponse&lt;Void&gt;&gt;</td><td>async().asVoid()</td></tr>
+  <tr><td>CompletableFuture&lt;HttpResponse&lt;String&gt;&gt;</td><td>async().asString()</td></tr>
+  <tr><td>CompletableFuture&lt;HttpResponse&lt;byte[]&gt;&gt;</td><td>async().asByteArray()</td></tr>
+  <tr><td>CompletableFuture&lt;HttpResponse&lt;InputStream&gt;&gt;</td><td>async().asInputStream()</td></tr>
+  <tr><td>CompletableFuture&lt;HttpResponse&lt;Stream&lt;String&gt;&gt;&gt;</td><td>async().asLines()</td></tr>
+
+  <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<!--  <tr><td><b>HttpCall</b></td><td>&nbsp;</td></tr>-->
+
+  <tr><td>HttpCall&lt;T&gt;</T></td><td>call().bean(T.class)</td></tr>
+  <tr><td>HttpCall&lt;List&lt;T&gt;&gt;</td><td>call().list(T.class)</td></tr>
+  <tr><td>HttpCall&lt;Stream&lt;T&gt;&gt;</td><td>call().stream(T.class)</td></tr>
+
+  <tr><td>HttpCall&lt;HttpResponse&lt;Void&gt;&gt;</td><td>call().asVoid()</td></tr>
+  <tr><td>HttpCall&lt;HttpResponse&lt;String&gt;&gt;</td><td>call().asString()</td></tr>
+  <tr><td>HttpCall&lt;HttpResponse&lt;byte[]&gt;&gt;</td><td>call().asByteArray()</td></tr>
+  <tr><td>HttpCall&lt;HttpResponse&lt;InputStream&gt;&gt;</td><td>call().asInputStream()</td></tr>
+  <tr><td>HttpCall&lt;HttpResponse&lt;Stream&lt;String&gt;&gt;&gt;</td><td>call().asLines()</td></tr>
+
+</table>
+
+<h3 id="api-response-body">HttpResponse.BodyHandler parameter</h3>
+<p>
+  The method can also declare one parameter of type <code>java.net.http.HttpResponse.BodyHandler</code>
+  and this will be used to handle the response body. This can be a specific generic type like
+  <code>BodyHandler&lt;Path&gt;</code> or more general type like <code>BodyHandler&lt;T&gt;</code>.
+</p>
+<pre content="java">
+  @Get("/{id}")
+  HttpResponse<|Path> getWithHandler(String id, HttpResponse.BodyHandler<|Path> myHandler, String other);
+</pre>
+<p>
+  The generated code uses the BodyHandler parameter to handle the response body. The resulting generated code is:
+</p>
+<pre content="java">
+  // GET /{id}
+  @Override
+  public HttpResponse<|Path> getWithHandler(String id, BodyHandler<|Path> myHandler, String other) {
+    return clientContext.request()
+      .path(id)
+      .queryParam("other", other)
+      .GET()
+      .withHandler(myHandler);
+  }
+</pre>
+<p>
+  We can also use a more general handler like <code>HttpResponse.BodyHandler&lt;T&gt;</code>.
+  For example:
+</p>
+<pre content="java">
+  @Get("/{id}")
+  <|T> HttpResponse<|T> getWithGeneralHandler(String id, HttpResponse.BodyHandler<|T> myHandler);
+</pre>
+<p>
+  The generated code uses the BodyHandler parameter to handle the response body. The resulting generated code is:
+</p>
+<pre content="java">
+  // GET /{id}
+  @Override
+  public <|T> HttpResponse<|T> getWithGeneralHandler(String id, BodyHandler<|T> myHandler) {
+    return clientContext.request()
+      .path(id)
+      .GET()
+      .withHandler(myHandler);
+  }
+</pre>
+
+<h3 id="api-request-body">HttpRequest.BodyPublisher parameter</h3>
+<p>
+  The method can also declare one parameter of type <code>java.net.http.HttpRequest.BodyPublisher</code>
+  and this will be used for the request body.
+</p>
+<pre content="java">
+  @Post("/{id}/foo/{name}")
+  HttpResponse<|Void> postWithBody(String id, String name, HttpRequest.BodyPublisher body);
+</pre>
+<p>
+  The generated code uses the BodyPublisher parameter as the request body. The resulting generated code is:
+</p>
+<pre content="java">
+  // POST /{id}/foo/{name}
+  @Override
+  public HttpResponse<|Void> postWithBody(String id, String name, BodyPublisher body) {
+    return clientContext.request()
+      .path(id).path("foo").path(name)
+      .body(body)
+      .POST()
+      .asVoid();
+  }
+</pre>
 
 
 
