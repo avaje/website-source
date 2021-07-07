@@ -7,9 +7,336 @@
   <#assign index="active">
 </head>
 <body>
-<h2>Start</h2>
+
+<h3 id="A1">A1. Add dependencies</h3>
+<p>
+  Add <em>avaje-http-client</em> and <em>jackson-databind</em> as a dependencies.
+</p>
+<pre content="xml">
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-http-client</artifactId>
+    <version>1.8</version>
+  </dependency>
+
+  <dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.12.3</version>
+  </dependency>
+</pre>
+
+<h3 id="A2">A2. Create Jackson ObjectMapper</h3>
+<pre content="java">
+    var mapper = new ObjectMapper()
+      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+      .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+</pre>
+
+<h3 id="A3">A3. Create HttpClientContext</h3>
+<p>
+  We will use <code>https://api.github.com</code> as the base URL and use
+  <code>JacksonBodyAdapter</code> to decode the json response.
+</p>
+<pre content="java">
+    final HttpClientContext ctx = HttpClientContext.newBuilder()
+      .withBaseUrl("https://api.github.com")
+      .withBodyAdapter(new JacksonBodyAdapter(mapper))
+      .build();
+</pre>
+
+<h3 id="A4">A4. Add "record/data" class Contributor</h3>
+<p>
+  We will use this to hold the response json results.
+</p>
+<pre content="java">
+  public static class Contributor {
+    // just using public fields to get going ...
+    public String login;
+    public int contributions;
+  }
+</pre>
 <p>
 
 </p>
+
+<h3 id="A5">A5. Make the request</h3>
+<p>
+  The below used <em>avaje</em> as the organisation and <em>avaje-http</em>
+  as the repo.
+</p>
+<pre content="java">
+  final List<|Contributor> contributors = ctx.request()
+    .path("repos/avaje/avaje-http/contributors")
+    .GET()
+    .list(Contributor.class);
+
+  for (Contributor contributor : contributors) {
+    System.out.println(contributor.login + " contributions:" + contributor.contributions);
+  }
+</pre>
+
+
+<h3 id="A-all-code">All the code</h3>
+<p>
+  All the code from the prior steps combined is:
+</p>
+<pre content="java">
+package org.example;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.avaje.http.client.HttpClientContext;
+import io.avaje.http.client.JacksonBodyAdapter;
+
+import java.util.List;
+
+public class Main {
+
+  public static class Contributor {
+    public String login;
+    public int contributions;
+  }
+
+  public static void main(String[] args) {
+
+    var mapper = new ObjectMapper()
+      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+      .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+
+    final HttpClientContext ctx = HttpClientContext.newBuilder()
+      .withBaseUrl("https://api.github.com")
+      .withBodyAdapter(new JacksonBodyAdapter(mapper))
+      .build();
+
+    final List<|Contributor> contributors = ctx.request()
+      .path("repos/avaje/avaje-http/contributors")
+      .GET()
+      .list(Contributor.class);
+
+    for (Contributor contributor : contributors) {
+      System.out.println(contributor.login + " contributions:" + contributor.contributions);
+    }
+  }
+}
+</pre>
+
+<h1 id="api-start">Client API start</h1>
+
+<h3 id="B1">B1. Add dependencies</h3>
+<p>
+  In addition to <em>avaje-http-client</em> and <em>jackson-databind</em>
+  we need to add <em>avaje-http-api</em> and <em>avaje-http-client-generator</em>
+  as dependencies.
+</p>
+<p>
+  Note that <em>avaje-http-client-generator</em> is the annotation processor
+  that generates the implementation for our Client API.
+</p>
+<pre content="xml">
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-http-client</artifactId>
+    <version>1.9</version>
+  </dependency>
+
+  <dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.12.3</version>
+  </dependency>
+
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-http-api</artifactId>
+    <version>1.9</version>
+  </dependency>
+
+  <!-- Annotation processor -->
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-http-client-generator</artifactId>
+    <version>1.9</version>
+    <scope>provided</scope>
+  </dependency>
+</pre>
+<p>
+  If there are other annotation processors and they are specified via
+  <em>maven-compiler-plugin</em> <em>annotationProcessorPaths</em>
+  then we add <em>avaje-http-client-generator</em> there instead.
+</p>
+<pre content="xml">
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-compiler-plugin</artifactId>
+  <configuration>
+    <annotationProcessorPaths> <!-- All annotation processors specified here -->
+      <path>
+        <groupId>io.avaje</groupId>
+        <artifactId>avaje-http-client-generator</artifactId>
+        <version>1.9</version>
+      </path>
+      <path>
+          ... other annotation processor ...
+      </path>
+    </annotationProcessorPaths>
+  </configuration>
+</plugin>
+</pre>
+
+
+<h3 id="B2">B2. Create interface</h3>
+<p>
+  Create a package <code>org.example</code> and create an interface
+  called <code>Github</code> in that package like below:
+</p>
+<pre content="java">
+package org.example;
+
+import io.avaje.http.api.Client;
+import io.avaje.http.api.Get;
+
+import java.util.List;
+
+@Client
+public interface Github {
+
+  class Contributor {
+    public String login;
+    public int contributions;
+  }
+
+  @Get("/repos/{owner}/{repo}/contributors")
+  List<|Contributor> contributors(String owner, String repo);
+}
+</pre>
+
+<h4>@Client</h4>
+<p>
+  The interface marked with <code>@Client</code> it will be picked
+  up by the <em>avaje-http-client-generator</em> annotation processor
+  which will generate the implementation for the interface.
+</p>
+
+<h3 id="B3">B3. IntelliJ IDEA</h3>
+<p>
+  When using IntelliJ we can check if
+  <code>target / generated-sources / annotations</code> is marked as
+  a <em>generated source</em>.
+</p>
+
+<table width="80%">
+  <tr>
+    <td>
+      <img src="/images/client-api-b1-generated-sources.png" width="250px">
+    </td>
+    <td width="50%" valign="top">
+      <p class="small-font">
+        Here <code>target / generated-sources / annotations</code>
+        is currently not treated as a <b>generated source</b>
+        (still orange)
+      </p>
+      <p class="small-font">
+        We can see that <code>Github$HttpClient.java</code>
+        has been generated but IntelliJ isn't aware of it as
+        generated source yet.
+      </p>
+    </td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<table width="80%">
+  <tr>
+    <td width="40%" valign="top">
+      <p class="small-font">
+        On <code>target / generated-sources / annotations</code>
+      </p>
+      <p class="small-font">
+        - right-mouse-click <br/>
+        - Mark Directory as<br/>
+        - Generated Source Root<br/>
+      </p>
+    </td>
+    <td>
+      <img src="/images/client-api-b2-mark-generated-sources.png" width="400px">
+    </td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<table width="80%">
+  <tr>
+    <td>
+      <img src="/images/client-api-b3-generated-sources-ok.png" width="250px">
+    </td>
+    <td width="50%" valign="top">
+      <p class="small-font">
+        <code>target / generated-sources / annotations</code>
+        is now marked as <b>generated source</b>
+      </p>
+      <p class="small-font">
+        In IntelliJ IDE we will now be able to navigate
+        from the interface to the implementation.
+      </p>
+      <p class="small-font">
+        We can change the interface and recompile and the
+        implementation will be regenerated to suit.
+      </p>
+    </td>
+  </tr>
+</table>
+
+<h3 id="B4">B4. Use the interface</h3>
+<p>
+  We can obtain the implementation via <code>HttpClientContext</code> <code>create(T.class)</code>
+  method.
+</p>
+<pre content="java">
+final Github github = httpClientContext.create(Github.class);
+</pre>
+<p>
+  The full code example is below.
+</p>
+<pre content="java">
+package org.example;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.avaje.http.client.HttpClientContext;
+import io.avaje.http.client.JacksonBodyAdapter;
+
+import java.util.List;
+
+public class ApiMain {
+
+  public static void main(String[] args) {
+
+    var mapper = new ObjectMapper()
+      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+      .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+
+    final HttpClientContext httpClientContext = HttpClientContext.newBuilder()
+      .withBaseUrl("https://api.github.com")
+      .withBodyAdapter(new JacksonBodyAdapter(mapper))
+      .build();
+
+    // obtain API ...
+    final Github github = httpClientContext.create(Github.class);
+
+    // use the API ...
+    final List<|Github.Contributor> contributors = github.contributors("avaje", "avaje-http");
+    for (Github.Contributor contributor : contributors) {
+      System.out.println(contributor.login+" contributions: "+contributor.contributions);
+    }
+
+  }
+}
+</pre>
+
 </body>
 </html>

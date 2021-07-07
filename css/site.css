@@ -305,6 +305,9 @@ h5 em {
   font-weight: normal;
   font-style: italic;
 }
+p.small-font, p.small-font code {
+  font-size: 0.8em;
+}
 table.basic td {
   padding: 0 1rem 1rem 0;
 }
