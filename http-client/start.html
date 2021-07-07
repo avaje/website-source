@@ -1,8 +1,9 @@
 <html>
 <head>
   <meta name="layout" content="_layout/base-http-client.html"/>
-  <meta name="bread2" content="client" href="/http-client/"/>
-  <meta name="bread3" content="start" href="/http-client/start"/>
+  <meta name="bread0" content="http" href="/http/"/>
+  <meta name="bread1" content="client" href="/http-client/"/>
+  <meta name="bread2" content="getting started" href="/http-client/start"/>
   <template id="menuNav"><#include "/_http-client/_start.ftl"></template>
   <#assign index="active">
 </head>
@@ -16,7 +17,7 @@
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-http-client</artifactId>
-    <version>1.8</version>
+    <version>1.9</version>
   </dependency>
 
   <dependency>
@@ -26,26 +27,24 @@
   </dependency>
 </pre>
 
-<h3 id="A2">A2. Create Jackson ObjectMapper</h3>
-<pre content="java">
-    var mapper = new ObjectMapper()
-      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-      .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-</pre>
-
-<h3 id="A3">A3. Create HttpClientContext</h3>
+<h3 id="A2">A2. Create HttpClientContext</h3>
 <p>
   We will use <code>https://api.github.com</code> as the base URL and use
   <code>JacksonBodyAdapter</code> to decode the json response.
 </p>
+<p>
+  Often we want to use a specific Jackson ObjectMapper and pass that to
+  JacksonBodyAdapter. The default constructor for JacksonBodyAdapter
+  uses an ObjectMapper with reasonable default options.
+</p>
 <pre content="java">
     final HttpClientContext ctx = HttpClientContext.newBuilder()
-      .withBaseUrl("https://api.github.com")
-      .withBodyAdapter(new JacksonBodyAdapter(mapper))
+      .baseUrl("https://api.github.com")
+      .bodyAdapter(new JacksonBodyAdapter())
       .build();
 </pre>
 
-<h3 id="A4">A4. Add "record/data" class Contributor</h3>
+<h3 id="A3">A3. Add "record/data" class Contributor</h3>
 <p>
   We will use this to hold the response json results.
 </p>
@@ -56,11 +55,9 @@
     public int contributions;
   }
 </pre>
-<p>
 
-</p>
 
-<h3 id="A5">A5. Make the request</h3>
+<h3 id="A4">A4. Make the request</h3>
 <p>
   The below used <em>avaje</em> as the organisation and <em>avaje-http</em>
   as the repo.
@@ -84,9 +81,6 @@
 <pre content="java">
 package org.example;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.avaje.http.client.HttpClientContext;
 import io.avaje.http.client.JacksonBodyAdapter;
 
@@ -101,13 +95,9 @@ public class Main {
 
   public static void main(String[] args) {
 
-    var mapper = new ObjectMapper()
-      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-      .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-
     final HttpClientContext ctx = HttpClientContext.newBuilder()
-      .withBaseUrl("https://api.github.com")
-      .withBodyAdapter(new JacksonBodyAdapter(mapper))
+      .baseUrl("https://api.github.com")
+      .bodyAdapter(new JacksonBodyAdapter())
       .build();
 
     final List<|Contributor> contributors = ctx.request()
@@ -126,7 +116,7 @@ public class Main {
 
 <h3 id="B1">B1. Add dependencies</h3>
 <p>
-  In addition to <em>avaje-http-client</em> and <em>jackson-databind</em>
+  In addition to avaje-http-client and jackson-databind
   we need to add <em>avaje-http-api</em> and <em>avaje-http-client-generator</em>
   as dependencies.
 </p>
@@ -163,7 +153,7 @@ public class Main {
 </pre>
 <p>
   If there are other annotation processors and they are specified via
-  <em>maven-compiler-plugin</em> <em>annotationProcessorPaths</em>
+  <em>build / plugins / maven-compiler-plugin / annotationProcessorPaths</em>
   then we add <em>avaje-http-client-generator</em> there instead.
 </p>
 <pre content="xml">
@@ -202,13 +192,14 @@ import java.util.List;
 @Client
 public interface Github {
 
+  @Get("/repos/{owner}/{repo}/contributors")
+  List<|Contributor> contributors(String owner, String repo);
+
+
   class Contributor {
     public String login;
     public int contributions;
   }
-
-  @Get("/repos/{owner}/{repo}/contributors")
-  List<|Contributor> contributors(String owner, String repo);
 }
 </pre>
 
@@ -257,7 +248,7 @@ public interface Github {
       <p class="small-font">
         - right-mouse-click <br/>
         - Mark Directory as<br/>
-        - Generated Source Root<br/>
+        - Generated Sources Root<br/>
       </p>
     </td>
     <td>
@@ -290,7 +281,45 @@ public interface Github {
   </tr>
 </table>
 
-<h3 id="B4">B4. Use the interface</h3>
+<h3 id="B4">B4. Generated source</h3>
+<p>
+  For the <code>Github</code> interface there would be generated source
+  for <code>Github$HttpClient</code> found in <code>target / generated-sources / annotations</code>.
+</p>
+<p>
+  The generated source will look like:
+</p>
+<pre content="java">
+package org.example.httpclient;
+
+import io.avaje.http.api.*;
+import io.avaje.http.client.HttpClientContext;
+import java.util.List;
+import org.example.Github;
+import org.example.Github.Contributor;
+
+@Generated("avaje-http-client-generator")
+public class Github$HttpClient implements Github {
+
+  private final HttpClientContext clientContext;
+
+  public Github$HttpClient(HttpClientContext ctx) {
+    this.clientContext = ctx;
+  }
+
+  // GET /repos/{owner}/{repo}/contributors
+  @Override
+  public List<|Contributor> contributors(String owner, String repo) {
+    return clientContext.request()
+      .path("repos").path(owner).path(repo).path("contributors")
+      .GET()
+      .list(Contributor.class);
+  }
+
+}
+</pre>
+
+<h3 id="B5">B5. Use the interface</h3>
 <p>
   We can obtain the implementation via <code>HttpClientContext</code> <code>create(T.class)</code>
   method.
@@ -304,9 +333,6 @@ final Github github = httpClientContext.create(Github.class);
 <pre content="java">
 package org.example;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.avaje.http.client.HttpClientContext;
 import io.avaje.http.client.JacksonBodyAdapter;
 
@@ -316,13 +342,9 @@ public class ApiMain {
 
   public static void main(String[] args) {
 
-    var mapper = new ObjectMapper()
-      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-      .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-
     final HttpClientContext httpClientContext = HttpClientContext.newBuilder()
-      .withBaseUrl("https://api.github.com")
-      .withBodyAdapter(new JacksonBodyAdapter(mapper))
+      .baseUrl("https://api.github.com")
+      .bodyAdapter(new JacksonBodyAdapter())
       .build();
 
     // obtain API ...
