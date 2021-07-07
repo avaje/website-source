@@ -12,30 +12,49 @@
 
   <table class="index-toc">
     <tr>
-      <th><a href="/config">config</a></th>
+      <th width="25%"><a href="/config">configuration</a></th>
       <td>
         <p>
           Provides external configuration for applications. Loads <em>yaml</em> and
-          <em>properties</em> files, supports dynamic configuration.
+          <em>properties</em> files, supports dynamic configuration and plugins.
         </p>
       </td>
     </tr>
     <tr>
-      <th><a href="/inject">inject</a></th>
+      <th><a href="/inject">dependency injection</a></th>
       <td>
         <p>
           Cloud native and kubernetes friendly <a href="/inject">dependency injection</a>
-          by generating source code using Java annotation processing.
+          by generating source code using java annotation processing.
+        </p>
+        <p>
+          Similar to Dagger2 it uses java annotation processing to perform dependency injection
+          using source code generation. Unlike Dagger2 it includes lifecycle support plus support
+          for component testing.
         </p>
       </td>
     </tr>
     <tr>
-      <th><a href="/http">http</a></th>
+      <th><a href="/http-client">http client</a></th>
       <td>
         <p>
-          Light weight jax-rs style http servers using <a href="https://javalin.io">Javalin</a>
+          An http client based on JDK 11+ HttpClient. Includes support for defining client API's
+          similar to JAX-RS, Retrofit and Feign. Uses java annotation processing to generate
+          client API implementations.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th><a href="/http">http server</a></th>
+      <td>
+        <p>
+          Lightweight JAX-RS style http servers using <a href="https://javalin.io">Javalin</a>
           and <a href="https://helidon.io">Helidon SE</a>. Use annotations
           like <code>@Path</code>, <code>@Get</code> etc to define a rest api.
+        </p>
+        <p>
+          Uses java annotation processing generating source code for adapting rest API's
+          to servers making it much lighter and simpler than JAX-RS.
         </p>
       </td>
     </tr>

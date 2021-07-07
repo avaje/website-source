@@ -177,9 +177,9 @@
   Some introductions to the JDK HttpClient:
 </p>
 <ul>
-  <li>JDK HttpClient <a target="_blank" href="http://openjdk.java.net/groups/net/httpclient/intro.html">Introduction</a></li>
-  <li>Javadoc for <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html">JDK HttpClient</a> </li>
+  <li>OpenJDK HttpClient <a target="_blank" href="http://openjdk.java.net/groups/net/httpclient/intro.html">Introduction</a></li>
   <li>A closer look at the <a target="_blank" href="https://golb.hplar.ch/2019/01/java-11-http-client.html">Java 11 HTTP Client</a></li>
+  <li>Javadoc for <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html">JDK HttpClient</a> </li>
 </ul>
 
 <h3 id="other-projects">Other JDK HttpClient projects</h3>
@@ -188,7 +188,7 @@
   I'll add them to the list below.
 </p>
 <ul>
-  <li><a href="https://github.com/mizosoft/methanol/">Methanol</a></li>
+  <li><a target="_blank" href="https://github.com/mizosoft/methanol/">Methanol</a></li>
 </ul>
 
 
@@ -247,7 +247,7 @@
   in an asynchronous style using <code>CompletableFuture</code>.
 </p>
 <p>
-  JDK HttpClient provides a number of <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpResponse.BodyHandler.html">BodyHandlers</a>
+  JDK HttpClient provides a number of <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpResponse.BodyHandler.html">BodyHandlers</a>
   including reactive Flow based subscribers. When executing the requests in
   asynchronous style the responses are processed in a reactive way. Generally
   <code>CompletableFuture.whenComplete()</code> will be called only when the
@@ -271,7 +271,7 @@
 
 <h2 id="httpClientContext">HttpClientContext</h2>
 <p>
-  HttpClientContext is effectively a wrapper of <a href="">java.net.http.HttpClient</a>
+  HttpClientContext is effectively a wrapper of <code>java.net.http.HttpClient</code>
   with extra features for request interceptors, body adapters, retry.
 </p>
 <p>
@@ -320,7 +320,7 @@
   <li>Object which is written by the BodyAdapter, e.g. JacksonBodyAdapter writes as JSON content</li>
   <li>formParam() for url encoded form</li>
   <li>byte[], String, Path (file), InputStream</li>
-  <li>Any <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpRequest.BodyPublishers.html">HttpRequest.BodyPublisher</a></li>
+  <li>Any <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpRequest.BodyPublishers.html">HttpRequest.BodyPublisher</a></li>
 </ul>
 
 <h3 id="req-json">Object as JSON</h3>
@@ -584,7 +584,7 @@
   <code><a href="#httpException">HttpException</a></code> if the status code is not in the 2XX range.
 </p>
 <p>
-  Reference API javadoc <a href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/HttpAsyncResponse.html">HttpAsyncResponse</a>
+  Reference API javadoc <a target="_blank" href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/HttpAsyncResponse.html">HttpAsyncResponse</a>
 </p>
 
 <h4>Example: async().asString()</h4>
@@ -674,7 +674,7 @@
   choose <em>async()</em> to execute the request asynchronously.
 </p>
 <p>
-  Reference API javadoc <a href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/HttpCall.html">HttpCall</a>
+  Reference API javadoc <a target="_blank" href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/HttpCall.html">HttpCall</a>
 </p>
 
 <h4>Example: call()</h4>
@@ -1018,7 +1018,7 @@ public class Github$HttpClient implements Github {
   touch faster (~10%) than async.
 </p>
 <p>
-  To run my tests I use <a href="https://github.com/avaje/avaje-jex">Jex</a> as the server
+  To run my tests I use <a target="_blank" href="https://github.com/avaje/avaje-jex">Jex</a> as the server
   (Jetty based) and have it running using Loom. For whatever testing you do
   you will need a server that can handle a very large number of concurrent requests.
 </p>

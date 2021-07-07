@@ -4,7 +4,7 @@
   We can optionally add bean validation.
 </p>
 <p>
-  Example: <a href="https://github.com/dinject/examples/blob/master/javalin-maven-java-basic/src/main/java/org/example/myapp/web/HelloController.java#L30">HelloController</a>
+  Example: <a target="_blank" href="https://github.com/dinject/examples/blob/master/javalin-maven-java-basic/src/main/java/org/example/myapp/web/HelloController.java#L30">HelloController</a>
 </p>
 
 <h3>Add dependency</h3>

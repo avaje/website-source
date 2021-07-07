@@ -22,8 +22,8 @@
 <h4>Annotation processors</h4>
 <p>
   Add the annotation processors <em>avaje-inject-generator</em> and either
-  <em>avaje-http-javalin-generator</em> to target <a href="https://javalin.io">Javalin</a>
-  or <em>avaje-http-helidon-generator</em> to target <a href="https://helidon.io">Helidon SE</a>.
+  <em>avaje-http-javalin-generator</em> to target <a target="_blank" href="https://javalin.io">Javalin</a>
+  or <em>avaje-http-helidon-generator</em> to target <a target="_blank" href="https://helidon.io">Helidon SE</a>.
 </p>
 <p>
   We typically use <em>provided</em> scope for annotation processors.
@@ -78,7 +78,7 @@
 <h3 id="gradle">Gradle</h3>
 <p>
   See the example at:
-  <a href="https://github.com/dinject/examples/blob/master/javalin-gradle-java-basic/build.gradle">examples/javalin-gradle-java-basic/build.gradle</a>
+  <a target="_blank" href="https://github.com/dinject/examples/blob/master/javalin-gradle-java-basic/build.gradle">examples/javalin-gradle-java-basic/build.gradle</a>
 </p>
 <p>
   Use Gradle version 5.2 or greater which has better support for annotation processing.

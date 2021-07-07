@@ -9,7 +9,7 @@
   that the controllers define.
 </p>
 <p>
-  Example <a href="https://github.com/dinject/examples/blob/master/javalin-maven-java-basic/src/main/resources/public/openapi.json">javalin-maven-java-basic</a>
+  Example <a target="_blank" href="https://github.com/dinject/examples/blob/master/javalin-maven-java-basic/src/main/resources/public/openapi.json">javalin-maven-java-basic</a>
 </p>
 
 <h3>Javadoc</h3>
@@ -43,7 +43,7 @@
   in the controllers package.
 </p>
 <p>
-  Example <a href="https://github.com/dinject/examples/blob/master/javalin-maven-java-basic/src/main/java/org/example/myapp/Main.java#L18">@OpenAPIDefinition</a>
+  Example <a target="_blank" href="https://github.com/dinject/examples/blob/master/javalin-maven-java-basic/src/main/java/org/example/myapp/Main.java#L18">@OpenAPIDefinition</a>
 </p>
 <pre content="java">
 @OpenAPIDefinition(

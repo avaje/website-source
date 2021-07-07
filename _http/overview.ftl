@@ -22,12 +22,12 @@
 <p>
   Better in terms of being much lighter and faster at runtime by using source code generation
   (java annotation processors) to adapt annotated rest controllers with (<code>@Path, @Get, @Post etc</code>)
-  to <a href="https://javalin.io">Javalin</a>, <a href="https://helidon.io">Helidon SE</a>
+  to <a target="_blank" href="https://javalin.io">Javalin</a>, <a target="_blank" href="https://helidon.io">Helidon SE</a>
   and similar http servers.
 </p>
 <p>
   Effectively we are replacing Jersey or RestEasy with source code generation and the capabilities
-  of <a href="https://javalin.io">Javalin</a> and <a href="https://helidon.io">Helidon SE</a>.
+  of <a target="_blank" href="https://javalin.io">Javalin</a> and <a target="_blank" href="https://helidon.io">Helidon SE</a>.
 </p>
 <p>
   Better also in terms of being simpler when compared with the internals of Jersey or RestEasy. It turns
@@ -37,7 +37,7 @@
 </p>
 <p>
   What we <b>lose</b> in doing this is built in
-  <a href="https://en.wikipedia.org/wiki/Content_negotiation">Content negotiation</a>. For example, if
+  <a target="_blank" href="https://en.wikipedia.org/wiki/Content_negotiation">Content negotiation</a>. For example, if
   we need endpoints that serve response content as <i>either</i> JSON or XML content based on request headers
   then we would to handle this ourselves.
 </p>

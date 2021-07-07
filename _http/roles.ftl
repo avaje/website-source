@@ -18,7 +18,7 @@ class CustomerController  {
 
 <h2 id="roles-javalin">Javalin Roles</h2>
 <p>
-  Example reference <a href="https://github.com/avaje/avaje-http/blob/master/tests/test-javalin/src/main/java/org/example/myapp/web/HelloController.java#L58">test-javalin - HelloController</a>
+  Example reference <a target="_blank" href="https://github.com/avaje/avaje-http/blob/master/tests/test-javalin/src/main/java/org/example/myapp/web/HelloController.java#L58">test-javalin - HelloController</a>
 </p>
 <h4>Step 1: Create an enum that implements io.avaje.jex.Role</h4>
 <p>
@@ -100,7 +100,7 @@ Javalin app = Javalin.create(config -> {
 
 <h2 id="roles-jex">Jex Roles</h2>
 <p>
-  Example reference <a href="https://github.com/avaje/avaje-http/blob/master/tests/test-jex/src/main/java/org/example/web/HelloController.java#L28">test-jex - HelloController</a>
+  Example reference <a target="_blank" href="https://github.com/avaje/avaje-http/blob/master/tests/test-jex/src/main/java/org/example/web/HelloController.java#L28">test-jex - HelloController</a>
 </p>
 <p>
 
