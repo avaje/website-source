@@ -9,13 +9,13 @@
 <dependency>
   <groupId>io.avaje</groupId>
   <artifactId>avaje-inject</artifactId>
-  <version>4.1</version>
+  <version>6.1</version>
 </dependency>
 
 <dependency>
   <groupId>io.avaje</groupId>
   <artifactId>avaje-http-api</artifactId>
-  <version>1.2</version>
+  <version>1.9</version>
 </dependency>
 </pre>
 
@@ -33,13 +33,13 @@
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-inject-generator</artifactId>
-    <version>4.1</version>
+    <version>6.1</version>
     <scope>provided</scope>
   </dependency>
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-http-javalin-generator</artifactId>
-    <version>1.2</version>
+    <version>1.9</version>
     <scope>provided</scope>
   </dependency>
 </pre>
@@ -58,12 +58,12 @@
       <path>
         <groupId>io.avaje</groupId>
         <artifactId>avaje-inject-generator</artifactId>
-        <version>4.1</version>
+        <version>6.1</version>
       </path>
       <path>
         <groupId>io.avaje</groupId>
         <artifactId>avaje-http-javalin-generator</artifactId>
-        <version>1.2</version>
+        <version>1.9</version>
       </path>
       <path>
           ... other annotation processor ...
@@ -109,11 +109,11 @@ plugins {
 <pre content="groovy">
 dependencies {
   ...
-  compile('io.avaje:avaje-inject:4.1')
-  compile('io.avaje:avaje-http-api:1.2')
+  compile('io.avaje:avaje-inject:6.1')
+  compile('io.avaje:avaje-http-api:1.9')
 
-  annotationProcessor('io.avaje:avaje-inject-generator:4.1')
-  annotationProcessor('io.avaje:avaje-http-javalin-generator:1.2')
+  annotationProcessor('io.avaje:avaje-inject-generator:6.1')
+  annotationProcessor('io.avaje:avaje-http-javalin-generator:1.9')
 }
 </pre>
 
@@ -125,8 +125,8 @@ dependencies {
 <pre content="groovy">
 dependencies {
   ...
-  kapt('io.avaje:avaje-inject-generator:4.1')
-  kapt('io.avaje:avaje-http-javalin-generator:1.2')
+  kapt('io.avaje:avaje-inject-generator:6.1')
+  kapt('io.avaje:avaje-http-javalin-generator:1.9')
 }
 </pre>
 
