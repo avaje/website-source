@@ -764,6 +764,37 @@
 </p>
 
 
+<h2 id="logging">Logging</h2>
+<p>
+  By default request response logging is built in (via <code>RequestLogger</code>)
+  and we enable it via setting the log level to <code>DEBUG</code> or <code>TRACE</code>
+  for <code>io.avaje.http.client.RequestLogger</code>
+</p>
+<h5>Example: Logback</h5>
+<pre content="xml">
+    <logger name="io.avaje.http.client.RequestLogger" level="trace"/>
+</pre>
+
+<h4 id="logging-summary">DEBUG</h4>
+<p>
+  Summary logging that includes the response status code and execution time is logged
+  at <code>DEBUG</code> level.
+</p>
+<h4 id="logging-detail">TRACE</h4>
+<p>
+  Logging that includes the request and response <em>headers</em> plus the <em>body</em>
+  content is logged at <code>TRACE</code> level.
+</p>
+
+<h3>Suppression</h3>
+<p>
+  Logging is suppressed for <em>Authorization</em> headers and requests used by
+  <a href="#auth-bearer">AuthTokenProvider</a>. Additionally logging can be
+  suppressed on requests via <code>HttpClientRequest.suppressLogging()</code>.
+</p>
+
+
+
 <h2 id="client-api">Client API</h2>
 <p>
   We can define an interface and have the implementation generated. Similar to
@@ -1002,6 +1033,356 @@ public class Github$HttpClient implements Github {
   }
 </pre>
 
+<h3 id="path">@Path</h3>
+<p>
+  We can optionally put <code>@Path</code> on the interface type. This path is prefixed to the
+  paths defined on the verb annotations <code>@Get, @Post, @Put ...</code>.
+</p>
+<p>
+  For example, with <code>@Path("/api/cats")</code> all the paths defined have <code>/api/cats</code> prefixed.
+</p>
+<pre content="java">
+@Client
+@Path("/api/cats")
+public interface Cats {
+
+  @Get("{id}")
+  Cat byId(UUID id);
+
+  @Get("{id}/operations")
+  List<|Operation> operations(UUID id, OffsetDateTime since);
+
+  @Get("all")
+  Stream<|Cat> all();
+
+  @Post
+  void create(Cat cat);
+}
+</pre>
+<p>
+  The generated paths for the methods above all have <code>/api/cats</code> prefix:
+</p>
+<pre content="java">
+  // GET {id}
+  .path("api").path("cats").path(id)
+
+  // GET {id}/operations
+  .path("api").path("cats").path(id).path("operations")
+
+  // GET all
+  .path("api").path("cats").path("all")
+
+  // POST
+  .path("api").path("cats")
+</pre>
+
+<h3 id="pathParameters">Path parameters</h3>
+<p>
+  Path parameters start with <code>{</code> and end with <code>}</code> and matched
+  to method parameter names. So unlike JAX-RS we do not need a <code>@PathParam</code>
+  annotation.
+</p>
+<p>
+  For example <code>{id}</code>, <code>{name}</code>, <code>{startDate}</code>
+  in the path are matched to method parameters of the same name.
+</p>
+<pre content="java">
+@Get("/{id}/{startDate}/{type}")
+List<|Bazz> findBazz(long id, LocalDate startDate, String type);
+</pre>
+<p>
+  The generated code includes <code>.path(id).path(startDate).path(type)</code>:
+</p>
+<pre content="java">
+  // GET /{id}/{startDate}/{type}
+  @Override
+  public List<|Bazz> findBazz(long id, LocalDate startDate, String type) {
+    return clientContext.request()
+      .path(id).path(startDate).path(type)
+      .GET()
+      .list(Bazz.class);
+  }
+</pre>
+<p>
+  Unlike JAX-RS we do not need a <code>@PathParam</code> annotation.
+</p>
+
+
+<h3 id="queryParam">@QueryParam</h3>
+<p>
+  We explicitly specify query parameters using <code>@QueryParam</code>.
+</p>
+<pre content="java">
+// Explicit query parameter order-by
+
+@Get("/{bornAfter}")
+List<|Cat> findCats(LocalDate bornAfter, @QueryParam("order-by") String orderBy);
+</pre>
+<p>
+  The generated code includes <code>.queryParam("order-by", orderBy)</code>
+</p>
+<pre content="java">
+  // GET /{bornAfter}
+  @Override
+  public List<|Cat> findCats(LocalDate bornAfter, String orderBy) {
+    return clientContext.request()
+      .path(bornAfter)
+      .queryParam("order-by", orderBy)
+      .GET()
+      .list(Cat.class);
+  }
+</pre>
+<h4>Implied query parameters</h4>
+<p>
+  Query parameters can be <em>implied</em> by not being a path parameter.
+  That is, if a method parameter does not match a path parameter then it is
+  implied to be a query parameter.
+</p>
+<p>
+  The following 3 declarations are exactly the same with all 3 having
+  a query parameters for <code>orderBy</code>
+</p>
+
+<pre content="java">
+@Get("/{bornAfter}")
+List<|Cat> findCats(LocalDate bornAfter, @QueryParam("orderBy") String orderBy);
+
+@Get("/{bornAfter}")
+List<|Cat> findCats(LocalDate bornAfter, @QueryParam String orderBy);
+
+@Get("/{bornAfter}")
+List<|Cat> findCats(LocalDate bornAfter, String orderBy);  // orderBy implied as query parameter
+</pre>
+
+<p>
+  Note that we must explicitly use <code>@QueryParam</code> when the query parameter
+  is not a valid java identifier. For example, if the query parameter includes a hyphen
+  then we must use <code>@QueryParam</code> explicitly.
+</p>
+
+
+<h3 id="beanParam">@BeanParam</h3>
+<p>
+  When we have a lot of query parameters or if we have query parameters
+  that are common to many endpoints then we look to use <code>@BeanParam</code>.
+</p>
+<p>
+  We can create a bean and all the properties on the bean default to being
+  query parameters and annotate this with <code>@BeanParam</code>.
+</p>
+<pre content="java">
+public record Common(
+  Long firstRow,
+  Long maxRows,
+  String sortBy,
+  String filter) { }
+</pre>
+<p>
+  Use a record type or any type that has getter methods, record style getter methods or public fields.
+</p>
+<pre content="java">
+public class Common {
+  public Long firstRow;
+  public Long maxRows;
+  public String sortBy;
+  public String filter;
+}
+</pre>
+<p>
+  We annotate the method parameter with <code>@BeanParam</code>
+</p>
+<pre content="java">
+  @Get("search/{type}")
+  List<|Cat> searchCats(String type, @BeanParam Common commonParams);
+</pre>
+<p>
+  Generated code has <code>queryParam()</code> for each of the properties:
+</p>
+<pre content="java">
+  // GET search/{type}
+  @Override
+  public List<|Cat> searchCats(String type, Common commonParams) {
+    return clientContext.request()
+      .path("search").path(type)
+      .queryParam("firstRow", commonParams.firstRow())
+      .queryParam("maxRows", commonParams.maxRows())
+      .queryParam("sortBy", commonParams.sortBy())
+      .queryParam("filter", commonParams.filter())
+      .GET()
+      .list(Cat.class);
+  }
+</pre>
+
+<h4>JAX-RS @BeanParam</h4>
+<p>
+  Our <em>@BeanParam</em> is the same as JAX-RS <em>@BeanParam</em> except the properties
+  default to being query parameters. With JAX-RS we need to explicitly annotate each of the properties.
+  We can do this because we also have <a href="#form">@Form</a> and "Form beans".
+</p>
+
+<h4>BeanParam with @Header properties</h4>
+<p>
+  The properties on a "bean" default to being query parameters. We put
+  <a href="#header">@Header</a> on properties that are instead headers.
+</p>
+<pre content="java">
+public record Common(
+  Long firstRow,
+  Long maxRows,
+  String sortBy,
+  String filter,
+  @Header("X-Mod")
+  String modification) { }
+</pre>
+<p>
+  We then get the <code>modification</code> value set as a <em>header</em>.
+</p>
+<pre content="java">
+.header("X-Mod", commonParams.modification())
+</pre>
+
+
+<h3 id="form">@Form</h3>
+<p>
+  If a method has both <code>@Post</code> and <code>@Form</code> then the
+  method parameters default to be form parameters.
+</p>
+<p>
+  In the following example name, email and url all default to be form parameters.
+</p>
+<pre content="java">
+  @Form @Post("register")
+  void register(String name, String email, String url);
+</pre>
+<p>
+  The generated code includes <code>.formParam()</code> for <em>name, email and url</em>.
+</p>
+<pre content="java">
+  // POST register
+  @Override
+  public void register(String name, String email, String url) {
+    clientContext.request()
+      .path("register")
+      .formParam("name", name)
+      .formParam("email", email)
+      .formParam("url", url)
+      .POST()
+      .asVoid();
+  }
+</pre>
+
+<h3 id="formParam">@FormParam</h3>
+<p>
+  For the example above we could alternatively use explicit <code>@FormParam</code>
+  on each of the form parameters rather than <code>@Form</code>. We then get:
+</p>
+<pre content="java">
+@Post("register")
+void register(@FormParam String name, @FormParam String email, @FormParam String url);
+</pre>
+<p>
+  The expectation is that we most often would use <code>@Form</code> because it reduces
+  "annotation noise" and that we will very rarely use <code>@FormParam</code>. Potentially
+  we only use @FormParam if the parameter name includes hyphen or similar characters that
+  are not valid Java/Kotlin identifiers.
+</p>
+
+
+<h2 id="formBeans">@Form "Form Beans"</h2>
+<p>
+  In the case where we are posting a form with a lot of parameters we can define a bean with
+  properties for each of the form parameters rather than have a method with lots of arguments.
+</p>
+
+<pre content="java">
+public record RegisterForm(String name, String email, String url) { }
+</pre>
+<pre content="java">
+@Form @Post("register")
+void register(RegisterForm myForm);
+</pre>
+The generated code for the above is:
+<pre content="java">
+  // POST register
+  @Override
+  public void register(RegisterForm myForm) {
+    clientContext.request()
+      .path("register")
+      .formParam("name", myForm.name())
+      .formParam("email", myForm.email())
+      .formParam("url", myForm.url())
+      .POST()
+      .asVoid();
+  }
+</pre>
+<p>
+  "Form beans" are nice with forms with lots of properties because they de-clutter our code
+  and the generated code takes care of putting the values into our bean properties so that
+  we don't have to write that code.
+</p>
+<p>
+  This use of <em>@Form</em> is very similar to JAX-RS <em>@BeanParam</em> except that the
+  bean properties default be being form parameters. With JAX-RS we would put a <code>@FormParam</code>
+  on every property that is a form parameter which becomes a lot of annotation noise on a large form.
+</p>
+
+<h4>Form beans with @QueryParam, @Header properties</h4>
+<p>
+  The properties on a "form bean" default to being form parameters. We put <em>@QueryParam</em>,
+  <em>@Header</em> on properties that are instead query params, headers or cookies.
+</p>
+<pre content="java">
+public record RegisterForm(
+  String name,
+  String email,
+  String url,
+  @QueryParam Boolean overrideFlag,
+  @Header String xModified) { }
+</pre>
+<p>
+  The generated code includes <code>queryParam()</code> and <code>header()</code> for
+  those parameters:
+</p>
+<pre content="java">
+  // POST register
+  @Override
+  public void register(RegisterForm myForm) {
+    clientContext.request()
+      .path("register")
+      .formParam("name", myForm.name())
+      .formParam("email", myForm.email())
+      .formParam("url", myForm.url())
+      .queryParam("overrideFlag", myForm.overrideFlag())
+      .header("X-Modified", myForm.xModified())
+      .POST()
+      .asVoid();
+  }
+</pre>
+
+
+<h3 id="header">@Header</h3>
+<p>
+  Use <code>@Header</code> for a header parameter.
+  It the header parameter name is not explicitly specified then
+  it is the <em>init caps snake case</em> of the parameter name.
+</p>
+<p>
+  <code>userAgent</code> -> <code>User-Agent</code>
+</p>
+<p>
+  <code>lastModified</code> -> <code>Last-Modified</code>
+</p>
+
+<pre content="java">
+@Post
+Bar postIt(Foo payload, @Header("User-Agent") String userAgent); // explicit
+
+@Post
+Bar postIt(Foo payload, @Header String userAgent); // User-Agent
+
+@Get
+Bazz find(@Header String lastModified); // Last-Modified
+</pre>
 
 
 <h2 id="10k">10K requests - Loom vs Async</h2>

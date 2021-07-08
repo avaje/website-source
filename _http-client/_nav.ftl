@@ -40,6 +40,12 @@
       <li><a href="#auth-bearer">bearer token</a></li>
     </ul>
   </@nav>
+  <@nav url="#logging" title="Logging">
+    <ul>
+      <li><a href="#logging-summary">summary</a></li>
+      <li><a href="#logging-body">detail</a></li>
+    </ul>
+  </@nav>
   <@nav url="#client-api" title="Client API">
     <ul>
       <li><a href="#at-client">@Client</a></li>
@@ -49,6 +55,14 @@
       <li><a href="#api-response-types">Response types</a></li>
       <li><a href="#api-response-body">BodyHandler</a></li>
       <li><a href="#api-request-body">BodyPublisher</a></li>
+      <li><a href="#path">@Path</a></li>
+      <li><a href="#pathParameters">Path parameters</a></li>
+      <li><a href="#queryParam">@QueryParam</a></li>
+      <li><a href="#beanParam">@BeanParam</a></li>
+      <li><a href="#form">@Form</a></li>
+      <li><a href="#formParam">@FormParam</a></li>
+      <li><a href="#formBeans">Form beans</a></li>
+      <li><a href="#header">@Header</a></li>
     </ul>
   </@nav>
   <@nav url="#10k" title="10k requests & Loom">
