@@ -155,9 +155,31 @@
 
 <h3 id="gradle">Gradle</h3>
 <p>
-  See <a href="gradle">Gradle</a> for adding the dependencies using Gradle.
+  Add dependencies for <em>avaje-http-client</em> and <em>jackson-databind</em>.
 </p>
+<pre content="groovy">
+dependencies {
 
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+  implementation 'io.avaje:avaje-http-client:1.9'
+  ...
+}
+</pre>
+
+<p>
+  When using Client API we additionally need <em>avaje-http-api</em> and
+  <em>avaje-http-client-generator</em> annotation processor.
+</p>
+<pre content="groovy">
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+    implementation 'io.avaje:avaje-http-client:1.9'
+
+    implementation 'io.avaje:avaje-http-api:1.9'
+    annotationProcessor 'io.avaje:avaje-http-client-generator:1.9'
+    ...
+}
+</pre>
 
 
 <h3 id="limitations">Limitations</h3>
@@ -876,6 +898,11 @@ import io.avaje.http.api.Client;
 <img src="/images/http-client-api-sources.png" width="400px">
 
 <p>&nbsp;</p>
+<p>
+  For more on <a href="/http-client/start#B3">IntelliJ IDEA</a> setup of generated source.
+</p>
+
+<p>&nbsp;</p>
 <h3>Example: Generated source</h3>
 <p>
   The generated code for the <code>Github</code> interface above is:
@@ -974,7 +1001,8 @@ public class Github$HttpClient implements Github {
   HttpResponse<|Path> getWithHandler(String id, HttpResponse.BodyHandler<|Path> myHandler, String other);
 </pre>
 <p>
-  The generated code uses the BodyHandler parameter to handle the response body. The resulting generated code is:
+  The generated code uses the BodyHandler parameter to handle the response body. The resulting generated code
+  includes <code>.withHandler(myHandler)</code>:
 </p>
 <pre content="java">
   // GET /{id}
@@ -996,7 +1024,7 @@ public class Github$HttpClient implements Github {
   <|T> HttpResponse<|T> getWithGeneralHandler(String id, HttpResponse.BodyHandler<|T> myHandler);
 </pre>
 <p>
-  The generated code uses the BodyHandler parameter to handle the response body. The resulting generated code is:
+  The generated code uses the BodyHandler parameter to handle the response body.
 </p>
 <pre content="java">
   // GET /{id}
@@ -1019,7 +1047,7 @@ public class Github$HttpClient implements Github {
   HttpResponse<|Void> postWithBody(String id, String name, HttpRequest.BodyPublisher body);
 </pre>
 <p>
-  The generated code uses the BodyPublisher parameter as the request body. The resulting generated code is:
+  The generated code uses the BodyPublisher parameter as the request body <code>.body(body)</code>
 </p>
 <pre content="java">
   // POST /{id}/foo/{name}
@@ -1083,7 +1111,7 @@ public interface Cats {
   annotation.
 </p>
 <p>
-  For example <code>{id}</code>, <code>{name}</code>, <code>{startDate}</code>
+  For example <code>{id}</code>, <code>{startDate}</code>, <code>{type}</code>
   in the path are matched to method parameters of the same name.
 </p>
 <pre content="java">

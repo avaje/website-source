@@ -26,7 +26,14 @@
     <version>2.12.3</version>
   </dependency>
 </pre>
-
+<h5>Gradle</h5>
+<pre content="groovy">
+dependencies {
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+  implementation 'io.avaje:avaje-http-client:1.9'
+  ...
+}
+</pre>
 <h3 id="A2">A2. Create HttpClientContext</h3>
 <p>
   We will use <code>https://api.github.com</code> as the base URL and use
@@ -175,6 +182,17 @@ public class Main {
 </plugin>
 </pre>
 
+<h4>Gradle</h4>
+<pre content="groovy">
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+    implementation 'io.avaje:avaje-http-client:1.9'
+
+    implementation 'io.avaje:avaje-http-api:1.9'
+    annotationProcessor 'io.avaje:avaje-http-client-generator:1.9'
+    ...
+}
+</pre>
 
 <h3 id="B2">B2. Create interface</h3>
 <p>
@@ -359,6 +377,34 @@ public class ApiMain {
   }
 }
 </pre>
+
+<h2 id="logging">Logging</h2>
+<p>
+  By default request response logging is built in (via <code>RequestLogger</code>)
+  and we enable it via setting the log level to <code>DEBUG</code> or <code>TRACE</code>
+  for <code>io.avaje.http.client.RequestLogger</code>
+</p>
+<h5>Example: Logback</h5>
+<pre content="xml">
+    <logger name="io.avaje.http.client.RequestLogger" level="trace"/>
+</pre>
+
+<h4 id="logging-summary">DEBUG</h4>
+<p>
+  Summary logging that includes the response status code and execution time is logged
+  at <code>DEBUG</code> level.
+</p>
+<h4 id="logging-detail">TRACE</h4>
+<p>
+  Logging that includes the request and response <em>headers</em> plus the <em>body</em>
+  content is logged at <code>TRACE</code> level.
+</p>
+
+<h2>Next</h2>
+<p>
+  Back to the <a href="/http-client">main documentation</a>
+</p>
+<p>&nbsp;</p>
 
 </body>
 </html>
