@@ -15,7 +15,7 @@
 <dependency>
   <groupId>io.avaje</groupId>
   <artifactId>avaje-http-api</artifactId>
-  <version>1.9</version>
+  <version>1.11</version>
 </dependency>
 </pre>
 
@@ -39,7 +39,7 @@
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-http-javalin-generator</artifactId>
-    <version>1.9</version>
+    <version>1.11</version>
     <scope>provided</scope>
   </dependency>
 </pre>
@@ -63,7 +63,7 @@
       <path>
         <groupId>io.avaje</groupId>
         <artifactId>avaje-http-javalin-generator</artifactId>
-        <version>1.9</version>
+        <version>1.11</version>
       </path>
       <path>
           ... other annotation processor ...
@@ -110,10 +110,10 @@ plugins {
 dependencies {
   ...
   compile('io.avaje:avaje-inject:6.1')
-  compile('io.avaje:avaje-http-api:1.9')
+  compile('io.avaje:avaje-http-api:1.11')
 
   annotationProcessor('io.avaje:avaje-inject-generator:6.1')
-  annotationProcessor('io.avaje:avaje-http-javalin-generator:1.9')
+  annotationProcessor('io.avaje:avaje-http-javalin-generator:1.11')
 }
 </pre>
 
@@ -126,7 +126,7 @@ dependencies {
 dependencies {
   ...
   kapt('io.avaje:avaje-inject-generator:6.1')
-  kapt('io.avaje:avaje-http-javalin-generator:1.9')
+  kapt('io.avaje:avaje-http-javalin-generator:1.11')
 }
 </pre>
 
