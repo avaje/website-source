@@ -49,13 +49,15 @@
 </p>
 <ul>
   <li>Generates the implementation as source code via annotation processing</li>
+  <li>No reflection and no use of dynamic proxies</li>
   <li>Targets <em>avaje-http-client / JDK HttpClient</em> only</li>
 </ul>
 <p>
   This is similar to <a target="_blank" href="https://github.com/square/retrofit">Retrofit</a>,
   <a target="_blank" href="https://github.com/OpenFeign/feign">Feign</a> and JAX-RS client for people familiar with
   those projects. This client API generation targets <em>avaje-http-client / JDK HttpClient</em> only
-  and uses source code generation via annotation processing.
+  and uses source code generation via annotation processing so there is no use of reflection and no
+  use of dynamic proxies.
 </p>
 
 <h5>Example client API</h5>
