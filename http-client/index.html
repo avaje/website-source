@@ -1188,6 +1188,31 @@ List<|Cat> findCats(LocalDate bornAfter, String orderBy);  // orderBy implied as
   then we must use <code>@QueryParam</code> explicitly.
 </p>
 
+<h4>@QueryParam Map&lt;String, ?&gt;</h4>
+<p>
+  We can use <code>@QueryParam</code> with a <code>Map&lt;String, ?&gt;</code>, <code>Map&lt;String, String&gt;</code>
+  or <code>Map&lt;String, Object&gt;</code>
+</p>
+<pre content="java">
+  @Post
+  void newCat(Cat cat, String myParam, @QueryParam Map<|String,?> extraParams);
+</pre>
+<p>
+  The generated code includes <code>.queryParam(extraParams)</code>
+</p>
+<pre content="java">
+  // POST
+  @Override
+  public void newCat(Cat cat, String myParam, Map<|String,?> extraParams) {
+    clientContext.request()
+      .path("api").path("cats")
+      .queryParam("myParam", myParam)
+      .queryParam(extraParams)
+      .body(cat)
+      .POST()
+      .asVoid();
+  }
+</pre>
 
 <h3 id="beanParam">@BeanParam</h3>
 <p>
@@ -1315,6 +1340,29 @@ void register(@FormParam String name, @FormParam String email, @FormParam String
   are not valid Java/Kotlin identifiers.
 </p>
 
+<h4>@FormParam Map&lt;String, ?&gt;</h4>
+<p>
+  We can use <code>@FormParam</code> with a <code>Map&lt;String, ?&gt;</code>, <code>Map&lt;String, String&gt;</code>
+  or <code>Map&lt;String, Object&gt;</code>.
+</p>
+<pre content="java">
+  @Put("{id}")
+  void register(UUID id, @FormParam Map<|String, ?> params);
+</pre>
+<p>
+  The generated code includes <code>.formParam(params)</code>
+</p>
+<pre content="java">
+  // PUT {id}
+  @Override
+  public void register(UUID id, Map<|String,?> params) {
+    clientContext.request()
+      .path("api").path("cats").path(id)
+      .formParam(params)
+      .PUT()
+      .asVoid();
+  }
+</pre>
 
 <h2 id="formBeans">@Form "Form Beans"</h2>
 <p>
@@ -1412,6 +1460,30 @@ Bar postIt(Foo payload, @Header String userAgent); // User-Agent
 Bazz find(@Header String lastModified); // Last-Modified
 </pre>
 
+<h4>@Header Map&lt;String, ?&gt;</h4>
+<p>
+  We can use <code>@Header</code> with a <code>Map&lt;String, ?&gt;</code>, <code>Map&lt;String, String&gt;</code>
+  or <code>Map&lt;String, Object&gt;</code>.
+</p>
+<pre content="java">
+  @Get("{type}")
+  List<|Cat> searchByType(String type, String query, @Header Map<|String, ?> myHeaders);
+</pre>
+<p>
+  The generated code includes <code>.header(myHeaders)</code>
+</p>
+<pre content="java">
+  // GET {type}
+  @Override
+  public List<|Cat> searchByType(String type, String query, Map<|String,?> myHeaders) {
+    return clientContext.request()
+      .header(myHeaders)
+      .path("api").path("cats").path(type)
+      .queryParam("query", query)
+      .GET()
+      .list(Cat.class);
+  }
+</pre>
 
 <h2 id="10k">10K requests - Loom vs Async</h2>
 <p>
