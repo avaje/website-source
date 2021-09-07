@@ -62,6 +62,7 @@
 
 <h5>Example client API</h5>
 <pre content="java">
+  @Client
   interface GitHub {
 
     @Get("/repos/{owner}/{repo}/contributors")
@@ -70,6 +71,7 @@
 </pre>
 <h5>API allowing async or sync use via HttpCall</h5>
 <pre content="java">
+  @Client
   interface GitHub {
 
     @Get("/repos/{owner}/{repo}/contributors")
@@ -77,10 +79,10 @@
   }
 </pre>
 <p>
-  The Client API can also be a useful target given a Openapi/Swagger spec.
-  Given a Openapi spec generate a client API (or client and server API).
+  The client API can also be a useful target given a openapi/swagger spec.
+  Given a openapi spec generate a client API (or client and server API).
   The plan is to add a maven plugin that takes an openapi spec and generates
-  the associated API (but this does not exist just yet).
+  the associated API but this does not exist just yet.
 </p>
 
 
