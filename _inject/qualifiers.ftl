@@ -2,9 +2,9 @@
 
 <h3 id="named">@Named</h3>
 <p>
-  When we have multiple beans that implement a common interface and we can qualify
+  When we have multiple beans that implement a common interface we can qualify
   which instance is used by specifying <code>@Named</code> on the beans and where
-  they are injected.
+  they are injected. This is a standard part of most Java DI frameworks.
 </p>
 <p>
   Note that qualifier names are treated as case insensitive.
@@ -50,6 +50,10 @@ public class StoreFactory {
 </pre>
 
 <p>
+  Finally, we can specify the name when explicitly registering a bean with a <code>BeanScope</code>.
+</p>
+
+<p>
   We can then specify which <em>@Named</em> instance to inject by specifying the qualifier.
 </p>
 
@@ -72,6 +76,28 @@ public class OrderProcessor {
 
   ...
 </pre>
+
+<p>
+  <code>@Named</code> is a standard part of Java dependency injection frameworks. Avaje Inject goes further and eliminates the need for
+  writing out the annotation at all. All injectable parameters or fields that don't specify <code>@Named</code> explicitly are implicitly
+  given a name of <code>!name</code>. So the above can be more cleanly written by relying on this implicit rule, like this:
+</p>
+
+<pre content="java">
+@Singleton
+public class OrderProcessor {
+  private final Store store;
+
+  public OrderProcessor(Store red) {
+    this.store = store;
+  }
+  ...
+</pre>
+
+<p>
+  This type of implicit naming is useful if you want to inject things with a relatively widely used type, for example,
+  a <code>java.nio.file.Path</code> object.
+</p>
 
 <h3 id="qualifier">@Qualifier</h3>
 <p>

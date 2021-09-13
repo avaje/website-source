@@ -7,9 +7,6 @@
   really care about modules. All the dependencies that are being injected are known and
   provided by the same jar/module.
 </p>
-<p>
-  In a single module app there is only 1 BeanScope.
-</p>
 
 <h3 id="multi-module">Multi-module apps</h3>
 <p>
@@ -18,7 +15,7 @@
   by using <code>@InjectModule</code>.
 </p>
 <p>
-  In a multi-module app there is 1 BeanScope per module and <em>avaje-inject</em> needs to
+  In a multi-module app there is one BeanScope per module and <em>avaje-inject</em> needs to
   determine the order in which the modules are wired. It does this using the module <em>provides</em>
   and <em>dependsOn</em>.
 </p>
@@ -61,4 +58,3 @@
   dependsOn values. In the example above the "feature-toggle" beans must be built first, and then the
   beans it contains are available when building the "job-system".
 </p>
-

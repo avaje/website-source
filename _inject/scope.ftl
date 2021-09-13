@@ -1,75 +1,40 @@
-<h2 id="scope">Scope</h2>
+<h2 id="scope">@Scope</h2>
 
-<h3 id="scope-singleton">@Singleton</h3>
 <p>
-  Beans annotated with <code>@Singleton</code> will have a single instance created
-  in the BeanScope. For an application we typically only have one BeanScope (ApplicationScope)
-  and so we only create one instance.
+  All beans are instantiated within a <i>scope</i>. A few scopes are provided for you out of the box, but you can also define your own
+  by creating an annotation and then meta-annotating it with <code>@Scope</code>. Scopes can depend on each other and also externally
+  defined objects, thus allowing a hierarchy of scopes to be modelled. Each scope results in the generation of a module class that
+  can be added to a <code>BeanScope</code> using the <code>withModules</code> method. The constructor of the module class takes the
+  externally defined dependencies. This makes it easy to partially adopt Avaje Inject: some objects can be built manually by your own code
+  and then provided to the DI scope.
 </p>
-<p>
-  Singleton's can only depend on other singleton beans. If we add a dependency to a <code>@Request</code>
-  bean then we will get a compiler error telling us we can't do that.
-</p>
+
 <pre content="java">
-@Singleton
-public class ProductService  {
-  ...
+@Scope
+@InjectModule(requires = {NonDIConstructedObject.class})
+public @interface MyCustomScope {
 }
-</pre>
 
-<h3 id="scope-request">@Request</h3>
-<p>
-  Beans annotated with <code>@Request</code> have request scope. This means that:
-</p>
-<ul>
-  <li>They can only be accessed via RequestScope</li>
-  <li>They can depend on things supplied to the RequestScope</li>
-  <li>They can depend on other @Request beans</li>
-  <li>They can depend on @Singleton beans</li>
-</ul>
+@MyCustomScope
+public class SomeObject {
+  public SomeObject(NonDIConstructedObject obj) { ... }
+}
 
-<pre content="java">
-@Request
-public class ProductController {
-
-  /**
-   * Can depend on:
-   * - Things provided to the request scope
-   * - @Request scope beans
-   * - @Singleton beans
-   */
-  public ProductController(HttpRequest request, HttpResponse response, ProductService productService) {
-    ...
+public class App {
+  public static void main(String[] args) {
+    BeanScope scope = BeanScope.newBuilder().withModules(new MyCustomScopeModule(new NonDIConstructedObject())).build();
+    SomeObject obj = scope.get(SomeObject.class);
   }
-
 }
 </pre>
 
 <p>
-  We can only use request scoped beans via <em>RequestScope</em>. One instance is created once per
-  <code>RequestScope</code> on demand - an instance is only created if it is used for that request.
+  For simple uses you don't need any custom scopes. You can just annotate classes with `@Singleton` and use the default scope, which
+  is used if you don't specify any modules to the <code>BeanScope</code> constructor. It's located using the <code>ServiceLoader</code>
+  mechanism.
 </p>
 
-<pre content="java">
-    try (RequestScope requestScope = ApplicationScope.newRequestScope()
-      .withBean(HttpRequest.class, request)
-      .withBean(HttpResponse.class, response)
-      .build()) {
-
-      ProductController productController = requestScope.get(ProductController.class);
-      productController.doStuff();
-    }
-</pre>
-
-<h3 id="controller">@Controller (avaje-http)</h3>
 <p>
-  If we are using <a href="/http">avaje-http</a> then we use
-  <a href="/http/#controller">@Controller</a> rather than <code>@Singleton</code>
-  or <code>@Request</code>. When we do this avaje  inject will detect if the controller
-  needs to be request scoped (by looking at it's dependencies at compile time) and
-  automatically handle that.
-</p>
-<p>
-  In general we would only expect to use <code>@Request</code> and <code>RequestScope</code>
-  when we are not using <em>avaje-http</em>.
+  To make one scope depend on another, just put the depended-on scope's annotation into the <code>@InjectModule(requires = { .. })</code>
+  list, then call the <code>withParent</code> method of the <code>BeanScope</code> to chain them together.
 </p>
