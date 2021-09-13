@@ -128,16 +128,13 @@ dependencies {
   <em>avaje-inject</em> supports the java module system. Add a <em>requires</em> clause and
   <em>provides</em> clause like the following:
 </p>
+
 <pre content="java">
 module org.example {
-
   requires io.avaje.inject;
-
-  // explicitly register the generated BeanScopeFactory
-  provides io.avaje.inject.spi.BeanScopeFactory with org.example._DI$BeanScopeFactory;
+  provides io.avaje.inject.spi.Module with org.example.ExampleModule;
 }
 </pre>
 <p>
-  With JPMS we need to explicitly specify the generated <code>BeanScopeFactory</code>
-  in a <code>provides</code> clause.
+  With JPMS we need to explicitly specify the generated <code>Module</code> in a <code>provides</code> clause.
 </p>
