@@ -63,6 +63,13 @@ public class CoffeeQueue implements AutoCloseable {
 
 <h3 id="shutdownHook">Shutdown hook</h3>
 <p>
-  When the <a href="#scope-application">ApplicationScope</a> is initialised it registers a JVM shutdown hook.
-  This is fired when the JVM is shutdown and this in turn invokes the PreDestroy methods.
+  When <code>BeanScope</code> is created we can specify if it should register a JVM shutdown hook.
+  This is fired when the JVM is shutdown and this in turn invokes the PreDestroy methods. Otherwise
+  <code>PreDestroy</code> methods are closed when the BeanScope is closed.
 </p>
+<pre content="java">
+BeanScope beanScope =
+  BeanScope.newBuilder()
+      .withShutdownHook(true) // create with JVM shutdown hook
+      .build()
+</pre>

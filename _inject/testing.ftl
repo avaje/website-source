@@ -127,17 +127,21 @@
 <h4>Programmatic style component test</h4>
 <p>
   For programmatic style component testing we create a BeanScope and define test doubles that
-  we want to use in place of the real things. We can use <code>withMock()</code> to get a
-  dependency to be a Mockito mock. We can use <code>withSpy()</code> to get a dependency to
-  be a Mockito spy. We can use <code>withBean()</code> to supply any sort of test double we
-  like.
+  we want to use in place of the real things.
+</p>
+<p>
+  With the bean scope builder we use <code>forTesting()</code> to give us extra methods for ease of using
+  mockito mocks and spies. Use <code>withMock()</code> to specify a dependency to be a Mockito mock.
+  Use <code>withSpy()</code> to get a dependency to be a Mockito spy. We can use <code>withBean()</code>
+  to supply any sort of test double we like.
 </p>
 
 <pre content="java">
 @Test
-void myComponentTest() {
+void using_withMock() {
 
   try (BeanScope scope = BeanScope.newBuilder()
+    .forTesting()
     .withMock(Pump.class)
     .withMock(Grinder.class)
     .build()) {
@@ -148,5 +152,24 @@ void myComponentTest() {
 
     verify(pump).pumpSteam();
     verify(grinder).grindBeans();
+}
+</pre>
+
+<pre content="java">
+@Test
+void using_withSpy() {
+
+  try (BeanScope context = BeanScope.newBuilder()
+    .forTesting()
+    .withSpy(Pump.class)
+    .build()) {
+
+    CoffeeMaker coffeeMaker = context.get(CoffeeMaker.class);
+    assertThat(coffeeMaker).isNotNull();
+    coffeeMaker.makeIt();
+
+    Pump pump = context.get(Pump.class);
+    verify(pump).pumpWater();
+  }
 }
 </pre>

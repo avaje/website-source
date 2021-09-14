@@ -45,16 +45,9 @@
 </@nav>
 <@nav url="#scope" title="Scope">
   <ul>
-    <li><a href="#scope-singleton">@Singleton</a></li>
-    <li><a href="#scope-request">@Request</a></li>
-    <li><a href="#controller">@Controller</a></li>
-  </ul>
-</@nav>
-<@nav url="#application-scope" title="ApplicationScope">
-  <ul>
-    <li><a href="#application-scope">ApplicationScope</a></li>
-    <li><a href="#bean-scope">BeanScope</a></li>
-    <li><a href="#request-scope">RequestScope</a></li>
+    <li><a href="#default-scope">Default scope</a></li>
+    <li><a href="#request-scope">Request scope</a></li>
+    <li><a href="#custom-scope">Custom scope</a></li>
   </ul>
 </@nav>
 <@nav url="#testing" title="Testing">
