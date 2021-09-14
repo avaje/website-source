@@ -76,7 +76,7 @@
         <td><a target="_blank" href="https://github.com/avaje/avaje-config">Github</a></td>
         <td><a target="_blank" href="/apidocs/avaje-config">Javadoc</a></td>
         <td><a target="_blank" href="https://github.com/avaje/avaje-config/issues">Github</a></td>
-        <td><a target="_blank" href="https://github.com/avaje/avaje-config/releases">Latest 1.0</a></td>
+        <td><a target="_blank" href="https://github.com/avaje/avaje-config/releases">Latest 1.4</a></td>
       </tr>
     </table>
 
@@ -239,7 +239,7 @@
       watch the config files and reload configuration when the files change.
     </p>
     <p>
-      By default it will check the config files every 60 seconds. We can change this by setting
+      By default it will check the config files every 10 seconds. We can change this by setting
       <code>config.watch.period</code>
     </p>
 
@@ -248,7 +248,7 @@
       config:
         watch:
           enabled: true
-          period: 10   ## check every 10 seconds
+          period: 5   ## check every 5 seconds
     </pre>
     <p>
       We can use this as a simple form of feature toggling. For example if we are
