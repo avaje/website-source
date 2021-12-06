@@ -31,6 +31,10 @@
   </@nav>
   <@nav url="#httpException" title="HttpException"/>
   <@nav url="#async" title="Async">
+    <ul>
+      <li><a href="#async-join">testing with join</a></li>
+      <li><a href="#async-executor">Executor</a></li>
+    </ul>
   </@nav>
   <@nav url="#httpCall" title="HttpCall">
   </@nav>

@@ -8,7 +8,7 @@
 
 <h1 id="overview">avaje http client</h1>
 
-<table width="100%">
+<table style="width: 100%;">
   <tr>
     <th>License</th>
     <th>Source</th>
@@ -21,9 +21,15 @@
     <td><a target="_blank" href="https://github.com/avaje/avaje-http-client">Github</a></td>
     <td><a target="_blank" href="/apidocs/avaje-http-client">Javadoc</a></td>
     <td><a target="_blank" href="https://github.com/avaje/avaje-http-client/issues">Github</a></td>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-http-client/releases">Latest 1.11</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-http-client/releases">Latest 1.13</a></td>
   </tr>
 </table>
+<p>&nbsp;</p>
+<p>
+  <a href="https://mvnrepository.com/artifact/io.avaje/avaje-http-client"><img src="https://img.shields.io/maven-central/v/io.avaje/avaje-http-client.svg?label=Maven%20Central"></a>
+  <a href="https://github.com/avaje/avaje-http-client/actions/workflows/build.yml"><img src="https://github.com/avaje/avaje-http-client/actions/workflows/build.yml/badge.svg" alt="Build"></a>
+  <a href="https://github.com/avaje/avaje-http-client/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"></a>
+</p>
 <p>&nbsp;</p>
 
 <h3>Wrap JDK HttpClient</h3>
@@ -33,7 +39,10 @@
 <ul>
   <li>Requires Java 11+ (recommend 11.0.8+)</li>
   <li>Adds a fluid API for building URL and payload</li>
-  <li>Adds JSON marshalling/unmarshalling of request and response using Jackson or Gson</li>
+  <li>Adds JSON marshalling/unmarshalling of request and response using
+    <a href="https://github.com/FasterXML/jackson">Jackson</a>,
+    <a href="https://github.com/google/gson">Gson</a> or <a href="https://github.com/avaje/avaje-jsonb">avaje-jsonb</a>
+  </li>
   <li>Gzip encoding/decoding</li>
   <li>Logging of request/response logging</li>
   <li>Interception of request/response</li>
@@ -102,7 +111,7 @@
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-http-client</artifactId>
-    <version>1.11</version>
+    <version>1.13</version>
   </dependency>
 </pre>
 
@@ -114,7 +123,7 @@
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-http-api</artifactId>
-    <version>1.11</version>
+    <version>1.13</version>
   </dependency>
 </pre>
 
@@ -128,7 +137,7 @@
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-http-client-generator</artifactId>
-    <version>1.11</version>
+    <version>1.13</version>
     <scope>provided</scope>
   </dependency>
 </pre>
@@ -147,7 +156,7 @@
       <path>
         <groupId>io.avaje</groupId>
         <artifactId>avaje-http-client-generator</artifactId>
-        <version>1.11</version>
+        <version>1.13</version>
       </path>
       <path>
           ... other annotation processor ...
@@ -165,7 +174,7 @@
 dependencies {
 
   implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
-  implementation 'io.avaje:avaje-http-client:1.11'
+  implementation 'io.avaje:avaje-http-client:1.13'
   ...
 }
 </pre>
@@ -177,10 +186,10 @@ dependencies {
 <pre content="groovy">
 dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
-    implementation 'io.avaje:avaje-http-client:1.11'
+    implementation 'io.avaje:avaje-http-client:1.13'
 
-    implementation 'io.avaje:avaje-http-api:1.11'
-    annotationProcessor 'io.avaje:avaje-http-client-generator:1.11'
+    implementation 'io.avaje:avaje-http-api:1.13'
+    annotationProcessor 'io.avaje:avaje-http-client-generator:1.13'
     ...
 }
 </pre>
@@ -302,7 +311,7 @@ dependencies {
 </p>
 <p>
   Create a HttpClientContext with a base URL plus BodyAdapter (e.g. JacksonBodyAdapter).
-  Additionally set other options like retry and request interceptors as necessary.
+  Additionally, set other options like retry and request interceptors as necessary.
 </p>
 
 <p>
@@ -688,6 +697,38 @@ dependencies {
      ...
    });
 </pre>
+
+<h3 id="async-join">Testing with async() and join()</h3>
+<p>
+  Note that when writing tests using <code>.async()</code> we often use <code>.join()</code> such that the current
+  thread waits for the async processing to complete. We can then execute asserts knowing the async processing
+  has completed.
+</p>
+
+<h4>Example: join()</h4>
+<pre content="java">
+  clientContext.request()
+   .path("customer").path(42)
+   .GET()
+   .async().bean(Customer.class)
+   .whenComplete((customer, throwable) -> {
+     ...
+   }).join(); // wait for async processing to complete
+
+  // can assert here after the join() if desired
+  assertThat(...)
+</pre>
+
+<h3 id="async-executor">Executor and common pool</h3>
+<p>
+  Note that <a target="_blank" href="https://bugs.openjdk.java.net/browse/JDK-8204339">JDK-8204339 - HTTP Client Dependent tasks should run in the common pool</a>
+  means that by <em>default</em> async callbacks are executed using the <code>ForkJoinPool.commonPool()</code> even when an
+  <code>Executor</code> is assigned to the <code>HttpClient</code>. This is can be unexpected behavior, also refer
+  to this <a href="https://stackoverflow.com/questions/51907641/java-11-http-client-asynchronous-execution">stackoverflow discussion</a>
+  on this behavior.
+</p>
+<p></p>
+
 
 <h2 id="httpCall">HttpCall</h2>
 <p>
