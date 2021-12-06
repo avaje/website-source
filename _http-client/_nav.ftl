@@ -9,6 +9,13 @@
   <@nav url="#quick-overview" title="Quick overview"/>
   <@nav url="#sync-async" title="Sync and Async"/>
   <@nav url="#httpClientContext" title="HttpClientContext"/>
+  <@nav url="#json-bodyAdapter" title="JSON BodyAdapter">
+    <ul>
+      <li><a href="#json-jackson">Jackson</a></li>
+      <li><a href="#json-gson">Gson</a></li>
+      <li><a href="#json-jsonb">avaje-jsonb</a></li>
+    </ul>
+  </@nav>
   <@nav url="#request-body" title="Request body">
     <ul>
       <li><a href="#req-json">object JSON</a></li>

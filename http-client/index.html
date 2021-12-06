@@ -338,6 +338,101 @@ dependencies {
     .asString();
 </pre>
 
+<h2 id="json-bodyAdapter">Json - BodyAdapter</h2>
+<p>
+  <em>avaje-http-client</em> provides a
+  <a target="_blank" href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/BodyAdapter.html">BodyAdapter</a> interface
+  with implementations for <a href="https://github.com/FasterXML/jackson">Jackson</a>,
+  <a href="https://github.com/google/gson">Gson</a> and <a href="https://github.com/avaje/avaje-jsonb">avaje-jsonb</a> to
+  adapt request and response body content from JSON to java types and from java types to JSON.
+</p>
+
+<h3 id="json-jackson">Using Jackson</h3>
+<p>
+  To use Jackson for serialisation of request and response body content to and from JSON we need to:
+</p>
+<h4>1. Add jackson-databind dependency</h4>
+<pre content="xml">
+  <dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.12.3</version>
+  </dependency>
+</pre>
+
+<h4>2. Register JacksonBodyAdapter</h4>
+<p>
+  Register the JacksonBodyAdapter with the HttpClientContext builder. We often provide JacksonBodyAdapter an
+  ObjectMapper that has modules and configuration. For example:
+</p>
+<pre content="java">
+  ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+
+  HttpClientContext httpClientContext =
+    HttpClientContext.newBuilder()
+      .baseUrl(baseUrl)
+      .bodyAdapter(new JacksonBodyAdapter(objectMapper))
+      .build();
+</pre>
+
+<h3 id="json-gson">Using Gson</h3>
+<p>
+  To use Gson for serialisation of request and response body content to and from JSON we need to:
+</p>
+<h4>1. Add gson dependency</h4>
+<pre content="xml">
+  <dependency>
+    <groupId>com.google.code.gson</groupId>
+    <artifactId>gson</artifactId>
+    <version>2.8.9</version>
+  </dependency>
+</pre>
+
+<h4>2. Register GsonBodyAdapter</h4>
+<p>
+  Register the GsonBodyAdapter with the HttpClientContext builder. For example:
+</p>
+<pre content="java">
+  HttpClientContext httpClientContext =
+    HttpClientContext.newBuilder()
+      .baseUrl(baseUrl)
+      .bodyAdapter(new GsonBodyAdapter(new Gson()))
+      .build();
+</pre>
+
+<h3 id="json-jsonb">Using avaje-jsonb</h3>
+<p>
+  To use <em>avaje-jsonb</em> for serialisation of request and response body content to and from JSON we need to:
+</p>
+<h4>1. Add avaje-jsonb dependency</h4>
+<pre content="xml">
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-jsonb</artifactId>
+    <version>0.8</version>
+  </dependency>
+</pre>
+
+<h4>2. Register JsonbBodyAdapter</h4>
+<p>
+  Register the JsonbBodyAdapter with the HttpClientContext builder. We can supply a jsonb instance
+  to JsonbBodyAdapter or just use defaults. For example:
+</p>
+<pre content="java">
+  Jsonb jsonb = Jsonb.newBuilder().build();
+
+  HttpClientContext httpClientContext =
+    HttpClientContext.newBuilder()
+      .baseUrl(baseUrl)
+      .bodyAdapter(new JsonbBodyAdapter(jsonb))
+      .build();
+</pre>
+<p>
+  Note that <a href="https://github.com/avaje/avaje-jsonb">avaje-jsonb</a> uses APT source code generation to generate
+  adapters for types annotated with <code>@Json</code>. This makes it a fast and light dependency, especially good for
+  http clients, CLI applications and use with Graal native image.
+</p>
+
 <h2 id="request-body">Request body</h2>
 <p>
   <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpRequest.BodyPublisher.html">java.net.http.HttpRequest.BodyPublisher</a>
