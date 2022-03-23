@@ -1,0 +1,82 @@
+<html>
+<head>
+  <meta name="layout" content="_layout/base-inject.html"/>
+  <template id="menuNav"><#include "/_inject/_nav_inject_tutorials.ftl"></template>
+</head>
+<body>
+  <header>
+    <nav id="top">
+      <div class="breadcrumb">
+        <a href="/" title="home">avaje</a> &nbsp;&nbsp;/&nbsp;&nbsp;<a href="/inject" title="inject">inject</a>&nbsp;&nbsp;/&nbsp;&nbsp;tutorials
+      </div>
+      <ul>
+        <li><a href="/" title="home"><i class="fas fa-home"></i></a></li>
+        <li><a href="https://github.com/avaje/avaje-inject" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <h1>Tutorials</h1>
+  <p>
+    Tutorials to walk through the main parts of avaje-inject dependency injection, how it works, and the
+    intention behind the features and how they are expected to be used.
+  </p>
+
+  <h3 id="t1">1. Getting started</h3>
+  <ul>
+    <li>How avaje-inject works</li>
+    <li>DI as a pattern, we could do manually if we want to</li>
+    <li>DI as "wiring components" and "ordering the wiring"</li>
+    <li>Constructors should not have logic ...</li>
+  </ul>
+
+  <h3 id="t2">2. @Factory / @Bean</h3>
+  <ul>
+    <li>Programmatic wiring, the motivation for @Factory @Bean</li>
+    <li>Where it comes from wrt JSR-330 Provider&lt;T&gt; and Spring DI</li>
+  </ul>
+
+  <h3 id="t3">3. Testing, Mock, Spy, @TestScope and Component testing</h3>
+  <ul>
+    <li>Test double with avaje-inject, Mockito mocks, spies</li>
+    <li>Providing a "default test dependency" for all tests</li>
+    <li>Wiring for testing - e.g. docker test containers</li>
+  </ul>
+
+  <h3 id="t4">4. Custom Scopes</h3>
+  <ul>
+    <li>Use cases for custom scopes</li>
+    <li>Parent child relationships between custom scopes</li>
+    <li>External dependencies</li>
+  </ul>
+
+  <h3 id="t5">5. AOP Aspects</h3>
+  <ul>
+    <li>Use cases for AOP Aspects (@Retry, @Timed, @Transactional ...)</li>
+    <li>Walk-through creating our own @Timed</li>
+  </ul>
+
+  <h3 id="t6">6. @Named and @Qualifier</h3>
+  <ul>
+    <li>Using name qualifiers</li>
+  </ul>
+
+  <h3 id="t7">7. Modules - wiring across jars</h3>
+  <ul>
+    <li>Wiring across projects / jars</li>
+    <li>Ordering and how it works ...</li>
+  </ul>
+
+  <h3 id="t8">8. @Primary and @Secondary</h3>
+  <ul>
+    <li>Using @Primary and @Secondary for "tie breaking" in multi-module wiring...</li>
+  </ul>
+
+  <p></p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+
+
+</body>
+</html>

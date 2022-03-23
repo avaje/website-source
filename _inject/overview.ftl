@@ -59,11 +59,6 @@
   </tr>
 </table>
 
-<h3 id="prior-docs">Older documentation</h3>
-<p>
-  The documentation for versions prior to 6.x is available at <a href="v4">version 4.x docs</a>
-</p>
-
 <h3 id="releases">Releases for javax and jakarta</h3>
 <p>
   The move of JEE to the eclipse foundation meant a change in package from <code>javax</code>
@@ -83,6 +78,9 @@
 <p>
   Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-8.0">version 8.0</a> of
   avaje-inject with the dependency on <code>jakarta.inject</code> (maintained on master branch).
+</p>
+<p>
+  Both version 8.x and 7.x require Java 11. For Java 8 support use versions 6.22 (for jakarta.inject) or 5.22 (for javax.inject).
 </p>
 
 <h3 id="jsr-330">Based on JSR-330</h3>
