@@ -15,7 +15,7 @@
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject">Github</a></td>
     <td><a target="_blank" href="/apidocs/avaje-inject">Javadoc</a></td>
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject/issues">Github</a></td>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/releases">Latest 8.0</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/releases">Latest 8.1</a></td>
   </tr>
 </table>
 <p>&nbsp;</p>
@@ -71,12 +71,12 @@
 
 <h4>Want to use javax.inject?</h4>
 <p>
-  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-parent-7.0">version 7.0</a> of
+  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-parent-7.1">version 7.1</a> of
   avaje-inject with the dependency on <code>javax.inject</code> (maintained on javax.main branch).
 </p>
 <h4>Want to use jakarta.inject?</h4>
 <p>
-  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-8.0">version 8.0</a> of
+  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-8.1">version 8.1</a> of
   avaje-inject with the dependency on <code>jakarta.inject</code> (maintained on master branch).
 </p>
 <p>

@@ -84,7 +84,7 @@
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-inject-test</artifactId>
-    <version>8.0</version>
+    <version>8.1</version>
     <scope>test</scope>
   </dependency>
 </pre>
