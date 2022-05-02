@@ -15,6 +15,7 @@
 <@nav url="#injection" title="Injection">
   <ul>
     <li><a href="#singleton">@Singleton</a></li>
+    <li><a href="#component">@Component</a></li>
     <li><a href="#inject">@Inject</a></li>
     <li><a href="#constructor">Constructor injection</a></li>
     <li><a href="#field">Field injection</a></li>
@@ -58,6 +59,7 @@
 </@nav>
 <@nav url="#modules" title="Modules">
   <ul>
+    <li><a href="#unnamed-module">Unnamed module</a></li>
     <li><a href="#single-module">Single module</a></li>
     <li><a href="#multi-module">Multi-module</a></li>
     <li><a href="#inject-module">@InjectModule</a></li>

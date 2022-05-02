@@ -6,10 +6,53 @@
   These are beans that are created ("wired") by dependency injection and put into the scope.
   They are then available to be injected into other beans.
 </p>
+<pre content="java">
+@Singleton
+public class CoffeeMaker {
+  ...
+</pre>
 <h5>Spring DI Note</h5>
 <p>
   Spring <code>@Component</code>, <code>@Service</code> and <code>@Repository</code> are all
   singleton scoped. With avaje-inject these would map to <code>@Singleton</code>.
+</p>
+
+<h3 id="component">@Component</h3>
+<p>
+  <code>@Component</code> is similar to JSR-330 <code>@Singleton</code> except it is <em>avaje-inject</em>
+  specific. In general, we prefer to use the JSR-330 standard annotations but there are a couple of cases
+  where would choose to use the avaje-inject specific <code>@Component</code> instead.
+</p>
+<ul>
+  <li>A project is using another DI library (for example, Guice) to process the standard
+    <code>@Singleton</code> and we want avaje-inject to co-exist but ignore anything annotated with
+    <code>@Singleton</code>.
+  </li>
+  <li>
+    A project wants to work with <em>both</em> <code>javax.inject</code> and <code>jakarta.inject</code>
+  </li>
+</ul>
+<p>
+  In these cases we may choose to use the <em>avaje-inject</em> specific <code>@Component</code> rather than
+  JSR-330 <code>@Singleton</code>.
+</p>
+<pre content="java">
+@Component
+public class CoffeeMaker {
+  ...
+</pre>
+
+<h4>Ignoring <code>@Singleton</code></h4>
+<p>
+  To get avaje-inject to ignore any classes annotated with <code>@Singleton</code> use:
+</p>
+
+<pre content="java">
+@InjectModule(ignoreSingleton = true)
+</pre>
+<p>
+  With <code>ignoreSingleton = true</code> avaje-inject will ignore <code>@Singleton</code> with the
+  view that some other DI library is also being used and is handling those components.
 </p>
 
 <h3 id="inject">@Inject</h3>
