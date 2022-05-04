@@ -78,6 +78,21 @@
     List<|Contributor> contributors(String owner, String repo);
   }
 </pre>
+
+<h5>Using client API</h5>
+<pre content="java">
+  HttpClientContext client = HttpClientContext.newBuilder()
+    .baseUrl("https://api.github.com")
+    //.bodyAdapter(new JacksonBodyAdapter())
+    .build();
+
+  // obtain API implementation
+  GitHub github = client.create(GitHub.class);
+
+  // use the api/interface
+  List<|Contributor> contributors = github.contributors("rbygrave", "junk");
+</pre>
+
 <h5>API allowing async or sync use via HttpCall</h5>
 <pre content="java">
   @Client
@@ -240,7 +255,7 @@ dependencies {
 </p>
 
 <pre content="java">
-  HttpClientContext httpClientContext = HttpClientContext.newBuilder()
+  HttpClientContext client = HttpClientContext.newBuilder()
     .baseUrl(baseUrl)
     .bodyAdapter(new JacksonBodyAdapter())
     //.bodyAdapter(new GsonBodyAdapter(new Gson()))
@@ -249,15 +264,25 @@ dependencies {
 
 <h4>Example GET</h4>
 <pre content="java">
-  HttpResponse<|String> hres = httpClientContext.request()
-    .path("hello")
+  Customer customer = client.request()
+    .path("customers/42")
+    .GET()
+    .bean(Customer.class);
+
+  List<|Product> products = client.request()
+    .path("products")
+    .GET()
+    .list(Product.class);
+
+  HttpResponse<|String> hres = client.request()
+    .path("health")
     .GET()
     .asString();
 </pre>
 
 <h4>Example GET Async</h4>
 <pre content="java">
-  httpClientContext.request()
+  client.request()
    .path("hello")
    .GET()
    .async().asString()  // CompletableFuture<|HttpResponse<|String>>
@@ -320,19 +345,18 @@ dependencies {
 
 <h4>Creating HttpClientContext</h4>
 <pre content="java">
-  HttpClientContext httpClientContext =
-    HttpClientContext.newBuilder()
-      .baseUrl(baseUrl)
-      .bodyAdapter(new JacksonBodyAdapter())
-      // .bodyAdapter(new GsonBodyAdapter(new Gson()))
-      .build();
+  HttpClientContext client = HttpClientContext.newBuilder()
+    .baseUrl(baseUrl)
+    .bodyAdapter(new JacksonBodyAdapter())
+    // .bodyAdapter(new GsonBodyAdapter(new Gson()))
+    .build();
 </pre>
 <p>
   From the HttpClientContext instance we create requests and execute them.
 </p>
 <h4>Create and execute requests</h4>
 <pre content="java">
-  HttpResponse<|String> hres = httpClientContext.request()
+  HttpResponse<|String> hres = client.request()
     .path("hello")
     .GET()
     .asString();
@@ -368,11 +392,10 @@ dependencies {
 <pre content="java">
   ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-  HttpClientContext httpClientContext =
-    HttpClientContext.newBuilder()
-      .baseUrl(baseUrl)
-      .bodyAdapter(new JacksonBodyAdapter(objectMapper))
-      .build();
+  HttpClientContext client = HttpClientContext.newBuilder()
+    .baseUrl(baseUrl)
+    .bodyAdapter(new JacksonBodyAdapter(objectMapper))
+    .build();
 </pre>
 
 <h3 id="json-gson">Using Gson</h3>
@@ -393,11 +416,10 @@ dependencies {
   Register the GsonBodyAdapter with the HttpClientContext builder. For example:
 </p>
 <pre content="java">
-  HttpClientContext httpClientContext =
-    HttpClientContext.newBuilder()
-      .baseUrl(baseUrl)
-      .bodyAdapter(new GsonBodyAdapter(new Gson()))
-      .build();
+  HttpClientContext client = HttpClientContext.newBuilder()
+    .baseUrl(baseUrl)
+    .bodyAdapter(new GsonBodyAdapter(new Gson()))
+    .build();
 </pre>
 
 <h3 id="json-jsonb">Using avaje-jsonb</h3>
@@ -409,7 +431,7 @@ dependencies {
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-jsonb</artifactId>
-    <version>0.8</version>
+    <version>0.15</version>
   </dependency>
 </pre>
 
@@ -421,11 +443,10 @@ dependencies {
 <pre content="java">
   Jsonb jsonb = Jsonb.newBuilder().build();
 
-  HttpClientContext httpClientContext =
-    HttpClientContext.newBuilder()
-      .baseUrl(baseUrl)
-      .bodyAdapter(new JsonbBodyAdapter(jsonb))
-      .build();
+  HttpClientContext client = HttpClientContext.newBuilder()
+    .baseUrl(baseUrl)
+    .bodyAdapter(new JsonbBodyAdapter(jsonb))
+    .build();
 </pre>
 <p>
   Note that <a href="https://github.com/avaje/avaje-jsonb">avaje-jsonb</a> uses APT source code generation to generate
@@ -465,7 +486,7 @@ dependencies {
 <pre content="java">
   Hello bean = new Hello(42, "rob", "hello world");
 
-  HttpResponse<|Void> res = clientContext.request()
+  HttpResponse<|Void> res = client.request()
     .path("hello")
     .body(bean)
     .POST()
@@ -480,7 +501,7 @@ dependencies {
 
 <h4>Example: POST using formParams</h4>
 <pre content="java">
-  HttpResponse<|Void> res = clientContext.request()
+  HttpResponse<|Void> res = client.request()
     .path("register/user")
     .formParam("name", "Bazz")
     .formParam("email", "user@foo.com")
@@ -499,7 +520,7 @@ dependencies {
 <h4>Example: PUT file Path</h4>
 <pre content="java">
   Path file = ...;
-  HttpResponse<|String> res = clientContext.request()
+  HttpResponse<|String> res = client.request()
     .path("upload")
     .body(file)
     .PUT()
@@ -516,7 +537,7 @@ dependencies {
 <pre content="java">
   Supplier<|InputStream> supplier = ...;
 
-  HttpResponse<|String> res = clientContext.request()
+  HttpResponse<|String> res = client.request()
     .path("upload")
     .body(supplier)
     .PUT()
@@ -532,7 +553,7 @@ dependencies {
 
 <h4>Example: Use any BodyPublisher</h4>
 <pre content="java">
-  HttpResponse<|Void> res = clientContext.request()
+  HttpResponse<|Void> res = client.request()
     .path("whazzzup")
     .body(HttpRequest.BodyPublishers.ofString("silly example"))
     .PUT()
@@ -575,7 +596,7 @@ dependencies {
   response body.
 </p>
 <pre content="java">
-  Customer customer = clientContext.request()
+  Customer customer = client.request()
     .path("customers/42")
     .GET()
     .bean(Customer.class);
@@ -592,7 +613,7 @@ dependencies {
   response body.
 </p>
 <pre content="java">
-  List<|Customer> customers = clientContext.request()
+  List<|Customer> customers = client.request()
     .path("customers")
     .GET()
     .list(Customer.class);
@@ -612,7 +633,7 @@ dependencies {
   response body.
 </p>
 <pre content="java">
-  Stream<|Customer> customers = clientContext.request()
+  Stream<|Customer> customers = client.request()
     .path("customers")
     .GET()
     .stream(Customer.class);
@@ -630,7 +651,7 @@ dependencies {
   response body.
 </p>
 <pre content="java">
-  HttpResponse<|Void> hres = clientContext.request()
+  HttpResponse<|Void> hres = client.request()
     .path("hello")
     .GET()
     .asVoid();
@@ -647,7 +668,7 @@ dependencies {
   and headers etc and never want the response body.
 </p>
 <pre content="java">
-  HttpResponse<|Void> hres = clientContext.request()
+  HttpResponse<|Void> hres = client.request()
     .path("hello")
     .GET()
     .asDiscarding();
@@ -658,7 +679,7 @@ dependencies {
   Return as <code>HttpResponse&lt;String&gt;</code>.
 </p>
 <pre content="java">
-  HttpResponse<|String> hres = clientContext.request()
+  HttpResponse<|String> hres = client.request()
     .path("hello")
     .GET()
     .asString();
@@ -669,7 +690,7 @@ dependencies {
   Using <code>withHandler()</code> we can use any BodyHandler to process the response.
 </p>
 <pre content="java">
-   HttpResponse<|InputStream> hres = clientContext.request()
+   HttpResponse<|InputStream> hres = client.request()
     .path("hello/stream")
     .GET()
     .withHandler(BodyHandlers.ofInputStream());
@@ -719,7 +740,7 @@ dependencies {
 
 <h4>Example: async().asString()</h4>
 <pre content="java">
-  clientContext.request()
+  client.request()
    .path("hello/world")
    .GET()
    .async().asString()
@@ -737,7 +758,7 @@ dependencies {
 
 <h4>Example: async().bean(Class&lt;T&gt;)</h4>
 <pre content="java">
-  clientContext.request()
+  client.request()
    .path("customer").path(42)
    .GET()
    .async().bean(Customer.class)
@@ -764,7 +785,7 @@ dependencies {
 </p>
 
 <pre content="java">
-  CompletableFuture<|HttpResponse<|Void>> future = clientContext.request()
+  CompletableFuture<|HttpResponse<|Void>> future = client.request()
    .path("hello/lineStream")
    .GET().async()
    .withHandler(HttpResponse.BodyHandlers.fromLineSubscriber(new Flow.Subscriber<>() {
@@ -802,7 +823,7 @@ dependencies {
 
 <h4>Example: join()</h4>
 <pre content="java">
-  clientContext.request()
+  client.request()
    .path("customer").path(42)
    .GET()
    .async().bean(Customer.class)
@@ -841,11 +862,10 @@ dependencies {
 
 <h4>Example: call()</h4>
 <pre content="java">
-  HttpCall<|List<|Customer>> call =
-    clientContext.request()
-      .path("customers")
-      .GET()
-      .call().list(Customer.class);
+  HttpCall<|List<|Customer>> call = client.request()
+    .path("customers")
+    .GET()
+    .call().list(Customer.class);
 
   // Either execute synchronously
   List<|Customer> customers =  call.execute();
@@ -1082,9 +1102,9 @@ public class Github$HttpClient implements Github {
 <p>
   Below is a tabe of the API response types can be used and the resulting generated code.
 </p>
-<table width="100%">
+<table style="width: 100%;">
   <tr>
-    <th width="50%">Method response type</th>
+    <th style="width: 50%;">Method response type</th>
     <th>Generated code</th>
   </tr>
 
