@@ -60,7 +60,7 @@ The classic use case for this is registering controllers or routes to
    List<|Filter> filters = beanScope.listByPriority(Filter.class);
 </pre>
 
-<h4 id="context-builder">BeanScope.newBuilder()</h4>
+<h4 id="context-builder">BeanScope.builder()</h4>
 <p>
   We can programmatically create a BeanScope with the option on providing
   some instances to use as dependencies. Most often we will do this for
@@ -71,8 +71,8 @@ The classic use case for this is registering controllers or routes to
   // ... can be real things or test doubles
   MyDependency dependency = ...
 
-  try (BeanScope scope = BeanScope.newBuilder()
-    .withBean(MyDependency.class, dependency)
+  try (BeanScope scope = BeanScope.builder()
+    .bean(MyDependency.class, dependency)
     ...
     .build()) {
 

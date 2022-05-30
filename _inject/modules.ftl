@@ -37,15 +37,15 @@
 </p>
 <p>
   When creating the BeanScope we provide the externally created dependencies using
-  <code>withBean()</code>. These external dependencies are then injected where needed.
+  <code>bean()</code>. These external dependencies are then injected where needed.
 </p>
 <pre content="java">
 
   MyExternalDependency myExternal = ...;
 
   // create with an externally provided dependency
-  final BeanScope scope = BeanScope.newBuilder()
-    .withBean(MyExternalDependency.class, myExternal)
+  final BeanScope scope = BeanScope.builder()
+    .bean(MyExternalDependency.class, myExternal)
     .build();
 </pre>
 

@@ -59,12 +59,29 @@
 </p>
 
 
-<h2 id="test-scope">Test scope</h2>
+
+
+<h2 id="component-testing">Component testing</h2>
 <p>
-  Test scope is a special scope used for testing. It effectively provides <em>default dependencies to
-    use for all tests</em>.
+  Component testing is where we look to run tests that use most of the objects with their real
+  behaviour with less mocked / stubbed behaviour. With component testing we are looking to test a scenario / piece
+  of functionality with minimal to no mocking.
 </p>
-<h4>Step 1: Add avaje-inject-test as a test dependency</h4>
+<p>
+  The rise and adoption of test docker containers has meant that it is now possible to test significant portions
+  of an application without mocking or stubbing resources like databases and messaging.
+</p>
+<ul>
+  <li>Often uses test docker containers for databases, message queues etc</li>
+  <li>Use Test scope to provide "default" dependencies (e.g. set up to use the local docker containers)</li>
+  <li>Get avaje-inject to "wire" the objects used in the test scenario</li>
+  <li>Unlike unit tests, test a scenario with little to no mocking or stubbing</li>
+</ul>
+
+<h3 id="test-dependency">dependency</h3>
+<p>
+  Add <em>avaje-inject-test</em> as a test dependency.
+</p>
 <pre content="xml">
   <dependency>
     <groupId>io.avaje</groupId>
@@ -74,7 +91,197 @@
   </dependency>
 </pre>
 
-<h4>Step 2: Add @TestScope</h4>
+
+<h3 id="injectTest">@InjectTest</h3>
+<p>
+  avaje-inject provides a JUnit 5 extension via <code>@InjectTest</code>.
+  When a test is annotated with <code>@InjectTest</code> then avaje-inject will be used to setup the
+  test using <code>@Inject</code> as well as mockito's <code>@Mock, @Spy, @Captor</code>.
+</p>
+<p>
+  With <em>@InjectTest</em> avaje-inject will build a BeanScope will the appropriate mockito
+  mocks and spies and inject back into the test the appropriate objects out of the BeanScope.
+</p>
+<pre content="java">
+  @InjectTest
+  class CoffeeMakerTest {
+
+    @Mock Pump pump;
+    @Mock Grinder grinder;
+    @Inject CoffeeMaker coffeeMaker;
+
+    @Test
+    void extensionStyle() {
+
+      // act
+      coffeeMaker.makeIt();
+
+      verify(pump).pumpSteam();
+      verify(grinder).grindBeans();
+    }
+  }
+</pre>
+<p>
+  The above test using <code>@InjectTest</code> is equivalent to the test below
+  that programmatically creates a BeanScope and performs the same test.
+</p>
+<pre content="java">
+@Test
+void programmaticStyle() {
+
+  try (var beanScope = TestBeanScope.builder()
+    .forTesting()
+    .mock(Pump.class)
+    .mock(Grinder.class)
+    .build()) {
+
+    CoffeeMaker coffeeMaker = beanScope.get(CoffeeMaker.class);
+
+    // act
+    coffeeMaker.makeIt();
+
+    verify(beanScope.get(Pump.class)).pumpSteam();
+    verify(beanScope.get(Grinder.class)).grindBeans();
+}
+</pre>
+<p>
+  If we look closely at the test above you will see the use of <code>TestBeanScope.builder()</code>
+  rather than the usual <code>BeanScope.builder()</code>. We use TestBeanScope to automatically use
+  the <a href="#test-scope">"test scope"</a> if it exists.
+</p>
+
+<h3>@Named and @Qualifier</h3>
+<p>
+  We can use <code>@Named</code> and qualifiers as needed with <em>@Mock, @Spy, and @Inject</em> like below.
+</p>
+<pre content="java">
+
+    @Mock @Blue Store blueStore;
+
+    @Mock @Named("red") Store redStore;
+
+</pre>
+
+<h3>static fields, instance fields</h3>
+<p>
+  With <code>@InjectTest</code> we can inject into static fields and non-static fields.
+  Under the hood these map to BeanScopes that are created and used to populate these fields in the tests.
+</p>
+<h4>static fields</h4>
+<p>
+  With static fields there is an underlying BeanScope that is created and used for all
+  tests in the test class. In the example below, the static Foo is in that BeanScope.
+</p>
+<p>
+  This BeanScope is created and used for all tests that run for that test class. This scope will be
+  closed after all tests for the class have been run.
+  The "global test scope" (if defined) will be the parent bean scope.
+</p>
+
+<h4>non-static fields</h4>
+<p>
+  For non-static fields, there is a BeanScope that is created for these. In the example
+  below Bar and Bazz are in that BeanScope. With the 3 test methods <code>one(), two(), three()</code>
+  this BeanScope is created (and closed) for each test so 3 times.
+</p>
+<p>
+  This BeanScope is created for each test and closed after that test has been run.
+  It can have a parent bean scope of either the "test static scope" if defined for that test, or
+  the "global test scope" (if defined).
+</p>
+<pre content="java">
+  @InjectTest
+  class MyTest {
+
+    static @Mock Foo foo;
+    @Mock Bar bar;
+    @Inject Bazz bazz;
+
+    @Test
+    void one() {
+      ...
+    }
+
+    @Test
+    void two() {
+      ...
+    }
+
+    @Test
+    void three() {
+      ...
+    }
+
+  }
+</pre>
+<p>
+  The above can be programmatically written as below.
+</p>
+
+<pre content="java">
+  class MyTest {
+
+    static @Mock Foo foo;
+    @Mock Bar bar;
+    @Inject Bazz bazz;
+
+    static BeanScope staticScope; // "static forAll" scope
+    BeanScope instanceScope    // "instance forEach" scope
+
+    @BeforeAll
+    static void beforeAll() {
+      staticScope = TestBeanScope.builder() // parent of "global test scope" if defined
+          .forTesting()
+          .mock(Foo.class)
+          .build()
+      foo = staticScope.get(Foo.class);
+    }
+
+    @AfterAll
+    static void afterAll() {
+      staticScope.close()
+    }
+
+    @BeforeEach
+    void beforeEach() {
+      instanceScope = TestBeanScope.builder().parent(staticScope)
+          .forTesting()
+          .mock(Bar.class)
+          .build()
+      bar = instanceScope.get(Bar.class);
+      bazz = instanceScope.get(Bazz.class);
+    }
+
+    @AfterEach
+    void afterEach() {
+      instanceScope.close()
+    }
+
+
+    @Test
+    void one() {
+      ...
+    }
+
+    @Test
+    void two() {
+      ...
+    }
+
+    @Test
+    void three() {
+      ...
+    }
+  }
+</pre>
+
+
+<h2 id="test-scope">Test scope</h2>
+<p>
+  Test scope is a special scope used for testing. It effectively provides <em>default dependencies to
+    use for ALL tests</em>. As such we can think of it as the "global test scope".
+</p>
+<h4>Step 1: Add @TestScope</h4>
 <p>
   In <code>src/test</code> create a factory bean that we dedicate to creating test scope dependencies.
   Put <code>@TestScope</code> on this factory bean, the beans this factory creates are in our "test scope"
@@ -128,23 +335,17 @@ class MyTestConfiguration {
   which is set up to talk to the localstack docker container DynamoDB.
 </p>
 
-<h4>Step 3: InjectExtension</h4>
+<h4>Step 2: @InjectTest</h4>
 <p>
-  Generally we create a base test class with <code>@ExtendWith(InjectExtension.class)</code> and
-  then have our "component tests" extend that base test class.
+  Annotation the test class with <code>@InjectTest</code>.
 </p>
-<pre content="java">
-  @ExtendWith(InjectExtension.class)
-  public abstract class BaseComponentTest {
-
-  }
-</pre>
 <p>
   The component tests can inject AmazonDynamoDB directly, or typically inject a component that depends
   on AmazonDynamoDB and these will use "our test scoped AmazonDynamoDB instance".
 </p>
 <pre content="java">
-  class DynamoDbComponentTest extends BaseComponentTest {
+  @InjectTest
+  class DynamoDbComponentTest {
 
     /**
      * The test scoped instance.
@@ -163,7 +364,8 @@ class MyTestConfiguration {
   For that test, the mock or spy is used and wired instead of the "test scoped bean".
 </p>
 <pre content="java">
-  class OtherComponentTest extends BaseComponentTest {
+  @InjectTest
+  class OtherComponentTest {
 
     /**
      * Use this instance for this test.
@@ -200,76 +402,11 @@ class MyTestConfiguration {
   that the default is more like a stub test double.
 </p>
 
-
-<h3 id="component-testing">Component testing</h3>
 <p>
-  Component testing is where we look to run tests that use most of the objects with their real
-  behaviour with less mocked / stubbed behaviour. With component testing we are looking to test a scenario / piece
-  of functionality with minimal to no mocking.
+  Note that <code>@InjectTest</code> is syntactic sugar for junit5 <code>@ExtendWith(InjectExtension.class)</code>
 </p>
-<p>
-  The rise and adoption of test docker containers has meant that it is now possible to test significant portions
-  of an application without mocking or stubbing resources like databases and messaging.
-</p>
-<ul>
-  <li>Often uses test docker containers for databases, message queues etc</li>
-  <li>Use Test scope to provide "default" dependencies (e.g. set up to use the local docker containers)</li>
-  <li>Get avaje-inject to "wire" the objects used in the test scenario</li>
-  <li>Unlike unit tests, test a scenario with little to no mocking or stubbing</li>
-</ul>
 
-<h4>JUnit 5 InjectExtension</h4>
-<p>
-  avaje-inject provides a JUnit 5 extension <code>InjectExtension</code>. With this we use
-  <code>@Inject</code> as well as mockito's <code>@Mock, @Spy, @Captor</code> to define the
-  objects we wish to use in the test.
-</p>
-<p>
-  Add <em>avaje-inject-test</em> as a test dependency.
-</p>
-<pre content="xml">
-  <dependency>
-    <groupId>io.avaje</groupId>
-    <artifactId>avaje-inject-test</artifactId>
-    <version>8.5</version>
-    <scope>test</scope>
-  </dependency>
-</pre>
 
-<pre content="java">
-  @ExtendWith(InjectExtension.class)
-  class CoffeeMakerTest {
-
-    @Mock Pump pump;
-    @Mock Grinder grinder;
-    @Inject CoffeeMaker coffeeMaker;
-
-    @Test
-    void extensionStyle() {
-
-      // act
-      coffeeMaker.makeIt();
-
-      verify(pump).pumpSteam();
-      verify(grinder).grindBeans();
-    }
-  }
-</pre>
-<p>
-  With <em>InjectExtension</em> avaje-inject will build a BeanScope will the appropriate mockito
-  mocks and spies and inject back into the test the appropriate objects out of the BeanScope.
-</p>
-<h4>@Named and @Qualifier</h4>
-<p>
-  We can use <code>@Named</code> and qualifiers as needed like below.
-</p>
-<pre content="java">
-
-    @Mock @Blue Store blueStore;
-
-    @Mock @Named("red") Store redStore;
-
-</pre>
 
 <h2 id="programmatic-testing">Programmatic testing</h2>
 <p>
@@ -278,22 +415,35 @@ class MyTestConfiguration {
   we want to use in place of the real things.
 </p>
 
+<h3>TestBeanScope.builder()</h3>
+<p>
+  For tests we should always use <code>TestBeanScope.builder()</code> rather than <code>BeanScope.builder()</code>.
+</p>
+<p>
+  By using <code>TestBeanScope.builder()</code> it will use the global test scope as a parent bean scope - we
+  generally always want to do that for tests.
+</p>
+<p>
+  If we never use the global test scope then we can use <code>BeanScope.builder()</code>.
+</p>
+
+
 <h3>forTesting()</h3>
 <p>
   With the bean scope builder we use <code>forTesting()</code> to give us extra methods for ease of using
-  mockito mocks and spies. Use <code>withMock()</code> to specify a dependency to be a Mockito mock.
-  Use <code>withSpy()</code> to get a dependency to be a Mockito spy. We can use <code>withBean()</code>
+  mockito mocks and spies. Use <code>mock()</code> to specify a dependency to be a Mockito mock.
+  Use <code>spy()</code> to get a dependency to be a Mockito spy. We can use <code>bean()</code>
   to supply any sort of test double we like.
 </p>
 
 <pre content="java">
 @Test
-void using_withMock() {
+void using_mock() {
 
-  try (BeanScope scope = BeanScope.newBuilder()
+  try (BeanScope scope = TestBeanScope.builder()
     .forTesting()
-    .withMock(Pump.class)
-    .withMock(Grinder.class)
+    .mock(Pump.class)
+    .mock(Grinder.class)
     .build()) {
 
     // act
@@ -307,11 +457,11 @@ void using_withMock() {
 
 <pre content="java">
 @Test
-void using_withSpy() {
+void using_spy() {
 
-  try (BeanScope context = BeanScope.newBuilder()
+  try (BeanScope context = TestBeanScope.builder()
     .forTesting()
-    .withSpy(Pump.class)
+    .spy(Pump.class)
     .build()) {
 
     CoffeeMaker coffeeMaker = context.get(CoffeeMaker.class);

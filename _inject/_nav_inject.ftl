@@ -55,8 +55,13 @@
 <@nav url="#testing" title="Testing">
   <ul>
     <li><a href="#unit-testing">Unit testing</a></li>
+  </ul>
+</@nav>
+<@nav url="#component-testing" title="Component testing">
+  <ul>
+    <li><a href="#test-dependency">Dependency</a></li>
+    <li><a href="#injectTest">@InjectTest</a></li>
     <li><a href="#test-scope">Test scope</a></li>
-    <li><a href="#component-testing">Component testing</a></li>
     <li><a href="#programmatic-testing">Programmatic testing</a></li>
   </ul>
 </@nav>

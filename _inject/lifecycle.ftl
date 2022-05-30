@@ -69,7 +69,7 @@ public class CoffeeQueue implements AutoCloseable {
 </p>
 <pre content="java">
 BeanScope beanScope =
-  BeanScope.newBuilder()
-      .withShutdownHook(true) // create with JVM shutdown hook
+  BeanScope.builder()
+      .shutdownHook(true) // create with JVM shutdown hook
       .build()
 </pre>

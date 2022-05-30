@@ -9,7 +9,7 @@ public class App {
   public static void main(String[] args) {
 
     // create all the beans in the "default scope"
-    BeanScope scope = BeanScope.newBuilder().build();
+    BeanScope scope = BeanScope.builder().build();
 
     SomeObject obj = scope.get(SomeObject.class);
   }
@@ -78,7 +78,7 @@ class ContactController {
   Custom scopes can depend on each other and also externally defined objects, thus allowing a hierarchy of scopes to be modelled.
 </p>
 <p>
-  Each scope results in the generation of a module class that can be added to a <code>BeanScope</code> using the <code>withModules</code> method.
+  Each scope results in the generation of a module class that can be added to a <code>BeanScope</code> using the <code>modules</code> method.
   The constructor of the module class takes the externally defined dependencies if defined. This makes it easy to partially adopt Avaje Inject
   where we want some objects can be built manually by your own code and then provided to the DI scope.
 </p>
@@ -109,8 +109,8 @@ public class SomeObject {
 public class App {
   public static void main(String[] args) {
 
-    BeanScope scope = BeanScope.newBuilder()
-      .withModules(new MyCustomScopeModule())
+    BeanScope scope = BeanScope.builder()
+      .modules(new MyCustomScopeModule())
       .build();
 
     SomeObject obj = scope.get(SomeObject.class);
@@ -144,9 +144,9 @@ public class SomeObject {
 public class App {
   public static void main(String[] args) {
 
-    BeanScope scope = BeanScope.newBuilder()
+    BeanScope scope = BeanScope.builder()
       // custom module with an external dependency
-      .withModules(new MyCustomScopeModule(new NonDIConstructedObject()))
+      .modules(new MyCustomScopeModule(new NonDIConstructedObject()))
       .build();
 
     SomeObject obj = scope.get(SomeObject.class);
@@ -156,19 +156,19 @@ public class App {
 
 <p>
   To make one scope depend on another, just put the depended-on scope's annotation into the <code>@InjectModule(requires = { .. })</code>
-  list, then call the <code>withParent</code> method of the <code>BeanScope</code> to chain them together.
+  list, then call the <code>parent</code> method of the <code>BeanScope</code> to chain them together.
 </p>
 
 <h3>Custom scope parent child hierarchy</h3>
 <p>
   When using custom scopes we can create a hierarchy of scopes. When we create the BeanScope
-  we can use <code>withParent()</code> to specify a parent scope.
+  we can use <code>parent()</code> to specify a parent scope.
 </p>
 
 <pre content="java">
 
 // create a parent scope
-try (final BeanScope parentScope = BeanScope.newBuilder().build()) {
+try (final BeanScope parentScope = BeanScope.builder().build()) {
 
   // we can use this scope
   final var coffeeMaker = parentScope.get(CoffeeMaker.class);
@@ -177,9 +177,9 @@ try (final BeanScope parentScope = BeanScope.newBuilder().build()) {
   LocalExt ext = new LocalExt();
 
   // create a child scope
-  try (BeanScope childScope = BeanScope.newBuilder()
-    .withParent(parentScope) // specify the parent
-    .withModules(new MyCustomModule(ext)) // the custom scope(s)
+  try (BeanScope childScope = BeanScope.builder()
+    .parent(parentScope) // specify the parent
+    .modules(new MyCustomModule(ext)) // the custom scope(s)
     .build()) {
 
     // use the child scope
