@@ -47,6 +47,7 @@
 <@nav url="#scope" title="Scope">
   <ul>
     <li><a href="#default-scope">Default scope</a></li>
+    <li><a href="#scope-test-scope">Test scope</a></li>
     <li><a href="#request-scope">Request scope</a></li>
     <li><a href="#custom-scope">Custom scope</a></li>
   </ul>
@@ -54,7 +55,9 @@
 <@nav url="#testing" title="Testing">
   <ul>
     <li><a href="#unit-testing">Unit testing</a></li>
+    <li><a href="#test-scope">Test scope</a></li>
     <li><a href="#component-testing">Component testing</a></li>
+    <li><a href="#programmatic-testing">Programmatic testing</a></li>
   </ul>
 </@nav>
 <@nav url="#modules" title="Modules">

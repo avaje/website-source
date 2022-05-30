@@ -20,6 +20,16 @@ public class App {
   in the classpath (i.e. wire all the "default scope" modules in the classpath together into the BeanScope).
 </p>
 
+<h2 id="scope-test-scope">Test scope</h2>
+<p>
+  Test scope is a special scope used for testing. It effectively provides <em>default dependencies to
+  use for all tests</em>.
+</p>
+<p>
+  Refer to <a href="#test-scope">Testing - Test Scope</a> for more details.
+</p>
+
+
 <h2 id="request-scope">Request scope - @Controller</h2>
 <p>
   When using <a href="/http">avaje-http</a> we annotate controllers with <code>@Controller</code>.

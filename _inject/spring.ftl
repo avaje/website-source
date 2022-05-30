@@ -102,37 +102,3 @@
   </tr>
 </table>
 
-
-<h3 id="aop">AOP</h3>
-<p>
-  <em>avaje-inject</em> does not include AOP as other libraries provide build time AOP
-  for <code><a href="https://ebean.io/docs/transactions/">@Transactional</a></code>,
-  Metrics <code><a href="https://avaje.io/metrics/">@Timed</a></code>
-  and configuration injection via <a href="https://avaje.io/config/">avaje-config</a>.
-</p>
-<p>
-  Performing AOP at build time is important as it removes the runtime cost at startup
-  of using dynamic proxies.
-</p>
-<p>
-  The following are library recommendations for @Transactional, @Value and @Timed.
-</p>
-
-<table class="table">
-  <tr>
-    <th width="50%">Spring</th>
-    <th width="50%">Recommendation</th>
-  </tr>
-  <tr>
-    <td>@Transactional</td>
-    <td><a href="https://ebean.io/docs/transactions/">Ebean @Transactional</a></td>
-  </tr>
-  <tr>
-    <td>@Value</td>
-    <td><a href="https://avaje.io/config/">Avaje Config</a></td>
-  </tr>
-  <tr>
-    <td>@Timed</td>
-    <td><a href="https://avaje.io/metrics/">Avaje Metrics</a></td>
-  </tr>
-</table>

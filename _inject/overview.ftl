@@ -2,7 +2,7 @@
 <p>
   Fast and light dependency injection library for Java and Kotlin developers.
 </p>
-<table width="100%">
+<table style="width: 100%;">
   <tr>
     <th>License</th>
     <th>Source</th>
@@ -15,7 +15,7 @@
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject">Github</a></td>
     <td><a target="_blank" href="/apidocs/avaje-inject">Javadoc</a></td>
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject/issues">Github</a></td>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/releases">Latest 8.2</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/releases">Latest 8.5</a></td>
   </tr>
 </table>
 <p>&nbsp;</p>
@@ -48,10 +48,19 @@
       </p>
       <p>
         <em>avaje-inject</em> exists with the view that it can be <em>really</em> small and
-        provide JSR-330 dependency injection using source code generation. It does not include
-        AOP (which can be done separately), it does not include external configuration / properties
-        (we can use avaje-config or something else). It just does DI.
+        provide JSR-330 dependency injection using source code generation.
       </p>
+      <p>
+        avaje-inject includes:
+      </p>
+      <ul>
+        <li><a href="#jsr-330">JSR-330</a> dependency injection</li>
+        <li><a href="#lifecycle">Lifecycle</a> support</li>
+        <li><a href="#factory">@Factory @Bean</a></li>
+        <li><a href="#primary">@Primary @Secondary</a></li>
+        <li><a href="#test-scope">Test scope</a> component testing</li>
+        <li><a href="#aspects">AOP</a> around method advice</li>
+      </ul>
     </td>
     <td>
       <img src="/images/di-lib-size.png" alt="DI library size comparison">
@@ -71,12 +80,12 @@
 
 <h4>Want to use javax.inject?</h4>
 <p>
-  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-parent-7.2">version 7.2</a> of
+  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-parent-7.5">version 7.5</a> of
   avaje-inject with the dependency on <code>javax.inject</code> (maintained on javax.main branch).
 </p>
 <h4>Want to use jakarta.inject?</h4>
 <p>
-  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-8.2">version 8.2</a> of
+  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-8.5">version 8.5</a> of
   avaje-inject with the dependency on <code>jakarta.inject</code> (maintained on master branch).
 </p>
 <p>

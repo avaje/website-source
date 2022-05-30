@@ -58,18 +58,165 @@
   <code>@Mock, @Spy, @Captor</code> and also adds <code>@Inject</code>.
 </p>
 
+
+<h2 id="test-scope">Test scope</h2>
+<p>
+  Test scope is a special scope used for testing. It effectively provides <em>default dependencies to
+    use for all tests</em>.
+</p>
+<h4>Step 1: Add avaje-inject-test as a test dependency</h4>
+<pre content="xml">
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-inject-test</artifactId>
+    <version>8.5</version>
+    <scope>test</scope>
+  </dependency>
+</pre>
+
+<h4>Step 2: Add @TestScope</h4>
+<p>
+  In <code>src/test</code> create a factory bean that we dedicate to creating test scope dependencies.
+  Put <code>@TestScope</code> on this factory bean, the beans this factory creates are in our "test scope"
+  and will be wired into tests that use avaje-inject
+</p>
+
+<h4>Example - AmazonDynamoDB</h4>
+<p>
+  In the example below, our application has a dependency on <code>AmazonDynamoDB</code>. For testing
+  purposes, we want all tests to <em>default</em> to using a test scoped AmazonDynamoDB instance that we set
+  up to use a localstack docker container.
+</p>
+<p>
+  Example:
+  <a target="_blank" href="https://github.com/avaje/avaje-inject-examples/blob/main/hello-dynamodb/src/test/java/org/foo/myapp/config/MyTestConfiguration.java">
+    avaje-inject-examples - hello-dynamodb - MyTestConfiguration.java
+  </a>
+</p>
+<pre content="java">
+@TestScope
+@Factory
+class MyTestConfiguration {
+
+  /**
+   * An 'extra' dependency for testing - a docker container running DynamoDB.
+   */
+  @Bean
+  LocalstackContainer dynamoDBContainer() {
+    LocalstackContainer container = LocalstackContainer
+      .newBuilder("1.13.2")
+      .services("dynamodb") // "dynamodb,sns,sqs"
+      .build();
+    container.start();
+    return container;
+  }
+
+  /**
+   * Default to using this AmazonDynamoDB instance in our tests.
+   * This client is setup to use the localstack docker container.
+   */
+  @Bean
+  AmazonDynamoDB dynamoDB(LocalstackContainer container) {
+    AmazonDynamoDB dynamoDB = container.dynamoDB();
+    createTable(dynamoDB);
+    return dynamoDB;
+  }
+}
+</pre>
+<p>
+  Any component that has AmazonDynamoDB injected into it, will now have the above AmazonDynamoDB instance
+  which is set up to talk to the localstack docker container DynamoDB.
+</p>
+
+<h4>Step 3: InjectExtension</h4>
+<p>
+  Generally we create a base test class with <code>@ExtendWith(InjectExtension.class)</code> and
+  then have our "component tests" extend that base test class.
+</p>
+<pre content="java">
+  @ExtendWith(InjectExtension.class)
+  public abstract class BaseComponentTest {
+
+  }
+</pre>
+<p>
+  The component tests can inject AmazonDynamoDB directly, or typically inject a component that depends
+  on AmazonDynamoDB and these will use "our test scoped AmazonDynamoDB instance".
+</p>
+<pre content="java">
+  class DynamoDbComponentTest extends BaseComponentTest {
+
+    /**
+     * The test scoped instance.
+     */
+    @Inject AmazonDynamoDB dynamo;
+
+    /**
+     * More typical, a component that depends on AmazonDynamoDB.
+     */
+    @Inject MyDynamoClient client;
+
+  }
+</pre>
+<p>
+  The "test scoped bean" is by default wired but each test can override this using <code>@Mock</code> or <code>@Spy</code>.
+  For that test, the mock or spy is used and wired instead of the "test scoped bean".
+</p>
+<pre content="java">
+  class OtherComponentTest extends BaseComponentTest {
+
+    /**
+     * Use this instance for this test.
+     */
+    @Mock AmazonDynamoDB mockDynamo;
+
+    /**
+     * Now wired with mockDynamo for this test.
+     */
+    @Inject MyDynamoClient client;
+
+  }
+</pre>
+
+<h4>Purposes of Test scope beans</h4>
+<p>
+  Test scope beans generally have one of 3 purposes.
+</p>
+<h5>1. Extra bean</h5>
+<p>
+  For testing purposes we want to create an <b>extra</b> bean. For example, the LocalstackContainer that starts a docker container.
+</p>
+
+<h5>2. Default bean</h5>
+<p>
+  We want most of the tests to use a bean (the default one we want to use in tests). For example, we want components to
+  use the AmazonDynamoDB instance that will talk to the local docker container.
+</p>
+
+<h5>3. Replacement</h5>
+<p>
+  Say we have a remote API (e.g. Rest call to Github). We don't want any component tests to actually make <em>real calls</em>
+  to Github. Instead, we want to have a default stub response and have that as the default. This is similar to (2) but more
+  that the default is more like a stub test double.
+</p>
+
+
 <h3 id="component-testing">Component testing</h3>
 <p>
   Component testing is where we look to run tests that use most of the objects with their real
-  behaviour and only a few of the objects with mocked / stubbed behaviour. With component testing
-  we are looking to test a scenario / piece of functionality with minimal to no mocking.
+  behaviour with less mocked / stubbed behaviour. With component testing we are looking to test a scenario / piece
+  of functionality with minimal to no mocking.
 </p>
 <p>
-  With avaje-inject component testing we are getting avaje-inject to "wire" most or all of
-  the application with potentially some objects as test doubles (mocks, spies, stubs or dummies).
-  For example, we might wire the entire application only using test doubles for objects that
-  make remote calls to another system.
+  The rise and adoption of test docker containers has meant that it is now possible to test significant portions
+  of an application without mocking or stubbing resources like databases and messaging.
 </p>
+<ul>
+  <li>Often uses test docker containers for databases, message queues etc</li>
+  <li>Use Test scope to provide "default" dependencies (e.g. set up to use the local docker containers)</li>
+  <li>Get avaje-inject to "wire" the objects used in the test scenario</li>
+  <li>Unlike unit tests, test a scenario with little to no mocking or stubbing</li>
+</ul>
 
 <h4>JUnit 5 InjectExtension</h4>
 <p>
@@ -84,7 +231,7 @@
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-inject-test</artifactId>
-    <version>8.2</version>
+    <version>8.5</version>
     <scope>test</scope>
   </dependency>
 </pre>
@@ -124,11 +271,14 @@
 
 </pre>
 
-<h4>Programmatic style component test</h4>
+<h2 id="programmatic-testing">Programmatic testing</h2>
 <p>
+  As an alternative to using <em>InjectExtension</em>, we can write component tests programmatically.
   For programmatic style component testing we create a BeanScope and define test doubles that
   we want to use in place of the real things.
 </p>
+
+<h3>forTesting()</h3>
 <p>
   With the bean scope builder we use <code>forTesting()</code> to give us extra methods for ease of using
   mockito mocks and spies. Use <code>withMock()</code> to specify a dependency to be a Mockito mock.
