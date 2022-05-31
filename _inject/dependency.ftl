@@ -122,13 +122,16 @@ dependencies {
 
 <img src="/images/gradle-idea-build.png" width="100%">
 
-
-<h3 id="jpms">JPMS - Java module system</h3>
+<h2 id="jpms">Java modules - module-info</h2>
 <p>
-  <em>avaje-inject</em> supports the java module system. Add a <em>requires</em> clause and
-  <em>provides</em> clause like the following:
+  If using java modules, in the <code>module-info.java</code> we need to:
 </p>
+<ol>
+  <li>Add a <em>requires</em> clause for <em>io.avaje.inject</em></li>
+  <li>Add a <em>provides</em> clause for <em>io.avaje.inject.spi.Module</em></li>
+</ol>
 
+<h5>Example module-info</h5>
 <pre content="java">
 module org.example {
   requires io.avaje.inject;
@@ -136,5 +139,6 @@ module org.example {
 }
 </pre>
 <p>
-  With JPMS we need to explicitly specify the generated <code>Module</code> in a <code>provides</code> clause.
+ In the example above, <code>org.example.ExampleModule</code> is generated code typically found in
+  <code>target/generated-sources/annotations</code>.
 </p>

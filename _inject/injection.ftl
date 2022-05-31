@@ -140,9 +140,9 @@ public class CoffeeMaker {
     Promotes single responsibility principal.</li>
 </ul>
 
-<h4>Field injection for circular dependencies</h4>
+<h4>Circular dependencies</h4>
 <p>
-  We use field injection to handle <a href="#circular">circular dependencies</a>.
+  We use field injection or method injection to handle <a href="#circular">circular dependencies</a>.
   See <a href="#circular">below</a> for more details.
 </p>
 
@@ -203,8 +203,8 @@ public class CoffeeMaker {
 
 <h3 id="circular">Circular dependencies</h3>
 <p>
-  When we have a circular dependency then we need to use <a href="#field">field injection</a>
-  on one of the dependencies.
+  When we have a circular dependency then we need to use either <a href="#field">field injection</a>
+  or <a href="#method">method injection</a> on one of the dependencies.
 </p>
 <p>
   For example, lets say we have A and B where A depends on B and B depends on A. In this case
@@ -237,7 +237,7 @@ class B {
 </p>
 <p>
   We can not use constructor injection for both A and B and instead we must use
-  field injection on either A or B like:
+  either field injection or method injection on either A or B like:
 </p>
 <pre content="java">
 @Singleton
@@ -255,14 +255,14 @@ class B {
 }
 </pre>
 <p>
-  The reason this works is that field injection occurs later after all the
+  The reason this works is that field injection and method injection occurs later after all the
   dependencies are constructed. <em>avaje-inject</em> uses 2 phases to
   "wire" the beans and then a 3rd phase to execute the <code>@PostConstruct</code>
   lifecycle methods:
 </p>
 <ul>
   <li>Phase 1: Construct all the beans in order based on constructor dependencies</li>
-  <li>Phase 2: Apply field injection on all beans</li>
+  <li>Phase 2: Apply field injection and method injection on all beans</li>
   <li>Phase 3: Execute all <code>@PostConstruct</code> lifecycle methods</li>
 </ul>
 <p>
@@ -276,7 +276,8 @@ class B {
 </ul>
 <p>
   With A, B, C above they combine to create a circular dependency. To handle this
-  we need to use <a href="#field">field injection</a> on one of the dependencies.
+  we need to use <a href="#field">field injection</a> or <a href="#method">method injection</a>
+  on one of the dependencies.
 </p>
 
 <h3 id="optional">Optional</h3>

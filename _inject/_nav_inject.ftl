@@ -9,8 +9,9 @@
   <ul>
     <li><a href="#maven">Maven</a></li>
     <li><a href="#gradle">Gradle</a></li>
-    <li><a href="#jpms">JPMS Module system</a></li>
   </ul>
+</@nav>
+<@nav url="#jpms" title="Java modules">
 </@nav>
 <@nav url="#injection" title="Injection">
   <ul>
