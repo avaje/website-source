@@ -56,8 +56,8 @@
       <ul>
         <li><a href="#jsr-330">JSR-330</a> dependency injection</li>
         <li><a href="#lifecycle">Lifecycle</a> support</li>
-        <li><a href="#factory">@Factory @Bean</a></li>
-        <li><a href="#primary">@Primary @Secondary</a></li>
+        <li><a href="#factory">@Factory + @Bean</a></li>
+        <li><a href="#primary">@Primary + @Secondary</a></li>
         <li><a href="#test-scope">Test scope</a> component testing</li>
         <li><a href="#aspects">AOP</a> around method advice</li>
       </ul>
@@ -80,7 +80,7 @@
 
 <h4>Want to use javax.inject?</h4>
 <p>
-  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-parent-7.5">version 7.5</a> of
+  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-8.5">version 7.5</a> of
   avaje-inject with the dependency on <code>javax.inject</code> (maintained on javax.main branch).
 </p>
 <h4>Want to use jakarta.inject?</h4>
@@ -123,6 +123,16 @@
 </p>
 
 <h3 id="extensions">Spring DI like extensions to JSR-330</h3>
+
+<h4>@InjectTest - component testing</h4>
+<p>
+  We use <code><a href="#inject-test">@InjectTest</a></code> for <a href="#component-testing">component testing</a> which is similar
+  to Spring's junit extensions <code>SpringExtension</code>, <code>@SpringBootTest</code>.
+</p>
+<p>
+  This is where we get avaje-inject to wire the test class using <code>@Inject, @Mock, @Spy</code>.
+</p>
+
 <h4>@Factory + @Bean</h4>
 <p>
   In addition to the JSR-330 standard we use <a href="#factory">@Factory</a> + <a href="#bean">@Bean</a>
@@ -130,20 +140,20 @@
   <em>@Factory + @Bean</em>. This is also similar to a Guice module with <em>@Provides</em> methods.
 </p>
 <p>
-  Teams will often use <em>@Factory@Bean</em> to provide dependencies that
-  are best created programmatically. Typically these depend on external configuration,
+  Teams will often use <em>@Factory + @Bean</em> to provide dependencies that
+  are best created programmatically. Typically, these depend on external configuration,
   environment settings etc.
 </p>
 <p>
   Factory provides a more convenient alternative to the JSR-330
   <a href="#provider">javax.inject.Provider&lt;T&gt;</a> interface and is also more natural
-  for people who familiar with Spring DI or Micronaut DI.
+  for people who are familiar with Spring DI or Micronaut DI.
 </p>
 
-<h4>@Primary @Secondary</h4>
+<h4>@Primary + @Secondary</h4>
 <p>
   Additionally we use <a href="#primary">@Primary</a> <a href="#secondary">@Secondary</a> annotations
-  which work the same as Spring DI's <em>@Primary @Secondary</em> and also Micronaut DI's
-  <em>@Primary @Secondary</em>. These provide injection priority in the case when multiple injection
+  which work the same as Spring DI's <em>@Primary + @Secondary</em> and also Micronaut DI's
+  <em>@Primary + @Secondary</em>. These provide injection priority in the case when multiple injection
   candidates are available.
 </p>

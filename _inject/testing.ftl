@@ -92,7 +92,7 @@
 </pre>
 
 
-<h3 id="injectTest">@InjectTest</h3>
+<h3 id="inject-test">@InjectTest</h3>
 <p>
   avaje-inject provides a JUnit 5 extension via <code>@InjectTest</code>.
   When a test is annotated with <code>@InjectTest</code> then avaje-inject will be used to setup the
@@ -162,15 +162,18 @@ void programmaticStyle() {
 
 </pre>
 
-<h3>static fields, instance fields</h3>
+<h3>Static fields, Instance fields</h3>
 <p>
   With <code>@InjectTest</code> we can inject into static fields and non-static fields.
   Under the hood these map to BeanScopes that are created and used to populate these fields in the tests.
 </p>
-<h4>static fields</h4>
+<h4>static fields - Junit All</h4>
 <p>
   With static fields there is an underlying BeanScope that is created and used for all
   tests in the test class. In the example below, the static Foo is in that BeanScope.
+</p>
+<p>
+  This matches Junit5 <em>All</em> - <code>@BeforeAll, @AfterAll</code> etc.
 </p>
 <p>
   This BeanScope is created and used for all tests that run for that test class. This scope will be
@@ -178,11 +181,14 @@ void programmaticStyle() {
   The "global test scope" (if defined) will be the parent bean scope.
 </p>
 
-<h4>non-static fields</h4>
+<h4>non-static fields - Junit Each</h4>
 <p>
   For non-static fields, there is a BeanScope that is created for these. In the example
   below Bar and Bazz are in that BeanScope. With the 3 test methods <code>one(), two(), three()</code>
   this BeanScope is created (and closed) for each test so 3 times.
+</p>
+<p>
+  This matches Junit5 <em>Each</em> - <code>@BeforeEach, @AfterEach</code> etc.
 </p>
 <p>
   This BeanScope is created for each test and closed after that test has been run.
@@ -215,13 +221,40 @@ void programmaticStyle() {
   }
 </pre>
 <p>
-  The above can be programmatically written as below.
+  The above <code>MyTest</code> runs 3 tests, <code>one(), two(),</code> and <code>three()</code>.
+
 </p>
+<p>
+  <em>Static Foo field</em> is wired once and the same foo instance would be used for ALL three tests.
+</p>
+<p>
+  <em>Instance Bar, Bazz fields</em> are wired for each of the three tests - they are wired 3 times.
+</p>
+<p>
+  This can be represented by the diagram below. <em>Bar, Bazz</em> are created and injected 3 times.
+  <em>Static Foo</em> is created and injected once.
+</p>
+<p>
+  <img src="/images/inject/inject-static-instance.png" width="100%">
+</p>
+<p>
+  &nbsp;
+</p>
+<p>
+  The above test can be programmatically written as below. In the code below, we see:
+</p>
+<ul>
+  <li><em>staticScope</em> that spans all the tests. Created in <code>beforeAll()</code> and closed in <code>afterAll()</code>.</li>
+  <li><em>instanceScope</em> that is created in <code>beforeEach()</code> and closed in <code>afterEach()</code></li>
+</ul>
 
 <pre content="java">
   class MyTest {
 
+    // static fields
     static @Mock Foo foo;
+
+    // instance fields
     @Mock Bar bar;
     @Inject Bazz bazz;
 
@@ -230,7 +263,7 @@ void programmaticStyle() {
 
     @BeforeAll
     static void beforeAll() {
-      staticScope = TestBeanScope.builder() // parent of "global test scope" if defined
+      staticScope = TestBeanScope.builder()
           .forTesting()
           .mock(Foo.class)
           .build()
@@ -275,17 +308,74 @@ void programmaticStyle() {
   }
 </pre>
 
-
-<h2 id="test-scope">Test scope</h2>
+<h3 id="test-scope-parent">Parent child hierarchy</h3>
 <p>
-  Test scope is a special scope used for testing. It effectively provides <em>default dependencies to
-    use for ALL tests</em>. As such we can think of it as the "global test scope".
+  When using <code>@InjectTest</code> we get a 3 level parent child hierarchy of <em>BeanScope</em>.
 </p>
+<ol>
+  <li>Global <a href="#test-scope">test scope</a> that spans ALL tests. This is detailed in the next section.</li>
+  <li>Static/All BeanScope - when there are static fields to <em>@Inject, @Mock or @Spy</em>.</li>
+  <li>Instance/Each BeanScope - when there are instance fields to <em>@Inject, @Mock or @Spy</em>.</li>
+</ol>
+
+<h3>All 3 scopes</h3>
+<p>
+  When we have all 3 scopes they form a parent child hierarchy as per the diagram below. The "global test scope"
+  is the parent of the "static/all scope".  The "static/all scope" is the parent of each "instance/each scope".
+</p>
+<p>
+  <img src="/images/inject/inject-parent.png" width="100%">
+</p>
+
+<p>&nbsp;</p>
+<h3>Only instance fields</h3>
+<p>
+  When a test only has instance fields with <em>@Inject, @Mock or @Spy</em> then the global test scope (if defined)
+  is the parent of the instance/each scopes.
+</p>
+<p>
+  In this case, <code>@InjectTest</code> detects that there are no static fields to wire and will not create a BeanScope for the
+  static/all scope.
+</p>
+<p>
+  <img src="/images/inject/inject-parent-onlyinstance.png" width="100%">
+</p>
+
+<p>&nbsp;</p>
+<h3>Only static fields</h3>
+<p>
+  When a test only has static fields with <em>@Inject, @Mock or @Spy</em> then the global test scope (if defined)
+  is the parent of the static/all scope. This static/all scope is used by all the tests that run.
+</p>
+<p>
+  In this case, <code>@InjectTest</code> detects that there are no instance fields to wire and will not create a BeanScope for
+  each instance/each scope.
+</p>
+<p>
+  <img src="/images/inject/inject-parent-onlystatic.png" width="100%">
+</p>
+
+<p>&nbsp;</p>
+<h2 id="test-scope">@TestScope - global test scope</h2>
+<p>
+  When we use <code>@TestScope</code> we create a special bean scope used for testing that spans <em>ALL TESTS</em>.
+  It effectively provides <em>default dependencies to use for ALL tests</em>. As such we can think of it as the
+  "global test scope".
+</p>
+<p>
+  Under the hood, the global test BeanScope is created when junit starts, this test BeanScope holds all the beans
+  that we put in <code>@TestScope</code> and this scope is used as the parent BeanScope for <code>@InjectTest</code>
+  tests.
+</p>
+<p>
+  <img src="/images/inject/inject-global-test-scope.png" width="100%">
+</p>
+
 <h4>Step 1: Add @TestScope</h4>
 <p>
   In <code>src/test</code> create a factory bean that we dedicate to creating test scope dependencies.
   Put <code>@TestScope</code> on this factory bean, the beans this factory creates are in our "test scope"
-  and will be wired into tests that use avaje-inject
+  and will be wired into tests that use <code>@InjectTest</code>.
 </p>
 
 <h4>Example - AmazonDynamoDB</h4>
@@ -301,6 +391,9 @@ void programmaticStyle() {
   </a>
 </p>
 <pre content="java">
+/**
+ * All beans wired by this factory will be in the "global test scope".
+ */
 @TestScope
 @Factory
 class MyTestConfiguration {
@@ -311,8 +404,8 @@ class MyTestConfiguration {
   @Bean
   LocalstackContainer dynamoDBContainer() {
     LocalstackContainer container = LocalstackContainer
-      .newBuilder("1.13.2")
-      .services("dynamodb") // "dynamodb,sns,sqs"
+      .builder("0.14.2")
+      .services("dynamodb") // e.g. "dynamodb,sns,sqs"
       .build();
     container.start();
     return container;
