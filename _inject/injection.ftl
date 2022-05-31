@@ -383,7 +383,7 @@ public class CombinedBars {
 </p>
 <pre content="java">
 @Singleton
-public class FooProvider implements Provider<|Foo> {
+class FooProvider implements Provider<|Foo> {
 
   private final Bazz bazz;
 
@@ -399,15 +399,48 @@ public class FooProvider implements Provider<|Foo> {
 }
 </pre>
 <p>
-  Note that the alternative to using the <code>javax.inject.Provider&lt;T&gt;</code> interface is
+  We can then have another bean that has <code>Provider&lt;T&gt;</code> injected into it.
+  It calls <code>get()</code> to get an instance to then use.
+</p>
+
+<pre content="java">
+@Singleton
+class UseFoo  {
+
+  private final Provider<|Foo> fooProvider;
+
+  UseFoo(Provider<|Foo> fooProvider) {
+    this.fooProvider = fooProvider;
+  }
+
+  void doStuff() {
+
+    // get a Foo instance and use it
+    Foo foo = fooProvider.get();
+    ...
+  }
+}
+</pre>
+
+<p>
+  When using <code>Provider&lt;T&gt;</code> <code>get()</code> we can get a new instance each time we
+  call <code>get()</code>. In the above example, the <code>FooProvider.get()</code> method
+  returns a new instance each time <code>get()</code> is called. This is effectively the
+  same as <em>Prototype scope</em>.
+</p>
+<p>
+  Note that the alternative to implementing the <code>Provider&lt;T&gt;</code> interface is
   to instead use <code><a href="#factory">@Factory</a></code> and <code><a href="#bean">@Bean</a></code>
-  as it is more flexible and convenient than the the provider interface.
+  as it is more flexible and convenient than implementing the provider interface.
 </p>
 <h5>Spring DI Note</h5>
 <p>
   The JSR 330 <code>javax.inject.Provider&lt;T&gt;</code> interface is functionally the same
   as Spring DI <code>FactoryBean&lt;T&gt;</code>.
 </p>
+
+
+<h3 id="prototype">@Prototype</h3>
 
 
 <h3 id="factory">@Factory</h3>

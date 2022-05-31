@@ -64,21 +64,21 @@
 <p>
   Use Gradle version 5.2 or greater which has better support for annotation processing.
 </p>
-<p>
-  Also review the IntelliJ IDEA Gradle settings - see below.
-</p>
 
 <h4>Dependencies</h4>
 <p>
-  Add <em>avaje-inject</em> as a compile dependency and <em>avaje-inject-generator</em> as
-  an annotation processor.
+  Add <em>avaje-inject</em> as an implementation dependency, <em>avaje-inject-generator</em> as
+  an annotation processor, and <em>avaje-inject-test</em> as a test dependency.
 </p>
 
 <pre content="groovy">
 dependencies {
   ...
-  compile('io.avaje:avaje-inject:8.5')
+  implementation('io.avaje:avaje-inject:8.5')
   annotationProcessor('io.avaje:avaje-inject-generator:8.5')
+
+  testImplementation('io.avaje:avaje-inject-test:8.5')
+  testAnnotationProcessor('io.avaje:avaje-inject-generator:8.5')
 }
 </pre>
 
@@ -93,34 +93,13 @@ dependencies {
 <pre content="groovy">
 dependencies {
   ...
-  compile('io.avaje:avaje-inject:8.5')
+  implementation('io.avaje:avaje-inject:8.5')
   kapt('io.avaje:avaje-inject-generator:8.5')
+
+  testImplementation('io.avaje:avaje-inject-test:8.5')
 }
 </pre>
 
-<h3 id="idea">IntelliJ IDEA with Gradle</h3>
-<p>
-  We want to delegate the <code>build</code> to Gradle (to properly include the annotation processing)
-  so check our IDEA settings.
-</p>
-
-<h4>Settings / Build / Compiler / Annotation processors</h4>
-<p>
-  Ensure that <code>Enable annotation processing</code> is disabled so
-  that the build is delegated to Gradle (including the annotation processing):
-</p>
-
-<img src="/images/gradle-idea-disable-apt.png" width="100%">
-
-<h5>Settings / Build / Build tools / Gradle</h5>
-<p>
-  Make sure <code>Build and run</code> is delegated to Gradle.
-</p>
-<p>
-  Optionally set <em>Run tests using</em> to <code>Gradle</code> but leaving it to IntelliJ IDEA should be ok.
-</p>
-
-<img src="/images/gradle-idea-build.png" width="100%">
 
 <h2 id="jpms">Java modules - module-info</h2>
 <p>
