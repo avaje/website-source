@@ -12,7 +12,7 @@
 <dependency>
   <groupId>io.avaje</groupId>
   <artifactId>avaje-inject</artifactId>
-  <version>8.8</version>
+  <version>8.9</version>
 </dependency>
 </pre>
 <p>
@@ -25,7 +25,7 @@
 <dependency>
   <groupId>io.avaje</groupId>
   <artifactId>avaje-inject-generator</artifactId>
-  <version>8.8</version>
+  <version>8.9</version>
   <scope>provided</scope>
 </dependency>
 </pre>
@@ -43,7 +43,7 @@
       <path>
           <groupId>io.avaje</groupId>
           <artifactId>avaje-inject-generator</artifactId>
-          <version>8.8</version>
+          <version>8.9</version>
       </path>
       <path>
           ... other annotation processor ...
@@ -74,11 +74,11 @@
 <pre content="groovy">
 dependencies {
   ...
-  implementation('io.avaje:avaje-inject:8.8')
-  annotationProcessor('io.avaje:avaje-inject-generator:8.8')
+  implementation('io.avaje:avaje-inject:8.9')
+  annotationProcessor('io.avaje:avaje-inject-generator:8.9')
 
-  testImplementation('io.avaje:avaje-inject-test:8.8')
-  testAnnotationProcessor('io.avaje:avaje-inject-generator:8.8')
+  testImplementation('io.avaje:avaje-inject-test:8.9')
+  testAnnotationProcessor('io.avaje:avaje-inject-generator:8.9')
 }
 </pre>
 
@@ -93,10 +93,10 @@ dependencies {
 <pre content="groovy">
 dependencies {
   ...
-  implementation('io.avaje:avaje-inject:8.8')
-  kapt('io.avaje:avaje-inject-generator:8.8')
+  implementation('io.avaje:avaje-inject:8.9')
+  kapt('io.avaje:avaje-inject-generator:8.9')
 
-  testImplementation('io.avaje:avaje-inject-test:8.8')
+  testImplementation('io.avaje:avaje-inject-test:8.9')
 }
 </pre>
 
