@@ -15,7 +15,7 @@
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject">Github</a></td>
     <td><a target="_blank" href="/apidocs/avaje-inject">Javadoc</a></td>
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject/issues">Github</a></td>
-    <td><a href="https://mvnrepository.com/artifact/io.avaje/avaje-inject"><img src="https://img.shields.io/maven-central/v/io.avaje/avaje-inject.svg?label=Maven%20Central"></a></td>
+    <td><a href="https://github.com/avaje/avaje-inject/releases"><img src="https://img.shields.io/maven-central/v/io.avaje/avaje-inject.svg?label=Maven%20Central"></a></td>
   </tr>
 </table>
 <p>&nbsp;</p>
