@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<h1 id="overview">avaje http client</h1>
+<h1 id="overview">Avaje Http Client</h1>
 
 <table style="width: 100%;">
   <tr>
@@ -21,16 +21,9 @@
     <td><a target="_blank" href="https://github.com/avaje/avaje-http-client">Github</a></td>
     <td><a target="_blank" href="/apidocs/avaje-http-client">Javadoc</a></td>
     <td><a target="_blank" href="https://github.com/avaje/avaje-http-client/issues">Github</a></td>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-http-client/releases">Latest 1.19</a></td>
+    <td><a href="https://github.com/avaje/avaje-http-client/releases"><img src="https://img.shields.io/maven-central/v/io.avaje/avaje-http-client.svg?label=Maven%20Central"></a></td>
   </tr>
 </table>
-<p>&nbsp;</p>
-<p>
-  <a href="https://mvnrepository.com/artifact/io.avaje/avaje-http-client"><img src="https://img.shields.io/maven-central/v/io.avaje/avaje-http-client.svg?label=Maven%20Central"></a>
-  <a href="https://github.com/avaje/avaje-http-client/actions/workflows/build.yml"><img src="https://github.com/avaje/avaje-http-client/actions/workflows/build.yml/badge.svg" alt="Build"></a>
-  <a href="https://github.com/avaje/avaje-http-client/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"></a>
-</p>
-<p>&nbsp;</p>
 
 <h3>Wrap JDK HttpClient</h3>
 <p>
@@ -126,7 +119,7 @@
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-http-client</artifactId>
-    <version>1.19</version>
+    <version>${avaje.http.client.version}</version>
   </dependency>
 </pre>
 
@@ -138,7 +131,7 @@
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-http-api</artifactId>
-    <version>1.17</version>
+    <version>${avaje.http.api.version}</version>
   </dependency>
 </pre>
 
@@ -152,7 +145,7 @@
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-http-client-generator</artifactId>
-    <version>1.19</version>
+    <version>${avaje.http.api.version}</version>
     <scope>provided</scope>
   </dependency>
 </pre>
@@ -171,7 +164,7 @@
       <path>
         <groupId>io.avaje</groupId>
         <artifactId>avaje-http-client-generator</artifactId>
-        <version>1.19</version>
+        <version>${avaje.http.api.version}</version>
       </path>
       <path>
           ... other annotation processor ...
@@ -232,17 +225,7 @@ dependencies {
   <li>Javadoc for <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html">JDK HttpClient</a> </li>
 </ul>
 
-<h3 id="other-projects">Other JDK HttpClient projects</h3>
-<p>
-  Methanol is another project based on JDK HttpClient. Let me know of others and
-  I'll add them to the list below.
-</p>
-<ul>
-  <li><a target="_blank" href="https://github.com/mizosoft/methanol/">Methanol</a></li>
-</ul>
-
-
-<h3 id="quick-overview">Quick overview</h3>
+<h3 id="quick-overview">Quick Overview</h3>
 
 <h4>HttpClientContext</h4>
 <p>
@@ -303,11 +286,11 @@ dependencies {
 
 <h2 id="sync-async">Sync and Async</h2>
 <p>
-  We can make requests in simple blocking manor or via <code>async()</code>
+  We can make requests in simple blocking manner or via <code>async()</code>
   in an asynchronous style using <code>CompletableFuture</code>.
 </p>
 <p>
-  JDK HttpClient provides a number of <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpResponse.BodyHandler.html">BodyHandlers</a>
+  The JDK HttpClient provides a number of <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpResponse.BodyHandler.html">BodyHandlers</a>
   including reactive Flow based subscribers. When executing the requests in
   asynchronous style the responses are processed in a reactive way. Generally
   <code>CompletableFuture.whenComplete()</code> will be called only when the
@@ -332,7 +315,7 @@ dependencies {
 <h2 id="httpClientContext">HttpClientContext</h2>
 <p>
   HttpClientContext is effectively a wrapper of <code>java.net.http.HttpClient</code>
-  with extra features for request interceptors, body adapters, retry.
+  with extra features for request interceptors, body adapters, retry, etc.
 </p>
 <p>
   Create a HttpClientContext with a base URL plus BodyAdapter (e.g. JacksonBodyAdapter).
@@ -367,7 +350,7 @@ dependencies {
   <em>avaje-http-client</em> provides a
   <a target="_blank" href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/BodyAdapter.html">BodyAdapter</a> interface
   with implementations for <a href="https://github.com/FasterXML/jackson">Jackson</a>,
-  <a href="https://github.com/google/gson">Gson</a> and <a href="https://github.com/avaje/avaje-jsonb">avaje-jsonb</a> to
+  <a href="https://github.com/google/gson">Gson</a> and <a href="https://github.com/avaje/avaje-jsonb">Avaje-Jsonb</a> to
   adapt request and response body content from JSON to java types and from java types to JSON.
 </p>
 
@@ -422,7 +405,7 @@ dependencies {
     .build();
 </pre>
 
-<h3 id="json-jsonb">Using avaje-jsonb</h3>
+<h3 id="json-jsonb">Using Avaje-Jsonb</h3>
 <p>
   To use <em>avaje-jsonb</em> for serialisation of request and response body content to and from JSON we need to:
 </p>
@@ -431,7 +414,7 @@ dependencies {
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-jsonb</artifactId>
-    <version>0.15</version>
+    <version>${avaje.jsonb.version}</version>
   </dependency>
 </pre>
 
@@ -466,7 +449,7 @@ dependencies {
   to convert body content to/from JSON and java beans/types.
 </p>
 
-<h5>Request body</h5>
+<h5>Request Body</h5>
 <ul>
   <li>Object which is written by the BodyAdapter, e.g. JacksonBodyAdapter writes as JSON content</li>
   <li>formParam() for url encoded form</li>
@@ -878,7 +861,47 @@ dependencies {
 </pre>
 
 
-<h2 id="auth">Authorisation</h2>
+<h2 id="retry">Retry (Sync Requests Only)</h2>
+<p>
+  To add Retry funtionality, use <code>.retryHandler(yourhandler)</code> on the builder to provide your retry handler.
+</p>
+<p>
+  The RetryHandler interface provides two methods, one for status exceptions (e.g. you get a 4xx/5xx from the server) and another for exceptions thrown by the underlying client (e.g. server times out or client couldn't send request).
+  <br></br>Here is example implementation of RetryHandler.
+</p>
+
+<pre content="java">
+  public final class ExampleRetry implements RetryHandler {
+    private static final int MAX_RETRIES = 2;
+    @Override
+    public boolean isRetry(int retryCount, HttpResponse<?> response) {
+
+      final var code = response.statusCode();
+
+      if (retryCount >= MAX_RETRIES || code <= 400) {
+
+        return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public boolean isExceptionRetry(int retryCount, HttpException response) {
+      //unwrap the exception
+      final var cause = response.getCause();
+      if (retryCount >= MAX_RETRIES) {
+        return false;
+      }
+      if (cause instanceof ConnectException) {
+        return true;
+      }
+
+      return false;
+    }
+</pre>
+
+<h2 id="auth">Authorization</h2>
 <p>
   <em>avaje-http-client</em> has built in support for <a href="#auth-basic">basic auth</a> and
   <a href="#auth-bearer">bearer token</a> based authorisation.
@@ -1296,6 +1319,55 @@ List<|Bazz> findBazz(long id, LocalDate startDate, String type);
 </p>
 
 
+<h3 id="header">@Header</h3>
+<p>
+  Use <code>@Header</code> for a header parameter.
+  It the header parameter name is not explicitly specified then
+  it is the <em>init caps snake case</em> of the parameter name.
+</p>
+<p>
+  <code>userAgent</code> -> <code>User-Agent</code>
+</p>
+<p>
+  <code>lastModified</code> -> <code>Last-Modified</code>
+</p>
+
+<pre content="java">
+@Post
+Bar postIt(Foo payload, @Header("User-Agent") String userAgent); // explicit
+
+@Post
+Bar postIt(Foo payload, @Header String userAgent); // User-Agent
+
+@Get
+Bazz find(@Header String lastModified); // Last-Modified
+</pre>
+
+<h4>@Header Map&lt;String, ?&gt;</h4>
+<p>
+  We can use <code>@Header</code> with a <code>Map&lt;String, ?&gt;</code>, <code>Map&lt;String, String&gt;</code>
+  or <code>Map&lt;String, Object&gt;</code>.
+</p>
+<pre content="java">
+  @Get("{type}")
+  List<|Cat> searchByType(String type, String query, @Header Map<|String, ?> myHeaders);
+</pre>
+<p>
+  The generated code includes <code>.header(myHeaders)</code>
+</p>
+<pre content="java">
+  // GET {type}
+  @Override
+  public List<|Cat> searchByType(String type, String query, Map<|String,?> myHeaders) {
+    return clientContext.request()
+      .header(myHeaders)
+      .path("api").path("cats").path(type)
+      .queryParam("query", query)
+      .GET()
+      .list(Cat.class);
+  }
+</pre>
+
 <h3 id="queryParam">@QueryParam</h3>
 <p>
   We explicitly specify query parameters using <code>@QueryParam</code>.
@@ -1595,56 +1667,6 @@ public record RegisterForm(
   }
 </pre>
 
-
-<h3 id="header">@Header</h3>
-<p>
-  Use <code>@Header</code> for a header parameter.
-  It the header parameter name is not explicitly specified then
-  it is the <em>init caps snake case</em> of the parameter name.
-</p>
-<p>
-  <code>userAgent</code> -> <code>User-Agent</code>
-</p>
-<p>
-  <code>lastModified</code> -> <code>Last-Modified</code>
-</p>
-
-<pre content="java">
-@Post
-Bar postIt(Foo payload, @Header("User-Agent") String userAgent); // explicit
-
-@Post
-Bar postIt(Foo payload, @Header String userAgent); // User-Agent
-
-@Get
-Bazz find(@Header String lastModified); // Last-Modified
-</pre>
-
-<h4>@Header Map&lt;String, ?&gt;</h4>
-<p>
-  We can use <code>@Header</code> with a <code>Map&lt;String, ?&gt;</code>, <code>Map&lt;String, String&gt;</code>
-  or <code>Map&lt;String, Object&gt;</code>.
-</p>
-<pre content="java">
-  @Get("{type}")
-  List<|Cat> searchByType(String type, String query, @Header Map<|String, ?> myHeaders);
-</pre>
-<p>
-  The generated code includes <code>.header(myHeaders)</code>
-</p>
-<pre content="java">
-  // GET {type}
-  @Override
-  public List<|Cat> searchByType(String type, String query, Map<|String,?> myHeaders) {
-    return clientContext.request()
-      .header(myHeaders)
-      .path("api").path("cats").path(type)
-      .queryParam("query", query)
-      .GET()
-      .list(Cat.class);
-  }
-</pre>
-
 <h2 id="10k">10K requests - Loom vs Async</h2>
 <p>
   The following is a very quick and rough comparison of running 10,000 requests
@@ -1685,7 +1707,6 @@ Bazz find(@Header String lastModified); // Last-Modified
       ...
     });
 </pre>
-
 
 <h3 id="10k-async">10K requests using Async and reactive streams</h3>
 <p>
@@ -1768,5 +1789,6 @@ Caveat: Proper performance benchmarks are really hard and take a lot of effort.
 
 </body>
 </html>
+
 
 
