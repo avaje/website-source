@@ -237,8 +237,6 @@ List<|Cat> findCats(@QueryParam("order-by") String orderBy) {
 }
 </pre>
 
-
-
 <h3>Query parameter types</h3>
 <p>
   Query parameters can be one of the following types:

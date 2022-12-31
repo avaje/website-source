@@ -1,5 +1,7 @@
 <ul>
   <@nav url="#overview" title="Overview"/>
+  <@nav url="#quick-start" title="Quick-Start"/>
+  <@nav url="#usage" title="Usage"/>
   <@nav url="#dependencies" title="Dependencies">
     <ul>
       <li><a href="#maven">Maven</a></li>
