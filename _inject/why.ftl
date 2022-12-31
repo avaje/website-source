@@ -34,7 +34,7 @@
 <p>
   Some Guice developers went on to develop Dagger which I believe was the first
   dependency injection library that used Java annotation processing to generate code
-  for DI. This moves work that was previously done at runtime to build time and made
+  for DI. This moved work that was previously done at runtime to build time, which made
   Dagger significantly faster and lighter than Guice. Dagger becomes heavily
   adopted for Android applications.
 </p>
@@ -48,7 +48,7 @@
   Around 2018 the pain points of using Spring DI with Kubernetes and resource limited
   containers becomes more obvious. The way Spring DI works means that at startup time it
   performs a lot of work that includes classpath scanning, heavy use of reflection and
-  defining dynamic proxies.  This makes it relatively slow and hungry for both CPU and
+  defining dynamic proxies. This makes it relatively slow and hungry for both CPU and
   memory resources. With cloud deployment where we pay for CPU and memory some developers
   start looking for another approach to DI which puts more (or virtually all) of that
   work to build time using Java annotation processing [as Dagger2 had been doing in the

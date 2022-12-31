@@ -1,15 +1,14 @@
 # website-source
+
 Source for the website documentation
 
 ## How to build the website
-
 
 ### 1. Clone website-source repo
 
 ```
 git clone git@github.com:ebean-orm/website-source.git
 ```
-
 
 ### 2. Make a destination directory
 
@@ -21,9 +20,6 @@ mkdir website-dest
 
 - download https://repo1.maven.org/maven2/org/avaje/avaje-website-generator/2.2.2/avaje-website-generator-2.2.2.jar
 
-
-
-
 ### 3. run the website generator
 
 ```bash
@@ -31,25 +27,13 @@ java -jar avaje-website-generator-2.2.2.jar -s website-source/ -d website-dest/
 ```
 
 This website generator will:
+
 - generate content into website-dest
 - continue to run (until CTRL-C) watching the source directory
 - When any source file changes it will re-generate the changed content
 
+### 4. setup npm live-server to serve the website-dest directory
 
-### 4. setup nginx to serve the website-dest directory
-
-For example:
-```
-
-root /home/rob/work/website-dest;
-
-index index.html index.htm;
-
-server_name _;
-
-location / {
-        # First attempt to serve request as file, then
-        # as directory, then fall back to displaying a 404.
-        try_files $uri $uri.html $uri/ =404;
-}
-```
+1. install node.
+2. run `npm install live-server -g`
+3. run `live-server` in the website-dest directory to serve the content on localhost 8080.

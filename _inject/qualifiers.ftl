@@ -3,7 +3,7 @@
 <h3 id="named">@Named</h3>
 <p>
   When we have multiple beans that implement a common interface we can qualify
-  which instance is used by specifying <code>@Named</code> on the beans and where
+  which instance to use by specifying <code>@Named</code> on the beans and where
   they are injected. This is a standard part of most Java DI frameworks.
 </p>
 <p>

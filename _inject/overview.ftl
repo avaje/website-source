@@ -15,22 +15,21 @@
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject">Github</a></td>
     <td><a target="_blank" href="/apidocs/avaje-inject">Javadoc</a></td>
     <td><a target="_blank" href="https://github.com/avaje/avaje-inject/issues">Github</a></td>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/releases">Latest 8.9</a></td>
+    <td><a href="https://mvnrepository.com/artifact/io.avaje/avaje-inject"><img src="https://img.shields.io/maven-central/v/io.avaje/avaje-inject.svg?label=Maven%20Central"></a></td>
   </tr>
 </table>
 <p>&nbsp;</p>
 
 <p>
   Uses Java annotation processing generating source code for dependency injection.
-  That puts the work of performing dependency injection to build time rather than
-  runtime increasing the speed of application start. There is no use of reflection
+  This puts the work of performing dependency injection to build time rather than
+  runtime, increasing the speed of application start. There is no use of reflection
   or classpath scanning.
 </p>
 <p>
-  DI is generated source code allowing developers to see how it works and we can use
-  existing IDE tools to search where code is called such as constructors and lifecycle
-  methods. We can add debug breakpoints into the DI code as desired and step through
-  it just like it was manually written code.
+  The dependency injection classes are generated source code. We can add debug breakpoints into the DI code as desired and step through
+  it just like it was manually written code. We can use existing IDE tools to search where code is called (e.g. Constructors and lifecycle
+  methods.)
 </p>
 <p>
   For a <a href="#why">background on why</a> <em>avaje inject</em> exists and a
@@ -38,7 +37,7 @@
   Dagger2, Micronaut, Quarkus and Spring goto - <a href="#why">Why</a>.
 </p>
 
-<h3 id="size">DI Library size</h3>
+<h3 id="size">DI Library Size</h3>
 <table class="basic">
   <tr>
     <td>
@@ -59,7 +58,6 @@
         <li><a href="#factory">@Factory + @Bean</a></li>
         <li><a href="#primary">@Primary + @Secondary</a></li>
         <li><a href="#test-scope">Test scope</a> component testing</li>
-        <li><a href="#aspects">AOP</a> around method advice</li>
       </ul>
     </td>
     <td>
@@ -80,12 +78,12 @@
 
 <h4>Want to use javax.inject?</h4>
 <p>
-  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-8.9">version 7.9</a> of
+  Use <a href="https://github.com/avaje/avaje-inject/releases">version 7.x</a> of
   avaje-inject with the dependency on <code>javax.inject</code> (maintained on javax.main branch).
 </p>
 <h4>Want to use jakarta.inject?</h4>
 <p>
-  Use <a href="https://github.com/avaje/avaje-inject/releases/tag/avaje-inject-8.9">version 8.9</a> of
+  Use <a href="https://github.com/avaje/avaje-inject/releases">version 8.x</a> of
   avaje-inject with the dependency on <code>jakarta.inject</code> (maintained on master branch).
 </p>
 <p>
@@ -115,14 +113,14 @@
 </ul>
 <p>
   <code>@PostConstruct</code> and <code>@PreDestroy</code> are part of <em>Common Annotations API</em>.
-  These where in JDK 8 but from JDK 9 onwards are part of JDK module <em>javax.annotation-api</em>.
+  These were in JDK 8, but from JDK 9 onwards are part of JDK module <em>javax.annotation-api</em>.
 </p>
 <p>
-  Noting that at this point neither Dagger2 or Guice support <code>@PostConstruct</code>
+  Currently, neither Dagger2 or Guice support or plan to support <code>@PostConstruct</code>
   and <code>@PreDestroy</code> lifecycle annotations.
 </p>
 
-<h3 id="extensions">Spring DI like extensions to JSR-330</h3>
+<h3 id="extensions">Spring-like DI extensions to JSR-330</h3>
 
 <h4>@InjectTest - component testing</h4>
 <p>
@@ -136,13 +134,13 @@
 <h4>@Factory + @Bean</h4>
 <p>
   In addition to the JSR-330 standard we use <a href="#factory">@Factory</a> + <a href="#bean">@Bean</a>
-  which work the same as Spring DI's <em>@Configuration + @Bean</em> and also Micronaut's
+  which have a similar function as Spring DI's <em>@Configuration + @Bean</em> and also Micronaut's
   <em>@Factory + @Bean</em>. This is also similar to a Guice module with <em>@Provides</em> methods.
 </p>
 <p>
   Teams will often use <em>@Factory + @Bean</em> to provide dependencies that
   are best created programmatically. Typically, these depend on external configuration,
-  environment settings etc.
+  environment settings, etc.
 </p>
 <p>
   Factory provides a more convenient alternative to the JSR-330

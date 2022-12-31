@@ -1,10 +1,10 @@
 
 <h2 id="modules">Modules</h2>
 
-<h3 id="unnamed-module">Unnamed modules</h3>
+<h3 id="unnamed-module">Unnamed Modules</h3>
 <p>
   When we don't specify <em>@InjectModule</em> on a module it is an <em>unnamed module</em>.
-  In effect a module name is derived from the top most package and that module has no
+  In effect, the module name is derived from the top most package and that module has no
   <em>provides</em> or <em>requires</em> specified.
 </p>
 <p>
@@ -13,7 +13,7 @@
   we will see the generated <code>org.foo.coffee.CoffeeModule</code>.
 </p>
 
-<h3 id="single-module">Single module apps</h3>
+<h3 id="single-module">Single Module Apps</h3>
 <p>
   When we are wiring dependencies that are all part of a single jar/module then we don't
   really care about <em>module ordering</em>. All the dependencies that are being injected are known and
@@ -65,7 +65,7 @@
   using <code>@Singleton</code>.
 </p>
 
-<h3 id="multi-module">Multi-module apps</h3>
+<h3 id="multi-module">Multi-module Apps</h3>
 <p>
   When we are wiring dependencies that span multiple jars/modules then we to provide more
   control over the order in which the modules are wired. We provide this control

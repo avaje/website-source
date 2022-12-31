@@ -1,4 +1,4 @@
-<h2 id="default-scope">Default scope</h2>
+<h2 id="default-scope">Default Scope</h2>
 <p>
   All beans are instantiated within a <i>scope</i>. Beans annotated with <code>@Singleton</code>
   are in the "default scope".
@@ -30,7 +30,7 @@ public class App {
 </p>
 
 
-<h2 id="request-scope">Request scope - @Controller</h2>
+<h2 id="request-scope">Request Scope - @Controller</h2>
 <p>
   When using <a href="/http">avaje-http</a> we annotate controllers with <code>@Controller</code>.
   <em>avaje-inject</em> will detect when controllers have a request scope dependency and automatically
@@ -87,7 +87,7 @@ class ContactController {
   use the default scope.
 </p>
 
-<h3>Example: Custom scope</h3>
+<h3>Example: Custom Scope</h3>
 
 <h5>Step 1: Define the custom scope annotation</h5>
 <pre content="java">
@@ -118,7 +118,7 @@ public class App {
 }
 </pre>
 
-<h3>Custom scope dependencies</h3>
+<h3>Custom Scope Dependencies</h3>
 <p>
   Custom scopes can have dependencies on other scopes or externally supplied beans.
   We specify these dependencies using <code>@InjectModule(requires = ...)</code>.

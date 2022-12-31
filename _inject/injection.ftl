@@ -58,7 +58,7 @@ public class CoffeeMaker {
 <h3 id="inject">@Inject</h3>
 <p>
   Put <code>@Inject</code> on the constructor that should be used for constructor dependency injection.
-  Note that if there is <code>only one constructor</code> we don't need to put the <code>@Inject</code> on it.
+  If there is <code>only one constructor</code> we don't need this annotation.
 </p>
 <p>
   If we want to use field injection put the <code>@Inject</code> on the field. Note that the field must not
@@ -110,7 +110,7 @@ class CoffeeMaker(private val pump: Pump , private val grinder: Grinder)  {
 }
 </pre>
 
-<h3 id="field">Field injection</h3>
+<h3 id="field">Field Injection</h3>
 <pre content="java">
 @Singleton
 public class CoffeeMaker {
@@ -123,8 +123,8 @@ public class CoffeeMaker {
   ...
 </pre>
 <p>
-  With field injection the <code>@Inject</code> is placed on the field and the field must not be <code>private</code>
-  and it must not be <code>final</code>.
+  With field injection the <code>@Inject</code> is placed on the field. The field cannot be <code>private</code>
+  or <code>final</code>.
 </p>
 <h4>Constructor injection preferred</h4>
 <p>
@@ -163,7 +163,7 @@ class Grinder {
 }
 </pre>
 
-<h3 id="method">Method injection</h3>
+<h3 id="method">Method Injection</h3>
 <p>
   For method injection annotate the method with <code>@Inject</code>.
 </p>
@@ -201,7 +201,7 @@ public class CoffeeMaker {
   }
 </pre>
 
-<h3 id="circular">Circular dependencies</h3>
+<h3 id="circular">Circular Dependencies</h3>
 <p>
   When we have a circular dependency then we need to use either <a href="#field">field injection</a>
   or <a href="#method">method injection</a> on one of the dependencies.
@@ -231,12 +231,12 @@ class B {
 </pre>
 <p>
   With the above circular dependencies for A and B constructor injection <em>avaje-inject</em>
-  can not determine the order in which to construct the beans. <em>avaje-inject</em> will
+  cannot determine the order in which to construct the beans. <em>avaje-inject</em> will
   detect this and product a compilation error outlining the beans involved and ask us
   to change to use field injection for one of the dependencies.
 </p>
 <p>
-  We can not use constructor injection for both A and B and instead we must use
+  We cannot use constructor injection for both A and B and instead we must use
   either field injection or method injection on either A or B like:
 </p>
 <pre content="java">
@@ -438,10 +438,6 @@ class UseFoo  {
   The JSR 330 <code>javax.inject.Provider&lt;T&gt;</code> interface is functionally the same
   as Spring DI <code>FactoryBean&lt;T&gt;</code>.
 </p>
-
-
-<h3 id="prototype">@Prototype</h3>
-
 
 <h3 id="factory">@Factory</h3>
 <p>

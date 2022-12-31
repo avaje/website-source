@@ -1,12 +1,12 @@
 <h2 id="testing">Testing</h2>
 
-<h3 id="unit-testing">Unit testing</h3>
+<h3 id="unit-testing">Unit Testing</h3>
 <p>
-  When we are <em>unit testing</em> we are not using avaje-inject. We are focused on the
+  When we are <em>unit testing</em> we are focused on the
   thing we want to test (object under test) and it's dependencies.
 </p>
 <p>
-  With unit testing in the test setup code will create the thing we are testing (object under test)
+  In the test setup, code will create the thing we are testing (object under test)
   along with it's dependencies.
 </p>
 
@@ -86,7 +86,7 @@
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-inject-test</artifactId>
-    <version>8.9</version>
+    <version>${avaje.inject.version}</version>
     <scope>test</scope>
   </dependency>
 </pre>
@@ -145,7 +145,7 @@ void programmaticStyle() {
 }
 </pre>
 <p>
-  If we look closely at the test above you will see the use of <code>TestBeanScope.builder()</code>
+  If we look closely at the test above, we will see the use of <code>TestBeanScope.builder()</code>
   rather than the usual <code>BeanScope.builder()</code>. We use TestBeanScope to automatically use
   the <a href="#test-scope">"test scope"</a> if it exists.
 </p>
@@ -165,7 +165,7 @@ void programmaticStyle() {
 <h3>Static fields, Instance fields</h3>
 <p>
   With <code>@InjectTest</code> we can inject into static fields and non-static fields.
-  Under the hood these map to BeanScopes that are created and used to populate these fields in the tests.
+  Under the hood, these map to BeanScopes that are created and used to populate these fields in the tests.
 </p>
 <h4>static fields - Junit All</h4>
 <p>
