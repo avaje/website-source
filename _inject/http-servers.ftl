@@ -1,6 +1,6 @@
 <h2 id="http">HTTP Servers</h2>
 <p>
-  <em>avaje-http</em> is a lightweight DI library that is especially suited to
+  <em>avaje-inject</em> is a lightweight DI library that is especially suited to
   building http based services using <a href="https://javalin.io">Javalin</a>
   and <a href="https://helidon.io">Helidon SE</a>.
 </p>

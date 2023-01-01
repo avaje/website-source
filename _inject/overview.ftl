@@ -28,7 +28,7 @@
 </p>
 <p>
   The dependency injection classes are generated source code. We can add debug breakpoints into the DI code as desired and step through
-  it just like it was manually written code. We can use existing IDE tools to search where code is called (e.g. Constructors and lifecycle
+  the code as if was manually written. We can use existing IDE tools to search where code is called (e.g. Constructors and lifecycle
   methods.)
 </p>
 <p>

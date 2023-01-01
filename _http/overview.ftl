@@ -49,9 +49,9 @@ for Javalin and Helidon SE/Nima APIs via Annotation Processing.
   <li>Light weight by using code generation - no reflection, no extra overhead</li>
   <li>Automatically generates <a href="#openapi">Swagger/OpenAPI</a> documentation</li>
   <li>Allows use of underlying Javalin/Helidon request/response constructs as needed</li>
-  <li>Support request scope injection of Javalin Context, Helidon request and response</li>
-  <li>Support using <a href="#bean-validation">Bean validation</a> on request payloads</li>
-  <li>Fewer annotations than typical JAX-RS - avoid annotation overload</li>
+  <li>Supports request scope injection of Javalin Context, Helidon request and response</li>
+  <li>Supports using <a href="#bean-validation">Bean validation</a> on request payloads</li>
+  <li>Requires Fewer annotations than typical JAX-RS - avoid annotation overload</li>
 </ul>
 
 <h4>JAX-RS Annotations</h4>

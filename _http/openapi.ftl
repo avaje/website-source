@@ -16,7 +16,7 @@
 <p>
   The annotation processor reads the javadoc (and Kotlin documentation) of the controller methods to generate the openAPI definition.
   The javadoc summary, description, @param and @return
-  documentation are used to create the the OpenAPI Operation summary, description, body content, and response content respectively. The processor
+  documentation are used to create the OpenAPI Operation summary, description, body content, and response content respectively. The processor
   reads all the request and response types as OpenAPI component schema.
 </p>
 
