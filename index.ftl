@@ -35,6 +35,14 @@
       </td>
     </tr>
     <tr>
+      <th><a href="/jsonb">Jsonb</a></th>
+      <td>
+        <p>
+         Lightning fast JSON Library that uses Java annotation processing to generate JSON adapters.
+        </p>
+      </td>
+    </tr>
+    <tr>
       <th><a href="/http-client">HTTP Client</a></th>
       <td>
         <p>
