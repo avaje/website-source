@@ -20,8 +20,8 @@
       <li><a href="#form">@Form</a></li>
       <li><a href="#form-param">@FormParam</a></li>
       <li><a href="#form-beans">Form beans</a></li>
-      <li><a href="#header">@Header</a></li>
       <li><a href="#produces">@Produces</a></li>
+      <li><a href="#header">@Header</a></li>
       <li><a href="#cookie">@Cookie</a></li>
       <li><a href="#get">@Get</a></li>
       <li><a href="#delete">@Delete</a></li>

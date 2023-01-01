@@ -1,7 +1,5 @@
 <h2 id="quick-start">Quick Start</h2>
-<p>
-  1. Add <em>avaje-inject</em> as a dependency.
-</p>
+<h4>1. Add <em>avaje-inject</em> as a dependency.</h4>
 <pre content="xml">
 <dependency>
   <groupId>io.avaje</groupId>
@@ -9,10 +7,7 @@
   <version>${avaje.inject.version}</version>
 </dependency>
 </pre>
-<p>
- 2. Add <em>avaje-inject-generator</em> annotation processor as a dependency with
-  <em>provided scope</em>.
-</p>
+<h4>2. Add <em>avaje-inject-generator</em> annotation processor as a dependency with <em>provided scope</em>.</h4>
 
 <pre content="xml">
 <!-- Annotation processor -->
@@ -24,7 +19,7 @@
 </dependency>
 </pre>
 <p>
- 2a. If there are other annotation processors and they are specified via
+  If there are other annotation processors and they are specified via
   <em>maven-compiler-plugin</em> <em>annotationProcessorPaths</em>
   then we add <em>avaje-inject-generator</em> there instead.
 </p>
@@ -47,9 +42,7 @@
 </plugin>
 </pre>
 
-<p>
- 3. Create a Class annotated with <code>@Singleton</code>
-</p>
+<h4>3. Create a Class annotated with <code>@Singleton</code></h4>
 
 <pre content="java">
 @Singleton
@@ -64,9 +57,7 @@ public class Example {
 }
 </pre>
 
-<p>
- 4. Retrieve the bean and use however you wish.
-</p>
+<h4>4. Retrieve the bean and use however you wish.</h4>
 
 <pre content="java">
  BeanScope beanScope = BeanScope.builder().build()
