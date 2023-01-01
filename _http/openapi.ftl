@@ -14,10 +14,15 @@
 
 <h3>Javadoc</h3>
 <p>
-  The annotation processor reads the javadoc (and Kotlin documentation)
-  for the controller methods and the description, @param and @return
-  documentation is all used in the OpenAPI definition. The processor
+  The annotation processor reads the javadoc (and Kotlin documentation) of the controller methods to generate the openAPI definition.
+  The javadoc summary, description, @param and @return
+  documentation are used to create the the OpenAPI Operation summary, description, body content, and response content respectively. The processor
   reads all the request and response types as OpenAPI component schema.
+</p>
+
+<h3>Avaje Annotation</h3>
+<p>
+  The various annotations like <code>@Header</code>,<code>@Param</code>, and <code>@Produces</code> also modify the generated OpenAPI docs.
 </p>
 
 <h3>Validation annotations - @NotNull, @Size, @Email etc</h3>
@@ -56,6 +61,11 @@
 <p>
   Put <code>@Hidden</code> on controller methods that we want to exclude
   from the OpenAPI documentation.
+</p>
+
+<h4>@Tags</h4>
+<p>
+  Put <code>@Tags</code> on controller methods to add tags to the OpenAPI Operation documentation.
 </p>
 
 <h3>Gradle plugin</h3>

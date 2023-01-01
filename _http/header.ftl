@@ -1,3 +1,46 @@
+<h2 id="produces">@Produces</h2>
+<p>
+  Use <code>@Produces</code> to modify the response content type and generated OpenAPI definition.
+  When not specified, we default to <code>application/json</code>.
+</p>
+<pre content="java">
+@Path("/")
+@Controller
+class RootController {
+
+  private Service service;
+
+  //send plain text
+  @Get
+  @Produces(MediaType.TEXT_PLAIN)
+  String hello() {
+    return "Hello world";
+  }
+
+  // default json
+  @Get("obj")
+  Example helloObj() {
+    return new Example();
+  }
+
+  // we can also send our data as a byte array
+  @Get("png")
+  @Produces(MediaType.IMAGE_PNG)
+  byte[] helloByte() {
+    return service.getPNG();
+  }
+
+  // use Javalin Context for our response
+  // in this case Produces is only needed for the OpenAPI generation
+  @Get("ctx")
+  @Produces(MediaType.IMAGE_PNG)
+  void helloCTX(Context ctx) {
+    service.writeResponseDirectly(ctx.outputStream());
+  }
+
+}
+</pre>
+
 <h2 id="header">@Header</h2>
 <p>
   Use <code>@Header</code> for a header parameter.
