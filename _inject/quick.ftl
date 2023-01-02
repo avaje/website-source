@@ -42,23 +42,35 @@
 </plugin>
 </pre>
 
-<h4>3. Create a Class annotated with <code>@Singleton</code></h4>
+<h4>3. Create a Bean Class annotated with <code>@Singleton</code></h4>
 
 <pre content="java">
 @Singleton
 public class Example {
 
-  DependencyClass d;
-  // dependencyClass must be annotated with singleton,
+ private DependencyClass d1;
+ private DependencyClass2 d2;
+
+  // Dependencies must be annotated with singleton,
   // or else be provided from another class annotated with @Factory
-  public Example(DependencyClass d) {
-    this.d = d;
+  public Example(DependencyClass d, DependencyClass2 d2) {
+    this.d1 = d1;
+    this.d2 = d2;
+  }
+}
+</pre>
+<p>Example factory class:</p>
+<pre content="java">
+@Factory
+public class ExampleFactory {
+  @Bean
+  public DependencyClass2() {
+    return new DependencyClass2();
   }
 }
 </pre>
 
-<h4>4. Retrieve the bean and use however you wish.</h4>
-
+<h4>4. Use BeanScope to wire and retrieve the beans and use however you wish..</h4>
 <pre content="java">
  BeanScope beanScope = BeanScope.builder().build()
  Example ex = beanScope.get(Example.class);
