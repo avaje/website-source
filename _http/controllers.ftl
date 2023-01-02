@@ -74,7 +74,7 @@ class ContactController {
 }
 </pre>
 <p>
-  The controllers can have dependencies injected. The ContactController above will
+  The controllers can have dependencies injected. The ContactController above can easily
   have the ContactService dependency injected by <a href="/inject">avaje-inject</a>.
 </p>
 

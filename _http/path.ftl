@@ -20,14 +20,14 @@
 @Path("/")
 class RootController {
 
-  @Produces(MediaType.TEXT_PLAIN)
   @Get
+  @Produces(MediaType.TEXT_PLAIN)
   String hello() {
     return "Hello world";
   }
 
-  @Produces(MediaType.TEXT_PLAIN)
   @Get("foo")
+  @Produces(MediaType.TEXT_PLAIN)
   String helloFoo() {
     return "Hello Foo";
   }
@@ -236,8 +236,6 @@ List<|Cat> findCats(@QueryParam("order-by") String orderBy) {
   ...
 }
 </pre>
-
-
 
 <h3>Query parameter types</h3>
 <p>

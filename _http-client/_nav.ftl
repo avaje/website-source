@@ -6,19 +6,19 @@
   </@nav>
   <@nav url="#limitations" title="Limitations"/>
   <@nav url="#jdk-intro" title="JDK HttpClient Intro"/>
-  <@nav url="#quick-overview" title="Quick overview"/>
+  <@nav url="#quick-overview" title="Quick Overview"/>
   <@nav url="#sync-async" title="Sync and Async"/>
   <@nav url="#httpClientContext" title="HttpClientContext"/>
   <@nav url="#json-bodyAdapter" title="JSON BodyAdapter">
     <ul>
       <li><a href="#json-jackson">Jackson</a></li>
       <li><a href="#json-gson">Gson</a></li>
-      <li><a href="#json-jsonb">avaje-jsonb</a></li>
+      <li><a href="#json-jsonb">Avaje-Jsonb</a></li>
     </ul>
   </@nav>
-  <@nav url="#request-body" title="Request body">
+  <@nav url="#request-body" title="Request Body">
     <ul>
-      <li><a href="#req-json">object JSON</a></li>
+      <li><a href="#req-json">Object JSON</a></li>
       <li><a href="#req-formparam">formParam</a></li>
       <li><a href="#req-path">path (file)</a></li>
       <li><a href="#req-inputStream">inputStream</a></li>
@@ -45,7 +45,9 @@
   </@nav>
   <@nav url="#httpCall" title="HttpCall">
   </@nav>
-  <@nav url="#auth" title="Authorisation">
+  <@nav url="#retry" title="Retry">
+  </@nav>
+  <@nav url="#auth" title="Authorization">
     <ul>
       <li><a href="#auth-basic">basic auth</a></li>
       <li><a href="#auth-bearer">bearer token</a></li>
@@ -68,12 +70,12 @@
       <li><a href="#api-request-body">BodyPublisher</a></li>
       <li><a href="#path">@Path</a></li>
       <li><a href="#pathParameters">Path parameters</a></li>
+      <li><a href="#header">@Header</a></li>
       <li><a href="#queryParam">@QueryParam</a></li>
       <li><a href="#beanParam">@BeanParam</a></li>
       <li><a href="#form">@Form</a></li>
       <li><a href="#formParam">@FormParam</a></li>
       <li><a href="#formBeans">Form beans</a></li>
-      <li><a href="#header">@Header</a></li>
     </ul>
   </@nav>
   <@nav url="#10k" title="10k requests & Loom">

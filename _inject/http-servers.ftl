@@ -1,4 +1,4 @@
-<h2 id="http">http servers</h2>
+<h2 id="http">HTTP Servers</h2>
 <p>
   <em>avaje-inject</em> is a lightweight DI library that is especially suited to
   building http based services using <a href="https://javalin.io">Javalin</a>

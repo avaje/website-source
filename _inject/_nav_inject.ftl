@@ -5,6 +5,8 @@
     <li><a href="#extensions">Extensions</a></li>
   </ul>
 </@nav>
+<@nav url="#quick-start" title="Quick Start">
+</@nav>
 <@nav url="#dependency" title="Dependencies">
   <ul>
     <li><a href="#maven">Maven</a></li>
@@ -18,10 +20,10 @@
     <li><a href="#singleton">@Singleton</a></li>
     <li><a href="#component">@Component</a></li>
     <li><a href="#inject">@Inject</a></li>
-    <li><a href="#constructor">Constructor injection</a></li>
-    <li><a href="#field">Field injection</a></li>
-    <li><a href="#method">Method injection</a></li>
-    <li><a href="#circular">Circular dependencies</a></li>
+    <li><a href="#constructor">Constructor Injection</a></li>
+    <li><a href="#field">Field Injection</a></li>
+    <li><a href="#method">Method Injection</a></li>
+    <li><a href="#circular">Circular Dependencies</a></li>
     <li><a href="#optional">Optional</a></li>
     <li><a href="#nullable">Nullable</a></li>
     <li><a href="#list">List and Set</a></li>
@@ -47,29 +49,30 @@
 </@nav>
 <@nav url="#scope" title="Scope">
   <ul>
-    <li><a href="#default-scope">Default scope</a></li>
-    <li><a href="#scope-test-scope">Test scope</a></li>
-    <li><a href="#request-scope">Request scope</a></li>
-    <li><a href="#custom-scope">Custom scope</a></li>
+    <li><a href="#default-scope">Default Scope</a></li>
+    <li><a href="#scope-test-scope">Test Scope</a></li>
+    <li><a href="#request-scope">Request Scope</a></li>
+    <li><a href="#custom-scope">Custom Scope</a></li>
+    <li><a href="#bean-scope">BeanScope</a></li>
   </ul>
 </@nav>
 <@nav url="#testing" title="Testing">
   <ul>
-    <li><a href="#unit-testing">Unit testing</a></li>
+    <li><a href="#unit-testing">Unit Testing</a></li>
   </ul>
 </@nav>
-<@nav url="#component-testing" title="Component testing">
+<@nav url="#component-testing" title="Component Testing">
   <ul>
     <li><a href="#test-dependency">Dependency</a></li>
     <li><a href="#inject-test">@InjectTest</a></li>
     <li><a href="#test-scope">@TestScope</a></li>
-    <li><a href="#programmatic-testing">Programmatic testing</a></li>
+    <li><a href="#programmatic-testing">Programmatic Testing</a></li>
   </ul>
 </@nav>
 <@nav url="#modules" title="Modules">
   <ul>
-    <li><a href="#unnamed-module">Unnamed module</a></li>
-    <li><a href="#single-module">Single module</a></li>
+    <li><a href="#unnamed-module">Unnamed Module</a></li>
+    <li><a href="#single-module">Single Module</a></li>
     <li><a href="#multi-module">Multi-module</a></li>
     <li><a href="#inject-module">@InjectModule</a></li>
   </ul>
@@ -87,6 +90,5 @@
   </ul>
 </@nav>
 <@nav url="#spring" title="Spring DI"/>
-<@nav url="#aop" title="AOP"/>
 </ul>
 <p>&nbsp;</p>

@@ -2,17 +2,17 @@
 <head>
   <meta name="layout" content="_layout/base-home.html"/>
   <#assign home = "active">
-  <title>avaje jvm libraries and utilities</title>
+  <title>Avaje jvm libraries and utilities</title>
 </head>
 <body>
 <div id="hero">
-  <h1>avaje jvm libraries</h1>
+  <h1>Avaje JVM Libraries</h1>
 </div>
 <div class="c-narrow">
 
   <table class="index-toc">
     <tr>
-      <th width="25%"><a href="/config">configuration</a></th>
+      <th width="25%"><a href="/config">Configuration</a></th>
       <td>
         <p>
           Provides external configuration for applications. Loads <em>yaml</em> and
@@ -21,35 +21,43 @@
       </td>
     </tr>
     <tr>
-      <th><a href="/inject">dependency injection</a></th>
+      <th><a href="/inject">Dependency Injection</a></th>
       <td>
         <p>
-          Cloud native and kubernetes friendly <a href="/inject">dependency injection</a>
+          Cloud Native/Kubernetes friendly <a href="/inject">dependency injection</a>
           by generating source code using java annotation processing.
         </p>
         <p>
-          Similar to Dagger2 it uses java annotation processing to perform dependency injection
-          using source code generation. Unlike Dagger2 it includes lifecycle support plus support
+          Similar to Dagger2, it uses annotation processing to perform dependency injection
+          using source code generation. Unlike Dagger2, it includes lifecycle support and support
           for component testing.
         </p>
       </td>
     </tr>
     <tr>
-      <th><a href="/http-client">http client</a></th>
+      <th><a href="/jsonb">Jsonb</a></th>
       <td>
         <p>
-          An http client based on JDK 11+ HttpClient. Includes support for defining client API's
+         Lightning fast JSON Library that uses Java annotation processing to generate JSON adapters.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th><a href="/http-client">HTTP Client</a></th>
+      <td>
+        <p>
+          A wrapper on JDK 11's HttpClient. Includes support for defining client API's
           similar to JAX-RS, Retrofit and Feign. Uses java annotation processing to generate
           client API implementations.
         </p>
       </td>
     </tr>
     <tr>
-      <th><a href="/http">http server</a></th>
+      <th><a href="/http">HTTP Server</a></th>
       <td>
         <p>
           Lightweight JAX-RS style http servers using <a href="https://javalin.io">Javalin</a>
-          and <a href="https://helidon.io">Helidon SE</a>. Use annotations
+          or <a href="https://helidon.io">Helidon SE</a>. Use annotations
           like <code>@Path</code>, <code>@Get</code> etc to define a rest api.
         </p>
         <p>

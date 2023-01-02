@@ -1,5 +1,7 @@
 <ul>
   <@nav url="#overview" title="Overview"/>
+  <@nav url="#quick-start" title="Quick-Start"/>
+  <@nav url="#usage" title="Usage"/>
   <@nav url="#dependencies" title="Dependencies">
     <ul>
       <li><a href="#maven">Maven</a></li>
@@ -18,6 +20,7 @@
       <li><a href="#form">@Form</a></li>
       <li><a href="#form-param">@FormParam</a></li>
       <li><a href="#form-beans">Form beans</a></li>
+      <li><a href="#produces">@Produces</a></li>
       <li><a href="#header">@Header</a></li>
       <li><a href="#cookie">@Cookie</a></li>
       <li><a href="#get">@Get</a></li>

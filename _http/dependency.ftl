@@ -3,77 +3,8 @@
 
 <h3 id="maven">Maven</h3>
 <p>
-  Add <em>avaje-inject</em> and <em>avaje-http-api</em> dependencies.
+  See the <a href="#quick-start">quick start example </a>
 </p>
-<pre content="xml">
-<dependency>
-  <groupId>io.avaje</groupId>
-  <artifactId>avaje-inject</artifactId>
-  <version>8.9</version>
-</dependency>
-
-<dependency>
-  <groupId>io.avaje</groupId>
-  <artifactId>avaje-http-api</artifactId>
-  <version>1.17</version>
-</dependency>
-</pre>
-
-<h4>Annotation processors</h4>
-<p>
-  Add the annotation processors <em>avaje-inject-generator</em> and either
-  <em>avaje-http-javalin-generator</em> to target <a target="_blank" href="https://javalin.io">Javalin</a>
-  or <em>avaje-http-helidon-generator</em> to target <a target="_blank" href="https://helidon.io">Helidon SE</a>.
-</p>
-<p>
-  We typically use <em>provided</em> scope for annotation processors.
-</p>
-<pre content="xml">
-  <!-- Annotation processors -->
-  <dependency>
-    <groupId>io.avaje</groupId>
-    <artifactId>avaje-inject-generator</artifactId>
-    <version>8.9</version>
-    <scope>provided</scope>
-  </dependency>
-  <dependency>
-    <groupId>io.avaje</groupId>
-    <artifactId>avaje-http-javalin-generator</artifactId>
-    <version>1.17</version>
-    <scope>provided</scope>
-  </dependency>
-</pre>
-
-<p>
-  Note that if there are other annotation processors and they are specified via
-  <em>maven-compiler-plugin</em> <em>annotationProcessorPaths</em>
-  then we add <em>avaje-http-javalin-generator</em> there instead.
-</p>
-<pre content="xml">
-<plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-compiler-plugin</artifactId>
-  <configuration>
-    <annotationProcessorPaths> <!-- All annotation processors specified here -->
-      <path>
-        <groupId>io.avaje</groupId>
-        <artifactId>avaje-inject-generator</artifactId>
-        <version>8.9</version>
-      </path>
-      <path>
-        <groupId>io.avaje</groupId>
-        <artifactId>avaje-http-javalin-generator</artifactId>
-        <version>1.17</version>
-      </path>
-      <path>
-          ... other annotation processor ...
-      </path>
-    </annotationProcessorPaths>
-  </configuration>
-</plugin>
-</pre>
-
-
 
 <h3 id="gradle">Gradle</h3>
 <p>
@@ -109,11 +40,11 @@ plugins {
 <pre content="groovy">
 dependencies {
   ...
-  compile('io.avaje:avaje-inject:8.9')
-  compile('io.avaje:avaje-http-api:1.17')
+  compile('io.avaje:avaje-inject:8.10')
+  compile('io.avaje:avaje-http-api:1.20')
 
-  annotationProcessor('io.avaje:avaje-inject-generator:8.9')
-  annotationProcessor('io.avaje:avaje-http-javalin-generator:1.17')
+  annotationProcessor('io.avaje:avaje-inject-generator:8.10')
+  annotationProcessor('io.avaje:avaje-http-javalin-generator:1.20')
 }
 </pre>
 
@@ -125,8 +56,8 @@ dependencies {
 <pre content="groovy">
 dependencies {
   ...
-  kapt('io.avaje:avaje-inject-generator:8.9')
-  kapt('io.avaje:avaje-http-javalin-generator:1.17')
+  kapt('io.avaje:avaje-inject-generator:8.10')
+  kapt('io.avaje:avaje-http-javalin-generator:1.20')
 }
 </pre>
 

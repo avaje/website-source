@@ -1,0 +1,418 @@
+<html>
+<head>
+  <meta name="layout" content="_layout/base-jsonb.html"/>
+  <meta name="bread1" content="jsonb" href="/jsonb/"/>
+  <#assign index="active">
+</head>
+<body>
+
+<h1 id="overview">Avaje Jsonb</h1>
+
+<table style="width: 100%;">
+  <tr>
+    <th>License</th>
+    <th>Source</th>
+    <th>API Docs</th>
+    <th>Issues</th>
+    <th>Releases</th>
+  </tr>
+  <tr>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-jsonb/blob/master/LICENSE">Apache2</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-jsonb">Github</a></td>
+    <td><a target="_blank" href="/apidocs/avaje-jsonb">Javadoc</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-jsonb/issues">Github</a></td>
+    <td><a href="https://github.com/avaje/avaje-jsonb/releases"><img src="https://img.shields.io/maven-central/v/io.avaje/avaje-jsonb.svg?label=Maven%20Central"></a></td>
+  </tr>
+</table>
+
+<p><br><br>
+ This is a light, fast, and reflection free Json binding library
+</p>
+
+<ul>
+  <li>Use Java annotation processing to generate java source for adapting JSON to/from java objects</li>
+  <li>No need to manually register generated adapters. (Uses service loading to auto-register)</li>
+  <li>Constructors and accessors/getters/setters of any style should all "just work" (record type, constructors, 'fluid setters' all just work)</li>
+  <li>Provide support for dynamic json views</li>
+  <li>Supports importing types and mixins</li>
+</ul>
+
+<h2 id="quick-start">Quick Start</h2>
+<h4>
+  1. Add <em>avaje.jsonb</em> dependencies.
+</h4>
+<pre content="xml">
+<dependency>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje.jsonb</artifactId>
+  <version>${avaje.jsonb.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje-http-api</artifactId>
+  <version>${avaje-http.version}</version>
+</dependency>
+</pre>
+
+<h4>
+2. Add the annotation processor to your pom.
+</h4>
+<pre content="xml">
+  <!-- Annotation processors -->
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje.jsonb-generator</artifactId>
+    <version>${avaje.jsonb.version}</version>
+    <scope>provided</scope>
+  </dependency>
+</pre>
+
+<p>Note that if there are other annotation processors and they are specified via
+  <em>maven-compiler-plugin</em> <em>annotationProcessorPaths</em>
+  then we add <em>avaje-jsonb-generator</em> there instead.
+</p>
+<pre content="xml">
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-compiler-plugin</artifactId>
+  <configuration>
+    <annotationProcessorPaths> <!-- All annotation processors specified here -->
+      <path>
+        <groupId>io.avaje</groupId>
+        <artifactId>avaje.jsonb-generator</artifactId>
+        <version>${avaje.jsonb.version}</version>
+      </path>
+      <path>
+          ... other annotation processor ...
+      </path>
+    </annotationProcessorPaths>
+  </configuration>
+</plugin>
+</pre>
+
+ <h4>3. Add <code>@Json</code> onto types we want to serialise.</h4>
+<p>
+  <br>The avaje-jsonb-generator annotation processor will generate a JsonAdapter as java source code for each type annotated with <code>@Json</code>.
+  These will be automatically registered with Jsonb using a service loader mechanism.
+  <br>For types we can not annotate with <code>@Json</code> we can instead use <code>@Json.Import</code>.
+</p>
+<pre content="java">
+  @Json
+  public class Customer {
+  ...
+  }
+</pre>
+
+<h4>
+  4. Serialize/Deserialize your JSON/POJO
+</h4>
+
+<pre content="java">
+  // build using defaults
+  Jsonb jsonb = Jsonb.builder().build();
+
+  JsonType<Customer> customerType = jsonb.type(Customer.class);
+
+  Customer customer = ...;
+
+  // serialize to json
+  String asJson =  customerType.toJson(customer);
+
+  // deserialize from json
+  Customer customer = customerType.fromJson(asJson);
+</pre>
+
+<h4>
+  5. JsonViews
+</h4>
+<p>This library supports dynamic json views which allow us to specify which specific properties to include when serialising to json.</p>
+
+<pre content="java">
+  Jsonb jsonb = Jsonb.builder().build();
+
+  JsonType<Customer> customerType = jsonb.type(Customer.class);
+
+  // only including the id and name
+  JsonView<Customer> idAndNameView = customerType.view("(id, name)");
+  String asJson =  idAndNameView.toJson(customer);
+
+
+  JsonView<Customer> myView =
+    customerType.view("(id, name, billingAddress(*), contacts(lastName, email))");
+
+  // serialise to json the above specified properties only
+  String asJson =  myView.toJson(customer);
+  </pre>
+
+<h2 id="json">@Json</h2>
+<p>
+Types with <code>@Json</code> are picked up by avaje-jsonb-generator at compile time and a JsonAdapter is generated as java source code typically in target/generated-sources/annotations.
+</p>
+<h4>Constructors</h4>
+<p>
+  The types can be a record/class and have constructors. When types do not have a default constructor (e.g. record types) then the generated code will use the constructor. Fields in the constructor do not need or use setter methods.
+</p>
+
+<pre content="java">
+  //Example record - all fields set via constructor
+  @Json
+  public record Address(String street, String suburb, String city) { }
+</pre>
+<p>
+All the fields of record types are set via constructor - no setters here.
+<br><br>
+When a class has a constructor like the City example below, then fields in the constructor do not need or use a setter method. We only need a setter method for fields that are not in the constructor.
+</p>
+<pre content="java">
+@Json
+public class City {
+  UUID id;
+  String name;
+  String zone;
+
+  public City(UUID id, String name) {
+    this.id = id;
+    this.name = name;
+  }
+
+  public setZone(String zone) {
+    this.zone = zone;
+  }
+  // plus getters ...
+}
+</pre>
+
+<p>
+  In the example above the id and name fields are set via constructor
+  and only zone is set via setter method.
+</p>
+
+<h4>Setter methods</h4>
+<p>
+  Fields that are not set via the constructor need to have a setter methods. There are 4 styles of setter methods that avaje-jsonb-generator will find.
+</p>
+<pre content="java">
+// traditional setter
+public void setSuburb(String suburb) {
+  this.suburb = suburb;
+}
+// accessor style setter
+public void suburb(String suburb) {
+  this.suburb = suburb;
+}
+// fluid traditional setter
+public Address setSuburb(String suburb) {
+  this.suburb = suburb;
+  return this;
+}
+// fluid accessor style setter
+public Address suburb(String suburb) {
+  this.suburb = suburb;
+  return this;
+}
+</pre>
+
+<h4>Naming Convention</h4>
+<p>
+  We can specify a naming convention via the naming attribute of <code>@Json</code>.
+  This naming convention translates field names to json property names.
+  The result of changing the naming convention can be seen in the generated JsonAdapter code.
+</p>
+<pre content="java">
+@Json(naming = LowerHyphen)
+public class Customer {
+...
+}
+</pre>
+
+<pre content="java">
+//The Naming options are below with the default of Match.
+  enum Naming {
+    Match,
+    LowerHyphen,
+    LowerUnderscore,
+    LowerSpace,
+    UpperCamel,
+    UpperHyphen,
+    UpperUnderscore,
+    UpperSpace
+  }
+</pre>
+
+<h2 id="import">@Json.Import</h2>
+<p> When we are unable to or do not wish to put <code>@Json</code> on the types we can use <code>@Json.Import</code>.
+<br><br>
+We can put <code>@Json.Import</code> on a package or type and specify the types to generate a JsonAdapter for.
+</p>
+<pre content="java">
+@Json.Import({Customer.class, Address.class, Order.class})
+package org.example;
+</pre>
+
+<h2 id="property">@Json.Property</h2>
+<p>
+We can override the serialization/deserialization name of a field using <code>@Json.Property</code>.
+</p>
+
+<pre content="java">
+@Json
+public class Customer {
+
+  @Json.Property("SomeOtherName")
+  private name
+  ...
+}
+</pre>
+
+<p>
+  Effectively, we have renamed this propert and will not be able to deserialize this property from a json of <code>{"name":"Jolyne"}</code>.
+  It will now only deserialize for the new name. <code>{"SomeOtherName":"Jolyne"}</code>.
+  <br>If you wish to only specify an alias for the json property, use <code>@Alias</code>.
+</p>
+
+<h2 id="alias">@Json.Alias</h2>
+
+<p>
+  We can define a deserialization alias for a field using <code>@Json.Alias</code>. It is compatible with, and can work in tandem with <code>@Property</code>
+</p>
+
+<pre content="java">
+@Json
+public class Customer {
+
+  @Json.Alias({"SomeOtherName","SomeOtherName2"})
+  private name
+  ...
+}
+</pre>
+
+<h2 id="iggy">@Json.Ignore</h2>
+<p>
+  We can exclude a field from json serialisation using @Json.Ignore
+</p>
+
+<pre content="java">
+  //Exclude from both serialization and de-serialization
+  @Json.Ignore
+  private String mySecret;
+
+  //Exclude from de-serialization only
+  @Json.Ignore(serialize = true)
+  private String mySecret2;
+
+  //Exclude from serialization only
+  @Json.Ignore(deserialize = true)
+  private String mySecret3;
+</pre>
+
+<h2 id="mapped">@Json.Unmapped</h2>
+<p>
+We can use <code>@Json.Unmapped</code> to collect unmapped json during de-serialization and include it in serialization.
+<br></br>
+The @Json.Unmapped annotation must be on a field of type <code>Map<String, Object></code>
+</p>
+
+<pre content="java">
+  @Json.Unmapped
+  Map<String, Object> unmapped
+</pre>
+
+<h2 id="value">@Json.Value</h2>
+
+<p>
+We can use <code>@Json.Value</code> on Enum types to specify a method that provides the values that will be used to serialise to/from json. If the method returns a int type then it will be treated as json int and otherwise be treated as json string values.
+<br></br>
+In the example below the values used in the json content is "one value" and "two value" rather than the usual "ONE" and "TWO".
+</p>
+
+<pre content="java">
+public enum MyEnum {
+
+  ONE("one value"),
+  TWO("two value");
+
+  final String val;
+
+  MyEnum(String val) {
+    this.val = val;
+  }
+
+  @Json.Value
+  public String value() {
+    return val;
+  }
+}
+</pre>
+
+<pre content="java">
+public enum MyOtherEnum {
+  //In this example the method has a return type of int and is treated as json int.
+  ONE(42),
+  TWO(43);
+
+  final int val;
+
+  MyOtherEnum(int val) {
+    this.val = val;
+  }
+
+  @Json.Value
+  public int toJsonValue() {
+    return val;
+  }
+}
+</pre>
+
+<h2 id="subtype">@Json.Subtype</h2>
+
+<p>
+For mapping polymorphic types we specify on the parent type a <code>@Json.Subtype</code> for each concrete sub-type that can represent that type.
+</p>
+
+<pre content="java">
+@Json
+@Json.SubType(type = Car.class, name = "CAR")
+@Json.SubType(type = Truck.class, name = "TRUCK")
+public abstract class Vehicle {
+ ...
+By default the "type property" that specifies the type in json is @type. Use @Json(typeProperty=...) to specify the name of the type property.
+
+@Json(typeProperty = "dtype")
+@Json.SubType(type = Cat.class)
+@Json.SubType(type = Dog.class)
+public interface Animal {
+Note that there is a current limitation that polymorphic types do not yet support "Json Views".
+</pre>
+
+<h2 id="mixin">@Json.Mixin</h2>
+
+<p>
+  Mark this Class as a MixIn Type that can add Jsonb Annotations on the specified type.
+  <br>
+  Say we want to override the field serialization behavior on a class we can't modify.(Typically in an external project/dependency or otherwise)
+</p>
+
+<pre content="java">
+public class MixinTarget {
+  private String name;
+  private String stand;
+  private String bandReference;
+  //getters/setters...
+}
+</pre>
+<p>We can use the <code>@Json.Mixin</code> annotation on an abstract class to effectively add @Json Annotations </p>
+<pre content="java">
+@Json.MixIn(MixinTarget.class)
+public abstract class MixinClass {
+
+  @Json.Property("part")
+  private String name;
+
+  @Json.Ignore
+  private String stand;
+}
+</pre>
+
+</body>
+</html>
