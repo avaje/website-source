@@ -23,9 +23,16 @@
   The processor reads all the request and response types as OpenAPI component schema. The various annotations like <code>@Header</code>,<code>@Param</code>, and <code>@Produces</code> also modify the generated OpenAPI docs.
 </p>
 
-<h3 id=response>@OpenApiResponse</h3>
+<h4>@Deprecated</h3>
 <p>
-This annotation lets you specify alternate endpoint response status codes/descriptions/types. This is useful for defining error scenarios, and when using the underlying Javalin/Helidon contructs in void methods.
+  Adding Javas's <code>@Deprecated</code> annotation to a controller method marks it as deprecated in the openAPI definition.
+</p>
+
+<h3 id=response>@OpenApiResponse</h3>
+
+<p>
+  This annotation lets you specify alternate endpoint response status codes/descriptions/types. This is useful for defining error scenarios, and when using the underlying Javalin/Helidon contructs in void methods.
+</p>
 
 <pre content="java">
  @Post("/post")
