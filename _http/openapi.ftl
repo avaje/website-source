@@ -9,23 +9,39 @@
   that the controllers define.
 </p>
 <p>
-  Example <a target="_blank" href="https://github.com/dinject/examples/blob/master/javalin-maven-java-basic/src/main/resources/public/openapi.json">javalin-maven-java-basic</a>
+  Example <a target="_blank" href="https://github.com/avaje/avaje-http/blob/b4a3ccfdea89821456044bc142353f7aa88b69e1/tests/test-javalin-jsonb/src/main/java/org/example/myapp/web/test/OpenAPIController.java">Javalin OpenAPI Controller</a>.
+  <br>
+  Generated <a target="_blank" href="https://github.com/avaje/avaje-http/blob/b4a3ccfdea89821456044bc142353f7aa88b69e1/tests/test-javalin-jsonb/src/test/java/io/avaje/http/generator/expectedOpenApi.json">OpenAPI Definition</a>.
 </p>
 
-<h3>Javadoc</h3>
+<h3 id=doc>Javadoc</h3>
 <p>
   The annotation processor reads the javadoc (and Kotlin documentation) of the controller methods to generate the openAPI definition.
   The javadoc summary, description, @param and @return
-  documentation are used to create the OpenAPI Operation summary, description, body content, and response content respectively. The processor
-  reads all the request and response types as OpenAPI component schema.
+  documentation are used to create the OpenAPI Operation definitions.
+  <br>
+  The processor reads all the request and response types as OpenAPI component schema. The various annotations like <code>@Header</code>,<code>@Param</code>, and <code>@Produces</code> also modify the generated OpenAPI docs.
 </p>
 
-<h3>Avaje Annotation</h3>
+<h3 id=response>@OpenApiResponse</h3>
 <p>
-  The various annotations like <code>@Header</code>,<code>@Param</code>, and <code>@Produces</code> also modify the generated OpenAPI docs.
-</p>
+This annotation lets you specify alternate endpoint response status codes/descriptions/types. This is useful for defining error scenarios, and when using the underlying Javalin/Helidon contructs in void methods.
 
-<h3>Validation annotations - @NotNull, @Size, @Email etc</h3>
+<pre content="java">
+ @Post("/post")
+ @OpenAPIResponse(responseCode = "200", description = "overrides @return javadoc description")
+ @OpenAPIResponse(responseCode = "201") // Will use @return javadoc description
+ @OpenAPIResponse(
+      responseCode = "404",
+      description = "User not found (Will not have an associated response schema)")
+ @OpenAPIResponse(
+      responseCode = "500",
+      description = "Some other Error (Will have this error class as the response class reference)",
+      type = ErrorResponse.class)
+ ResponseModel endpoint() {}
+</pre>
+
+<h3 id=validation>Validation Annotations - @NotNull, @Size, @Email etc</h3>
 <p>
   The javax bean validation annotations <code>@NotNull</code>, <code>@Size</code>
   and <code>@Email</code> are read as well as detecting Kotlin non-nullable
@@ -35,7 +51,7 @@
   These are used to specify required properties, min max lengths and property format.
 </p>
 
-<h3>Swagger annotations</h3>
+<h3 id=swag>Swagger annotations</h3>
 <p>
   We can add a dependency on <code>io.swagger.core.v3:swagger-annotations:2.0.8</code>
   and add swagger annotations.
@@ -93,7 +109,7 @@ openapi {
 </pre>
 
 
-<h3>Maven plugin</h3>
+<h3 id=plug>Maven Plugin</h3>
 <p>
   The maven plugin by default puts the generated openapi.json file into
   <em>src/main/resource/public</em>
@@ -142,7 +158,7 @@ openapi {
   </plugin>
 </pre>
 
-<h3>Serving openapi.json</h3>
+<h3 id=serve>Serving openapi.json</h3>
 <p>
   When the openapi.json file is in src/main/resources/public it can be served by
   using <code>addStaticFiles</code> on the JavalinConfig like:

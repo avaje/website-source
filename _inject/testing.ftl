@@ -24,7 +24,7 @@
   verify(grinder).grindBeans();
 </pre>
 
-<h5>Mockito junit5 extension</h5>
+<h5>Mockito JUnit5 Extension</h5>
 <p>
   Mockito provides a JUnit 5 extension <code>MockitoExtension</code> which can be used
   with JUnit <code>@ExtendWith</code>. With this extension we can annotate fields with
@@ -61,7 +61,7 @@
 
 
 
-<h2 id="component-testing">Component testing</h2>
+<h2 id="component-testing">Component Testing</h2>
 <p>
   Component testing is where we look to run tests that use most of the objects with their real
   behaviour with less mocked / stubbed behaviour. With component testing we are looking to test a scenario / piece
@@ -78,7 +78,7 @@
   <li>Unlike unit tests, test a scenario with little to no mocking or stubbing</li>
 </ul>
 
-<h3 id="test-dependency">dependency</h3>
+<h3 id="test-dependency">Dependency</h3>
 <p>
   Add <em>avaje-inject-test</em> as a test dependency.
 </p>
