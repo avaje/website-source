@@ -96,5 +96,6 @@
   </ul>
 </@nav>
 <@nav url="#spring" title="Spring DI"/>
+<@nav url="#value" title="Why no @Value?"/>
 </ul>
 <p>&nbsp;</p>
