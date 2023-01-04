@@ -626,3 +626,26 @@ public class DefaultEmailSender implements EmailServer {
   and we use <em>@Primary</em> to indicate the best implementation to use when it is available.
   <em>avaje-inject</em> DI will then wire depending on which modules (jars) are included in the classpath.
 </p>
+
+<h3 id="prototype">@Prototype</h3>
+<p>When the <em>@Prototype</em> annotation is added to a class/factory bean method, a new instance of the bean will be created each time it is requested or wired.</p>
+
+<pre content="java">
+@Prototype
+public class Proto {
+  //every time this bean is requested, the constructor is called to provide another instance
+  ...
+  }
+</pre>
+<pre content="java">
+@Factory
+class ProtoFactory {
+  //every time this bean is requested, the factory method is called to provide another instance
+  @Bean
+  @Prototype
+  Example proto() {
+    return new Example();
+  }
+
+}
+</pre>

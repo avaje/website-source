@@ -102,3 +102,63 @@
   </tr>
 </table>
 
+
+<h2 id=value>Why we don't have @Value/Refreshable Scopes</h2>
+<p>
+  Both Spring and Micronaut have a <code>@Value</code> and by implication they have chosen to combine "external configuration" in with "dependency injection".
+  With avaje-inject a design decision was made to keep these two ideas separate.
+
+  In theory we could have implemented this via source code generation with avaje-inject as:
+</p>
+
+<pre content="java">
+public class EngineImpl$Proxy extends EngineImpl {
+
+  public EngineImpl$Proxy() { // match super constructor,
+    super();
+    this.cylinders = Config.getInt("my.engine.cylinders", 6);
+  }
+}
+</pre>
+
+<p>
+  Our reasons for not implementing are as follows.
+</p>
+
+<h3>Timing of setting the configuration</h3>
+<p>
+  We can see that <code>cylinders</code> is only set after the <code>super()</code>.
+  Any code that tries to use <code>cylinders</code> before that would get a 0 (or null with Integer etc).
+  This is relatively obvious to experienced devs but it is a source of bugs for less experienced devs.
+  That is, <code>@Value</code> fields have delayed initialisation and this can trip people up / be a source of bugs.
+ </p>
+
+ <p>
+  If we don't use <code>@Value</code> and use <code>Config.getInt()</code> directly on the field, the behavior is completly unambiguous.
+  The values are initialised like any normal field.
+</p>
+
+<h3>Dynamic Configuration</h3>
+<p>
+ With avaje-inject we create an effectively immutable BeanScope because we expect "external dynamic configuration" to be done independently from Dependency Injection (for example, by using avaje-config).
+
+ If we go from needing the configuration read and set <i>once at startup</i> to being read each time and potentially changing (aka dynamic configuration).
+ Then we'd need to change away from using <code>@Value</code> or add a complex "Refreshable Scope" concept to this llibrary.
+</p>
+
+<p>
+When using <code>Config.getInt()</code> directly, there is more freedom. We can use it anywhere - field, final field, static final field, in a method (dynamic configuration).
+There isn't a big shift between static configuration and dynamic configuration.
+</p>
+
+<h3>Freedom</h3>
+
+<p>
+  We have an excellent configuration library in <a href="https://avaje.io/config/">avaje-config</a>.
+  It's simple, extendable, and mature as it was originally part of Ebean ORM and was extracted into it's own project.
+</p>
+
+<p>
+  Even so, we want to give our users the freedom to choose whatever they like with external configuration libraries.
+  If we supported <code>@Value</code> in avaje-inject then we would have to pick a "configuration implementation" and force our avaje-config dependency where it's potentially unwanted.
+</p>

@@ -114,6 +114,9 @@
 
   JsonType<Customer> customerType = jsonb.type(Customer.class);
 
+  // If the type is generic we can specify
+  // JsonType<Customer<T1,T2,...>> customerType = jsonb.type(Types.newParameterizedType(Customer.class, T1.class,T2.class, ...);
+
   Customer customer = ...;
 
   // serialize to json

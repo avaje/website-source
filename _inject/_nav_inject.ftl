@@ -32,6 +32,7 @@
     <li><a href="#bean">@Bean</a></li>
     <li><a href="#primary">@Primary</a></li>
     <li><a href="#secondary">@Secondary</a></li>
+    <li><a href="#prototype">@Prototype</a></li>
   </ul>
 </@nav>
 <@nav url="#qualifiers" title="Qualifiers">
@@ -56,6 +57,19 @@
     <li><a href="#bean-scope">BeanScope</a></li>
   </ul>
 </@nav>
+<@nav url="#modules" title="Modules">
+  <ul>
+    <li><a href="#unnamed-module">Unnamed Module</a></li>
+    <li><a href="#single-module">Single Module</a></li>
+    <li><a href="#multi-module">Multi-module</a></li>
+    <li><a href="#inject-module">@InjectModule</a></li>
+  </ul>
+</@nav>
+<@nav url="#aop" title="AOP">
+  <ul>
+    <li><a href="#aspect">@Aspect</a></li>
+  </ul>
+</@nav>
 <@nav url="#testing" title="Testing">
   <ul>
     <li><a href="#unit-testing">Unit Testing</a></li>
@@ -67,14 +81,6 @@
     <li><a href="#inject-test">@InjectTest</a></li>
     <li><a href="#test-scope">@TestScope</a></li>
     <li><a href="#programmatic-testing">Programmatic Testing</a></li>
-  </ul>
-</@nav>
-<@nav url="#modules" title="Modules">
-  <ul>
-    <li><a href="#unnamed-module">Unnamed Module</a></li>
-    <li><a href="#single-module">Single Module</a></li>
-    <li><a href="#multi-module">Multi-module</a></li>
-    <li><a href="#inject-module">@InjectModule</a></li>
   </ul>
 </@nav>
 <@nav url="#why" title="Why avaje-inject exists?">
@@ -90,5 +96,6 @@
   </ul>
 </@nav>
 <@nav url="#spring" title="Spring DI"/>
+<@nav url="#value" title="Why no @Value?"/>
 </ul>
 <p>&nbsp;</p>

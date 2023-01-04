@@ -58,6 +58,7 @@
         <li><a href="#factory">@Factory + @Bean</a></li>
         <li><a href="#primary">@Primary + @Secondary</a></li>
         <li><a href="#test-scope">Test scope</a> component testing</li>
+        <li><a href="#aspect">Aspect Oriented Programming</a> around method advice</li>
       </ul>
     </td>
     <td>

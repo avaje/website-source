@@ -45,7 +45,16 @@
       <li><a href="#roles-jex">Jex</a></li>
     </ul>
   </@nav>
-  <@nav url="#openapi" title="OpenAPI"/>
+  <@nav url="#openapi" title="OpenAPI">
+    <ul>
+      <li><a href="#doc">Javadoc</a></li>
+      <li><a href="#response">@OpenApiResponse</a></li>
+      <li><a href="#validation">Validation Annotations</a></li>
+      <li><a href="#swag">Swagger Annotations</a></li>
+      <li><a href="#plug">Maven Plugin</a></li>
+      <li><a href="#serve">Serving OpenApi</a></li>
+    </ul>
+  </@nav>
   <@nav url="#jaxrs" title="JAX-RS comparison"/>
 </ul>
 <p>&nbsp;</p>

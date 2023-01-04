@@ -161,10 +161,10 @@
       files to load.
     </p>
 
-    <h5>example</h5>
+    <h5>example in application.yaml</h5>
     <pre content="yml">
-      ## in application.yaml
-      load.properties: /etc/config/myapp.properties /etc/other.yaml
+      ## we don't need to specify path if it's in src/main/resources
+      load.properties: local.properties /etc/other.yaml
     </pre>
     <p>
       After default configuration files are loaded the <em>load.properties</em> property is
