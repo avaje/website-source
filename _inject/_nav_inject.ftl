@@ -79,6 +79,9 @@
   <ul>
     <li><a href="#test-dependency">Dependency</a></li>
     <li><a href="#inject-test">@InjectTest</a></li>
+    <li><a href="#test-setup">@Setup</a></li>
+    <li><a href="#test-qualifier">@Named/@Qualifier</a></li>
+    <li><a href="#test-static">Static/Instance Fields</a></li>
     <li><a href="#test-scope">@TestScope</a></li>
     <li><a href="#programmatic-testing">Programmatic Testing</a></li>
   </ul>
