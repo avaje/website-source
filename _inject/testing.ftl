@@ -110,7 +110,7 @@
     @Mock Grinder grinder;
     // Get this OUT of the DI BeanScope
     @Inject CoffeeMaker coffeeMaker;
-    //When @Inject has value in test, put this INTO the DI BeanScope
+    //When a field annotated @Inject has a value, it's wired INTO the DI BeanScope
     @Inject BeanService myTestDouble = new BeanService();
 
     @Test
