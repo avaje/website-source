@@ -108,7 +108,10 @@
 
     @Mock Pump pump;
     @Mock Grinder grinder;
+    // Get this OUT of the DI BeanScope
     @Inject CoffeeMaker coffeeMaker;
+    //When a field annotated @Inject has an initialized value, it's wired INTO the DI BeanScope
+    @Inject BeanService myTestDouble = new BeanService();
 
     @Test
     void extensionStyle() {
@@ -150,7 +153,37 @@ void programmaticStyle() {
   the <a href="#test-scope">"test scope"</a> if it exists.
 </p>
 
-<h3>@Named and @Qualifier</h3>
+
+<h3 id="test-setup">@Setup</h3>
+<p>
+  We can use a method annotated with <code>@Setup</code> as an alternative to mock annotations to provide mocks to the test bean context.
+</p>
+<pre content="java">
+@InjectTest
+class Inject_Test {
+  // calls repo and adds hello string
+  @Inject
+  Service service;
+
+  Repo repoDouble;
+
+  //use setup to add/replace beans in the context before tests
+  @Setup
+  void setup(BeanScopeBuilder builder) {
+    repoDouble = mock(Repo.class);
+    when(repoDouble.get()).thenReturn("MockedViaSetupMethod");
+    builder.bean(Repo.class, repoDouble);
+  }
+
+  @Test
+  void test() {
+    assertEquals("MockedViaSetupMethod+hello", service.process());
+  }
+}
+</pre>
+
+
+<h3 id="test-qualifier">@Named and @Qualifier</h3>
 <p>
   We can use <code>@Named</code> and qualifiers as needed with <em>@Mock, @Spy, and @Inject</em> like below.
 </p>
@@ -162,7 +195,7 @@ void programmaticStyle() {
 
 </pre>
 
-<h3>Static fields, Instance fields</h3>
+<h3 id="test-static">Static fields, Instance fields</h3>
 <p>
   With <code>@InjectTest</code> we can inject into static fields and non-static fields.
   Under the hood, these map to BeanScopes that are created and used to populate these fields in the tests.

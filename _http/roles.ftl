@@ -20,14 +20,14 @@ class CustomerController  {
 <p>
   Example reference <a target="_blank" href="https://github.com/avaje/avaje-http/blob/master/tests/test-javalin/src/main/java/org/example/myapp/web/HelloController.java#L58">test-javalin - HelloController</a>
 </p>
-<h4>Step 1: Create an enum that implements io.avaje.jex.Role</h4>
+<h4>Step 1: Create an enum that implements io.javalin.security.RouteRole</h4>
 <p>
-  Create an enum that implements <code>io.avaje.jex.Role</code>.
+  Create an enum that implements <code>io.javalin.security.RouteRole</code>.
 </p>
 <pre content="java">
-import io.javalin.core.security.Role;
+import io.javalin.security.RouteRole;
 
-public enum AppRoles implements Role {
+public enum AppRoles implements RouteRole {
   ANYONE, ADMIN, BASIC_USER, ORG_ADMIN
 }
 </pre>

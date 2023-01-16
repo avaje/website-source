@@ -74,7 +74,7 @@
 
 <h5>Using client API</h5>
 <pre content="java">
-  HttpClientContext client = HttpClientContext.newBuilder()
+  HttpClient client = HttpClient.newBuilder()
     .baseUrl("https://api.github.com")
     //.bodyAdapter(new JacksonBodyAdapter())
     .build();
@@ -227,18 +227,18 @@ dependencies {
 
 <h3 id="quick-overview">Quick Overview</h3>
 
-<h4>HttpClientContext</h4>
+<h4>HttpClient</h4>
 <p>
-  Create a HttpClientContext with a base URL and BodyAdapter (plus other options as necessary like retry,
+  Create a HttpClient with a base URL and BodyAdapter (plus other options as necessary like retry,
   interceptors etc).
 </p>
 <p>
-  Use HttpClientContext to create requests. Requests can be executed synchronously or asynchronously with
+  Use HttpClient to create requests. Requests can be executed synchronously or asynchronously with
   CompletableFuture.
 </p>
 
 <pre content="java">
-  HttpClientContext client = HttpClientContext.newBuilder()
+  HttpClient client = HttpClient.newBuilder()
     .baseUrl(baseUrl)
     .bodyAdapter(new JacksonBodyAdapter())
     //.bodyAdapter(new GsonBodyAdapter(new Gson()))
@@ -312,30 +312,30 @@ dependencies {
   See <a href="#10k">10K requests - Loom vs Async</a>
 </p>
 
-<h2 id="httpClientContext">HttpClientContext</h2>
+<h2 id="httpClientContext">HttpClient</h2>
 <p>
-  HttpClientContext is effectively a wrapper of <code>java.net.http.HttpClient</code>
+  HttpClient is effectively a wrapper of <code>java.net.http.HttpClient</code>
   with extra features for request interceptors, body adapters, retry, etc.
 </p>
 <p>
-  Create a HttpClientContext with a base URL plus BodyAdapter (e.g. JacksonBodyAdapter).
+  Create a HttpClient with a base URL plus BodyAdapter (e.g. JacksonBodyAdapter).
   Additionally, set other options like retry and request interceptors as necessary.
 </p>
 
 <p>
-  Reference <a target="_blank" href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/HttpClientContext.Builder.html">HttpClientContext.Builder</a>
+  Reference <a target="_blank" href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/HttpClient.Builder.html">HttpClient.Builder</a>
 </p>
 
-<h4>Creating HttpClientContext</h4>
+<h4>Creating HttpClient</h4>
 <pre content="java">
-  HttpClientContext client = HttpClientContext.newBuilder()
+  HttpClient client = HttpClient.newBuilder()
     .baseUrl(baseUrl)
     .bodyAdapter(new JacksonBodyAdapter())
     // .bodyAdapter(new GsonBodyAdapter(new Gson()))
     .build();
 </pre>
 <p>
-  From the HttpClientContext instance we create requests and execute them.
+  From the HttpClient instance we create requests and execute them.
 </p>
 <h4>Create and execute requests</h4>
 <pre content="java">
@@ -369,13 +369,13 @@ dependencies {
 
 <h4>2. Register JacksonBodyAdapter</h4>
 <p>
-  Register the JacksonBodyAdapter with the HttpClientContext builder. We often provide JacksonBodyAdapter an
+  Register the JacksonBodyAdapter with the HttpClient builder. We often provide JacksonBodyAdapter an
   ObjectMapper that has modules and configuration. For example:
 </p>
 <pre content="java">
   ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-  HttpClientContext client = HttpClientContext.newBuilder()
+  HttpClient client = HttpClient.newBuilder()
     .baseUrl(baseUrl)
     .bodyAdapter(new JacksonBodyAdapter(objectMapper))
     .build();
@@ -396,10 +396,10 @@ dependencies {
 
 <h4>2. Register GsonBodyAdapter</h4>
 <p>
-  Register the GsonBodyAdapter with the HttpClientContext builder. For example:
+  Register the GsonBodyAdapter with the HttpClient builder. For example:
 </p>
 <pre content="java">
-  HttpClientContext client = HttpClientContext.newBuilder()
+  HttpClient client = HttpClient.newBuilder()
     .baseUrl(baseUrl)
     .bodyAdapter(new GsonBodyAdapter(new Gson()))
     .build();
@@ -420,13 +420,13 @@ dependencies {
 
 <h4>2. Register JsonbBodyAdapter</h4>
 <p>
-  Register the JsonbBodyAdapter with the HttpClientContext builder. We can supply a jsonb instance
+  Register the JsonbBodyAdapter with the HttpClient builder. We can supply a jsonb instance
   to JsonbBodyAdapter or just use defaults. For example:
 </p>
 <pre content="java">
   Jsonb jsonb = Jsonb.newBuilder().build();
 
-  HttpClientContext client = HttpClientContext.newBuilder()
+  HttpClient client = HttpClient.newBuilder()
     .baseUrl(baseUrl)
     .bodyAdapter(new JsonbBodyAdapter(jsonb))
     .build();
@@ -459,7 +459,7 @@ dependencies {
 
 <h3 id="req-json">Object as JSON</h3>
 <p>
-  When we create the HttpClientContext we register a message body handler.
+  When we create the HttpClient we register a message body handler.
   There is a supplied <code>JacksonBodyAdapter</code> and <code>GsonBodyAdapter</code>.
   When these are registered then when we call <code>body(object)</code> passing
   an Object this uses that body adapter to write the body content as JSON.
@@ -915,7 +915,7 @@ dependencies {
 
 <h4>Example</h4>
 <pre content="java">
-  HttpClientContext clientContext = HttpClientContext.newBuilder()
+  HttpClient clientContext = HttpClient.newBuilder()
     .baseUrl(baseUrl)
     ...
     .requestIntercept(new BasicAuthIntercept("myUsername", "myPassword"))  <|!-- HERE
@@ -927,7 +927,7 @@ dependencies {
 <p>
   For Authorization using <em>Bearer</em> tokens that are obtained and expire, implement
   <a target="_blank" href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/AuthTokenProvider.html"><code>AuthTokenProvider</code></a>
-  and register that when building the HttpClientContext.
+  and register that when building the HttpClient.
 </p>
 
 <h4>Step 1. Implement AuthTokenProvider</h4>
@@ -951,10 +951,10 @@ dependencies {
   }
 </pre>
 
-<h4>Step 2. Register with HttpClientContext</h4>
+<h4>Step 2. Register with HttpClient</h4>
 
 <pre content="java">
-  HttpClientContext ctx = HttpClientContext.newBuilder()
+  HttpClient ctx = HttpClient.newBuilder()
     .baseUrl("https://foo")
     ...
     .authTokenProvider(new MyAuthTokenProvider()) <|!-- HERE
@@ -963,7 +963,7 @@ dependencies {
 
 <h4>Token obtained and set automatically</h4>
 <p>
-  All requests using the HttpClientContext will automatically get
+  All requests using the HttpClient will automatically get
   an <em>Authorization</em> header with <em>Bearer</em> token added. The token will be
   obtained for initial request and then renewed when the token has expired.
 </p>
@@ -1053,20 +1053,20 @@ import io.avaje.http.api.Client;
 
 <h3 id="obtain-api">Obtain/use API</h3>
 <p>
-  We obtain the API implementation via <code>httpClientContext.create(T)</code> passing
+  We obtain the API implementation via <code>httpClient.create(T)</code> passing
   our client interface type <em>T</em>.
 </p>
 
 <h4 id="client-create">Example: obtain implementation</h4>
 <pre content="java">
-  // create HttpClientContext
-  final HttpClientContext httpClientContext = HttpClientContext.newBuilder()
+  // create HttpClient
+  final HttpClient httpClient = HttpClient.newBuilder()
           .baseUrl("https://api.github.com")
           .bodyAdapter(new JacksonBodyAdapter())
           .build();
 
   // obtain API implementation
-  final Github github = httpClientContext.create(Github.class);
+  final Github github = httpClient.create(Github.class);
 
   // use it
   List<|Contributor> contributors = github.contributors("ebean-orm", "ebean");
@@ -1095,7 +1095,7 @@ package org.example.httpclient;
 
 
 import io.avaje.http.api.*;
-import io.avaje.http.client.HttpClientContext;
+import io.avaje.http.client.HttpClient;
 import java.util.List;
 import org.example.Contributor;
 import org.example.Github;
@@ -1103,9 +1103,9 @@ import org.example.Github;
 @Generated("avaje-http-client-generator")
 public class Github$HttpClient implements Github {
 
-  private final HttpClientContext clientContext;
+  private final HttpClient clientContext;
 
-  public Github$HttpClient(HttpClientContext ctx) {
+  public Github$HttpClient(HttpClient ctx) {
     this.clientContext = ctx;
   }
 

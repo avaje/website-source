@@ -34,7 +34,7 @@ dependencies {
   ...
 }
 </pre>
-<h3 id="A2">A2. Create HttpClientContext</h3>
+<h3 id="A2">A2. Create HttpClient</h3>
 <p>
   We will use <code>https://api.github.com</code> as the base URL and use
   <code>JacksonBodyAdapter</code> to decode the json response.
@@ -45,7 +45,7 @@ dependencies {
   uses an ObjectMapper with reasonable default options.
 </p>
 <pre content="java">
-    final HttpClientContext ctx = HttpClientContext.newBuilder()
+    final HttpClient ctx = HttpClient.newBuilder()
       .baseUrl("https://api.github.com")
       .bodyAdapter(new JacksonBodyAdapter())
       .build();
@@ -88,7 +88,7 @@ dependencies {
 <pre content="java">
 package org.example;
 
-import io.avaje.http.client.HttpClientContext;
+import io.avaje.http.client.HttpClient;
 import io.avaje.http.client.JacksonBodyAdapter;
 
 import java.util.List;
@@ -102,7 +102,7 @@ public class Main {
 
   public static void main(String[] args) {
 
-    final HttpClientContext ctx = HttpClientContext.newBuilder()
+    final HttpClient ctx = HttpClient.newBuilder()
       .baseUrl("https://api.github.com")
       .bodyAdapter(new JacksonBodyAdapter())
       .build();
@@ -311,7 +311,7 @@ public interface Github {
 package org.example.httpclient;
 
 import io.avaje.http.api.*;
-import io.avaje.http.client.HttpClientContext;
+import io.avaje.http.client.HttpClient;
 import java.util.List;
 import org.example.Github;
 import org.example.Github.Contributor;
@@ -319,9 +319,9 @@ import org.example.Github.Contributor;
 @Generated("avaje-http-client-generator")
 public class Github$HttpClient implements Github {
 
-  private final HttpClientContext clientContext;
+  private final HttpClient clientContext;
 
-  public Github$HttpClient(HttpClientContext ctx) {
+  public Github$HttpClient(HttpClient ctx) {
     this.clientContext = ctx;
   }
 
@@ -339,11 +339,11 @@ public class Github$HttpClient implements Github {
 
 <h3 id="B5">B5. Use the interface</h3>
 <p>
-  We can obtain the implementation via <code>HttpClientContext</code> <code>create(T.class)</code>
+  We can obtain the implementation via <code>HttpClient</code> <code>create(T.class)</code>
   method.
 </p>
 <pre content="java">
-final Github github = httpClientContext.create(Github.class);
+final Github github = httpClient.create(Github.class);
 </pre>
 <p>
   The full code example is below.
@@ -351,7 +351,7 @@ final Github github = httpClientContext.create(Github.class);
 <pre content="java">
 package org.example;
 
-import io.avaje.http.client.HttpClientContext;
+import io.avaje.http.client.HttpClient;
 import io.avaje.http.client.JacksonBodyAdapter;
 
 import java.util.List;
@@ -360,13 +360,13 @@ public class ApiMain {
 
   public static void main(String[] args) {
 
-    final HttpClientContext httpClientContext = HttpClientContext.newBuilder()
+    final HttpClient httpClient = HttpClient.newBuilder()
       .baseUrl("https://api.github.com")
       .bodyAdapter(new JacksonBodyAdapter())
       .build();
 
     // obtain API ...
-    final Github github = httpClientContext.create(Github.class);
+    final Github github = httpClient.create(Github.class);
 
     // use the API ...
     final List<|Github.Contributor> contributors = github.contributors("avaje", "avaje-http");
