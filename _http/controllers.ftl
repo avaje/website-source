@@ -25,11 +25,20 @@ class ContactController {
 
 <h3 id="controller">@Controller</h3>
 <p>
-  Create controllers with <code>@Path</code> and <code>@Controller</code>.
-  <code>@Path("...")</code> provides the path segment that is prepended
+  Create controllers <code>@Controller</code>.
+  You can provide a path segment that is prepended
   to any path segments defined by on methods using <code>@Get</code>,
-  <code>@Post</code>, <code>@Put</code> etc.
+  <code>@Post</code>, <code>@Put</code> etc. There are three ways to prepend a path.
 </p>
+
+<h4>1. Directly put the path in the controller annotation.</h4>
+<pre content="java">
+@Controller("/customers")
+class CustomerController {
+  ...
+}
+</pre>
+<h4>2. Use <code>@Path</code> and <code>@Controller</code></h4>
 <pre content="java">
 @Controller
 @Path("/customers")
@@ -38,14 +47,27 @@ class CustomerController {
 }
 </pre>
 
+<h4>3. Use <code>@Path</code> on an Interface and <code>@Controller</code> on an implementing class</h4>
+<pre content="java">
+@Path("/customers")
+interface CustomerController {
+  ...
+}
+</pre>
+<pre content="java">
+@Controller
+class CustomerControllerImpl implements CustomerController {
+  ...
+}
+</pre>
+
 <p>
-  Methods on the controller that are annotated with <code>@Get</code>,
-  <code>@Post</code>, <code>@Put</code>, <code>@Delete</code> matching HTTP verbs.
+ Web Methods on a controller are annotated with HTTP annotations like <code>@Get</code>,
+  <code>@Post</code>, <code>@Put</code>, <code>@Delete</code>.
 </p>
 
 <pre content="java">
-@Controller
-@Path("/contacts")
+@Controller("/contacts")
 class ContactController {
 
   private final ContactService contactService;

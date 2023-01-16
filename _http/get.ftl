@@ -5,8 +5,7 @@
 </p>
 
 <pre content="java">
-@Controller
-@Path("/customers")
+@Controller("/customers")
 class CustomerController {
 
   @Get

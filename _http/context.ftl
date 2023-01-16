@@ -8,6 +8,14 @@
 
 <h4>Context as method argument</h4>
 <pre content="java">
+@Get
+Response save(HelloDto dto, Context context) {
+  // use Javalin context as desired
+  ctx.status(202);
+  ...
+  return new Response();
+}
+
 @Post
 void save(HelloDto dto, Context context) {
   // use Javalin context as desired
@@ -23,6 +31,12 @@ void save(HelloDto dto, Context context) {
 </p>
 <h4>ServerRequest/ServerResponse as method argument</h4>
 <pre content="java">
+@Get
+Response save(HelloDto dto, ServerRequest request, ServerResponse response) {
+  // use Helidon server request or response as desired
+  ...
+  return new Response();
+}
 @Post
 void save(HelloDto dto, ServerRequest request, ServerResponse response) {
   // use Helidon server request or response as desired
@@ -63,8 +77,7 @@ void save(HelloDto dto, ServerRequest request, ServerResponse response) {
 //  ... because Javalin Context is a dependency
 //  ... controller instantiated per request
 
-@Controller
-@Path("/contacts")
+@Controller("/contacts")
 class ContactController {
 
   private final ContactService contactService;
