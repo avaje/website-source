@@ -45,7 +45,7 @@ dependencies {
   uses an ObjectMapper with reasonable default options.
 </p>
 <pre content="java">
-    final HttpClient ctx = HttpClient.newBuilder()
+    final HttpClient client = HttpClient.builder()
       .baseUrl("https://api.github.com")
       .bodyAdapter(new JacksonBodyAdapter())
       .build();
@@ -70,7 +70,7 @@ dependencies {
   as the repo.
 </p>
 <pre content="java">
-  final List<|Contributor> contributors = ctx.request()
+  final List<|Contributor> contributors = client.request()
     .path("repos/avaje/avaje-http/contributors")
     .GET()
     .list(Contributor.class);
@@ -102,12 +102,12 @@ public class Main {
 
   public static void main(String[] args) {
 
-    final HttpClient ctx = HttpClient.newBuilder()
+    final HttpClient client = HttpClient.builder()
       .baseUrl("https://api.github.com")
       .bodyAdapter(new JacksonBodyAdapter())
       .build();
 
-    final List<|Contributor> contributors = ctx.request()
+    final List<|Contributor> contributors = client.request()
       .path("repos/avaje/avaje-http/contributors")
       .GET()
       .list(Contributor.class);
@@ -360,7 +360,7 @@ public class ApiMain {
 
   public static void main(String[] args) {
 
-    final HttpClient httpClient = HttpClient.newBuilder()
+    final HttpClient httpClient = HttpClient.builder()
       .baseUrl("https://api.github.com")
       .bodyAdapter(new JacksonBodyAdapter())
       .build();

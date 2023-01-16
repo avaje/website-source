@@ -74,7 +74,7 @@
 
 <h5>Using client API</h5>
 <pre content="java">
-  HttpClient client = HttpClient.newBuilder()
+  HttpClient client = HttpClient.builder()
     .baseUrl("https://api.github.com")
     //.bodyAdapter(new JacksonBodyAdapter())
     .build();
@@ -238,7 +238,7 @@ dependencies {
 </p>
 
 <pre content="java">
-  HttpClient client = HttpClient.newBuilder()
+  HttpClient client = HttpClient.builder()
     .baseUrl(baseUrl)
     .bodyAdapter(new JacksonBodyAdapter())
     //.bodyAdapter(new GsonBodyAdapter(new Gson()))
@@ -328,9 +328,10 @@ dependencies {
 
 <h4>Creating HttpClient</h4>
 <pre content="java">
-  HttpClient client = HttpClient.newBuilder()
+  HttpClient client = HttpClient.builder()
     .baseUrl(baseUrl)
-    .bodyAdapter(new JacksonBodyAdapter())
+    .bodyAdapter(new JsonbBodyAdapter())
+    // .bodyAdapter(new JacksonBodyAdapter())
     // .bodyAdapter(new GsonBodyAdapter(new Gson()))
     .build();
 </pre>
@@ -375,7 +376,7 @@ dependencies {
 <pre content="java">
   ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-  HttpClient client = HttpClient.newBuilder()
+  HttpClient client = HttpClient.builder()
     .baseUrl(baseUrl)
     .bodyAdapter(new JacksonBodyAdapter(objectMapper))
     .build();
@@ -399,7 +400,7 @@ dependencies {
   Register the GsonBodyAdapter with the HttpClient builder. For example:
 </p>
 <pre content="java">
-  HttpClient client = HttpClient.newBuilder()
+  HttpClient client = HttpClient.builder()
     .baseUrl(baseUrl)
     .bodyAdapter(new GsonBodyAdapter(new Gson()))
     .build();
@@ -424,9 +425,9 @@ dependencies {
   to JsonbBodyAdapter or just use defaults. For example:
 </p>
 <pre content="java">
-  Jsonb jsonb = Jsonb.newBuilder().build();
+  Jsonb jsonb = Jsonb.builder().build();
 
-  HttpClient client = HttpClient.newBuilder()
+  HttpClient client = HttpClient.builder()
     .baseUrl(baseUrl)
     .bodyAdapter(new JsonbBodyAdapter(jsonb))
     .build();
@@ -915,7 +916,7 @@ dependencies {
 
 <h4>Example</h4>
 <pre content="java">
-  HttpClient clientContext = HttpClient.newBuilder()
+  HttpClient client = HttpClient.builder()
     .baseUrl(baseUrl)
     ...
     .requestIntercept(new BasicAuthIntercept("myUsername", "myPassword"))  <|!-- HERE
@@ -954,7 +955,7 @@ dependencies {
 <h4>Step 2. Register with HttpClient</h4>
 
 <pre content="java">
-  HttpClient ctx = HttpClient.newBuilder()
+  HttpClient client = HttpClient.builder()
     .baseUrl("https://foo")
     ...
     .authTokenProvider(new MyAuthTokenProvider()) <|!-- HERE
@@ -1059,8 +1060,7 @@ import io.avaje.http.api.Client;
 
 <h4 id="client-create">Example: obtain implementation</h4>
 <pre content="java">
-  // create HttpClient
-  final HttpClient httpClient = HttpClient.newBuilder()
+  final HttpClient httpClient = HttpClient.builder()
           .baseUrl("https://api.github.com")
           .bodyAdapter(new JacksonBodyAdapter())
           .build();
