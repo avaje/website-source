@@ -102,7 +102,7 @@
 <pre content="groovy">
 plugins {
   ...
-  id('io.dinject.openapi') version('1.2')
+  id('io.avaje.openapi') version('1.0')
 }
 </pre>
 <p>
@@ -126,9 +126,9 @@ openapi {
 </p>
 <pre content="xml">
   <plugin>
-    <groupId>io.dinject</groupId>
+    <groupId>io.avaje</groupId>
     <artifactId>openapi-maven-plugin</artifactId>
-    <version>1.2</version>
+    <version>1.0</version>
     <executions>
       <execution>
         <id>main</id>
@@ -147,9 +147,9 @@ openapi {
 </p>
 <pre content="xml">
   <plugin>
-    <groupId>io.dinject</groupId>
+    <groupId>io.avaje</groupId>
     <artifactId>openapi-maven-plugin</artifactId>
-    <version>1.2</version>
+    <version>1.0</version>
     <configuration>
       <destination>other/my-api.json</destination>
     </configuration>
