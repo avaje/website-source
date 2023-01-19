@@ -1,28 +1,15 @@
 
 <h2 id="bean-validation">Bean validation</h2>
 <p>
-  We can optionally add bean validation.
+  We can optionally add bean validation through the validator interface.
 </p>
 <p>
   Example: <a target="_blank" href="https://github.com/dinject/examples/blob/master/javalin-maven-java-basic/src/main/java/org/example/myapp/web/HelloController.java#L30">HelloController</a>
 </p>
 
-<h3>Add dependency</h3>
-<p>
-  Add a dependency on <em>avaje-http-hibernate-validator</em>. This will transitively
-  bring in a dependency on <em>hibernate-validator</em>.
-</p>
-<pre content="xml">
-<dependency>
-  <groupId>io.avaje</groupId>
-  <artifactId>avaje-http-hibernate-validator</artifactId>
-  <version>2.8</version>
-</dependency>
-</pre>
-
 <h3>Add @Valid</h3>
 <p>
-  Add <code>@Valid</code> annotation on controllers that we want bean validation to
+  Add <code>@Valid</code> annotation on controllers/methods that we want bean validation to
   be included for. When we do this controller methods that take a request payload
   will then have the request bean (populated by JSON payload or form parameters)
   validated before it is passed to the controller method.
@@ -61,6 +48,38 @@ ApiBuilder.post("/baz", ctx -> {
 });
 </pre>
 
+<h4>Custom Validation</h4>
+<p>
+  For custom validation, you can can implement the avaje validator interface yourself and add custom logic.
+</p>
+<pre content="java">
+import io.avaje.http.api.Validator;
+
+@Singleton
+public class BeanValidator implements Validator {
+
+  @Override
+  public void validate(Object bean) {
+  //do validation
+  // if validation fails throw something
+  }
+}
+</pre>
+
+<h4>Using Dependency</h4>
+<p>
+  Add a dependency on <em>avaje-http-hibernate-validator</em>. This will transitively
+  bring in a dependency on <em>hibernate-validator</em> which will be used to validate.
+</p>
+<pre content="xml">
+<dependency>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje-http-hibernate-validator</artifactId>
+  <!-- use 2.8 for javax validation -->
+  <version>3.0</version>
+</dependency>
+</pre>
+
 <h3>ValidationException handler</h3>
 <p>
   Add an exception handler for <code>ValidationException</code> like the one below.
@@ -74,7 +93,7 @@ ApiBuilder.post("/baz", ctx -> {
 <pre content="java">
 app.exception(ValidationException.class, (exception, ctx) -> {
 
-  Map<|String,Object> map = new LinkedHashMap<>();
+  Map<|String, Object> map = new LinkedHashMap<>();
   map.put("message", exception.getMessage());
   map.put("errors", exception.getErrors());
   ctx.json(map);
