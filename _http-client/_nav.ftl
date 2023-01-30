@@ -33,6 +33,7 @@
       <li><a href="#asVoid">void</a></li>
       <li><a href="#asDiscarding">discarding</a></li>
       <li><a href="#asString">string</a></li>
+      <li><a href="#as">as</a></li>
       <li><a href="#withHandler">withHandler</a></li>
     </ul>
   </@nav>

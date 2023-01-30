@@ -1,7 +1,14 @@
 <h2 id="produces">@Produces</h2>
 <p>
   Use <code>@Produces</code> to modify the response content type and generated OpenAPI definition.
-  When not specified, we default to <code>application/json</code>.
+  When not specified, we default to <code>application/json</code>. We can set the default http status code for the method as well.
+  If not specified, the default status codes for the different http verbs are as follows:<br>
+  <code>GET(200)</code> <br>
+  <code>POST(201)</code> <br>
+  <code>PUT(200, void methods 204)</code> <br>
+  <code>PATCH(200, void methods 204)</code> <br>
+  <code>DELETE(200, void methods 204)</code>
+
 </p>
 <pre content="java">
 @Path("/")
