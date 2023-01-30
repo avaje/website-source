@@ -76,7 +76,7 @@ public class BeanValidator implements Validator {
   <groupId>io.avaje</groupId>
   <artifactId>avaje-http-hibernate-validator</artifactId>
   <!-- use 2.8 for javax validation -->
-  <version>3.2</version>
+  <version>3.0</version>
 </dependency>
 </pre>
 
