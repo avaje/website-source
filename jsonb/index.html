@@ -93,9 +93,19 @@
 </p>
 <pre content="java">
   @Json
-  public class Customer {
-  ...
+  public class Address {
+    String street;
+    String suburb;
+    String city;
+    //getters/setters ommited for brevity
   }
+</pre>
+
+<p>Also works with records:</p>
+
+<pre content="java">
+  @Json
+  public record Address(String street, String suburb, String city){}
 </pre>
 
 <h4>
@@ -237,6 +247,103 @@ public class Customer {
   }
 </pre>
 
+<h3 id="adapter">Generated JsonAdapter</h3>
+<p>Given the class:</p>
+<pre content="java">
+  @Json
+  public class Address {
+    private String street;
+    private City city;
+    private Suburb suburb;
+    //getters/setters ommited for brevity
+  }
+</pre>
+<p>The following JsonAdapter is generated:</p>
+<pre content="java">
+  @Generated
+  public final class AddressJsonAdapter extends JsonAdapter<Address> implements ViewBuilderAware {
+
+    // naming convention Match
+    // street [java.lang.String] name:street setter:setStreet
+    // city [com.jojo.javalin.api.models.City] name:city setter:setCity
+    // suburb [com.jojo.javalin.api.models.Suburb] name:suburb setter:setSuburb
+
+    private final JsonAdapter<String> stringJsonAdapter;
+    private final JsonAdapter<City> cityJsonAdapter;
+    private final JsonAdapter<Suburb> suburbJsonAdapter;
+    private final PropertyNames names;
+
+    public AddressJsonAdapter(Jsonb jsonb) {
+      this.stringJsonAdapter = jsonb.adapter(String.class);
+      this.cityJsonAdapter = jsonb.adapter(City.class);
+      this.suburbJsonAdapter = jsonb.adapter(Suburb.class);
+      this.names = jsonb.properties("street", "city", "suburb");
+    }
+
+    @Override
+    public boolean isViewBuilderAware() {
+      return true;
+    }
+
+    @Override
+    public ViewBuilderAware viewBuild() {
+      return this;
+    }
+
+    @Override
+    public void build(ViewBuilder builder, String name, MethodHandle handle) {
+      builder.beginObject(name, handle);
+      builder.add("street", stringJsonAdapter, builder.method(Address.class, "getStreet", java.lang.String.class));
+      builder.add("city", cityJsonAdapter, builder.method(Address.class, "getCity", com.jojo.javalin.api.models.City.class));
+      builder.add("suburb", suburbJsonAdapter, builder.method(Address.class, "getSuburb", com.jojo.javalin.api.models.Suburb.class));
+      builder.endObject();
+    }
+
+    @Override
+    public void toJson(JsonWriter writer, Address address) {
+      writer.beginObject();
+      writer.names(names);
+      writer.name(0);
+      stringJsonAdapter.toJson(writer, address.getStreet());
+      writer.name(1);
+      cityJsonAdapter.toJson(writer, address.getCity());
+      writer.name(2);
+      suburbJsonAdapter.toJson(writer, address.getSuburb());
+      writer.endObject();
+    }
+
+    @Override
+    public Address fromJson(JsonReader reader) {
+      Address _$address = new Address();
+
+      // read json
+      reader.beginObject();
+      reader.names(names);
+      while (reader.hasNextField()) {
+        final String fieldName = reader.nextField();
+        switch (fieldName) {
+          case "street": {
+            _$address.setStreet(stringJsonAdapter.fromJson(reader)); break;
+          }
+          case "city": {
+            _$address.setCity(cityJsonAdapter.fromJson(reader)); break;
+          }
+          case "suburb": {
+            _$address.setSuburb(suburbJsonAdapter.fromJson(reader)); break;
+          }
+          default: {
+            reader.unmappedField(fieldName);
+            reader.skipValue();
+          }
+        }
+      }
+      reader.endObject();
+
+      return _$address;
+    }
+  }
+</pre>
+
 <h2 id="import">@Json.Import</h2>
 <p> When we are unable to or do not wish to put <code>@Json</code> on the types we can use <code>@Json.Import</code>.
 <br><br>
@@ -268,21 +375,102 @@ public class Customer {
   <br>If you wish to only specify an alias for the json property, use <code>@Alias</code>.
 </p>
 
-<h2 id="alias">@Json.Alias</h2>
+<h4>Generated Code</h4>
+
+<p><code>@Json.Property</code> makes the following changes to the generated JsonAdapter:</p>
+<pre content="java">
+  @Generated
+  public final class CustomerJsonAdapter extends JsonAdapter<Customer> implements ViewBuilderAware {
+
+    ...
+
+    public CustomerJsonAdapter(Jsonb jsonb) {
+      this.stringJsonAdapter = jsonb.adapter(String.class);
+      //observe how the property has been renamed from "name" to "SomeOtherName"
+      this.names = jsonb.properties("SomeOtherName");
+    }
+
+    ...
+
+    @Override
+    public Customer fromJson(JsonReader reader) {
+      Customer _$customer = new Customer();
+
+      // read json
+      reader.beginObject();
+      reader.names(names);
+      while (reader.hasNextField()) {
+        final String fieldName = reader.nextField();
+        switch (fieldName) {
+          //observe how the property has been renamed from "name" to "SomeOtherName"
+          case "SomeOtherName": {
+            _$customer.setName(stringJsonAdapter.fromJson(reader)); break;
+          }
+          default: {
+            reader.unmappedField(fieldName);
+            reader.skipValue();
+          }
+        }
+      }
+
+      return _$customer;
+    }
+  }
+</pre>
+
+<h2 id="alias">@Json.JsonAlias</h2>
 
 <p>
-  We can define a deserialization alias for a field using <code>@Json.Alias</code>. It is compatible with, and can work in tandem with <code>@Property</code>
+  We can define a deserialization alias for a field using <code>@Json.JsonAlias</code>. It is compatible with, and can work in tandem with <code>@Property</code>
 </p>
 
 <pre content="java">
 @Json
 public class Customer {
 
-  @Json.Alias({"SomeOtherName","SomeOtherName2"})
+  @JsonAlias({"SomeOtherName","SomeOtherName2"})
   private name
   ...
 }
 </pre>
+
+<h4>Generated Code</h4>
+
+<p><code>@Json.JsonAlias</code> makes the following changes to the generated JsonAdapter:</p>
+<pre content="java">
+  @Generated
+  public final class CustomerJsonAdapter extends JsonAdapter<Customer> implements ViewBuilderAware {
+
+    ...
+
+    @Override
+    public Customer fromJson(JsonReader reader) {
+      Customer _$customer = new Customer();
+
+      // read json
+      reader.beginObject();
+      reader.names(names);
+      while (reader.hasNextField()) {
+        final String fieldName = reader.nextField();
+        switch (fieldName) {
+          //observe how the alias property names have been added to the switch
+          case "SomeOtherName":
+          case "SomeOtherName2":
+          case "name": { {
+            _$customer.setName(stringJsonAdapter.fromJson(reader)); break;
+          }
+          default: {
+            reader.unmappedField(fieldName);
+            reader.skipValue();
+          }
+        }
+      }
+
+      return _$customer;
+    }
+  }
+</pre>
+
 
 <h2 id="iggy">@Json.Ignore</h2>
 <p>
@@ -290,18 +478,76 @@ public class Customer {
 </p>
 
 <pre content="java">
-  //Exclude from both serialization and de-serialization
-  @Json.Ignore
-  private String mySecret;
+  @Json
+  public class Secrets {
 
-  //Exclude from de-serialization only
-  @Json.Ignore(serialize = true)
-  private String mySecret2;
+    @Json.Ignore private String mySecret;
 
-  //Exclude from serialization only
-  @Json.Ignore(deserialize = true)
-  private String mySecret3;
+    // Exclude from de-serialization only
+    @Json.Ignore(serialize = true)
+    private String mySecret2;
+
+    // Exclude from serialization only
+    @Json.Ignore(deserialize = true)
+    private String mySecret3;
+
+    //ommited getters/setters
+  }
 </pre>
+
+<h4>Generated Code</h4>
+
+<p><code>@Json.Ignore</code> makes the following changes to the generated JsonAdapter:</p>
+<pre content="java">
+  @Generated
+  public final class SecretsJsonAdapter extends JsonAdapter<Secrets> implements ViewBuilderAware {
+
+    ...
+
+    @Override
+    public void toJson(JsonWriter writer, Secrets secrets) {
+      writer.beginObject();
+      writer.names(names);
+      writer.name(1);
+      //only mySecret2 is serialized
+      stringJsonAdapter.toJson(writer, secrets.getMySecret2());
+      writer.endObject();
+    }
+
+    @Override
+    public Secrets fromJson(JsonReader reader) {
+      Secrets _$secrets = new Secrets();
+
+      // read json
+      reader.beginObject();
+      reader.names(names);
+      while (reader.hasNextField()) {
+        final String fieldName = reader.nextField();
+        switch (fieldName) {
+          case "mySecret": {
+            //skips deserializing ignored fields
+            reader.skipValue(); break;
+          }
+          case "mySecret2": {
+            reader.skipValue(); break;
+          }
+          case "mySecret3": {
+            //mySecret3 is the only field to get deserialized
+            _$secrets.setMySecret3(stringJsonAdapter.fromJson(reader)); break;
+          }
+          default: {
+            reader.unmappedField(fieldName);
+            reader.skipValue();
+          }
+        }
+      }
+      reader.endObject();
+
+      return _$secrets;
+    }
+  }
+</pre>
+
 
 <h2 id="mapped">@Json.Unmapped</h2>
 <p>
@@ -311,8 +557,65 @@ The @Json.Unmapped annotation must be on a field of type <code>Map<String, Objec
 </p>
 
 <pre content="java">
-  @Json.Unmapped
-  Map<String, Object> unmapped
+  @Json
+  public class UnmappedJson {
+    private String mapped;
+    @Json.Unmapped private Map<String, Object> unmapped;
+  }
+</pre>
+
+<h4>Generated Code</h4>
+
+<p><code>@Json.Unmapped</code> makes the following changes to the generated JsonAdapter:</p>
+<pre content="java">
+  @Generated
+  public final class UnmappedJsonJsonAdapter extends JsonAdapter<UnmappedJson> implements ViewBuilderAware {
+
+    ...
+
+    @Override
+    public void toJson(JsonWriter writer, UnmappedJson unmappedJson) {
+      writer.beginObject();
+      writer.names(names);
+      writer.name(0);
+      stringJsonAdapter.toJson(writer, unmappedJson.getMapped());
+      Map<String, Object> unmapped = unmappedJson.getUnmapped();
+      if (unmapped != null) {
+       for (Map.Entry<String, Object> entry : unmapped.entrySet()) {
+         writer.name(entry.getKey());
+         objectJsonAdapter.toJson(writer, entry.getValue());
+       }
+      }
+      writer.endObject();
+    }
+
+    @Override
+    public UnmappedJson fromJson(JsonReader reader) {
+      UnmappedJson _$unmappedJson = new UnmappedJson();
+      Map<String, Object> unmapped = new LinkedHashMap<>();
+
+      // read json
+      reader.beginObject();
+      reader.names(names);
+      while (reader.hasNextField()) {
+        final String fieldName = reader.nextField();
+        switch (fieldName) {
+          case "mapped": {
+            _$unmappedJson.setMapped(stringJsonAdapter.fromJson(reader)); break;
+          }
+          default: {
+            Object value = objectJsonAdapter.fromJson(reader);
+            unmapped.put(fieldName, value);
+          }
+        }
+      }
+      reader.endObject();
+
+     // unmappedField...
+      _$unmappedJson.setUnmapped(unmapped);
+      return _$unmappedJson;
+    }
+  }
 </pre>
 
 <h2 id="value">@Json.Value</h2>
@@ -342,44 +645,14 @@ public enum MyEnum {
 }
 </pre>
 
-<pre content="java">
-public enum MyOtherEnum {
-  //In this example the method has a return type of int and is treated as json int.
-  ONE(42),
-  TWO(43);
-
-  final int val;
-
-  MyOtherEnum(int val) {
-    this.val = val;
-  }
-
-  @Json.Value
-  public int toJsonValue() {
-    return val;
-  }
-}
-</pre>
-
-<h2 id="subtype">@Json.Subtype</h2>
-
+<h2 id="raw">@Json.Raw</h2>
 <p>
-For mapping polymorphic types we specify on the parent type a <code>@Json.Subtype</code> for each concrete sub-type that can represent that type.
+We can use <code>@Json.Raw</code> to mark a String field as containing raw JSON content. This is then read and written (as a string containing raw json).
 </p>
 
 <pre content="java">
-@Json
-@Json.SubType(type = Car.class, name = "CAR")
-@Json.SubType(type = Truck.class, name = "TRUCK")
-public abstract class Vehicle {
- ...
-By default the "type property" that specifies the type in json is @type. Use @Json(typeProperty=...) to specify the name of the type property.
-
-@Json(typeProperty = "dtype")
-@Json.SubType(type = Cat.class)
-@Json.SubType(type = Dog.class)
-public interface Animal {
-Note that there is a current limitation that polymorphic types do not yet support "Json Views".
+  @Json.Raw
+  String rawJson
 </pre>
 
 <h2 id="mixin">@Json.Mixin</h2>
@@ -411,5 +684,191 @@ public abstract class MixinClass {
 }
 </pre>
 
+<h4>Generated Code</h4>
+
+<p><code>@Json.Mixin</code> makes the following changes to the generated MixinTargetJsonAdapter:</p>
+
+  <pre content="java">
+    @Generated
+    public final class MixinTargetJsonAdapter extends JsonAdapter<MixinTarget> implements ViewBuilderAware {
+
+      ...
+      public MixinTargetJsonAdapter(Jsonb jsonb) {
+        this.stringJsonAdapter = jsonb.adapter(String.class);
+        //the mixin class renamed "name" property to "part"
+        this.names = jsonb.properties("part", "stand", "bandReference");
+      }
+
+      ...
+
+      @Override
+      public void toJson(JsonWriter writer, MixinTarget mixinTarget) {
+        writer.beginObject();
+        writer.names(names);
+        writer.name(0);
+        stringJsonAdapter.toJson(writer, mixinTarget.getName());
+        writer.name(2);
+        // stand property is absent
+        stringJsonAdapter.toJson(writer, mixinTarget.getBandReference());
+        writer.endObject();
+      }
+
+      @Override
+      public MixinTarget fromJson(JsonReader reader) {
+        MixinTarget _$mixinTarget = new MixinTarget();
+
+        // read json
+        reader.beginObject();
+        reader.names(names);
+        while (reader.hasNextField()) {
+          final String fieldName = reader.nextField();
+          switch (fieldName) {
+            case "part": {
+              _$mixinTarget.setName(stringJsonAdapter.fromJson(reader)); break;
+            }
+            case "stand": {
+              //now ignored
+              reader.skipValue(); break;
+            }
+            case "bandReference": {
+              _$mixinTarget.setBandReference(stringJsonAdapter.fromJson(reader)); break;
+            }
+            default: {
+              reader.unmappedField(fieldName);
+              reader.skipValue();
+            }
+          }
+        }
+        reader.endObject();
+
+        return _$mixinTarget;
+      }
+    }
+  </pre>
+
+<h2 id="subtype">@Json.Subtype</h2>
+
+<p>
+For mapping polymorphic types we specify on the parent type a <code>@Json.Subtype</code> for each concrete sub-type that can represent that type.
+
+Note: There is a current limitation that polymorphic types do not yet support "Json Views".</p>
+
+<pre content="java">
+  // By default the "type property" that specifies the type in json is @type. Use @Json(typeProperty=...) to specify the name of the type property.
+  @Json
+  @Json.SubType(type = Car.class, name = "CAR")
+  @Json.SubType(type = Truck.class, name = "TRUCK")
+  public abstract class Vehicle {
+    private String engine;
+    ...
+  }
+
+  public class Car extends Vehicle {
+    private String carField;
+    ...
+  }
+
+  public class Truck extends Vehicle {
+    private String truckfield;
+    ...
+  }
+  </pre>
+
+  <h4>Generated Code</h4>
+
+  <p><code>@Json.Subtype</code> makes generates a JsonAdapter for the abstract class/interface <code>Vehicle</code>:</p>
+
+  <pre content="java">
+    @Generated
+    public final class VehicleJsonAdapter extends JsonAdapter<Vehicle> {
+
+      private final JsonAdapter<String> stringJsonAdapter;
+      private final PropertyNames names;
+
+      public VehicleJsonAdapter(Jsonb jsonb) {
+        this.stringJsonAdapter = jsonb.adapter(String.class);
+        //all the propertynames of the subclasses are included
+        this.names = jsonb.properties("@type", "engine", "carField", "truckfield");
+      }
+
+      @Override
+      public void toJson(JsonWriter writer, Vehicle vehicle) {
+        writer.beginObject();
+        writer.names(names);
+        if (vehicle instanceof com.jojo.javalin.api.models.Car) {
+          com.jojo.javalin.api.models.Car sub = (com.jojo.javalin.api.models.Car)vehicle;
+          writer.name(0);
+          stringJsonAdapter.toJson(writer, "CAR");
+          writer.name(1);
+          stringJsonAdapter.toJson(writer, sub.getEngine());
+          writer.name(2);
+          stringJsonAdapter.toJson(writer, sub.getCarField());
+        }
+        else if (vehicle instanceof com.jojo.javalin.api.models.Truck) {
+          com.jojo.javalin.api.models.Truck sub = (com.jojo.javalin.api.models.Truck)vehicle;
+          writer.name(0);
+          stringJsonAdapter.toJson(writer, "TRUCK");
+          writer.name(1);
+          stringJsonAdapter.toJson(writer, sub.getEngine());
+          writer.name(3);
+          stringJsonAdapter.toJson(writer, sub.getTruckfield());
+        }
+        writer.endObject();
+      }
+
+      @Override
+      public Vehicle fromJson(JsonReader reader) {
+        // variables to read json values into, constructor params don't need _set$ flags
+        String     _val$engine = null; boolean _set$engine = false;
+        String     _val$carField = null; boolean _set$carField = false;
+        String     _val$truckfield = null; boolean _set$truckfield = false;
+
+        String type = null;
+
+        // read json
+        reader.beginObject();
+        reader.names(names);
+        while (reader.hasNextField()) {
+          final String fieldName = reader.nextField();
+          switch (fieldName) {
+            case "@type": {
+              type = stringJsonAdapter.fromJson(reader); break;
+            }
+            case "engine": {
+              _val$engine = stringJsonAdapter.fromJson(reader); _set$engine = true; break;
+            }
+            case "carField": {
+              _val$carField = stringJsonAdapter.fromJson(reader); _set$carField = true; break;
+            }
+            case "truckfield": {
+              _val$truckfield = stringJsonAdapter.fromJson(reader); _set$truckfield = true; break;
+            }
+            default: {
+              reader.unmappedField(fieldName);
+              reader.skipValue();
+            }
+          }
+        }
+        reader.endObject();
+
+        if (type == null) {
+          throw new IllegalStateException("Missing @type property which is required?");
+        }
+        if ("CAR".equals(type)) {
+          com.jojo.javalin.api.models.Car _$vehicle = new com.jojo.javalin.api.models.Car();
+          if (_set$engine) _$vehicle.setEngine(_val$engine);
+          if (_set$carField) _$vehicle.setCarField(_val$carField);
+          return _$vehicle;
+        }
+        if ("TRUCK".equals(type)) {
+          com.jojo.javalin.api.models.Truck _$vehicle = new com.jojo.javalin.api.models.Truck();
+          if (_set$engine) _$vehicle.setEngine(_val$engine);
+          if (_set$truckfield) _$vehicle.setTruckfield(_val$truckfield);
+          return _$vehicle;
+        }
+        throw new IllegalStateException("Unknown value for @type property " + type);
+      }
+    }
+  </pre>
 </body>
 </html>
