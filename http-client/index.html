@@ -669,6 +669,17 @@ dependencies {
     .asString();
 </pre>
 
+<h3 id="as">as()</h3>
+<p>
+  Return as <code>HttpResponse&lt;T&gt;</code>.
+</p>
+<pre content="java">
+  HttpResponse<|T> hres = client.request()
+    .path("hello")
+    .GET()
+    .as(T.class);
+</pre>
+
 <h3 id="withHandler">withHandler()</h3>
 <p>
   Using <code>withHandler()</code> we can use any BodyHandler to process the response.
@@ -1139,6 +1150,7 @@ public class Github$HttpClient implements Github {
   <tr><td>Stream&lt;T&gt;</td><td>stream(T.class)</td></tr>
   <tr><td>HttpResponse&lt;Void&gt;</td><td>asVoid()</td></tr>
   <tr><td>HttpResponse&lt;String&gt;</td><td>asString()</td></tr>
+  <tr><td>HttpResponse&lt;T&gt;</td><td>as(T.class)</td></tr>
   <tr><td>HttpResponse&lt;byte[]&gt;</td><td>asByteArray()</td></tr>
   <tr><td>HttpResponse&lt;InputStream&gt;</td><td>asInputStream()</td></tr>
   <tr><td>HttpResponse&lt;Stream&lt;String&gt;&gt;</td><td>asLines()</td></tr>
@@ -1154,6 +1166,7 @@ public class Github$HttpClient implements Github {
 
   <tr><td>CompletableFuture&lt;HttpResponse&lt;Void&gt;&gt;</td><td>async().asVoid()</td></tr>
   <tr><td>CompletableFuture&lt;HttpResponse&lt;String&gt;&gt;</td><td>async().asString()</td></tr>
+  <tr><td>CompletableFuture&lt;HttpResponse&lt;T&gt;&gt;</td><td>async().as(T.class)</td></tr>
   <tr><td>CompletableFuture&lt;HttpResponse&lt;byte[]&gt;&gt;</td><td>async().asByteArray()</td></tr>
   <tr><td>CompletableFuture&lt;HttpResponse&lt;InputStream&gt;&gt;</td><td>async().asInputStream()</td></tr>
   <tr><td>CompletableFuture&lt;HttpResponse&lt;Stream&lt;String&gt;&gt;&gt;</td><td>async().asLines()</td></tr>
@@ -1167,6 +1180,7 @@ public class Github$HttpClient implements Github {
 
   <tr><td>HttpCall&lt;HttpResponse&lt;Void&gt;&gt;</td><td>call().asVoid()</td></tr>
   <tr><td>HttpCall&lt;HttpResponse&lt;String&gt;&gt;</td><td>call().asString()</td></tr>
+  <tr><td>HttpCall&lt;HttpResponse&lt;T&gt;&gt;</td><td>call().as(T.class)</td></tr>
   <tr><td>HttpCall&lt;HttpResponse&lt;byte[]&gt;&gt;</td><td>call().asByteArray()</td></tr>
   <tr><td>HttpCall&lt;HttpResponse&lt;InputStream&gt;&gt;</td><td>call().asInputStream()</td></tr>
   <tr><td>HttpCall&lt;HttpResponse&lt;Stream&lt;String&gt;&gt;&gt;</td><td>call().asLines()</td></tr>

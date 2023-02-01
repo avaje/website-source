@@ -4,14 +4,16 @@
   </@nav>
   <@nav url="#json" title="@Json">
     <ul>
+      <li><a href="#adapter">Generated JsonAdapter</a></li>
       <li><a href="#import">@Import</a></li>
       <li><a href="#property">@Property</a></li>
       <li><a href="#alias">@Alias</a></li>
       <li><a href="#iggy">@Ignore</a></li>
-      <li><a href="#mapped">@Unmapped</a></li>
       <li><a href="#value">@Value</a></li>
-      <li><a href="#subtype">@Subtype</a></li>
+      <li><a href="#raw">@Raw</a></li>
       <li><a href="#mixin">@Mixin</a></li>
+      <li><a href="#mapped">@Unmapped</a></li>
+      <li><a href="#subtype">@Subtype</a></li>
     </ul>
   </@nav>
 </ul>
