@@ -4,11 +4,10 @@ This library has several contructs that support Aspect Oriented Programmming
 <h3 id="aspect">@Aspect</h3>
 <p>
   We can create an annotation and annotate with <code>@Aspect</code> to define an aspect annotation.
-   Aspect.target() specifies the associated type that implements <code>AspectProvider</code>.
 </p>
 
 <pre content="java">
-@Aspect(target = MyAroundAspect.class)
+@Aspect
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MyAround {
@@ -17,17 +16,19 @@ public @interface MyAround {
 }
 </pre>
 
-<p>The AspectProvider should be a <code>@Singleton</code> that provides a <code>MethodInterceptor</code>. (Which will intercept the method call).</p>
+<p>For this aspect to work, a corresponding AspectProvider must be wired into the scope. The AspectProvider should be a <code>@Singleton</code> that provides a <code>MethodInterceptor</code>. (Which will intercept the method call).</p>
 
 <pre content="java">
 @Singleton
 public class MyAroundAspect implements AspectProvider<MyAround>, MethodInterceptor {
+
   @Override
   public MethodInterceptor interceptor(Method method, MyAround around) {
     //For the sake of brevity we have made this class also implement MethodInterceptor
     return this;
   }
 
+  //MethodInterceptor interception method
   @Override
   public void invoke(Invocation invoke) throws Throwable {
     System.out.println("before args: " + Arrays.toString(invoke.arguments()) + " method: " + invoke.method());
