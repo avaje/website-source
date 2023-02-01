@@ -16,7 +16,7 @@ public @interface MyAround {
 }
 </pre>
 
-<p>For this aspect to work, a corresponding AspectProvider must be wired into the scope. The AspectProvider should be a <code>@Singleton</code> that provides a <code>MethodInterceptor</code>. (Which will intercept the method call).</p>
+<p>For this aspect to work, a corresponding AspectProvider must be wired into the scope. The AspectProvider should be a <code>@Singleton</code> or <code>@Component</code> that provides a <code>MethodInterceptor</code>. (Which will intercept the method call).</p>
 
 <pre content="java">
 @Singleton
@@ -28,7 +28,7 @@ public class MyAroundAspect implements AspectProvider<MyAround>, MethodIntercept
     return this;
   }
 
-  //MethodInterceptor interception method
+  // MethodInterceptor interception method
   @Override
   public void invoke(Invocation invoke) throws Throwable {
     System.out.println("before args: " + Arrays.toString(invoke.arguments()) + " method: " + invoke.method());
