@@ -392,6 +392,24 @@
       Configuration configuration = Config.asConfiguration();
     </pre>
 
+    <h3 id="forPath">forPath()</h3>
+    <p>
+      Obtain a filtered configuration via <code>Config.forpath()</code>.
+    </p>
+    <pre content="java">
+      //given properties like the below in application.properties
+      database.example.password=secretPassword
+      database.example.username=notSecretUsername
+
+      Configuration dbConfiguration = Config.forPath("database");
+      Configuration dbExampleConfiguration = dbConfiguration.forPath("example");
+      // or more simply
+      Configuration dbExampleConfiguration = Config.forPath("database.example");
+      // will return secretPassword
+      dbExampleConfiguration.get("password");
+      // will return secretPassword
+      dbExampleConfiguration.get("username");
+    </pre>
 
     <h2 id="plugins">Plugins</h2>
     <p>
