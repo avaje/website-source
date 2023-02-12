@@ -236,7 +236,7 @@
     <h3><em>config.load.systemProperties</em></h3>
     <p>
       If we set <code>config.load.systemProperties</code> to true then all the properties that
-      have been loaded are then set into system properties.
+      have been loaded are then set into system properties. You can provide an additional property <code>system.excluded.properties</code> to provide a list of configuration properties you want to exclude from being loaded into the System Properties.
     </p>
 
     <h2 id="file-watch">File watching</h2>
@@ -392,6 +392,24 @@
       Configuration configuration = Config.asConfiguration();
     </pre>
 
+    <h3 id="forPath">forPath()</h3>
+    <p>
+      Obtain a filtered configuration via <code>Config.forpath()</code>.
+    </p>
+    <pre content="java">
+      //given properties like the below in application.properties
+      database.example.password=secretPassword
+      database.example.username=notSecretUsername
+
+      Configuration dbConfiguration = Config.forPath("database");
+      Configuration dbExampleConfiguration = dbConfiguration.forPath("example");
+      // or more simply
+      Configuration dbExampleConfiguration = Config.forPath("database.example");
+      // will return secretPassword
+      dbExampleConfiguration.get("password");
+      // will return secretPassword
+      dbExampleConfiguration.get("username");
+    </pre>
 
     <h2 id="plugins">Plugins</h2>
     <p>
