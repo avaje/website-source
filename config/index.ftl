@@ -236,7 +236,7 @@
     <h3><em>config.load.systemProperties</em></h3>
     <p>
       If we set <code>config.load.systemProperties</code> to true then all the properties that
-      have been loaded are then set into system properties.
+      have been loaded are then set into system properties. You can provide an additional property <code>system.excluded.properties</code> to provide a list of configuration properties you want to exclude from being loaded into the System Properties.
     </p>
 
     <h2 id="file-watch">File watching</h2>
