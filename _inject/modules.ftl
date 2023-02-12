@@ -129,7 +129,7 @@
 
 <h3>autoRequires</h3>
 <p>
- <em>avaje-inject</em> can also automatically read the classpath at compile-time to find all the modules and automatically determine the <code>requires</code> dependencies.
+ <em>avaje-inject</em> can also automatically read the classpath/maven dependencies at compile-time to find all the modules and automatically determine the <code>requires</code> dependencies.
  This works fine in most cases, but when you are using the annotation processor with a java 9+ modular project or defined as an annotationProcessorPath in the <code>maven-compiler-plugin</code>, you will need to add the <code>avaje-inject-maven-plugin</code>.
 </p>
 
@@ -152,7 +152,7 @@
 <p>
 What this does is generate 2 files in target before the code is compiled: <code>target/avaje-module-provides.txt</code> and <code>target/avaje-plugin-provides.txt</code>
 
-These are the components and plugins provides by all the other modules that exist in the classpath. The annotation processor then reads then at compile time and will not error if these components are required dependencies (as they are known to be provided by other modules or plugins in the classpath).
+These are the components and plugins provides by all the other modules that exist in the classpath/maven dependencies. The annotation processor then reads the txt files at compile time and will not error if these components are required dependencies (as they are known to be provided by other modules or plugins).
 
 <h3 id="inject-module">@InjectModule</h3>
 

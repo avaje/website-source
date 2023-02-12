@@ -1,4 +1,5 @@
 <html>
+
 <head>
   <meta name="layout" content="_layout/base-jsonb.html"/>
   <meta name="bread1" content="jsonb" href="/jsonb/"/>
@@ -26,7 +27,7 @@
 </table>
 
 <p><br><br>
- This is a light, fast, and reflection free Json binding library
+  This is a light (188kb + generated code), fast, and reflection free Json binding library
 </p>
 
 <ul>
@@ -36,6 +37,22 @@
   <li>Provide support for dynamic json views</li>
   <li>Supports importing types and mixins</li>
 </ul>
+<h4 id="default-types">Default Supported Types</h4>
+
+<p>
+  Jsonb has built-in support for reading and writing Java’s core data types:
+</p>
+
+<ul>
+  <li>Primitives (int, float, char...) and their boxed counterparts (Integer, Float, Character...).</li>
+  <li>BigInteger and BigDecimal</li>
+  <li>java.time classes (Instant, LocalDate, LocalDateTime...)</li>
+  <li>Arrays, Collections, Streams, Lists, Sets, and Maps</li>
+  <li>Strings</li>
+  <li>Enums</li>
+  <li>Other miscellaneous types (UUID, URL, URI)</li>
+</ul>
+
 
 <h2 id="quick-start">Quick Start</h2>
 <h4>

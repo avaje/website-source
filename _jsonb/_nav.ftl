@@ -1,5 +1,7 @@
 <ul>
   <@nav url="#overview" title="Overview"/>
+  <@nav url="#default-types" title="Default Supported Types">
+  </@nav>
   <@nav url="#quick-start" title="Quick Start">
   </@nav>
   <@nav url="#json" title="@Json">
