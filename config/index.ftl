@@ -34,10 +34,12 @@
             <li><a href="#onChange">on change</a></li>
             <li><a href="#asProperties">asProperties</a></li>
             <li><a href="#asConfiguration">asConfiguration</a></li>
+            <li><a href="#forPath">forPath</a></li>
 
           </ul>
         </li>
         <li><a href="#plugins">Plugins</a></li>
+        <li><a href="#logging">Event Logging</a></li>
       </ul>
     </nav>
   </aside>
@@ -437,6 +439,46 @@
       Refer to the (silly) example plugin - <a href="https://github.com/avaje/avaje-config/blob/master/src/test/java/org/example/MyExternalLoader.java">MyExternalLoader.java</a>
     </p>
 
+    <h2 id="logging">Event Logging</h2>
+    <p>
+      By default, <code>avaje-config</code> will immediately log initialisation events to it's own connfigured system logger. If you want to use your own configured logger, you can extend the <code>EventLog</code> interface and
+      register via <code>ServiceLoader</code>. This means you have a
+      file at <code>src/main/resources/META-INF/services/io.avaje.config.EventLog</code>
+      which contains the class name of the implementation.
+    </p>
+    <p>
+      Custom Event loggers implement the methods
+    </p>
+    <pre content="java">
+
+  /**
+   * Log an event with the given level, message, and thrown exception.
+   */
+  void log(Level level, String message, Throwable thrown);
+
+  /**
+   * Log an event with the given level, formatted message, and arguments.
+   * <p>
+   * The message format is as per {@link java.text.MessageFormat#format(String, Object...)}.
+   */
+  void log(Level level, String message, Object... args);
+    </pre>
+    <p>
+      Additionally, you can implement the two default methods so you can provide behavior before and after the configs are loaded.
+    </p>
+    <pre content="java">
+  /**
+   * Invoked when the configuration is being initialised.
+   */
+  default void preInitialisation() {
+  }
+
+  /**
+   * Invoked when the initialisation of configuration has been completed.
+   */
+  default void postInitialisation() {
+  }
+    </pre>
   </article>
 
 </div>
