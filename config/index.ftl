@@ -29,15 +29,18 @@
         <li><a href="#file-watch">File watching</a></li>
         <li><a href="#config">Config</a>
           <ul>
-            <li><a href="#get-property">get property</a></li>
-            <li><a href="#setProperty">set property</a></li>
-            <li><a href="#onChange">on change</a></li>
+            <li><a href="#get-property">Get Property</a></li>
+            <li><a href="#setProperty">Set Property</a></li>
+            <li><a href="#eventbuild">Event Publishing</a></li>
+            <li><a href="#onChange">On Change</a></li>
             <li><a href="#asProperties">asProperties</a></li>
             <li><a href="#asConfiguration">asConfiguration</a></li>
+            <li><a href="#forPath">forPath</a></li>
 
           </ul>
         </li>
         <li><a href="#plugins">Plugins</a></li>
+        <li><a href="#logging">Event Logging</a></li>
       </ul>
     </nav>
   </aside>
@@ -288,7 +291,7 @@
       properties.
     </p>
 
-    <h3 id="get-property">Get property</h3>
+    <h3 id="get-property">Get Property</h3>
     <p>
       <code>Config</code> provides method to get property values as String, int, long, boolean,
       BigDecimal, Enum and URL.
@@ -340,7 +343,7 @@
     </pre>
 
 
-    <h3 id="setProperty">Set property</h3>
+    <h3 id="setProperty">Set Property</h3>
     <p>
       Use <code>setProperty()</code> to set configuration values.
     </p>
@@ -354,14 +357,25 @@
       Config.setProperty("feature.cleanup", "false");
     </pre>
 
+    <h3 id="eventbuild">Event Publishing</h3>
+    <p>
+      Use <code>eventBuilder()</code> to publish multiple changes at once.
+    </p>
+    <pre content="java">
+      Config.eventBuilder("EventName")
+         .put("someKey", "val0")
+         .put("someOther.key", "42")
+         .remove("foo")
+         .publish();
+    </pre>
 
-    <h3 id="onChange">On change</h3>
+    <h3 id="onChange">On Change</h3>
     <p>
       We can register callbacks that execute when a configuration key
       has it's value changed.
     </p>
 
-    <h5>example</h5>
+    <h5>Single property onChange</h5>
     <pre content="java">
 
       Config.onChange("other.url", newUrl -> {
@@ -369,7 +383,28 @@
         // config value
         ...
       });
+    </pre>
 
+    <h5>Multi property onChange</h5>
+    <pre content="java">
+      Config.onChange(event -> {
+
+            Set<String> changedKeys = event.modifiedKeys();
+
+            Configuration updatedConfig = event.configuration();
+
+            // do something with the changed values.
+          });
+
+      // Filter events for specific properties
+      Config.onChange(event -> {
+
+            Set<String> changedKeys = event.modifiedKeys();
+
+            Configuration updatedConfig = event.configuration();
+
+            // do something with the changed values.
+          }, "someKey", "someOther.key");
     </pre>
 
     <h3 id="asProperties">asProperties()</h3>
@@ -379,7 +414,6 @@
     <pre content="java">
       Properties properties = Config.asProperties();
     </pre>
-
 
     <h3 id="asConfiguration">asConfiguration()</h3>
     <p>
@@ -437,7 +471,46 @@
       Refer to the (silly) example plugin - <a href="https://github.com/avaje/avaje-config/blob/master/src/test/java/org/example/MyExternalLoader.java">MyExternalLoader.java</a>
     </p>
 
-  </article>
+    <h2 id="logging">Event Logging</h2>
+    <p>
+      By default, <code>avaje-config</code> will immediately log initialisation events to it's own connfigured system logger. If you want to use your own configured logger, you can extend the <code>ConfigurationLog</code> interface and
+      register via <code>ServiceLoader</code>. This means you have a
+      file at <code>src/main/resources/META-INF/services/io.avaje.config.ConfigurationLog</code>
+      which contains the class name of the implementation.
+    </p>
+    <p>
+      Custom Event loggers implement the methods
+    </p>
+    <pre content="java">
+
+  /**
+   * Log an event with the given level, message, and thrown exception.
+   */
+  void log(Level level, String message, Throwable thrown);
+
+  /**
+   * Log an event with the given level, formatted message, and arguments.
+   * <p>
+   * The message format is as per {@link java.text.MessageFormat#format(String, Object...)}.
+   */
+  void log(Level level, String message, Object... args);
+    </pre>
+    <p>
+      Additionally, you can implement the two default methods and provide behavior before and after the configs are loaded.
+    </p>
+    <pre content="java">
+  /**
+   * Invoked when the configuration is being initialised.
+   */
+  default void preInitialisation() {
+  }
+
+  /**
+   * Invoked when the initialisation of configuration has been completed.
+   */
+  default void postInitialisation() {
+  }
+    </pre>
 
 </div>
 </body>
