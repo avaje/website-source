@@ -135,3 +135,23 @@ public class StoreManager {
   }
   ...
 </pre>
+
+
+<h3 id="qualifiedmap">@QualifiedMap</h3>
+<p>
+  To receive a map of beans keyed by qualifier name, we can use <code>@QualifiedMap</code>.
+</p>
+
+<pre content="java">
+@Singleton
+ class CrewMate {
+
+   private final Map<String, Tasks> taskMap;
+
+   @Inject
+   CrewMate(@QualifiedMap Map<String, Tasks> taskMap) {
+     this.taskMap = taskMap;
+   }
+
+ }
+</pre>

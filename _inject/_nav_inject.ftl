@@ -40,6 +40,7 @@
   <ul>
     <li><a href="#named">@Named</a></li>
     <li><a href="#qualifier">@Qualifier</a></li>
+    <li><a href="#qualifiedmap">@QualifiedMap</a></li>
   </ul>
 </@nav>
 <@nav url="#lifecycle" title="Lifecycle">
