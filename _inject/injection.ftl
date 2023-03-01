@@ -55,6 +55,18 @@ public class CoffeeMaker {
   view that some other DI library is also being used and is handling those components.
 </p>
 
+<h3 id="import">@Component.Import</h3>
+<p>
+  Put <code>@Component.Import</code> on a class/package-info to create dependency injection on external classes (e.g. mvn dependencies).
+  It has the same effect as if the bean was directly annotated by <code>@Component</code>.
+</p>
+<pre content="java">
+@Component.Import(TeaMaker.class)
+@Singleton
+public class CoffeeMaker {
+  ...
+</pre>
+
 <h3 id="inject">@Inject</h3>
 <p>
   Put <code>@Inject</code> on the constructor that should be used for constructor dependency injection.
@@ -493,6 +505,21 @@ class Configuration {
   }
 }
 </pre>
+<h3 id="beanclose">@Bean autocloseable</h3>
+<p>
+  The avaje generator reads the bean method return type to detct if the bean is an instance of <code>Closeable</code> or <code>AutoCloseable</code>. In the case where you are wiring an interface that doesn't implement these types, but the concrete class implements, we can specify <code>autocloseable</code> to inform the generator.
+ </p>
+
+<pre content="java">
+@Factory
+class Configuration {
+  ...
+  @Bean(autocloseable = true)
+  CoffeeMaker buildCoffeeMaker(Pump pump) {
+    return new CloseableCoffeeMaker(pump);
+  }
+}
+</pre>
 
 <h3 id="initMethod">@Bean initMethod & destroyMethod</h3>
 <p>
@@ -501,18 +528,6 @@ class Configuration {
   Similarly a <code>destroyMethod</code> which execute on shutdown like <code>@PreDestroy</code>.
 </p>
 
-
-<h4>Example</h4>
-<pre content="java">
-@Factory
-class Configuration {
-  ...
-  @Bean(initMethod = "init", destroyMethod = "close")
-  CoffeeMaker buildCoffeeMaker(Pump pump) {
-    return new CoffeeMaker(pump);
-  }
-}
-</pre>
 <p>
   The CoffeeMaker has the appropriate methods that are executed as part of the lifecycle.
 </p>
