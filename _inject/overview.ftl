@@ -77,18 +77,16 @@
   <code>jakarta.inject</code> dependency.
 </p>
 
-<h4>Want to use javax.inject?</h4>
-<p>
-  Use <a href="https://github.com/avaje/avaje-inject/releases">version 7.x</a> of
-  avaje-inject with the dependency on <code>javax.inject</code> (maintained on javax.main branch).
-</p>
 <h4>Want to use jakarta.inject?</h4>
 <p>
-  Use <a href="https://github.com/avaje/avaje-inject/releases">version 8.x</a> of
-  avaje-inject with the dependency on <code>jakarta.inject</code> (maintained on master branch).
+  Use <a href="https://github.com/avaje/avaje-inject/releases">version 9.x</a> of
+  avaje-inject with the dependency on <code>jakarta.inject</code>
 </p>
+
+<h4>Want to use javax.inject?</h4>
 <p>
-  Both version 8.x and 7.x require Java 11. For Java 8 support use versions 6.22 (for jakarta.inject) or 5.22 (for javax.inject).
+  Use <a href="https://github.com/avaje/avaje-inject/releases">version 9.x-javax</a> of
+  avaje-inject with the dependency on <code>javax.inject</code>.
 </p>
 
 <h3 id="jsr-330">Based on JSR-330</h3>

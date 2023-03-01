@@ -19,6 +19,7 @@
   <ul>
     <li><a href="#singleton">@Singleton</a></li>
     <li><a href="#component">@Component</a></li>
+    <li><a href="#import">@Component.Import</a></li>
     <li><a href="#inject">@Inject</a></li>
     <li><a href="#constructor">Constructor Injection</a></li>
     <li><a href="#field">Field Injection</a></li>
@@ -48,6 +49,11 @@
     <li><a href="#auto-closeable">AutoCloseable</a></li>
   </ul>
 </@nav>
+<@nav url="#aop" title="AOP">
+  <ul>
+    <li><a href="#aspect">@Aspect</a></li>
+  </ul>
+</@nav>
 <@nav url="#scope" title="Scope">
   <ul>
     <li><a href="#default-scope">Default Scope</a></li>
@@ -63,11 +69,6 @@
     <li><a href="#single-module">Single Module</a></li>
     <li><a href="#multi-module">Multi-module</a></li>
     <li><a href="#inject-module">@InjectModule</a></li>
-  </ul>
-</@nav>
-<@nav url="#aop" title="AOP">
-  <ul>
-    <li><a href="#aspect">@Aspect</a></li>
   </ul>
 </@nav>
 <@nav url="#testing" title="Testing">
