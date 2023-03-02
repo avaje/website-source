@@ -91,6 +91,12 @@
   Put <code>@Tags</code> on controller methods to add tags to the OpenAPI Operation documentation.
 </p>
 
+<h4>@SecurityScheme and @SecurityRequirement</h4>
+
+<p>
+  Put <code>@SecurityScheme or @SecurityRequirement</code> on controller methods to add to the OpenAPI Operation documentation.
+</p>
+
 <h3>Gradle plugin</h3>
 <p>
   The gradle plugin by default puts the generated openapi.json file into
