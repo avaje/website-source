@@ -23,6 +23,7 @@
       <li><a href="#produces">@Produces</a></li>
       <li><a href="#header">@Header</a></li>
       <li><a href="#cookie">@Cookie</a></li>
+      <li><a href="#default">@Default</a></li>
       <li><a href="#get">@Get</a></li>
       <li><a href="#delete">@Delete</a></li>
       <li><a href="#put">@Put</a></li>

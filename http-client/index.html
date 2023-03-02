@@ -82,8 +82,19 @@
   // obtain API implementation
   GitHub github = client.create(GitHub.class);
 
-  // use the api/interface
-  List<|Contributor> contributors = github.contributors("rbygrave", "junk");
+  try {
+    // use the api/interface
+    List<|Contributor> contributors = github.contributors("rbygrave", "junk");
+
+  } catch (HttpException ex) {
+
+    if (ex.getCause() != null) {
+      // some IO/Interrupted exception happened while sending request.
+    } else {
+      //Use HttpException utility methods to access response status and handle/deserialize error body
+      }
+    }
+  }
 </pre>
 
 <h5>API allowing async or sync use via HttpCall</h5>
@@ -1332,6 +1343,20 @@ List<|Bazz> findBazz(long id, LocalDate startDate, String type);
   Unlike JAX-RS we do not need a <code>@PathParam</code> annotation.
 </p>
 
+<h3 id="timeout">@RequestTimeout</h3>
+<p>
+  Use <code>@RequestTimeout</code> to override the global response timout for a specific request.
+ </p>
+
+<pre content="java">
+   @Client
+   interface CustomerApi {
+     @Get("/{id}")
+     @RequestTimeout(value = 1, ChronoUnit.SECONDS)
+     Customer getById(long id);
+   }
+</pre>
+
 
 <h3 id="header">@Header</h3>
 <p>
@@ -1352,6 +1377,9 @@ Bar postIt(Foo payload, @Header("User-Agent") String userAgent); // explicit
 
 @Post
 Bar postIt(Foo payload, @Header String userAgent); // User-Agent
+
+@Post
+Bar postIt(Foo payload, @Header Collection<String> accept); // Accept
 
 @Get
 Bazz find(@Header String lastModified); // Last-Modified
@@ -1474,7 +1502,7 @@ public record Common(
   Long firstRow,
   Long maxRows,
   String sortBy,
-  String filter) { }
+  List<String> filters) { }
 </pre>
 <p>
   Use a record type or any type that has getter methods, record style getter methods or public fields.
@@ -1484,7 +1512,7 @@ public class Common {
   public Long firstRow;
   public Long maxRows;
   public String sortBy;
-  public String filter;
+  public List<String> filters;
 }
 </pre>
 <p>
@@ -1506,7 +1534,7 @@ public class Common {
       .queryParam("firstRow", commonParams.firstRow())
       .queryParam("maxRows", commonParams.maxRows())
       .queryParam("sortBy", commonParams.sortBy())
-      .queryParam("filter", commonParams.filter())
+      .queryParam("filters", commonParams.filters())
       .GET()
       .list(Cat.class);
   }

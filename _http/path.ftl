@@ -65,7 +65,6 @@ class CustomerController {
 }
 </pre>
 
-
 <h2 id="path-parameters">Path parameters</h2>
 <p>
   Path parameters start with <code>{</code> and end with <code>}</code>.
@@ -240,26 +239,13 @@ List<|Cat> findCats(@QueryParam("order-by") String orderBy) {
 <h3>Query parameter types</h3>
 <p>
   Query parameters can be one of the following types:
-  <em>String, Integer, Long, Short, Float, Double, Boolean, BigDecimal, UUID, LocalDate, LocalTime or LocalDateTime</em>
+  <em>String, Integer, Long, Short, Float, Double, Boolean, BigDecimal, UUID, LocalDate, LocalTime, LocalDateTime, or Enums</em>(Will use <code>Enum.valueOf(EnumType, parameter)</code> ).
+  To get multivalue parameters we can use <code>List&ltT&gt</code> or <code>Set&ltT&gt</code> where <code>T</code> is any of the previously mentioned types.
+  To get all query parameters define a parameter of type <code>Map&ltList&ltT&gt&gt</code>.
 </p>
 <p>
   Query parameters are considered optional / nullable.
 </p>
-
-<h3>@Default</h3>
-<em>
-  We can use <code>@Default</code> to specify a default value for a query parameter.
-</em>
-<pre content="java">
-// orderBy defaults to "age"
-
-@Get("{bornAfter}")
-List<|Cat> findCats(LocalDate bornAfter, @Default("age") String orderBy) {
-  ...
-}
-</pre>
-
-
 
 <h2 id="bean-param">@BeanParam</h2>
 <p>
@@ -314,7 +300,6 @@ ApiBuilder.get("/cats/search/:type", ctx -> {
   default to being query parameters where as with JAX-RS we need to annotate each of the properties.
   We can do this because we also have <a href="#form">@Form</a> and "Form beans".
 </p>
-
 
 <h4>BeanParam with @Header @Cookie properties</h4>
 <p>

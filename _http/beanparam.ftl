@@ -13,7 +13,7 @@ public class CommonParams {
   public Long firstRow;
   public Long maxRows;
   public String sortBy;
-  public String filter;
+  public Set<String> filter;
 }
 </pre>
 <p>
@@ -37,7 +37,7 @@ ApiBuilder.get("/cats/search/:type", ctx -> {
   params.firstRow = toLong(ctx.queryParam("firstRow"));
   params.maxRows = toLong(ctx.queryParam("maxRows"));
   params.sortBy = ctx.queryParam("sortBy");
-  params.filter = ctx.queryParam("filter");
+  params.filter = list(Objects::toString, ctx.queryParams("filter"));
 
   ctx.json(controller.findCats(type, params));
 });
