@@ -5,14 +5,23 @@
 <ul>
   <li>int, long, boolean, Integer, Long, Boolean</li>
   <li>BigDecimal, UUID, LocalDate, LocalTime, LocalDateTime</li>
+  <li>Enum Types via <em>valueOf</em> (will use toUpperCase on the query parameter)</li>
 </ul>
+<p>
+ For multivalue parameters like query parameters or headers, we can use <code>List&ltT&gt</code> or <code>Set&ltT&gt</code> where <code>T</code> is any of the previously mentioned types.
+</p>
 <p>
   In the following example there is a type conversion for <em>startDate</em> and <em>active</em>.
 </p>
 
 <pre content="java">
 @Get("/{id}/{name}")
-Hello hello(int id, String name, LocalDate startDate, Boolean active) {
+Hello hello(int id,
+       String name,
+       LocalDate startDate,
+       Boolean active,
+       List<Long> longs
+) {
   ...
 }
 </pre>
@@ -27,10 +36,10 @@ ApiBuilder.get("/hello/:id/:name", ctx -> {
   String name = ctx.pathParam("name");
   LocalDate startDate = toLocalDate(ctx.queryParam("startDate"));
   Boolean active = toBoolean(ctx.queryParam("active"));
+  List<Long> longs = list(PathTypeConversion::toLong, ctx.queryParams("longs"));
   ctx.json(controller.hello(id, name, startDate, active));
 });
 </pre>
-
 
 <h3>Exception handlers</h3>
 <p>

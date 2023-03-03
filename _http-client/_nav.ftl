@@ -71,6 +71,7 @@
       <li><a href="#api-request-body">BodyPublisher</a></li>
       <li><a href="#path">@Path</a></li>
       <li><a href="#pathParameters">Path parameters</a></li>
+      <li><a href="#timeout">@RequestTimeout</a></li>
       <li><a href="#header">@Header</a></li>
       <li><a href="#queryParam">@QueryParam</a></li>
       <li><a href="#beanParam">@BeanParam</a></li>

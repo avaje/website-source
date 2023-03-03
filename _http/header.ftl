@@ -106,3 +106,15 @@ private void _foo(ServerRequest req, ServerResponse res) {
 }
 </pre>
 
+<h2 id="default">@Default</h3>
+<p>
+  We can use <code>@Default</code> to specify a default value for a Query Parameter/Header/Cookie/Form Parameter.
+</p>
+
+<pre content="java">
+
+@Get("/catty")
+List<|Cat> findCats(@Header @Default("age") String orderBy, @Default({"1", "2"}) List<Integer> numbersOfLimbs) {
+  ...
+}
+</pre>
