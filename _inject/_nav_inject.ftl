@@ -50,6 +50,12 @@
     <li><a href="#auto-closeable">AutoCloseable</a></li>
   </ul>
 </@nav>
+<@nav url="#conditional" title="Conditional Beans">
+  <ul>
+    <li><a href="#requirebean">@RequiresBean</a></li>
+    <li><a href="#requireprops">@RequiresProperty</a></li>
+  </ul>
+</@nav>
 <@nav url="#aop" title="AOP">
   <ul>
     <li><a href="#aspect">@Aspect</a></li>
