@@ -46,7 +46,7 @@
         smaller?
       </p>
       <p>
-        <em>avaje-inject</em> exists with the view that it can be <em>really</em> small and
+        <em>avaje-inject</em> exists with the view that it should be <em>really</em> small and
         provide JSR-330 dependency injection using source code generation.
       </p>
       <p>
@@ -57,6 +57,7 @@
         <li><a href="#lifecycle">Lifecycle</a> support</li>
         <li><a href="#factory">@Factory + @Bean</a></li>
         <li><a href="#primary">@Primary + @Secondary</a></li>
+        <li><a href="#conditional">Conditional Beans</a></li>
         <li><a href="#test-scope">Test scope</a> component testing</li>
         <li><a href="#aspect">Aspect Oriented Programming</a> around method advice</li>
       </ul>
