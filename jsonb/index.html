@@ -765,8 +765,9 @@ public abstract class MixinClass {
 
 <h2 id="subtype">@Json.Subtype</h2>
 
-<p>
-For mapping polymorphic types we specify on the parent type a <code>@Json.Subtype</code> for each concrete sub-type that can represent that type.
+<p>For mapping polymorphic types we specify on the parent type a <code>@Json.Subtype</code> for each concrete sub-type that can represent that type.
+
+<p>By default the "type property" that specifies the type in json is <code>"@type"</code>. Use <code>@Json(typeProperty=...)</code> to specify the name of the type property.</p>
 
 Note: There is a current limitation that polymorphic types do not yet support "Json Views".</p>
 
