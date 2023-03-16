@@ -280,11 +280,6 @@ public class Customer {
   @Generated
   public final class AddressJsonAdapter extends JsonAdapter<Address> implements ViewBuilderAware {
 
-    // naming convention Match
-    // street [java.lang.String] name:street setter:setStreet
-    // city [com.jojo.javalin.api.models.City] name:city setter:setCity
-    // suburb [com.jojo.javalin.api.models.Suburb] name:suburb setter:setSuburb
-
     private final JsonAdapter<String> stringJsonAdapter;
     private final JsonAdapter<City> cityJsonAdapter;
     private final JsonAdapter<Suburb> suburbJsonAdapter;
@@ -311,8 +306,8 @@ public class Customer {
     public void build(ViewBuilder builder, String name, MethodHandle handle) {
       builder.beginObject(name, handle);
       builder.add("street", stringJsonAdapter, builder.method(Address.class, "getStreet", java.lang.String.class));
-      builder.add("city", cityJsonAdapter, builder.method(Address.class, "getCity", com.jojo.javalin.api.models.City.class));
-      builder.add("suburb", suburbJsonAdapter, builder.method(Address.class, "getSuburb", com.jojo.javalin.api.models.Suburb.class));
+      builder.add("city", cityJsonAdapter, builder.method(Address.class, "getCity", City.class));
+      builder.add("suburb", suburbJsonAdapter, builder.method(Address.class, "getSuburb", Suburb.class));
       builder.endObject();
     }
 
@@ -369,6 +364,16 @@ We can put <code>@Json.Import</code> on a package or type and specify the types 
 <pre content="java">
 @Json.Import({Customer.class, Address.class, Order.class})
 package org.example;
+</pre>
+
+<h2 id="raw">@Json.Raw</h2>
+<p>
+We can use <code>@Json.Raw</code> to mark a String field as containing raw JSON content. This is then read and written (as a string containing raw json).
+</p>
+
+<pre content="java">
+  @Json.Raw
+  String rawJson
 </pre>
 
 <h2 id="property">@Json.Property</h2>
@@ -635,10 +640,10 @@ The @Json.Unmapped annotation must be on a field of type <code>Map<String, Objec
   }
 </pre>
 
-<h2 id="value">@Json.Value</h2>
+<h2 id="value">Enum Mapping with @Json.Value</h2>
 
 <p>
-We can use <code>@Json.Value</code> on Enum types to specify a method that provides the values that will be used to serialise to/from json. If the method returns a int type then it will be treated as json int and otherwise be treated as json string values.
+We can use <code>@Json.Value</code> on Enum types to specify a method that provides the values that will be used to serialise to/from json. This works for any type that can be compared with <code>.equals()</code>
 <br></br>
 In the example below the values used in the json content is "one value" and "two value" rather than the usual "ONE" and "TWO".
 </p>
@@ -662,14 +667,43 @@ public enum MyEnum {
 }
 </pre>
 
-<h2 id="raw">@Json.Raw</h2>
-<p>
-We can use <code>@Json.Raw</code> to mark a String field as containing raw JSON content. This is then read and written (as a string containing raw json).
-</p>
+<h4>Generated Code</h4>
+
+<p>A specialized adapter is generated to handle the enum mapping</p>
 
 <pre content="java">
-  @Json.Raw
-  String rawJson
+  @Generated
+  public final class MyEnumJsonAdapter extends JsonAdapter<MyEnum> {
+
+    private static final Map<MyEnum, String> toValue = new EnumMap<>(MyEnum.class);
+    private static final Map<String, MyEnum> toEnum = new HashMap<>();
+    private final JsonAdapter<String> adapter;
+
+    public MyEnumJsonAdapter(Jsonb jsonb) {
+      this.adapter = jsonb.adapter(String.class);
+      if(!toValue.isEmpty()) return;
+      for(final var enumConst : MyEnum.values()) {
+        var val = enumConst.getCode();
+        toValue.put(enumConst, val);
+        if(toEnum.containsKey(val)) throw new IllegalArgumentException("Duplicate value "+ val + " from enum method value. @Json.Value methods must return unique values");
+        toEnum.put(val, enumConst);
+      }
+    }
+
+    @Override
+    public void toJson(JsonWriter writer, MyEnum value) {
+      adapter.toJson(writer, toValue.get(value));
+    }
+
+    @Override
+    public MyEnum fromJson(JsonReader reader) {
+      final var value = adapter.fromJson(reader);
+      final var enumConstant = toEnum.get(value);
+      if (enumConstant == null)
+        throw new JsonDataException("Unable to determine MyEnum enum value for " + value);
+      return enumConstant;
+    }
+  }
 </pre>
 
 <h2 id="mixin">@Json.Mixin</h2>
@@ -765,13 +799,13 @@ public abstract class MixinClass {
 
 <h2 id="subtype">@Json.Subtype</h2>
 
-<p>
-For mapping polymorphic types we specify on the parent type a <code>@Json.Subtype</code> for each concrete sub-type that can represent that type.
+<p>For mapping polymorphic types we specify on the parent type a <code>@Json.Subtype</code> for each concrete sub-type that can represent that type.
+
+<p>By default the "type property" that specifies the type in json is <code>"@type"</code>. Use <code>@Json(typeProperty=...)</code> to specify the name of the type property.</p>
 
 Note: There is a current limitation that polymorphic types do not yet support "Json Views".</p>
 
 <pre content="java">
-  // By default the "type property" that specifies the type in json is @type. Use @Json(typeProperty=...) to specify the name of the type property.
   @Json
   @Json.SubType(type = Car.class, name = "CAR")
   @Json.SubType(type = Truck.class, name = "TRUCK")
@@ -779,21 +813,65 @@ Note: There is a current limitation that polymorphic types do not yet support "J
     private String engine;
     ...
   }
-
-  public class Car extends Vehicle {
-    private String carField;
-    ...
-  }
-
-  public class Truck extends Vehicle {
-    private String truckfield;
-    ...
-  }
   </pre>
+
+  <p>If desired, you can define the type parameter yourself for your own use. For interfaces, the typeProperty needs to be defined in the subClasses</p>
+
+  <pre content="java">
+    @Json(typeProperty="type")
+    @Json.SubType(type = Car.class, name = "CAR")
+    @Json.SubType(type = Truck.class, name = "TRUCK")
+    public abstract class Vehicle {
+      //can use getters/setters on the typeProperty
+      //the value will be for deserialization only
+      private String type;
+      ...
+    }
+   </pre>
+
+   <p>Additionally, you can deserialize the typeProperty to an enum.</p>
+
+   <pre content="java">
+    enum TypeEnum {
+      CAR,
+      TRUCK;
+    }
+
+    @Json(typeProperty="type")
+    //the subType names must correspond to an enum constant
+    @Json.SubType(type = Car.class, name = "CAR")
+    @Json.SubType(type = Truck.class, name = "TRUCK")
+    public abstract class Vehicle {
+      private TypeEnum type;
+      ...
+    }
+   </pre>
 
   <h4>Generated Code</h4>
 
-  <p><code>@Json.Subtype</code> makes generates a JsonAdapter for the abstract class/interface <code>Vehicle</code>:</p>
+  <p>Given this class:</p>
+
+  <pre content="java">
+    @Json
+    @Json.SubType(type = Car.class)
+    @Json.SubType(type = Truck.class, name = "TRUCK")
+    public abstract class Vehicle {
+      private String engine;
+      ...
+    }
+
+    public class Car extends Vehicle {
+      private String carField;
+      ...
+    }
+
+    public class Truck extends Vehicle {
+      private String truckfield;
+      ...
+    }
+    </pre>
+
+  <p>The below adapter will be generated:</p>
 
   <pre content="java">
     @Generated
@@ -812,17 +890,17 @@ Note: There is a current limitation that polymorphic types do not yet support "J
       public void toJson(JsonWriter writer, Vehicle vehicle) {
         writer.beginObject();
         writer.names(names);
-        if (vehicle instanceof com.jojo.javalin.api.models.Car) {
-          com.jojo.javalin.api.models.Car sub = (com.jojo.javalin.api.models.Car)vehicle;
+        if (vehicle instanceof Car) {
+          Car sub = (Car) vehicle;
           writer.name(0);
-          stringJsonAdapter.toJson(writer, "CAR");
+          stringJsonAdapter.toJson(writer, "Car");
           writer.name(1);
           stringJsonAdapter.toJson(writer, sub.getEngine());
           writer.name(2);
           stringJsonAdapter.toJson(writer, sub.getCarField());
         }
-        else if (vehicle instanceof com.jojo.javalin.api.models.Truck) {
-          com.jojo.javalin.api.models.Truck sub = (com.jojo.javalin.api.models.Truck)vehicle;
+        else if (vehicle instanceof Truck) {
+          Truck sub = (Truck) vehicle;
           writer.name(0);
           stringJsonAdapter.toJson(writer, "TRUCK");
           writer.name(1);
@@ -871,14 +949,14 @@ Note: There is a current limitation that polymorphic types do not yet support "J
         if (type == null) {
           throw new IllegalStateException("Missing @type property which is required?");
         }
-        if ("CAR".equals(type)) {
-          com.jojo.javalin.api.models.Car _$vehicle = new com.jojo.javalin.api.models.Car();
+        if ("Car".equals(type)) {
+          Car _$vehicle = new Car();
           if (_set$engine) _$vehicle.setEngine(_val$engine);
           if (_set$carField) _$vehicle.setCarField(_val$carField);
           return _$vehicle;
         }
         if ("TRUCK".equals(type)) {
-          com.jojo.javalin.api.models.Truck _$vehicle = new com.jojo.javalin.api.models.Truck();
+          Truck _$vehicle = new Truck();
           if (_set$engine) _$vehicle.setEngine(_val$engine);
           if (_set$truckfield) _$vehicle.setTruckfield(_val$truckfield);
           return _$vehicle;
