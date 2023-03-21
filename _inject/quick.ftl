@@ -18,29 +18,6 @@
   <scope>provided</scope>
 </dependency>
 </pre>
-<p>
-  If there are other annotation processors and they are specified via
-  <em>maven-compiler-plugin</em> <em>annotationProcessorPaths</em>
-  then we add <em>avaje-inject-generator</em> there instead.
-</p>
-<pre content="xml">
-<plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-compiler-plugin</artifactId>
-  <configuration>
-    <annotationProcessorPaths> <!-- All annotation processors specified here -->
-      <path>
-          <groupId>io.avaje</groupId>
-          <artifactId>avaje-inject-generator</artifactId>
-          <version>${avaje.inject.version}</version>
-      </path>
-      <path>
-          ... other annotation processor ...
-      </path>
-    </annotationProcessorPaths>
-  </configuration>
-</plugin>
-</pre>
 
 <h4>3. Create a Bean Class annotated with <code>@Singleton</code></h4>
 
