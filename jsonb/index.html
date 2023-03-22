@@ -64,6 +64,12 @@
   <artifactId>avaje.jsonb</artifactId>
   <version>${avaje.jsonb.version}</version>
 </dependency>
+<!-- if using spring web, add the below to use jsonb for http messaging -->
+<dependency>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje-jsonb-spring-starter</artifactId>
+  <version>${avaje-jsonb-version}</version>
+</dependency>
 </pre>
 
 <h4>
@@ -77,29 +83,6 @@
     <version>${avaje.jsonb.version}</version>
     <scope>provided</scope>
   </dependency>
-</pre>
-
-<p>Note that if there are other annotation processors and they are specified via
-  <em>maven-compiler-plugin</em> <em>annotationProcessorPaths</em>
-  then we add <em>avaje-jsonb-generator</em> there instead.
-</p>
-<pre content="xml">
-<plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-compiler-plugin</artifactId>
-  <configuration>
-    <annotationProcessorPaths> <!-- All annotation processors specified here -->
-      <path>
-        <groupId>io.avaje</groupId>
-        <artifactId>avaje.jsonb-generator</artifactId>
-        <version>${avaje.jsonb.version}</version>
-      </path>
-      <path>
-          ... other annotation processor ...
-      </path>
-    </annotationProcessorPaths>
-  </configuration>
-</plugin>
 </pre>
 
  <h4>3. Add <code>@Json</code> onto types we want to serialise.</h4>
@@ -392,7 +375,7 @@ public class Customer {
 </pre>
 
 <p>
-  Effectively, we have renamed this propert and will not be able to deserialize this property from a json of <code>{"name":"Jolyne"}</code>.
+  Effectively, we have renamed this property and will not be able to deserialize this from a json of <code>{"name":"Jolyne"}</code>.
   It will now only deserialize for the new name. <code>{"SomeOtherName":"Jolyne"}</code>.
   <br>If you wish to only specify an alias for the json property, use <code>@Alias</code>.
 </p>
@@ -815,7 +798,7 @@ Note: There is a current limitation that polymorphic types do not yet support "J
   }
   </pre>
 
-  <p>If desired, you can define the type parameter yourself for your own use. For interfaces, the typeProperty needs to be defined in the subClasses</p>
+  <p>If desired, you can define the type parameter yourself for your own use.</p>
 
   <pre content="java">
     @Json(typeProperty="type")
@@ -827,6 +810,7 @@ Note: There is a current limitation that polymorphic types do not yet support "J
       private String type;
       ...
     }
+    //For interfaces, the typeProperty needs to be defined in the subClasses
    </pre>
 
    <p>Additionally, you can deserialize the typeProperty to an enum.</p>

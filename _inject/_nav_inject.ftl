@@ -78,6 +78,7 @@
     <li><a href="#inject-module">@InjectModule</a></li>
   </ul>
 </@nav>
+<@nav url="#plugins" title="Plugins"></@nav>
 <@nav url="#testing" title="Testing">
   <ul>
     <li><a href="#unit-testing">Unit Testing</a></li>

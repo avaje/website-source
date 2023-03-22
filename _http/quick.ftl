@@ -35,34 +35,6 @@
     <scope>provided</scope>
   </dependency>
 </pre>
-<p>
-  2a. Note that if there are other annotation processors and they are specified via
-  <em>maven-compiler-plugin</em> <em>annotationProcessorPaths</em>
-  then we add <em>avaje-http-javalin-generator</em> there instead.
-</p>
-<pre content="xml">
-<plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-compiler-plugin</artifactId>
-  <configuration>
-    <annotationProcessorPaths> <!-- All annotation processors specified here -->
-      <path>
-        <groupId>io.avaje</groupId>
-        <artifactId>avaje-inject-generator</artifactId>
-        <version>${avaje-inject.version}</version>
-      </path>
-      <path>
-        <groupId>io.avaje</groupId>
-        <artifactId>avaje-http-javalin-generator</artifactId>
-        <version>${avaje-http.version}</version>
-      </path>
-      <path>
-          ... other annotation processor ...
-      </path>
-    </annotationProcessorPaths>
-  </configuration>
-</plugin>
-</pre>
 
 <p>3. Define a Controller (These APT processors work with both Java and Kotlin.)</p>
 

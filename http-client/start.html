@@ -158,29 +158,6 @@ public class Main {
     <scope>provided</scope>
   </dependency>
 </pre>
-<p>
-  If there are other annotation processors and they are specified via
-  <em>build / plugins / maven-compiler-plugin / annotationProcessorPaths</em>
-  then we add <em>avaje-http-client-generator</em> there instead.
-</p>
-<pre content="xml">
-<plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-compiler-plugin</artifactId>
-  <configuration>
-    <annotationProcessorPaths> <!-- All annotation processors specified here -->
-      <path>
-        <groupId>io.avaje</groupId>
-        <artifactId>avaje-http-client-generator</artifactId>
-        <version>${avaje.http.version}</version>
-      </path>
-      <path>
-          ... other annotation processor ...
-      </path>
-    </annotationProcessorPaths>
-  </configuration>
-</plugin>
-</pre>
 
 <h4>Gradle</h4>
 <pre content="groovy">

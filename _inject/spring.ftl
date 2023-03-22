@@ -65,6 +65,11 @@
     <td><b>No</b></td>
   </tr>
   <tr>
+    <td>@Conditional</td>
+    <td><a href="#conditional">@RequiresBean and @RequiresProperty</a></td>
+    <td><b>No</b></td>
+  </tr>
+  <tr>
     <td>@Primary</td>
     <td><a href="#primary">@Primary</a></td>
     <td><b>No</b></td>
