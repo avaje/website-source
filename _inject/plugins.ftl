@@ -6,10 +6,10 @@
 
 <P>Plugins implement the <code>io.avaje.inject.spi.Plugin</code> interface and are found
       and registered via <code>ServiceLoader</code>. This means they have a
-      file at <code>src/main/resources/META-INF/services/io.avaje.inject.spi.Plugine</code>
+      file at <code>src/main/resources/META-INF/services/io.avaje.inject.spi.Plugin</code>
       which contains the fully qualified class name of the implementation.</P>
 
-<p>Below is an example plugin that provides a default Jsonb instance. </p>
+<p>Below is an example plugin that provides a default ExampleBean instance. </p>
 <pre content="java">
 public final class DefaultBeanProvider implements io.avaje.inject.spi.Plugin {
 
