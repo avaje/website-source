@@ -1357,7 +1357,6 @@ List<|Bazz> findBazz(long id, LocalDate startDate, String type);
    }
 </pre>
 
-
 <h3 id="header">@Header</h3>
 <p>
   Use <code>@Header</code> for a header parameter.
@@ -1485,6 +1484,26 @@ List<|Cat> findCats(LocalDate bornAfter, String orderBy);  // orderBy implied as
       .body(cat)
       .POST()
       .asVoid();
+  }
+</pre>
+
+<h3 id="bodystring">@BodyString</h3>
+
+  We can specify that a string parameter is a body using <code>@BodyString</code>.
+</p>
+<pre content="java">
+@Post("/stringbody")
+List<|Cat> addCats(@BodyString String body);
+</pre>
+<p>The generated code will be:</p>
+<pre content="java">
+  @Override
+  public List<|Cat> addCats(String body) {
+    return clientContext.request()
+      .path("stringbody")
+      .body(body)
+      .GET()
+      .list(Cat.class);
   }
 </pre>
 

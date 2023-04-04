@@ -74,6 +74,7 @@
       <li><a href="#timeout">@RequestTimeout</a></li>
       <li><a href="#header">@Header</a></li>
       <li><a href="#queryParam">@QueryParam</a></li>
+      <li><a href="#bodystring">@BodyString</a></li>
       <li><a href="#beanParam">@BeanParam</a></li>
       <li><a href="#form">@Form</a></li>
       <li><a href="#formParam">@FormParam</a></li>

@@ -342,6 +342,16 @@
         Set<|String> operations = Config.getSet().of("my.operations", "put", "delete");
     </pre>
 
+    <h5>Function</h5>
+    <p>
+      We can also provide a function to map a config to a type.
+    </p>
+    <pre content="java">
+        CustomObj codes = Config.getAs("my.codes", s -> new CustomObj(s));
+
+        Optional<|CustomObj> operations = Config.getAsOptional("my.codes", s -> new CustomObj(s));
+    </pre>
+
 
     <h3 id="setProperty">Set Property</h3>
     <p>
@@ -473,7 +483,7 @@
 
     <h2 id="logging">Event Logging</h2>
     <p>
-      By default, <code>avaje-config</code> will immediately log initialisation events to it's own connfigured system logger. If you want to use your own configured logger, you can extend the <code>ConfigurationLog</code> interface and
+      By default, <code>avaje-config</code> will immediately log initialisation events to it's own configured system logger. If you want to use your own configured logger, you can extend the <code>ConfigurationLog</code> interface and
       register via <code>ServiceLoader</code>. This means you have a
       file at <code>src/main/resources/META-INF/services/io.avaje.config.ConfigurationLog</code>
       which contains the class name of the implementation.

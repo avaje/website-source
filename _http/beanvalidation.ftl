@@ -1,7 +1,7 @@
 
 <h2 id="bean-validation">Bean validation</h2>
 <p>
-  We can optionally add bean validation through the validator interface.
+  We can optionally add bean validation through the validator interface. We can validate a request body and Form Bean/BeanParam
 </p>
 <p>
   Example: <a target="_blank" href="https://github.com/dinject/examples/blob/master/javalin-maven-java-basic/src/main/java/org/example/myapp/web/HelloController.java#L30">HelloController</a>
@@ -9,7 +9,7 @@
 
 <h3>Add @Valid</h3>
 <p>
-  Add <code>@Valid</code> annotation on controllers/methods that we want bean validation to
+  Add a jakarta/javax/avaje <code>@Valid</code> annotation on controllers/methods and the types that we want bean validation to
   be included for. When we do this controller methods that take a request payload
   will then have the request bean (populated by JSON payload or form parameters)
   validated before it is passed to the controller method.
@@ -19,32 +19,79 @@
 </p>
 <pre content="java">
 @Valid
-@Controller
-@Path("/baz")
+class HelloForm {
+  @NotBlank
+  private String name;
+  private String email;
+  //getters/setters/constructors
+}
+
+@Valid
+class HelloBean {
+  @NotBlank
+  private String name;
+  private String email;
+  //getters/setters/constructors
+}
+
+@Valid
+class BodyClass {
+  @NotBlank
+  private String somefield;
+  //getters/setters/constructors
+}
+</pre>
+<pre content="java">
+@Valid
+@Controller("/baz")
 class BazController  {
 
   @Form
-  @Post
+  @Post("/form")
   void saveForm(HelloForm helloForm) {
+    ...
+  }
+
+  @Post("/bean")
+  void saveBean(@BeanParam HelloBean helloBean) {
+    ...
+  }
+
+  @Post("/body")
+  void saveBody(BodyClass body) {
     ...
   }
 </pre>
 <p>
-  The generated code now includes a validation of the helloForm before it is
+  The generated code now includes validation of the beans before they are
   passed to the controller method. The generated code is:
 </p>
 <pre content="java">
-ApiBuilder.post("/baz", ctx -> {
+ApiBuilder.post("/baz/form", ctx -> {
   ctx.status(201);
-  HelloForm helloForm =  new HelloForm(
+  HelloForm helloForm = new HelloForm(
     ctx.formParam("name"),
     ctx.formParam("email")
   );
-  helloForm.url = ctx.formParam("url");
-  helloForm.startDate = toLocalDate(ctx.formParam("startDate"));
-
   validator.validate(helloForm);       // validation added here !!
   controller.saveForm(helloForm);
+});
+
+ApiBuilder.post("/baz/bean", ctx -> {
+  ctx.status(201);
+  HelloBean helloBean =  new HelloBean(
+    ctx.queryParam("name"),
+    ctx.queryParam("email")
+  );
+  validator.validate(helloBean);       // validation added here !!
+  controller.saveBean(helloBean);
+});
+
+ApiBuilder.post("/baz/body", ctx -> {
+  ctx.status(201);
+  var body = ctx.bodyAsClass(BodyClass.class);
+  validator.validate(body);       // validation added here !!
+  controller.saveBody(helloBean);
 });
 </pre>
 
