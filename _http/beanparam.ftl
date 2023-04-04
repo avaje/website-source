@@ -14,6 +14,9 @@ public class CommonParams {
   public Long maxRows;
   public String sortBy;
   public Set<String> filter;
+  //you can use ignore to mark a field as not a request parameter
+  @Ignore
+  public String ignored;
 }
 </pre>
 <p>
@@ -56,8 +59,6 @@ ApiBuilder.get("/cats/search/:type", ctx -> {
   default to being query parameters where as with JAX-RS we need to annotate each of the properties.
   We can do this because we have <em>@Form</em> and "Form beans".
 </p>
-
-
 
 <h4>BeanParam beans with @Header, @Cookie properties</h4>
 <p>
