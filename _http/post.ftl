@@ -6,7 +6,7 @@
 
 <h3 id="post-json">Post JSON</h3>
 <p>
-  Avaje auto detects that a parameter is a request body if the type is a <code>POJO</code>/<code>byte[]</code>/<code>InputStream</code>. To mark a string parameter as a body, use the <code>@BodyString</code> annotation.
+  Avaje auto detects that a parameter is a request body if the type is a <code>POJO</code>/<code>byte[]</code>/<code>InputStream</code> and not marked with a <code>@BeanParam</code> annotation. To mark a string parameter as a body, use the <code>@BodyString</code> annotation.
 </p>
 <pre content="java">
 @Post
