@@ -47,6 +47,12 @@
     String field1;
  }
 </pre>
+
+<h4>@Consumes</h3>
+<p>
+  Adding the <code>@Consumes</code> annotation to a controller method let's you control what media type should be generated for the request body in the openAPI definition. This is useful when you are dealing with non-standard request content types.
+</p>
+
 <h4>@Deprecated</h3>
 <p>
   Adding Javas's <code>@Deprecated</code> annotation to a controller method marks it as deprecated in the openAPI definition.
