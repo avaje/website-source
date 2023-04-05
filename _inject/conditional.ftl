@@ -62,7 +62,6 @@ These annotation can be placed on beans to easily share conditions.
 Additionally, meta annotation can be placed on other meta annotation to easily compose multiple related conditions.
 
 <pre content="java">
-   @Singleton
    @FirstFlame
    @RequiresProperty(value = "abyss", equalTo="sealed")
    public @interface AgeOfFire {}
@@ -71,6 +70,11 @@ Additionally, meta annotation can be placed on other meta annotation to easily c
 <pre content="java">
    @Singleton
    @AgeOfFire
+   // AgeOfFire adds the following conditions
+   // @RequiresProperty(value = "abyss", equalTo="sealed")
+   // @RequiresBean(Flame.class)
+   // @RequiresBean(value = Kindling.class, missing = Dark.class)
+   // @RequiresProperty(value = "flame.state", notEqualTo = "fading")
    public class Sun {
       ...
    }
