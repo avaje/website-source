@@ -130,7 +130,7 @@
 <h3>autoRequires</h3>
 <p>
  <em>avaje-inject</em> can also automatically read the classpath/maven dependencies at compile-time to find all the modules and automatically determine the <code>requires</code> dependencies.
- This works fine in most cases, but when you are using the annotation processor with a java 9+ modular project or defined as an annotationProcessorPath in the <code>maven-compiler-plugin</code>, you will need to add the <code>avaje-inject-maven-plugin</code>.
+ This works fine in most cases, but when you are using the annotation processor with a java 9+ modular project or defined as an annotationProcessorPath in the <code>maven-compiler-plugin</code>, you will need to add the <code>avaje-inject-maven-plugin</code>. (For Gradle, use the <code>avaje-inject-gradle-plugin</code>)
 </p>
 
 <pre content="xml">

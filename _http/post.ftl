@@ -1,13 +1,12 @@
 
 <h2 id="post">@Post</h2>
 <p>
-  Annotate methods with <code>@Post</code> for HTTP POST web routes. The Post request
-  takes a <em>body</em> and by default that is expected to be in JSON form.
+  Annotate methods with <code>@Post</code> for HTTP POST web routes.
 </p>
 
 <h3 id="post-json">Post JSON</h3>
 <p>
-  A method with <code>@Post</code> is by default expecting a JSON body.
+  Avaje auto detects that a parameter is a request body if the type is a <code>POJO</code>/<code>byte[]</code>/<code>InputStream</code> and not marked with a <code>@BeanParam</code> annotation. To mark a string parameter as a body, use the <code>@BodyString</code> annotation.
 </p>
 <pre content="java">
 @Post
@@ -23,7 +22,7 @@ void save(Customer customer) {
 <pre content="java">
 ApiBuilder.post("/customers", ctx -> {
   ctx.status(201);
-  Customer customer = ctx.bodyAsClass(Customer.class);
+  Customer customer = ctx.bodyStreamAsClass(Customer.class);
   controller.save(customer);
 });
 

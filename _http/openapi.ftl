@@ -23,6 +23,36 @@
   The processor reads all the request and response types as OpenAPI component schema. The various annotations like <code>@Header</code>,<code>@Param</code>, and <code>@Produces</code> also modify the generated OpenAPI docs.
 </p>
 
+<pre content="java">
+  /**
+   * Example of Open API Get (up to the first period is the operation summary).
+   *
+   * basic Post (This Javadoc description is added to the operation description)
+   *
+   * @param b the body (the param docs are used for query/header/body description)
+   * @return funny phrase (this part of the javadoc is added to the response desc)
+   */
+  @Post("/post")
+  ResponseModel endpoint(RequestModel) {
+  ...
+ }
+</pre>
+
+<p>In Addition, the generator can read the request/response class javadoc to generate openAPI component description.</p>
+<pre content="java">
+  class ResponseModel {
+    /** field one */
+    String field1;
+    /** field two */
+    String field1;
+ }
+</pre>
+
+<h4>@Consumes</h3>
+<p>
+  Adding the <code>@Consumes</code> annotation to a controller method let's you control what media type should be generated for the request body in the openAPI definition. This is useful when you are dealing with non-standard request content types.
+</p>
+
 <h4>@Deprecated</h3>
 <p>
   Adding Javas's <code>@Deprecated</code> annotation to a controller method marks it as deprecated in the openAPI definition.
