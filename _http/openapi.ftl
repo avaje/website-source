@@ -38,14 +38,13 @@
  }
 </pre>
 
-<p>In Addition, the generator can read the request/response class field javadoc to generate openAPI component description.</p>
+<p>In Addition, the generator can read the request/response class javadoc to generate openAPI component description.</p>
 <pre content="java">
   class ResponseModel {
     /** field one */
     String field1;
     /** field two */
     String field1;
-
  }
 </pre>
 <h4>@Deprecated</h3>
