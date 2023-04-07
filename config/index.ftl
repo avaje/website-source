@@ -39,7 +39,7 @@
 
           </ul>
         </li>
-        <li><a href="#plugins">Plugins</a></li>
+        <li><a href="#plugins">ConfigurationSource</a></li>
         <li><a href="#logging">Event Logging</a></li>
       </ul>
     </nav>
@@ -294,9 +294,9 @@
     <h3 id="get-property">Get Property</h3>
     <p>
       <code>Config</code> provides method to get property values as String, int, long, boolean,
-      BigDecimal, Enum and URL.
+      BigDecimal, Enum, URI and Duration.
     </p>
-    <h5>examples</h5>
+    <h5>Examples</h5>
     <pre content="java">
       // get a String property
       String value = Config.get("myapp.foo");
@@ -329,8 +329,8 @@
       MyEnum val = Config.getEnum(MyEnum.class, "myapp.code", MyEnum.DEFAULT);
     </pre>
     <pre content="java">
-      URL val = Config.getURL("other.url");
-      URL val = Config.getURL("other.url", "https://other:8090");
+      URI val = Config.getURI("other.url");
+      URI val = Config.getURI("other.url", "https://other:8090");
     </pre>
     <h5>List and Set</h5>
     <p>
@@ -455,7 +455,7 @@
       dbExampleConfiguration.get("username");
     </pre>
 
-    <h2 id="plugins">Plugins</h2>
+    <h2 id="plugins">ConfigurationSource Plugins</h2>
     <p>
       Plugins implement the <code>ConfigurationSource</code> interface and found
       and registered via <code>ServiceLoader</code>. This means they have a
@@ -478,7 +478,7 @@
       their expressions evaluated as part of <em>setProperty</em>.
     </p>
     <p>
-      Refer to the (silly) example plugin - <a href="https://github.com/avaje/avaje-config/blob/master/src/test/java/org/example/MyExternalLoader.java">MyExternalLoader.java</a>
+      Refer to the (silly) example plugin - <a href="https://github.com/avaje/avaje-config/blob/master/avaje-config/src/test/java/org/example/MyExternalLoader.java">MyExternalLoader.java</a>
     </p>
 
     <h2 id="logging">Event Logging</h2>
