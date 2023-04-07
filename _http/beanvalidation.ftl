@@ -113,7 +113,7 @@ public class BeanValidator implements Validator {
 }
 </pre>
 
-<h4>Using Dependency</h4>
+<h4>Using Hibernate</h4>
 <p>
   Add a dependency on <em>avaje-http-hibernate-validator</em>. This will transitively
   bring in a dependency on <em>hibernate-validator</em> which will be used to validate.
