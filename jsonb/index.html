@@ -33,10 +33,15 @@
 <ul>
   <li>Use Java annotation processing to generate java source for adapting JSON to/from java objects</li>
   <li>No need to manually register generated adapters. (Uses service loading to auto-register)</li>
+  <li>Has no fallback to reflection - avaje is code generation or bust.</li>
   <li>Constructors and accessors/getters/setters of any style should all "just work" (record type, constructors, 'fluid setters' all just work)</li>
+  <li>Jackson-like annotations</li>
   <li>Provide support for dynamic json views</li>
-  <li>Supports importing types and mixins</li>
+  <li>Supports importing and generating adapters for library types</li>
+  <li>Supports Jackson-like mixins</li>
+  <li>Supports generic types</li>
 </ul>
+
 <h4 id="default-types">Default Supported Types</h4>
 
 <p>
