@@ -5,10 +5,9 @@
   <@nav url="#dependencies" title="Dependencies">
   </@nav>
   <@nav url="#limitations" title="Limitations"/>
-  <@nav url="#jdk-intro" title="JDK HttpClient Intro"/>
   <@nav url="#quick-overview" title="Quick Overview"/>
   <@nav url="#sync-async" title="Sync and Async"/>
-  <@nav url="#httpClientContext" title="HttpClientContext"/>
+  <@nav url="#httpClientContext" title="HttpClient"/>
   <@nav url="#json-bodyAdapter" title="JSON BodyAdapter">
     <ul>
       <li><a href="#json-jackson">Jackson</a></li>
