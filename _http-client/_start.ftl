@@ -19,5 +19,6 @@
     </ul>
   </@nav>
   <@nav url="#logging" title="Logging"/>
+  <@nav url="#integration" title="Logging"/>
 </ul>
 <p>&nbsp;</p>

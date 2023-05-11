@@ -18,6 +18,7 @@
           </ul>
         </li>
         <li><a href="#eval">Expression evaluation</a></li>
+        <li><a href="#startup">Startup</a></li>
         <li><a href="#loading">Loading configuration</a>
           <ul>
             <li><a href="#load-main">Running app</a></li>
@@ -25,7 +26,6 @@
             <li><a href="#load-local">Running locally</a></li>
           </ul>
         </li>
-        <li><a href="#startup">Startup</a></li>
         <li><a href="#file-watch">File watching</a></li>
         <li><a href="#config">Config</a>
           <ul>
@@ -112,6 +112,26 @@
           password: ${DB_PASS:notSecure}
           url: ${DB_URL}
     </pre>
+
+    <h2 id="startup">Startup</h2>
+    <p>
+      <em>avaje-config</em> will initialise and load configuration when it is first used.
+    </p>
+    <h4>Initialisation</h4>
+    <ul>
+      <li>Loads all the configuration files</li>
+      <li>Performs expression evaluation on all the values</li>
+      <li>Using ServiceLoader finds and loads all ConfigurationSource plugins</li>
+      <li>Checks <code>config.load.systemProperties</code> and loads into system properties if set</li>
+      <li>Checks <code>config.watch.enabled</code> and starts file watching if set</li>
+    </ul>
+
+    <p>&nbsp;</p>
+    <h3><em>config.load.systemProperties</em></h3>
+    <p>
+      If we set <code>config.load.systemProperties</code> to true then all the properties that
+      have been loaded are then set into system properties. You can provide an additional property <code>system.excluded.properties</code> to provide a list of configuration properties you want to exclude from being loaded into the System Properties.
+    </p>
 
     <h2 id="loading">Loading configuration</h2>
     <p>
@@ -220,26 +240,6 @@
       using the <em>app.name</em>. For example, given <code>app.name=myapp</code> have
       either <code>~/.localdev/myapp.yaml</code> or <code>~/.localdev/myapp.properties</code>
       define the configuration we want to use when running locally.
-    </p>
-
-    <h2 id="startup">Startup</h2>
-    <p>
-      <em>avaje-config</em> will initialise and load configuration when it is first used.
-    </p>
-    <h4>Initialisation</h4>
-    <ul>
-      <li>Loads all the configuration files</li>
-      <li>Performs expression evaluation on all the values</li>
-      <li>Using ServiceLoader finds and loads all ConfigurationSource plugins</li>
-      <li>Checks <code>config.load.systemProperties</code> and loads into system properties if set</li>
-      <li>Checks <code>config.watch.enabled</code> and starts file watching if set</li>
-    </ul>
-
-    <p>&nbsp;</p>
-    <h3><em>config.load.systemProperties</em></h3>
-    <p>
-      If we set <code>config.load.systemProperties</code> to true then all the properties that
-      have been loaded are then set into system properties. You can provide an additional property <code>system.excluded.properties</code> to provide a list of configuration properties you want to exclude from being loaded into the System Properties.
     </p>
 
     <h2 id="file-watch">File watching</h2>
