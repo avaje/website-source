@@ -19,5 +19,6 @@
     </ul>
   </@nav>
   <@nav url="#logging" title="Logging"/>
+  <@nav url="#integration" title="DI Integration"/>
 </ul>
 <p>&nbsp;</p>

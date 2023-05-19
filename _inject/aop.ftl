@@ -3,9 +3,12 @@ This library has several contructs that support Aspect Oriented Programmming
 
 <h3 id="aspect">@Aspect</h3>
 <p>
-  We can create an annotation and annotate with <code>@Aspect</code> to define an aspect annotation.
+  We can create an annotation class and annotate it with <code>@Aspect</code> to define an aspect annotation.
+  To control the execution order of multiple aspects, we can use the ordering property of the <code>@Aspect</code>
 </p>
-
+<p>
+  To control the execution order of multiple aspects, we can use the ordering property of <code>@Aspect</code>.
+</p>
 <pre content="java">
 @Aspect
 @Target(ElementType.METHOD)
@@ -20,22 +23,23 @@ public @interface MyAround {
 
 <pre content="java">
 @Singleton
-public class MyAroundAspect implements AspectProvider<MyAround>, MethodInterceptor {
+public class MyAroundAspect implements AspectProvider<MyAround> {
 
   @Override
   public MethodInterceptor interceptor(Method method, MyAround around) {
-    //For the sake of brevity we have made this class also implement MethodInterceptor
-    return this;
+    return new ExampleInterceptor();
   }
 
-  // MethodInterceptor interception method
-  @Override
-  public void invoke(Invocation invoke) throws Throwable {
-    System.out.println("before args: " + Arrays.toString(invoke.arguments()) + " method: " + invoke.method());
-    try {
-      invoke.invoke();
-    } finally {
-      System.out.println("after");
+  static class ExampleInterceptor implements MethodInterceptor {
+    // MethodInterceptor interception method
+    @Override
+    public void invoke(Invocation invoke) throws Throwable {
+      System.out.println("before args: " + Arrays.toString(invoke.arguments()) + " method: " + invoke.method());
+      try {
+        invoke.invoke();
+      } finally {
+        System.out.println("after");
+      }
     }
   }
 }

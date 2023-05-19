@@ -102,6 +102,9 @@
     String street;
     String suburb;
     String city;
+    // object fields will automatically have adapters generated, no @Json required
+    // (though you can add @Json anyway to modify the generated adapter how you wish)
+    private OtherClass;
     //getters/setters ommited for brevity
   }
 </pre>
@@ -156,6 +159,19 @@
   // serialise to json the above specified properties only
   String asJson =  myView.toJson(customer);
   </pre>
+
+  <h2 id="integration">Spring/Avaje Inject Integration</h2>
+  <p>
+    When used with Spring or Avaje Inject, a default <code>Jsonb</code> instance will be provided and used for serializing/deserializing Http messages. The following properties can be added to configure the default instance.
+
+    <pre content="java">
+    jsonb.deserialize.failOnUnknown (default false)
+    jsonb.serialize.mathTypesAsString (default false)
+    jsonb.serialize.empty (default true)
+    jsonb.serialize.nulls (default false)
+    </pre>
+
+  </p>
 
 <h2 id="json">@Json</h2>
 <p>
@@ -266,7 +282,7 @@ public class Customer {
 <p>The following JsonAdapter is generated:</p>
 <pre content="java">
   @Generated
-  public final class AddressJsonAdapter extends JsonAdapter<Address> implements ViewBuilderAware {
+  public final class AddressJsonAdapter implements JsonAdapter<Address>, ViewBuilderAware {
 
     private final JsonAdapter<String> stringJsonAdapter;
     private final JsonAdapter<City> cityJsonAdapter;
@@ -390,7 +406,7 @@ public class Customer {
 <p><code>@Json.Property</code> makes the following changes to the generated JsonAdapter:</p>
 <pre content="java">
   @Generated
-  public final class CustomerJsonAdapter extends JsonAdapter<Customer> implements ViewBuilderAware {
+  public final class CustomerJsonAdapter implements JsonAdapter<Customer>, ViewBuilderAware {
 
     ...
 
@@ -449,7 +465,7 @@ public class Customer {
 <p><code>@Json.JsonAlias</code> makes the following changes to the generated JsonAdapter:</p>
 <pre content="java">
   @Generated
-  public final class CustomerJsonAdapter extends JsonAdapter<Customer> implements ViewBuilderAware {
+  public final class CustomerJsonAdapter implements JsonAdapter<Customer>, ViewBuilderAware {
 
     ...
 
@@ -510,7 +526,7 @@ public class Customer {
 <p><code>@Json.Ignore</code> makes the following changes to the generated JsonAdapter:</p>
 <pre content="java">
   @Generated
-  public final class SecretsJsonAdapter extends JsonAdapter<Secrets> implements ViewBuilderAware {
+  public final class SecretsJsonAdapter implements JsonAdapter<Secrets>, ViewBuilderAware {
 
     ...
 
@@ -579,7 +595,7 @@ The @Json.Unmapped annotation must be on a field of type <code>Map<String, Objec
 <p><code>@Json.Unmapped</code> makes the following changes to the generated JsonAdapter:</p>
 <pre content="java">
   @Generated
-  public final class UnmappedJsonJsonAdapter extends JsonAdapter<UnmappedJson> implements ViewBuilderAware {
+  public final class UnmappedJsonJsonAdapter implements JsonAdapter<UnmappedJson>, ViewBuilderAware {
 
     ...
 
@@ -661,7 +677,7 @@ public enum MyEnum {
 
 <pre content="java">
   @Generated
-  public final class MyEnumJsonAdapter extends JsonAdapter<MyEnum> {
+  public final class MyEnumJsonAdapter implements JsonAdapter<MyEnum> {
 
     private static final Map<MyEnum, String> toValue = new EnumMap<>(MyEnum.class);
     private static final Map<String, MyEnum> toEnum = new HashMap<>();
@@ -729,7 +745,7 @@ public abstract class MixinClass {
 
   <pre content="java">
     @Generated
-    public final class MixinTargetJsonAdapter extends JsonAdapter<MixinTarget> implements ViewBuilderAware {
+    public final class MixinTargetJsonAdapter implements JsonAdapter<MixinTarget>, ViewBuilderAware {
 
       ...
       public MixinTargetJsonAdapter(Jsonb jsonb) {
@@ -864,7 +880,7 @@ Note: There is a current limitation that polymorphic types do not yet support "J
 
   <pre content="java">
     @Generated
-    public final class VehicleJsonAdapter extends JsonAdapter<Vehicle> {
+    public final class VehicleJsonAdapter implements JsonAdapter<Vehicle> {
 
       private final JsonAdapter<String> stringJsonAdapter;
       private final PropertyNames names;

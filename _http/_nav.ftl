@@ -36,6 +36,7 @@
       <li><a href="#helidon-request">Helidon request</a></li>
       <li><a href="#helidon-request">Helidon response</a></li>
       <li><a href="#request-scoped">Request scope</a></li>
+      <li><a href="#instrument-context">Instrumenting Context</a></li>
     </ul>
   </@nav>
   <@nav url="#type-conversions" title="Type conversions"/>

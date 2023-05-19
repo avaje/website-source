@@ -135,3 +135,25 @@ class ProductController {
   }
 }
 </pre>
+
+<h3 id="instrument-context">Instrumenting the Server Context</h3>
+<p>
+  The <code>@InstrumentServerContext</code> annotation marks a controller method to be instrumented with <code>RequestContextResolver</code>. For the execution of the controller method, the server context will be stored by the given implementation of <code>RequestContextResolver</code>.
+</p>
+
+<p>
+  By default, a <code>RequestContextResolver</code> implementation using ThreadLocals is provided to store the Context instance. When using virtual threads, it may be better to provide an implementation using Scoped Values.
+</p>
+
+<h4>Using RequestContextResolver</h4>
+<pre content="java">
+RequestContextResolver resolver = ...
+
+@Get
+@InstrumentServerContext
+void helloWorld(long id) {
+ Context ctx = resolver.currentRequest().orElseThrow().response()
+ ctx.result("success");
+  ...
+}
+</pre>

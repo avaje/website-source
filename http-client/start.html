@@ -377,6 +377,47 @@ public class ApiMain {
   content is logged at <code>TRACE</code> level.
 </p>
 
+<h2 id="integration">DI Integrations</h2>
+<p>
+  Annotations placed on a client interface are copied to the generated client implementation, so placing a DI annotation on the interface will make Avaje Inject generate DI classes.
+</p>
+<pre content="java">
+
+@Client
+@Singleton
+public interface Github {
+
+  @AspectAnnotation
+  @Get("/repos/{owner}/{repo}/contributors")
+  List<|Contributor> contributors(String owner, String repo);
+}
+</pre>
+<p>
+  The generated source will look like:
+</p>
+<pre content="java">
+@Generated("avaje-http-client-generator")
+@Singleton // now DI frameworks can autowire
+public class Github$HttpClient implements Github {
+
+  private final HttpClient clientContext;
+
+  public Github$HttpClient(HttpClient ctx) {
+    this.clientContext = ctx;
+  }
+
+  // GET /repos/{owner}/{repo}/contributors
+  @AspectAnnotation // AOP frameworks can now proxy this method.
+  @Override
+  public List<|Contributor> contributors(String owner, String repo) {
+    return clientContext.request()
+      .path("repos").path(owner).path(repo).path("contributors")
+      .GET()
+      .list(Contributor.class);
+  }
+
+}
+</pre>
 <h2>Next</h2>
 <p>
   Back to the <a href="/http-client">main documentation</a>

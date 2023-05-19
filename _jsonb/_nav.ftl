@@ -4,6 +4,8 @@
   </@nav>
   <@nav url="#quick-start" title="Quick Start">
   </@nav>
+  <@nav url="#integration" title="Spring/Avaje Integration">
+  </@nav>
   <@nav url="#json" title="@Json">
     <ul>
       <li><a href="#adapter">Generated JsonAdapter</a></li>
