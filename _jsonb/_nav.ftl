@@ -4,6 +4,7 @@
   </@nav>
   <@nav url="#quick-start" title="Quick Start">
   </@nav>
+  <@nav url="#jpms" title="Java Modules"/>
   <@nav url="#integration" title="Spring/Avaje Integration">
   </@nav>
   <@nav url="#json" title="@Json">
@@ -20,5 +21,6 @@
       <li><a href="#subtype">@Subtype</a></li>
     </ul>
   </@nav>
+  <@nav url="#custom" title="@CustomAdapter"></@nav>
 </ul>
 <p>&nbsp;</p>

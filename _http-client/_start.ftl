@@ -18,6 +18,7 @@
       <li><a href="#B5">B5. Use the interface</a></li>
     </ul>
   </@nav>
+  <@nav url="#jpms" title="Java Modules"/>
   <@nav url="#logging" title="Logging"/>
   <@nav url="#integration" title="DI Integration"/>
 </ul>

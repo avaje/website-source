@@ -13,7 +13,7 @@
     <li><a href="#gradle">Gradle</a></li>
   </ul>
 </@nav>
-<@nav url="#jpms" title="Java modules">
+<@nav url="#jpms" title="Java Modules">
 </@nav>
 <@nav url="#injection" title="Injection">
   <ul>

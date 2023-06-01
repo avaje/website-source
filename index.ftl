@@ -38,7 +38,7 @@
       <th><a href="/jsonb">Jsonb</a></th>
       <td>
         <p>
-         Lightning fast JSON Library that uses Java annotation processing to generate JSON adapters.
+         Flexible and reflection-free JSON library that uses Java annotation processing to generate JSON adapters. One of the <a href="https://github.com/fabienrenaud/java-json-benchmark#users-model">Top 3 fastest</a> Java Json libraries
         </p>
       </td>
     </tr>

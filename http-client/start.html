@@ -353,7 +353,33 @@ public class ApiMain {
 
   }
 }
+
+<h2 id="jpms">Java Module Setup</h2>
+<p>
+  If using java modules, in the <code>module-info.java</code> we need to:
+</p>
+<ol>
+  <li>Add a <em>requires</em> clause for <em>io.avaje.http.api</em></li>
+  <li>Add a <em>requires</em> clause for <em>io.avaje.http.client</em></li>
+  <li>Add a <em>provides</em> clause for <em>io.avaje.http.client.HttpClient.GeneratedComponent</em></li>
+</ol>
+
+<h5>Example module-info</h5>
+<pre content="java">
+import io.avaje.http.client.HttpClient.GeneratedComponent
+module org.example {
+
+  requires io.avaje.http.api;
+  requires io.avaje.http.client
+  // you must define the fully qualified class name of the generated classes. if you use an import statement, compilation will fail
+  provides GeneratedComponent with org.example.GeneratedHttpComponent;
+}
 </pre>
+<p>
+ In the example above, <code>org.example.GeneratedHttpComponent</code> is generated code typically found in
+  <code>target/generated-sources/annotations</code>.
+</p>
+
 
 <h2 id="logging">Logging</h2>
 <p>
