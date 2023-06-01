@@ -80,6 +80,7 @@
       <li><a href="#formBeans">Form beans</a></li>
     </ul>
   </@nav>
+  <@nav url="#jpms" title="Java Modules"/>
   <@nav url="#10k" title="10k requests & Loom">
     <ul>
       <li><a href="#10k-async">async</a></li>

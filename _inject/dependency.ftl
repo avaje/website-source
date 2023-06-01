@@ -52,7 +52,7 @@ dependencies {
 </pre>
 
 
-<h2 id="jpms">Java modules - module-info</h2>
+<h2 id="jpms">Java Module System Configuration</h2>
 <p>
   If using java modules, in the <code>module-info.java</code> we need to:
 </p>

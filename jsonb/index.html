@@ -90,7 +90,7 @@
   </dependency>
 </pre>
 
- <h4>3. Add <code>@Json</code> onto types we want to serialise.</h4>
+ <h4>3. Add <code>@Json</code> onto types we want to serialize.</h4>
 <p>
   <br>The avaje-jsonb-generator annotation processor will generate a JsonAdapter as java source code for each type annotated with <code>@Json</code>.
   These will be automatically registered with Jsonb using a service loader mechanism.
@@ -156,7 +156,7 @@
   JsonView<Customer> myView =
     customerType.view("(id, name, billingAddress(*), contacts(lastName, email))");
 
-  // serialise to json the above specified properties only
+  // serialize to json the above specified properties only
   String asJson =  myView.toJson(customer);
   </pre>
 
@@ -171,6 +171,31 @@
     jsonb.serialize.nulls (default false)
     </pre>
 
+  </p>
+
+  <h2 id="jpms">Java Module System Configuration</h2>
+  <p>
+    If using java modules, in the <code>module-info.java</code> we need to:
+  </p>
+  <ol>
+    <li>Add a <em>requires</em> clause for <em>io.avaje.jsonb</em></li>
+    <li>Add a <em>provides</em> clause for <em>io.avaje.jsonb.Jsonb.GeneratedComponent</em></li>
+  </ol>
+
+  <h5>Example module-info</h5>
+  <pre content="java">
+  import io.avaje.jsonb.Jsonb.GeneratedComponent;
+
+  module org.example {
+
+    requires io.avaje.jsonb;
+    // you must define the fully qualified class name of the generated classes. if you use an import statement, compilation will fail
+    provides GeneratedComponent with org.example.jsonb.GeneratedComponent;
+  }
+  </pre>
+  <p>
+   In the example above, <code>org.example.jsonb.GeneratedComponent</code> is generated code typically found in
+    <code>target/generated-sources/annotations</code>.
   </p>
 
 <h2 id="json">@Json</h2>
@@ -317,7 +342,7 @@ public class Customer {
 
     @Override
     public void toJson(JsonWriter writer, Address address) {
-      writer.beginObject();
+      writer.beginObject(names);
       writer.names(names);
       writer.name(0);
       stringJsonAdapter.toJson(writer, address.getStreet());
@@ -333,8 +358,7 @@ public class Customer {
       Address _$address = new Address();
 
       // read json
-      reader.beginObject();
-      reader.names(names);
+      reader.beginObject(names);
       while (reader.hasNextField()) {
         final String fieldName = reader.nextField();
         switch (fieldName) {
@@ -423,8 +447,7 @@ public class Customer {
       Customer _$customer = new Customer();
 
       // read json
-      reader.beginObject();
-      reader.names(names);
+      reader.beginObject(names);
       while (reader.hasNextField()) {
         final String fieldName = reader.nextField();
         switch (fieldName) {
@@ -474,8 +497,7 @@ public class Customer {
       Customer _$customer = new Customer();
 
       // read json
-      reader.beginObject();
-      reader.names(names);
+      reader.beginObject(names);
       while (reader.hasNextField()) {
         final String fieldName = reader.nextField();
         switch (fieldName) {
@@ -532,7 +554,7 @@ public class Customer {
 
     @Override
     public void toJson(JsonWriter writer, Secrets secrets) {
-      writer.beginObject();
+      writer.beginObject(names);
       writer.names(names);
       writer.name(1);
       //only mySecret2 is serialized
@@ -545,8 +567,7 @@ public class Customer {
       Secrets _$secrets = new Secrets();
 
       // read json
-      reader.beginObject();
-      reader.names(names);
+      reader.beginObject(names);
       while (reader.hasNextField()) {
         final String fieldName = reader.nextField();
         switch (fieldName) {
@@ -601,7 +622,7 @@ The @Json.Unmapped annotation must be on a field of type <code>Map<String, Objec
 
     @Override
     public void toJson(JsonWriter writer, UnmappedJson unmappedJson) {
-      writer.beginObject();
+      writer.beginObject(names);
       writer.names(names);
       writer.name(0);
       stringJsonAdapter.toJson(writer, unmappedJson.getMapped());
@@ -621,8 +642,7 @@ The @Json.Unmapped annotation must be on a field of type <code>Map<String, Objec
       Map<String, Object> unmapped = new LinkedHashMap<>();
 
       // read json
-      reader.beginObject();
-      reader.names(names);
+      reader.beginObject(names);
       while (reader.hasNextField()) {
         final String fieldName = reader.nextField();
         switch (fieldName) {
@@ -647,7 +667,7 @@ The @Json.Unmapped annotation must be on a field of type <code>Map<String, Objec
 <h2 id="value">Enum Mapping with @Json.Value</h2>
 
 <p>
-We can use <code>@Json.Value</code> on Enum types to specify a method that provides the values that will be used to serialise to/from json. This works for any type that can be compared with <code>.equals()</code>
+We can use <code>@Json.Value</code> on Enum types to specify a method that provides the values that will be used to serialize to/from json. This works for any type that can be compared with <code>.equals()</code>
 <br></br>
 In the example below the values used in the json content is "one value" and "two value" rather than the usual "ONE" and "TWO".
 </p>
@@ -758,8 +778,7 @@ public abstract class MixinClass {
 
       @Override
       public void toJson(JsonWriter writer, MixinTarget mixinTarget) {
-        writer.beginObject();
-        writer.names(names);
+        writer.beginObject(names);
         writer.name(0);
         stringJsonAdapter.toJson(writer, mixinTarget.getName());
         writer.name(2);
@@ -773,8 +792,7 @@ public abstract class MixinClass {
         MixinTarget _$mixinTarget = new MixinTarget();
 
         // read json
-        reader.beginObject();
-        reader.names(names);
+        reader.beginObject(names);
         while (reader.hasNextField()) {
           final String fieldName = reader.nextField();
           switch (fieldName) {
@@ -893,8 +911,7 @@ Note: There is a current limitation that polymorphic types do not yet support "J
 
       @Override
       public void toJson(JsonWriter writer, Vehicle vehicle) {
-        writer.beginObject();
-        writer.names(names);
+        writer.beginObject(names);
         if (vehicle instanceof Car) {
           Car sub = (Car) vehicle;
           writer.name(0);
@@ -926,8 +943,7 @@ Note: There is a current limitation that polymorphic types do not yet support "J
         String type = null;
 
         // read json
-        reader.beginObject();
-        reader.names(names);
+        reader.beginObject(names);
         while (reader.hasNextField()) {
           final String fieldName = reader.nextField();
           switch (fieldName) {
@@ -970,5 +986,61 @@ Note: There is a current limitation that polymorphic types do not yet support "J
       }
     }
   </pre>
+
+<h2 id="custom">@CustomAdapter</h2>
+<p>
+  With <code>@CustomAdapter</code>, you can define your own JsonAdapter for your more esoteric serialization needs.
+  A custom adapter registered using this annotation must have a public constructor accepting a Jsonb instance (or a public static JsonAdapter.Factory FACTORY field for generic adapters), and must directly implement the JsonAdapter Interface.
+</p>
+
+<h4>Standard Adapters</h4>
+
+<pre content="java">
+  @CustomAdapter
+  public class CustomClassJsonAdapter implements JsonAdapter<CustomClass> {
+
+    private final JsonAdapter<String> stringJsonAdapter;
+    private final PropertyNames names;
+
+    //a public construtor accepting Jsonb is required
+    public CustomClassJsonAdapter(Jsonb jsonb) {
+      //type adapters can be fetched using adapter
+      this.stringJsonAdapter = jsonb.adapter(String.class);
+      //write the json field names
+      this.names = jsonb.properties("body");
+    }
+
+   ... write your custom serialization logic
+  }
+</pre>
+
+<h4>Generic Adapters</h4>
+
+<pre content="java">
+  @CustomAdapter(isGeneric = true)
+  public class CustomGenericClassJsonAdapter<T> implements JsonAdapter<GenericClass<T>> {
+
+    private final JsonAdapter<T> TAdapter;
+    private final PropertyNames names;
+
+    // Required
+    public static final JsonAdapter.Factory FACTORY =
+        (type, jsonb) -> {
+          if (Types.isGenericTypeOf(type, GenericClass.class)) {
+
+            return new CustomGenericClassJsonAdapter<>(jsonb, Types.typeArguments(type));
+          }
+          return null;
+        };
+
+    public CustomGenericClassJsonAdapter(Jsonb jsonb, Type[] types) {
+      this.TAdapter = jsonb.adapter(types[0]);
+      this.names = jsonb.properties("key", "val");
+    }
+
+    ... write your custom serialization logic
+  }
+</pre>
+
 </body>
 </html>
