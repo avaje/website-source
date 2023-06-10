@@ -4,8 +4,8 @@
   </@nav>
   <@nav url="#quick-start" title="Quick Start">
   </@nav>
-  <@nav url="#jpms" title="Java Modules"/>
   <@nav url="#integration" title="Spring/Avaje Integration">
+  <@nav url="#jpms" title="Java Modules"/>
   </@nav>
   <@nav url="#json" title="@Json">
     <ul>
