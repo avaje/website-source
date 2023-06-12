@@ -189,8 +189,12 @@
   module org.example {
 
     requires io.avaje.jsonb;
+
     // you must define the fully qualified class name of the generated classes. if you use an import statement, compilation will fail
     provides GeneratedComponent with org.example.jsonb.GeneratedComponent;
+
+    //if running using Jlink application images with avaje-inject add:
+    //requires io.avaje.jsonb.plugin;
   }
   </pre>
   <p>
