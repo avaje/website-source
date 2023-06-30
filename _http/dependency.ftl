@@ -20,14 +20,14 @@
 
 <h3>Optional: OpenAPI plugin</h3>
 <p>
-  Optionally add the <code>io.dinject.openapi</code> plugin to have the openapi.json
+  Optionally add the <code>io.avaje.openapi</code> plugin to have the openapi.json
   (swagger) to be generated into <em>src/main/resources/public</em>.
 </p>
 
 <pre content="groovy">
 plugins {
   ...
-  id('io.dinject.openapi') version('1.2')
+  id('io.avaje.openapi') version('1.2')
 }
 </pre>
 

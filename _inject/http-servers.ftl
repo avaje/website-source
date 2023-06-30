@@ -2,7 +2,7 @@
 <p>
   <em>avaje-inject</em> is a lightweight DI library that is especially suited to
   building http based services using <a href="https://javalin.io">Javalin</a>
-  and <a href="https://helidon.io">Helidon SE</a>.
+  and <a href="https://helidon.io">Helidon SE/Nima</a>.
 </p>
 <p>
   We can build rest controllers and target either Javalin or Helidon SE using

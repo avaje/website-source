@@ -21,20 +21,20 @@
 <p>&nbsp;</p>
 
 <p>
-  Uses Java annotation processing generating source code for dependency injection.
-  This puts the work of performing dependency injection to build time rather than
-  runtime, increasing the speed of application start. There is no use of reflection
-  or classpath scanning.
+  Inject leverages Java annotation processing to generate source code for efficient dependency injection.
+  By shifting the responsibility of dependency injection from runtime to build time, it significantly enhances the speed of application startup.
+  This approach eliminates the need for intensive reflection or classpath scanning, further optimizing performance.
 </p>
 <p>
-  The dependency injection classes are generated source code. We can add debug breakpoints into the DI code as desired and step through
-  the code as if it were manually written. We can use existing IDE tools to search where code is called (e.g. Constructors and lifecycle
+  The dependency injection classes are generated source code.
+  This allows us to seamlessly incorporate debug breakpoints into the DI code, enabling us to step through the code as if it were manually written.
+  We can use existing IDE tools to search where code is called (e.g. Constructors and lifecycle
   methods.)
 </p>
 <p>
   For a <a href="#why">background on why</a> <em>avaje inject</em> exists and a
   <a href="#why-comparison">quick comparison</a> with other DI libraries such as
-  Dagger2, Micronaut, Quarkus and Spring goto - <a href="#why">Why</a>.
+  Dagger2, Micronaut, Quarkus and Spring go to - <a href="#why">Why</a>.
 </p>
 
 <h3 id="size">DI Library Size</h3>
@@ -58,7 +58,7 @@
         <li><a href="#factory">@Factory + @Bean</a></li>
         <li><a href="#primary">@Primary + @Secondary</a></li>
         <li><a href="#conditional">Conditional Beans</a></li>
-        <li><a href="#test-scope">Test scope</a> component testing</li>
+        <li><a href="#test-scope">Test scope</a> and component testing</li>
         <li><a href="#aspect">Aspect Oriented Programming</a> around method advice</li>
       </ul>
     </td>
@@ -133,7 +133,7 @@
 
 <h4>@Factory + @Bean</h4>
 <p>
-  In addition to the JSR-330 standard we use <a href="#factory">@Factory</a> + <a href="#bean">@Bean</a>
+  In addition to the JSR-330 standard, we use <a href="#factory">@Factory</a> + <a href="#bean">@Bean</a>
   which have a similar function as Spring DI's <em>@Configuration + @Bean</em> and also Micronaut's
   <em>@Factory + @Bean</em>. This is also similar to a Guice module with <em>@Provides</em> methods.
 </p>

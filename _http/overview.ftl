@@ -32,15 +32,14 @@ for Javalin and Helidon SE/Nima APIs via Annotation Processing.
   (web routing).
 </p>
 <p>
- It turns out we don't need to generate much code at all and that the generated code is very simple and readable.
-  Developers can navigate to it, add break points and debug just as if we wrote it all
+ The generated source code is very simple and readable, so developers can navigate to it and add break points and debug just as if we wrote it all
   manually ourselves.
 </p>
 <p>
   What we <b>lose</b> in doing this is automatic
   <a target="_blank" href="https://en.wikipedia.org/wiki/Content_negotiation">Content negotiation</a>. For example, if
   we need endpoints that serve response content as <i>either</i> JSON or XML content based on request headers
-  then we would to handle this ourselves.
+  then we would need to handle this ourselves.
 </p>
 
 <h4>Summary</h4>
@@ -61,7 +60,7 @@ for Javalin and Helidon SE/Nima APIs via Annotation Processing.
   making nicer cleaner API's.
 </p>
 <p>
-  A design decision has been to not use JAX-RS annotations at this stage. This is because
+  A design decision has been to not use JAX-RS annotations. This is because
   the JAX-RS annotations are a lot more verbose than we desire and because they are not provided
   as a nice clean separate dependency. The JAX-RS API has a lot of extra weight that we do not need.
 </p>
@@ -69,6 +68,6 @@ for Javalin and Helidon SE/Nima APIs via Annotation Processing.
 <h2>HTTP Client</h2>
 <p>
   Avaje <a href="/http-client/">http client</a> is a lightweight wrapper of JDK HttpClient
-  that also supports Client API with annotation processing to generate source to implement
+  that also supports Client API with annotation processing to generate source code that implements
   the API.
 </p>
