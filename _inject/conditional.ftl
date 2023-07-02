@@ -34,7 +34,7 @@ If there are no <code>PropertyRequiresPlugin</code> found, a default implementat
 
 <p><a href="https://avaje.io/config/">Avaje Config</a> provides a <code>PropertyRequiresPlugin</code>, so when it's detected in the classpath, it will be used to test the property conditions.
 
-<p>You can provide your own implementation of <code>PropertyRequiresPlugin</code> via service loading if you want to use your own custom testing of property condition.
+<p>You can provide your own implementation of <code>PropertyRequiresPlugin</code> via service loader if you want to use your own custom testing of property condition.
 
 </p>
 
@@ -70,7 +70,7 @@ Additionally, meta annotation can be placed on other meta annotation to easily c
 <pre content="java">
    @Singleton
    @AgeOfFire
-   // AgeOfFire adds the following conditions
+   // AgeOfFire effectively adds the following conditions
    // @RequiresProperty(value = "abyss", equalTo="sealed")
    // @RequiresBean(Flame.class)
    // @RequiresBean(value = Kindling.class, missing = Dark.class)

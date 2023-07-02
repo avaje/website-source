@@ -3,14 +3,12 @@ This library has several contructs that support Aspect Oriented Programmming
 
 <h3 id="aspect">@Aspect</h3>
 <p>
-  We can create an annotation class and annotate it with <code>@Aspect</code> to define an aspect annotation.
-  To control the execution order of multiple aspects, we can use the ordering property of the <code>@Aspect</code>
-</p>
-<p>
-  To control the execution order of multiple aspects, we can use the ordering property of <code>@Aspect</code>.
+  Create an annotation class and annotate it with <code>@Aspect</code> to define an aspect annotation.
+  To control the execution order of multiple aspects, we can use the ordering property of the <code>@Aspect</code>.
+  To import an existing annotation, use <code>@Aspect.Import</code>.
 </p>
 <pre content="java">
-@Aspect
+@Aspect(ordering=1) // The default is 1000 so this aspect will execute before others
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MyAround {
@@ -19,7 +17,11 @@ public @interface MyAround {
 }
 </pre>
 
-<p>For this aspect to work, a corresponding AspectProvider must be wired into the scope. The AspectProvider should be a <code>@Singleton</code> or <code>@Component</code> that provides a <code>MethodInterceptor</code>. (Which will intercept the method call).</p>
+<p>
+For this aspect to work, a corresponding AspectProvider must be wired into the scope.
+The AspectProvider should be a <code>@Singleton</code> or <code>@Component</code> that provides a <code>MethodInterceptor</code>.
+ (Which will intercept the method call).
+</p>
 
 <pre content="java">
 @Singleton

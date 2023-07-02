@@ -33,7 +33,7 @@ List<|Cat> findCats(String type, @BeanParam CommonParams params) {
   The generated Javalin code for the above is:
 </p>
 <pre content="java">
-ApiBuilder.get("/cats/search/:type", ctx -> {
+ApiBuilder.get("/cats/search/{type}", ctx -> {
   ctx.status(200);
   String type = ctx.pathParam("type");
   CommonParams params =  new CommonParams();
@@ -56,7 +56,7 @@ ApiBuilder.get("/cats/search/:type", ctx -> {
 <h4>JAX-RS @BeanParam</h4>
 <p>
   Our <em>@BeanParam</em> is virtually the same as JAX-RS <em>@BeanParam</em> except the properties
-  default to being query parameters where as with JAX-RS we need to annotate each of the properties.
+  default to being query parameters, whereas with JAX-RS we need to annotate each of the properties.
   We can do this because we have <em>@Form</em> and "Form beans".
 </p>
 
@@ -79,5 +79,4 @@ public class CommonParams {
   @Cookie
   public String myState;
 }
-
 </pre>

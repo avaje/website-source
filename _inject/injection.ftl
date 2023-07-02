@@ -223,7 +223,7 @@ public class CoffeeMaker {
   we can't use constructor injection for both A and B like:
 </p>
 <pre content="java">
-// circular dependency with constructor injection, this will not work !!
+// circular dependency with constructor injection, this will not work!!
 
 @Singleton
 class A {
@@ -242,14 +242,14 @@ class B {
 }
 </pre>
 <p>
-  With the above circular dependencies for A and B constructor injection <em>avaje-inject</em>
+  With the above circular dependencies for A and B constructor injection, <em>avaje-inject</em>
   cannot determine the order in which to construct the beans. <em>avaje-inject</em> will
   detect this and product a compilation error outlining the beans involved and ask us
   to change to use field injection for one of the dependencies.
 </p>
 <p>
-  We cannot use constructor injection for both A and B and instead we must use
-  either field injection or method injection on either A or B like:
+  We cannot use constructor injection for both A and B, instead we must use
+  either field/method injection on either A or B like:
 </p>
 <pre content="java">
 @Singleton
@@ -267,10 +267,8 @@ class B {
 }
 </pre>
 <p>
-  The reason this works is that field injection and method injection occurs later after all the
-  dependencies are constructed. <em>avaje-inject</em> uses 2 phases to
-  "wire" the beans and then a 3rd phase to execute the <code>@PostConstruct</code>
-  lifecycle methods:
+  The reason this works is that field/method injection occur after all the
+  dependencies are constructed. <em>avaje-inject</em> uses 3 phases to construct a bean scope:
 </p>
 <ul>
   <li>Phase 1: Construct all the beans in order based on constructor dependencies</li>
@@ -507,7 +505,8 @@ class Configuration {
 </pre>
 <h3 id="beanclose">@Bean autocloseable</h3>
 <p>
-  The avaje generator reads the bean method return type to detct if the bean is an instance of <code>Closeable</code> or <code>AutoCloseable</code>. In the case where you are wiring an interface that doesn't implement these types, but the concrete class implements, we can specify <code>autocloseable</code> to inform the generator.
+  The avaje annotation processor reads the bean method return types to detect if the bean is an instance of <code>Closeable</code> or <code>AutoCloseable</code>.
+  In the case where you are wiring an interface that doesn't implement these types, but the concrete class implements, we can specify <code>autocloseable</code> to inform the processor.
  </p>
 
 <pre content="java">

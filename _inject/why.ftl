@@ -18,7 +18,7 @@
   <li>2019 - Quarkus</li>
 </ul>
 <p>
-  Stefano Mazzocchi popularises the term, Inversion of Control and the Apache
+  Stefano Mazzocchi popularises the term Inversion of Control and the Apache
   <a target="_blank" href="http://picocontainer.com/inversion-of-control-history.html#avalon">Avalon</a>
   project starts.
 </p>
@@ -77,7 +77,7 @@
 <p>
   Micronaut DI and <em>avaje-inject</em> are both heavily influenced by Spring DI and
   to some extent look pretty similar. avaje-inject has taken a source code generation
-  approach, excluded AOP and excluded <code>@Value</code> with a preference instead to
+  approach for readability and excluded <code>@Value</code> with a preference instead to
   use a simple <a href="/config">avaje-config</a> style approach to external configuration.
 </p>
 <p>

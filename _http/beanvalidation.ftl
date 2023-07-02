@@ -10,8 +10,8 @@
 <h3>Add @Valid</h3>
 <p>
   Add a jakarta/javax/avaje <code>@Valid</code> annotation on controllers/methods and the types that we want bean validation to
-  be included for. When we do this controller methods that take a request payload
-  will then have the request bean (populated by JSON payload or form parameters)
+  be included for. When we do this, controller methods that take a request payload
+  will then have the request bean (populated by JSON payload or form/header/query parameters)
   validated before it is passed to the controller method.
 </p>
 <p>
