@@ -77,12 +77,14 @@ module org.example {
   <code>target/generated-sources/annotations</code>.
 </p>
 
-<h2 id="generated">Generated Code</h2>
+<h2 id="generated">Generated Sources</h2>
 
 <h3>DI classes</h3>
 
 <p>
 DI classes will be generated to call the constructors for annotated type/factory methods.
+</p>
+<p>
 Below is the class generated for the Example class in the above quickstart.
 </p>
 
@@ -105,7 +107,7 @@ public final class Example$DI  {
 
 <h3>Generated Wiring Class</h3>
 <p>
-The inject annotation processor will determine the dependency wiring order of a project and generates a Module class that calls all the generated DI classes.
+The inject annotation processor will determine the dependency wiring order of a project and generate a Module class that will wire the beans.
 </p>
 
 <pre content="java">

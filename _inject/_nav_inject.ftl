@@ -15,6 +15,8 @@
 </@nav>
 <@nav url="#jpms" title="Java Modules">
 </@nav>
+<@nav url="#generated" title="Generated Sources">
+</@nav>
 <@nav url="#injection" title="Injection">
   <ul>
     <li><a href="#singleton">@Singleton</a></li>
