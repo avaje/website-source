@@ -41,7 +41,7 @@ public class Example {
 @Factory
 public class ExampleFactory {
   @Bean
-  public DependencyClass2() {
+  public DependencyClass2 bean() {
     return new DependencyClass2();
   }
 }

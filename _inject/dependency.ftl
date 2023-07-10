@@ -76,3 +76,96 @@ module org.example {
  In the example above, <code>org.example.ExampleModule</code> is generated code typically found in
   <code>target/generated-sources/annotations</code>.
 </p>
+
+<h2 id="generated">Generated Sources</h2>
+
+<h3>DI classes</h3>
+
+<p>
+DI classes will be generated to call the constructors for annotated type/factory methods.
+</p>
+<p>
+Below is the class generated for the Example class in the above quickstart.
+</p>
+
+<pre content="java">
+@Generated("io.avaje.inject.generator")
+public final class Example$DI  {
+
+  /**
+   * Create and register Example.
+   */
+  public static void build(Builder builder) {
+    if (builder.isAddBeanFor(Example.class)) {
+      var bean = new Example(builder.get(DependencyClass.class,"!d1"), builder.get(DependencyClass2.class,"!d2"));
+      builder.register(bean);
+      // depending on the type of bean, callbacks for field/method injection, and lifecycle support will be generated here as well.
+    }
+  }
+}
+</pre>
+
+<h3>Generated Wiring Class</h3>
+<p>
+The inject annotation processor will determine the dependency wiring order of a project and generate a Module class that will wire the beans.
+</p>
+
+<pre content="java">
+@Generated("io.avaje.inject.generator")
+@InjectModule
+public final class ExampleModule implements Module {
+
+  private Builder builder;
+
+  @Override
+  public Class<?>[] classes() {
+    return new Class<?>[] {
+      org.example.DependencyClass.class,
+      org.example.DependencyClass2.class,
+      org.example.Example.class,
+      org.example.ExampleFactory.class,
+    };
+  }
+
+  /**
+   * Creates all the beans in order based on constructor dependencies. The beans are registered
+   * into the builder along with callbacks for field/method injection, and lifecycle
+   * support.
+   */
+  @Override
+  public void build(Builder builder) {
+    this.builder = builder;
+    // create beans in order based on constructor dependencies
+    // i.e. "provides" followed by "dependsOn"
+    build_example_ExampleFactory();
+    build_example_DependencyClass();
+    build_example_DependencyClass2();
+    build_example_Example();
+  }
+
+  @DependencyMeta(type = "org.example.ExampleFactory")
+  private void build_example_ExampleFactory() {
+    ExampleFactory$DI.build(builder);
+  }
+
+  @DependencyMeta(type = "org.example.DependencyClass")
+  private void build_example_DependencyClass() {
+    DependencyClass$DI.build(builder);
+  }
+
+  @DependencyMeta(
+      type = "org.example.DependencyClass2",
+      method = "org.example.ExampleFactory$DI.build_bean", // factory method
+      dependsOn = {"org.example.ExampleFactory"}) //factory beans naturally depend on the factory
+  private void build_example_DependencyClass2() {
+    ExampleFactory$DI.build_bean(builder);
+  }
+
+  @DependencyMeta(
+      type = "org.example.Example",
+      dependsOn = {"org.example.DependencyClass", "org.example.DependencyClass2"})
+  private void build_example_Example() {
+    Example$DI.build(builder);
+  }
+}
+</pre>
