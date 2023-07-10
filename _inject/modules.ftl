@@ -154,6 +154,24 @@ What this does is generate 2 files in target before the code is compiled: <code>
 
 These are the components and plugins provides by all the other modules that exist in the classpath/maven dependencies. The annotation processor then reads the txt files at compile time and will not error if these components are required dependencies (as they are known to be provided by other modules or plugins).
 
+
+<h4 id="shading">Shading Note</h4>
+
+<p> As avaje uses the <code>ServiceLoader</code> to load Module classes, when using multi-module projects with the maven shade plugin, be sure to have the following configuration set.
+<pre content="xml">
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-shade-plugin</artifactId>
+	<configuration>
+		<transformers>
+			<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+		</transformers>
+	</configuration>
+</plugin>
+</pre>
+
+<p> This ensures that the <code>META-INF/services</code> files in every dependency are merged into the UberJar so that the modules can be discovered and loaded.
+
 <h3 id="inject-module">@InjectModule</h3>
 
 <h4 id="module-name">name</h4>
