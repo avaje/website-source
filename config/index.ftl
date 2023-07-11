@@ -142,14 +142,15 @@
 
     <h3 id="load-main">Running app</h3>
     <p>
-      There are four main ways to provide configuration used for the purpose of running
+      There are five main ways to provide configuration used for the purpose of running
       the application.
     </p>
     <ul>
       <li>1. Default values via <code>src/main/resources</code></li>
       <li>2. Command line arguments</li>
-      <li>3. <em>load.properties</em></li>
-      <li>4. Plugins</li>
+      <li>3. <em>config.profiles</em></li>
+      <li>4. <em>load.properties</em></li>
+      <li>5. ConfigurationSource plugins</li>
     </ul>
     <h4 id="main-resources">1. Default values via main resources</h4>
     <p>
@@ -178,7 +179,13 @@
       providing configuration values for the application.
     </p>
 
-    <h4 id="load-properties">3. load.properties</h4>
+    <h4 id="profiles">3. config.profiles</h4>
+    <p>
+      Setting the <code>config.profiles</code> or <code>CONFIG_PROFILES</code> environment variable will cause avaje config to load the property files in the form <code>application-&ltprofile&gt.properties</code> (will also work for yml/yaml files).
+      For example, if you set the </code>config.profiles</code> property (perhaps via command line) to <code>dev,docker</code> it will attempt to load <code>application-dev.properties</code> and <code>application-docker.properties</code>.
+    </p>
+
+    <h4 id="load-properties">4. load.properties</h4>
     <p>
       Optionally we specify a <code>load.properties</code> property to define configuration
       files to load.
@@ -200,10 +207,10 @@
     </p>
 
 
-    <h4>4. Plugins</h4>
+    <h4>5. ConfigurationSource</h4>
     <p>
       We can also use plugins that implement ConfigurationSource to load configuration from
-      other sources. Refer to the <a href="#plugins">Plugins</a> section for more details.
+      other sources. Refer to the <a href="#plugins">ConfigurationSource</a> section for more details.
     </p>
 
     <h3 id="load-test">Running Tests</h3>
