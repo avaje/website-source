@@ -22,7 +22,7 @@ public class CoffeeMaker {
 
 <h4>@PostConstruct with BeanScope</h3>
 <p>
-  Since post construct methods execute after all the beans have been wired. You can also inject the completed BeanScope into your PostCinstruct.
+  Since post construct methods execute after all the beans have been wired. You can also inject the completed BeanScope.
 </p>
 
 <pre content="java">
