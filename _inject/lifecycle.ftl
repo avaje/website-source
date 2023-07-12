@@ -20,6 +20,23 @@ public class CoffeeMaker {
   ...
 </pre>
 
+<h4>@PostConstruct with BeanScope</h3>
+<p>
+  Since post construct methods execute after all the beans have been wired. You can also inject the completed BeanScope into your PostCinstruct.
+</p>
+
+<pre content="java">
+@Singleton
+public class CoffeeMaker {
+  Beans beans;
+
+  @PostConstruct
+  void onStartup(BeanScope scope) {
+   beans = scope.get(Beans.class);
+  }
+  ...
+</pre>
+
 <h3 id="pre-destroy">@PreDestroy</h3>
 <p>
   Put <code>@PreDestroy</code> on a method that we want to run on shutdown.
@@ -63,8 +80,8 @@ public class CoffeeQueue implements AutoCloseable {
 
 <h3 id="shutdownHook">Shutdown hook</h3>
 <p>
-  When <code>BeanScope</code> is created we can specify if it should register a JVM shutdown hook.
-  This is fired when the JVM is shutdown and this in turn invokes the PreDestroy methods. Otherwise
+  When <code>BeanScope</code> is created, we can specify if it should register a JVM shutdown hook.
+  This is fired when the JVM is shutdown and this in turn invokes the PreDestroy methods. Otherwise,
   <code>PreDestroy</code> methods are closed when the BeanScope is closed.
 </p>
 <pre content="java">

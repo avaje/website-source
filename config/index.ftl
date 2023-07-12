@@ -98,7 +98,7 @@
     </p>
     <p>
       Expressions are evaluated using <em>environment variables</em>,
-      <em>system properties</em> as well as other properties.
+      <em>system properties</em> as well as other property files.
     </p>
 
     <h5>example</h5>
@@ -115,9 +115,9 @@
 
     <h2 id="startup">Startup</h2>
     <p>
-      <em>avaje-config</em> will initialise and load configuration when it is first used.
+      <em>avaje-config</em> will initialize and load configuration when it is first used.
     </p>
-    <h4>Initialisation</h4>
+    <h4>initialization</h4>
     <ul>
       <li>Loads all the configuration files</li>
       <li>Performs expression evaluation on all the values</li>
@@ -129,8 +129,8 @@
     <p>&nbsp;</p>
     <h3><em>config.load.systemProperties</em></h3>
     <p>
-      If we set <code>config.load.systemProperties</code> to true then all the properties that
-      have been loaded are then set into system properties. You can provide an additional property <code>system.excluded.properties</code> to provide a list of configuration properties you want to exclude from being loaded into the System Properties.
+      If we set <code>config.load.systemProperties</code> to true, all loaded properties are then set into the system properties.
+      You can provide an additional property <code>system.excluded.properties</code> to provide a list of configuration properties you want to exclude from being loaded into System Properties.
     </p>
 
     <h2 id="loading">Loading configuration</h2>
@@ -155,11 +155,11 @@
     <h4 id="main-resources">1. Default values via main resources</h4>
     <p>
       We can provide "default" configuration values by putting into <code>src/main/resources</code>
-      either <code>application.yaml</code> or <code>application.properties</code>.
+      a <code>application.yaml</code> or <code>application.properties</code> file.
     </p>
     <p>
       These values act as default values and can be overwritten by configuration
-      provided by other sources such as files specified by command line arguments.
+      provided by other sources such as files specified by command line arguments/profiles/<code>load.properties</code>.
     </p>
 
     <h4 id="command-line">2. Command line arguments</h4>
@@ -175,19 +175,19 @@
       java -jar myapp.jar -P/etc/config/myapp.properties -P/etc/other.yaml
     </pre>
     <p>
-      In the example above 2 external files are configuration files that are loaded
+      In the example above two external files are configuration files that are loaded
       providing configuration values for the application.
     </p>
 
     <h4 id="profiles">3. config.profiles</h4>
     <p>
-      Setting the <code>config.profiles</code> or <code>CONFIG_PROFILES</code> environment variable will cause avaje config to load the property files in the form <code>application-&ltprofile&gt.properties</code> (will also work for yml/yaml files).
+      Setting a <code>config.profiles</code> property or <code>CONFIG_PROFILES</code> environment variable will cause avaje config to load the property files in the form <code>application-&ltprofile&gt.properties</code> (will also work for yml/yaml files).
       For example, if you set the </code>config.profiles</code> property (perhaps via command line) to <code>dev,docker</code> it will attempt to load <code>application-dev.properties</code> and <code>application-docker.properties</code>.
     </p>
 
     <h4 id="load-properties">4. load.properties</h4>
     <p>
-      Optionally we specify a <code>load.properties</code> property to define configuration
+      We can specify a <code>load.properties</code> property to define additional configuration
       files to load.
     </p>
 
@@ -198,7 +198,7 @@
       load.properties: ${ENV:local}.properties /etc/other.yaml
     </pre>
     <p>
-      After default configuration files are loaded the <em>load.properties</em> property is
+      After default configuration files are loaded, the <em>load.properties</em> property is
       read and if specified these configuration files are loaded.
     </p>
     <p>
@@ -215,17 +215,17 @@
 
     <h3 id="load-test">Running Tests</h3>
     <p>
-      To provide configuration for running tests add into <code>src/test/resources</code> either
+      To provide configuration for running tests, add into <code>src/test/resources</code> either
       <code>application-test.yaml</code> or <code>application-test.properties</code>.
     </p>
     <p>
-      The configuration from these files is loaded and used when running tests. This configuration
+      The configuration from these files will be loaded and used when running tests. This configuration
       will override any configuration supplied by files in <code>src/main/resources</code>.
     </p>
 
     <h3 id="load-local">Running locally</h3>
     <p>
-      When we run our application locally we can provide configuration for this
+      When we run our application locally, we can provide configuration for this
       via properties or yaml files in a <code>~/.localdev</code> directory.
     </p>
     <p>
@@ -243,7 +243,7 @@
       app.name=myapp
     </pre>
     <p>
-      Then in <code>~/.localdev</code> put a yaml or properties configuration file
+      Then in <code>~/.localdev</code>, put a yaml or properties configuration file
       using the <em>app.name</em>. For example, given <code>app.name=myapp</code> have
       either <code>~/.localdev/myapp.yaml</code> or <code>~/.localdev/myapp.properties</code>
       define the configuration we want to use when running locally.
@@ -251,11 +251,11 @@
 
     <h2 id="file-watch">File watching</h2>
     <p>
-      If <code>config.watch.enabled</code> is set to true then <em>avaje-config</em> will
+      If <code>config.watch.enabled</code> is set to true, then <em>avaje-config</em> will
       watch the config files and reload configuration when the files change.
     </p>
     <p>
-      By default it will check the config files every 10 seconds. We can change this by setting
+      By default, it will check the config files every 10 seconds. We can change this by setting
       <code>config.watch.period</code>
     </p>
 
@@ -287,12 +287,11 @@
     <h2 id="config">Config</h2>
     <p>
       We use <code>Config</code> to access the application configuration. <em>Config</em> can be used
-      anywhere in application code - static initialisers, constructors etc. There is no limitation
+      anywhere in application code - static initializers, enums, constructors etc. There is no limitation
       on where we can use Config.
     </p>
     <p>
-      <code>Config</code> has convenient static methods to access the underlying configuration and
-      this is how the majority of applications will use it. It also has
+      <code>Config</code> has convenient static methods to access the underlying configuration. It also has
       <a href="#asConfiguration">asConfiguration()</a> to return the underlying configuration
       and <a href="#asProperties">asProperties()</a> to return the loaded configuration as standard
       properties.
@@ -341,7 +340,7 @@
     </pre>
     <h5>List and Set</h5>
     <p>
-      We can also return configuration values as List or Set of String, int and long.
+      We can also return configuration values as a List/Set of String, int, long.
     </p>
     <pre content="java">
         List<|Integer> codes = Config.getList().ofInt("my.codes", 42, 54);
@@ -357,6 +356,8 @@
         CustomObj codes = Config.getAs("my.codes", s -> new CustomObj(s));
 
         Optional<|CustomObj> operations = Config.getAsOptional("my.codes", s -> new CustomObj(s));
+
+        List<|CustomObj> operations = Config.list().ofType("my.codes", s -> new CustomObj(s));
     </pre>
 
 
@@ -365,7 +366,7 @@
       Use <code>setProperty()</code> to set configuration values.
     </p>
     <p>
-      When we set values this will fire any configuration callback listeners that
+      When we set values, this will fire any configuration callback listeners that
       are registered for the key.
     </p>
     <pre content="java">
@@ -435,9 +436,8 @@
     <h3 id="asConfiguration">asConfiguration()</h3>
     <p>
       Obtain the underlying configuration via <code>Config.asConfiguration()</code>.
-      Config is providing static singleton scope for the underlying Configuration.
-      We generally always use Config because it is convenient and there should not
-      be much need to access the underlying configuration.
+      Config provides a static singleton scope for the underlying Configuration.
+      Generally there should not be much need to access the underlying configuration, as the static access is much more convenient.
     </p>
     <pre content="java">
       Configuration configuration = Config.asConfiguration();
@@ -464,7 +464,7 @@
 
     <h2 id="plugins">ConfigurationSource Plugins</h2>
     <p>
-      Plugins implement the <code>ConfigurationSource</code> interface and found
+      Plugins implement the <code>ConfigurationSource</code> interface and are found
       and registered via <code>ServiceLoader</code>. This means they have a
       file at <code>src/main/resources/META-INF/services/io.avaje.config.ConfigurationSource</code>
       which contains the class name of the implementation.
@@ -480,23 +480,23 @@
       read the host name of a redis server to read configuration from.
     </p>
     <p>
-      Plugins typically read their configuration source and then use <code>setProperty(key, value)</code>
-      to set the properties into configuration. The values can contain expressions and will have
+      Plugins typically read the configuration after all files have loaded, and then use <code>setProperty(key, value)</code>
+      to add/modify properties. The values can contain expressions and will have
       their expressions evaluated as part of <em>setProperty</em>.
     </p>
     <p>
-      Refer to the (silly) example plugin - <a href="https://github.com/avaje/avaje-config/blob/master/avaje-config/src/test/java/org/example/MyExternalLoader.java">MyExternalLoader.java</a>
+      Refer to the example plugin - <a href="https://github.com/avaje/avaje-config/blob/master/avaje-config/src/test/java/org/example/MyExternalLoader.java">MyExternalLoader.java</a>
     </p>
 
     <h2 id="logging">Event Logging</h2>
     <p>
-      By default, <code>avaje-config</code> will immediately log initialisation events to it's own configured system logger. If you want to use your own configured logger, you can extend the <code>ConfigurationLog</code> interface and
+      By default, <code>avaje-config</code> will immediately log initialization events to it's own configured system logger. If you want to use your own configured logger, you can extend the <code>ConfigurationLog</code> interface and
       register via <code>ServiceLoader</code>. This means you have a
       file at <code>src/main/resources/META-INF/services/io.avaje.config.ConfigurationLog</code>
       which contains the class name of the implementation.
     </p>
     <p>
-      Custom Event loggers implement the methods
+      Custom Event loggers implement the methods:
     </p>
     <pre content="java">
 
@@ -517,7 +517,7 @@
     </p>
     <pre content="java">
   /**
-   * Invoked when the configuration is being initialised.
+   * Invoked when the configuration is being initialized.
    */
   default void preInitialisation() {
   }
