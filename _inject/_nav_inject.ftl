@@ -15,6 +15,8 @@
 </@nav>
 <@nav url="#jpms" title="Java Modules">
 </@nav>
+<@nav url="#generated" title="Generated Sources">
+</@nav>
 <@nav url="#injection" title="Injection">
   <ul>
     <li><a href="#singleton">@Singleton</a></li>
@@ -75,6 +77,7 @@
     <li><a href="#unnamed-module">Unnamed Module</a></li>
     <li><a href="#single-module">Single Module</a></li>
     <li><a href="#multi-module">Multi-module</a></li>
+    <li><a href="#shading">Shading Note</a></li>
     <li><a href="#inject-module">@InjectModule</a></li>
   </ul>
 </@nav>

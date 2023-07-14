@@ -110,7 +110,7 @@
 
 <h2 id=value>Why we don't have @Value/Refreshable Scopes</h2>
 <p>
-  Both Spring and Micronaut have a <code>@Value</code> and by implication they have chosen to combine "external configuration" in with "dependency injection".
+  Both Spring and Micronaut have a <code>@Value</code> and by implication, they have chosen to combine "external configuration" in with "dependency injection".
   With avaje-inject a design decision was made to keep these two ideas separate.
 
   In theory we could have implemented this via source code generation with avaje-inject as:
@@ -135,12 +135,12 @@ public class EngineImpl$Proxy extends EngineImpl {
   We can see that <code>cylinders</code> is only set after the <code>super()</code>.
   Any code that tries to use <code>cylinders</code> before that would get a 0 (or null with Integer etc).
   This is relatively obvious to experienced devs but it is a source of bugs for less experienced devs.
-  That is, <code>@Value</code> fields have delayed initialisation and this can trip people up / be a source of bugs.
+  That is, <code>@Value</code> fields have delayed initialization and this can trip people up / be a source of bugs.
  </p>
 
  <p>
   If we don't use <code>@Value</code> and use <code>Config.getInt()</code> directly on the field, the behavior is completly unambiguous.
-  The values are initialised like any normal field.
+  The values are initialized like any normal field.
 </p>
 
 <h3>Dynamic Configuration</h3>

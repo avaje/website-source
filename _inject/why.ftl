@@ -81,6 +81,6 @@
   use a simple <a href="/config">avaje-config</a> style approach to external configuration.
 </p>
 <p>
-  Ultimately <em>avaje-inject</em> is a relatively tiny library in comparison to Micronaut or Quarkus
+  Ultimately, <em>avaje-inject</em> is a relatively tiny library in comparison to Micronaut or Quarkus
   DI and focused on DI alone.
 </p>
