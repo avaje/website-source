@@ -4,10 +4,10 @@
   </@nav>
   <@nav url="#quick-start" title="Quick Start">
   </@nav>
-  <@nav url="#integration" title="Spring/Avaje Integration">
-  <@nav url="#jpms" title="Java Modules"/>
+  <@nav url="#integration" title="Avaje Integration">
+  <@nav url="#constraint" title="Java Modules"/>
   </@nav>
-  <@nav url="#json" title="@Json">
+  <@nav url="#constraint" title="Declaring Bean Constraints">
     <ul>
       <li><a href="#adapter">Generated JsonAdapter</a></li>
       <li><a href="#import">@Import</a></li>
