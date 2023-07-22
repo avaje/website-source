@@ -119,7 +119,7 @@ public class BeanValidator implements Validator {
 <h4>Using Avaje Validation</h4>
 <p>
   Add a dependency on <em>avaje-validator</em>. This will transitively
-  bring in a dependency on <em>Validator</em> instance which will be used to validate.
+  bring in a dependency on <em>Validator</em> instance which will be used to validate beans.
 </p>
 <pre content="xml">
 <dependency>

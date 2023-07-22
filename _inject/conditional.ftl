@@ -28,7 +28,21 @@
    }
 </pre>
 
-<p>To test property conditions, an instance of <code>io.avaje.inject.spi.PropertyRequiresPlugin</code> is loaded via <code>java.util.ServiceLoader</code>.
+
+<h3 id="profile">@Profile</h3>
+<p>
+  Put <code>@Profile</code> on a <code>@Factory</code> class, <code>@Factory</code> method,
+  or <code>@Singleton</code> class so that a bean will only be registered when the given wiring profiles are present/absent.
+</p>
+<pre content="java">
+   @Singleton
+   @Profile("ds2")
+   public class BearerOfTheCurse {
+      ...
+   }
+</pre>
+
+<p>To test property/profile conditions, an instance of <code>io.avaje.inject.spi.PropertyRequiresPlugin</code> is loaded via <code>java.util.ServiceLoader</code>.
 
 If there are no <code>PropertyRequiresPlugin</code> found, a default implementation will be provided that uses <code>System.getProperty(String)</code> and <code>System.getenv(String)</code>.
 
