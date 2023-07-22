@@ -148,7 +148,7 @@
     <ul>
       <li>1. Default values via <code>src/main/resources</code></li>
       <li>2. Command line arguments</li>
-      <li>3. <em>config.profiles</em></li>
+      <li>3. <em>avaje.profiles</em></li>
       <li>4. <em>load.properties</em></li>
       <li>5. ConfigurationSource plugins</li>
     </ul>
@@ -179,10 +179,10 @@
       providing configuration values for the application.
     </p>
 
-    <h4 id="profiles">3. config.profiles</h4>
+    <h4 id="profiles">3. avaje.profiles</h4>
     <p>
-      Setting a <code>config.profiles</code> property or <code>CONFIG_PROFILES</code> environment variable will cause avaje config to load the property files in the form <code>application-&ltprofile&gt.properties</code> (will also work for yml/yaml files).
-      For example, if you set the </code>config.profiles</code> property (perhaps via command line) to <code>dev,docker</code> it will attempt to load <code>application-dev.properties</code> and <code>application-docker.properties</code>.
+      Setting a <code>avaje.profiles</code> property or <code>AVAJE_PROFILES</code> environment variable will cause avaje config to load the property files in the form <code>application-&ltprofile&gt.properties</code> (will also work for yml/yaml files).
+      For example, if you set the </code>avaje.profiles</code> property (perhaps via command line) to <code>dev,docker</code> it will attempt to load <code>application-dev.properties</code> and <code>application-docker.properties</code>.
     </p>
 
     <h4 id="load-properties">4. load.properties</h4>

@@ -56,6 +56,7 @@
   <ul>
     <li><a href="#requirebean">@RequiresBean</a></li>
     <li><a href="#requireprops">@RequiresProperty</a></li>
+    <li><a href="#profile">@Profile</a></li>
   </ul>
 </@nav>
 <@nav url="#aop" title="AOP">
