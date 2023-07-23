@@ -127,7 +127,7 @@
   a class at the top level, and we don't need to list ALL the provided dependencies.
 </p>
 
-<h3>autoRequires</h3>
+<h3 id="autorequires" >autoRequires</h3>
 <p>
  <em>avaje-inject</em> can also automatically read the classpath/maven dependencies at compile-time to find all the modules and automatically determine the <code>requires</code> dependencies.
  This works fine in most cases, but when you are using the annotation processor with a java 9+ modular project or defined as an annotationProcessorPath in the <code>maven-compiler-plugin</code>, you will need to add the <code>avaje-inject-maven-plugin</code>. (For Gradle, use the <code>avaje-inject-gradle-plugin</code>)
@@ -137,7 +137,7 @@
 <plugin>
   <groupId>io.avaje</groupId>
   <artifactId>avaje-inject-maven-plugin</artifactId>
-  <version>1.0</version>
+  <version>1.2</version>
   <executions>
     <execution>
       <phase>process-sources</phase>
@@ -160,13 +160,13 @@ These are the components and plugins provides by all the other modules that exis
 <p> As avaje uses the <code>ServiceLoader</code> to load Module classes, be sure to have the following configuration set when using the maven shade plugin on multi-module projects.
 <pre content="xml">
 <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-shade-plugin</artifactId>
-	<configuration>
-		<transformers>
-			<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-		</transformers>
-	</configuration>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-shade-plugin</artifactId>
+  <configuration>
+    <transformers>
+      <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+    </transformers>
+  </configuration>
 </plugin>
 </pre>
 

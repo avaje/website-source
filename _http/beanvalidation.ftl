@@ -15,6 +15,9 @@
   validated before it is passed to the controller method.
 </p>
 <p>
+  The avaje-http <code>@Valid</code> annotation can additionally be used to set the Validation Groups to use while validating.
+</p>
+<p>
   For the controller method below:
 </p>
 <pre content="java">
@@ -106,24 +109,37 @@ import io.avaje.http.api.Validator;
 public class BeanValidator implements Validator {
 
   @Override
-  public void validate(Object bean) {
+  public void validate(Object bean, String acceptLanguage, Class<?>... groups) {
   //do validation
   // if validation fails throw something
   }
 }
 </pre>
 
+<h4>Using Avaje Validation</h4>
+<p>
+  Add a dependency on <em>avaje-validator</em>. This will transitively
+  bring in a dependency on <em>Validator</em> instance which will be used to validate beans.
+</p>
+<pre content="xml">
+<dependency>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje-validator</artifactId>
+  <version>${validator.version}</version>
+</dependency>
+</pre>
+
+
 <h4>Using Hibernate</h4>
 <p>
-  Add a dependency on <em>avaje-http-hibernate-validator</em>. This will transitively
-  bring in a dependency on <em>hibernate-validator</em> which will be used to validate.
+  Add a dependency on <em>avaje-http-hibernate-validator</em>. This will provide a hibernate <em>Validator</em> instance which will be used to validate.
 </p>
 <pre content="xml">
 <dependency>
   <groupId>io.avaje</groupId>
   <artifactId>avaje-http-hibernate-validator</artifactId>
   <!-- use 2.9 for javax validation -->
-  <version>3.2</version>
+  <version>3.3</version>
 </dependency>
 </pre>
 
