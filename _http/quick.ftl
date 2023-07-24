@@ -30,7 +30,7 @@
   </dependency>
   <dependency>
     <groupId>io.avaje</groupId>
-    <artifactId>avaje-http-javalin-generator</artifactId>
+    <artifactId>avaje-http-{javalin/helidon}-generator</artifactId>
     <version>${avaje-http.version}</version>
     <scope>provided</scope>
   </dependency>
@@ -86,38 +86,21 @@ public class WidgetController {
 get all the WebRoutes and register them with Javalin using:
 </p>
 <pre content="java">
-var routes = BeanScope.builder().build().list(WebRoutes.class);
+List<WebRoutes> routes = BeanScope.builder().build().list(WebRoutes.class);
 
 Javalin.create()
         .routes(() -> routes.forEach(WebRoutes::registerRoutes))
         .start();
 </pre>
 
-<h4> Usage with Helidon SE </h2>
-<p>
-The annotation processor will generate controller classes implementing the Helidon Service interface, which we can use
-get all the Services and register them with Helidon `RoutingBuilder`.
-</p>
-
-<pre content="java">
-var routes = BeanScope.builder().build().list(Service.class);
-var routingBuilder = Routing.builder().register(routes.stream().toArray(Service[]::new));
-WebServer.builder()
-        .addMediaSupport(JacksonSupport.create())
-        .routing(routingBuilder)
-        .build()
-        .start();
-</pre>
-
-<h4>Helidon Nima Usage</h4>
-
+<h4>Usage with Helidon SE (4.x)</h2>
 <p>
 The annotation processor will generate controller classes implementing the Helidon HttpService interface, which we can use
 get all the services and register them with the Helidon `HttpRouting`.
 </p>
 
 <pre content="java">
-var routes = BeanScope.builder().build().list(HttpService.class);
+List<HttpService> routes = BeanScope.builder().build().list(HttpService.class);
 final var builder = HttpRouting.builder();
 
 for (final HttpService httpService : routes) {
