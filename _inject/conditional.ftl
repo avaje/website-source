@@ -28,11 +28,11 @@
    }
 </pre>
 
-
 <h3 id="profile">@Profile</h3>
+ <p>When the property <code>avaje.profiles</code> is set, we can use <code>@Profile</code> on a <code>@Factory</code> class, <code>@Factory</code> method,
+  or <code>@Singleton</code> class so that a bean will only be registered when the given wiring profiles are present/absent.</p>
 <p>
-  Put <code>@Profile</code> on a <code>@Factory</code> class, <code>@Factory</code> method,
-  or <code>@Singleton</code> class so that a bean will only be registered when the given wiring profiles are present/absent.
+
 </p>
 <pre content="java">
    @Singleton
@@ -41,6 +41,8 @@
       ...
    }
 </pre>
+
+<h4>PropertyRequiresPlugin</h4>
 
 <p>To test property/profile conditions, an instance of <code>io.avaje.inject.spi.PropertyRequiresPlugin</code> is loaded via <code>java.util.ServiceLoader</code>.
 
@@ -133,5 +135,24 @@ Additionally, meta annotation can be placed on other meta annotation to easily c
   <tr>
     <td>Given property does not equal a value</td>
     <td><code>@RequiresProperty(value = "spirit", notEqualTo = "broken")</code></td>
+  </tr>
+    <tr>
+    <td colspan="3" align="center" style="padding-top:2em;"><i>@Profile</i></td>
+  </tr>
+  <tr>
+    <td>Any of the given profiles are set</td>
+    <td><code>@Profile({"sword","bow"})</code></td>
+  </tr>
+  <tr>
+    <td>Given profiles are not set</td>
+    <td><code>@Profile(none = {"malice","gloom"})</code></td>
+  </tr>
+  <tr>
+    <td>All the given profiles must be set</td>
+    <td><code>@Profile(all = {"light","dragon"})</code></td>
+  </tr>
+  <tr>
+    <td>Given property does not equal a value</td>
+    <td><code>@Profile(value = "spirit", notEqualTo = "broken")</code></td>
   </tr>
 </table>
