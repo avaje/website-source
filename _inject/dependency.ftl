@@ -25,11 +25,11 @@
 <pre content="groovy">
 dependencies {
   ...
-  implementation('io.avaje:avaje-inject:8.10')
-  annotationProcessor('io.avaje:avaje-inject-generator:8.10')
+  implementation('io.avaje:avaje-inject:9.4')
+  annotationProcessor('io.avaje:avaje-inject-generator:9.4')
 
-  testImplementation('io.avaje:avaje-inject-test:8.10')
-  testAnnotationProcessor('io.avaje:avaje-inject-generator:8.10')
+  testImplementation('io.avaje:avaje-inject-test:9.4')
+  testAnnotationProcessor('io.avaje:avaje-inject-generator:9.4')
 }
 </pre>
 
@@ -44,10 +44,10 @@ dependencies {
 <pre content="groovy">
 dependencies {
   ...
-  implementation('io.avaje:avaje-inject:8.10')
-  kapt('io.avaje:avaje-inject-generator:8.10')
+  implementation('io.avaje:avaje-inject:9.4')
+  kapt('io.avaje:avaje-inject-generator:9.4')
 
-  testImplementation('io.avaje:avaje-inject-test:8.10')
+  testImplementation('io.avaje:avaje-inject-test:9.4')
 }
 </pre>
 
