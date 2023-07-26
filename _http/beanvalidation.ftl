@@ -33,6 +33,8 @@ class HelloForm {
 class HelloBean {
   @NotBlank
   private String name;
+
+  @Email(groups=EmailCheck.class)
   private String email;
   //getters/setters/constructors
 }
@@ -55,6 +57,7 @@ class BazController  {
     ...
   }
 
+  @io.avaje.http.api.Valid(groups={Default.class,EmailCheck.class})
   @Post("/bean")
   void saveBean(@BeanParam HelloBean helloBean) {
     ...
@@ -76,7 +79,8 @@ ApiBuilder.post("/baz/form", ctx -> {
     ctx.formParam("name"),
     ctx.formParam("email")
   );
-  validator.validate(helloForm);       // validation added here !!
+  var validLanguage = ctx.header("Accept-Language");
+  validator.validate(helloForm, validLanguage);
   controller.saveForm(helloForm);
 });
 
@@ -86,7 +90,8 @@ ApiBuilder.post("/baz/bean", ctx -> {
     ctx.queryParam("name"),
     ctx.queryParam("email")
   );
-  validator.validate(helloBean);       // validation added here !!
+  var validLanguage = ctx.header("Accept-Language");
+  validator.validate(helloBean, validLanguage, Default.class, EmailCheck.class);
   controller.saveBean(helloBean);
 });
 
@@ -119,7 +124,7 @@ public class BeanValidator implements Validator {
 <h4>Using Avaje Validation</h4>
 <p>
   Add a dependency on <em>avaje-validator</em>. This will transitively
-  bring in a dependency on <em>Validator</em> instance which will be used to validate beans.
+  bring in a <em>Validator</em> instance which will be used to validate beans.
 </p>
 <pre content="xml">
 <dependency>
