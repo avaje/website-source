@@ -16,6 +16,7 @@
   <artifactId>avaje-inject-generator</artifactId>
   <version>${avaje.inject.version}</version>
   <scope>provided</scope>
+  <optional>true</scope>
 </dependency>
 </pre>
 

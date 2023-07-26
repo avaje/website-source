@@ -87,6 +87,7 @@
     <artifactId>avaje-jsonb-generator</artifactId>
     <version>${avaje.jsonb.version}</version>
     <scope>provided</scope>
+    <optional>true</scope>
   </dependency>
 </pre>
 
@@ -471,17 +472,17 @@ public class Customer {
   }
 </pre>
 
-<h2 id="alias">@Json.JsonAlias</h2>
+<h2 id="alias">@Json.Alias</h2>
 
 <p>
-  We can define a deserialization alias for a field using <code>@Json.JsonAlias</code>. It is compatible with, and can work in tandem with <code>@Property</code>
+  We can define a deserialization alias for a field using <code>@Json.Alias</code>. It is compatible with, and can work in tandem with <code>@Property</code>
 </p>
 
 <pre content="java">
 @Json
 public class Customer {
 
-  @JsonAlias({"SomeOtherName","SomeOtherName2"})
+  @Alias({"SomeOtherName","SomeOtherName2"})
   private name
   ...
 }
@@ -489,7 +490,7 @@ public class Customer {
 
 <h4>Generated Code</h4>
 
-<p><code>@Json.JsonAlias</code> makes the following changes to the generated JsonAdapter:</p>
+<p><code>@Json.Alias</code> makes the following changes to the generated JsonAdapter:</p>
 <pre content="java">
   @Generated
   public final class CustomerJsonAdapter implements JsonAdapter<Customer>, ViewBuilderAware {
