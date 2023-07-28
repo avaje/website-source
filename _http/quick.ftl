@@ -33,7 +33,7 @@
     <artifactId>avaje-http-{javalin/helidon}-generator</artifactId>
     <version>${avaje-http.version}</version>
     <scope>provided</scope>
-    <optional>true</scope>
+    <optional>true</optional>
   </dependency>
 </pre>
 
