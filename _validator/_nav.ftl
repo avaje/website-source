@@ -9,6 +9,7 @@
       <li><a href="#field">Field Validation</a></li>
       <li><a href="#getter">Getter Validation</a></li>
       <li><a href="#container">Container Constraints</a></li>
+      <li><a href="#classlvl">Class-Level Constraints</a></li>
       <li><a href="#cascade">Cascaded Validation</a></li>
       <li><a href="#inherited">Inherited Constraints</a></li>
     </ul>

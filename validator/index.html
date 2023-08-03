@@ -39,7 +39,9 @@
       can't annotate)</li>
     <li>Supports Avaje/Jakarta/Javax Constraint Annotations</li>
     <li>Validation Group Support</li>
-    <li>Composable Contraint Annotations</li>
+    <li>Composable Contraints</li>
+    <li>Inherited Contraints</li>
+    <li>Cascaded Validation</li>
   </ul>
 
   <h2 id="quick-start">Quick Start</h2>
@@ -291,7 +293,30 @@
         @Positive(message = "You Died") OptionalLong souls,
         @Positive(message = "vigor check failed") OptionalDouble vigor) {}
 </pre>
+<h3 id="classlvl">Class-level constraints</h3>
+<p>
+  Last but not least, a constraint can also be placed on the class level. In this case not a single property is subject
+  of the validation but the complete object. Class-level constraints are useful if the validation depends on a
+  correlation between several properties of an object.
+</p>
+<p>
+  The below version of the <code>Ship</code> class has the two attributes <em>crew</em> and <em>imposters</em> and it should
+  be ensured that the list of imposters is proportional to the amount of crewmates. For that purpose the
+  <code>@BalancedGame</code> constraint is added on the class level. The validator of that constraint has access to the
+  complete <code>Ship</code> object, allowing to compare the fields and validate correctly.
+</p>
+<pre content="java">
+@Valid
+@BalancedGame
+public class Ship {
 
+    private List<CrewMate> crew;
+
+    private List<Imposters> imposters;
+
+    //...
+}
+</pre>
   <h3 id="cascade">Cascaded Validation</h3>
   <p>
     Avaje Validator supports validating complete object graphs. To do so, just annotate a field or property representing
@@ -626,13 +651,13 @@ public class GraphService {
   </p>
   <pre content="java">
     @ConstraintAdapter(CheckCase.class)
-    public final class CustomAnnotationAdapter extends AbstractConstraintAdapter<String> {
+    public final class CheckCaseAdapter extends AbstractConstraintAdapter<String> {
 
       private final CaseMode caseMode;
 
-      public CustomAnnotationAdapter(
-          ValidationContext ctx, Set<Class<?>> groups, Map<String, Object> attributes) {
-        super(ctx.message(attributes), groups);
+      public CheckCaseAdapter(AdapterCreateRequest request) {
+        super(request);
+        final var attributes = request.attributes();
         caseMode = (CaseMode) attributes.get("caseMode");
       }
 
@@ -658,7 +683,7 @@ public class GraphService {
   </p>
   <p>
     The implementation of the validator is straightforward. The constructor gives you access to the attribute
-    values of the validated constraint and allows you to store them in a field of the validator as shown in the example.
+    values of the constraint being validated and allows you to store them in a field as shown in the example.
   </p>
   <p>
     The <code>isValid()</code> method contains the actual validation logic. For <code>@CheckCase</code> this is the
@@ -706,3 +731,4 @@ public class GraphService {
 </body>
 
 </html>
+
