@@ -651,13 +651,13 @@ public class GraphService {
   </p>
   <pre content="java">
     @ConstraintAdapter(CheckCase.class)
-    public final class CustomAnnotationAdapter extends AbstractConstraintAdapter<String> {
+    public final class CheckCaseAdapter extends AbstractConstraintAdapter<String> {
 
       private final CaseMode caseMode;
 
-      public CustomAnnotationAdapter(
-          ValidationContext ctx, Set<Class<?>> groups, Map<String, Object> attributes) {
-        super(ctx.message(attributes), groups);
+      public CheckCaseAdapter(AdapterCreateRequest request) {
+        super(request);
+        final var attributes = request.attributes();
         caseMode = (CaseMode) attributes.get("caseMode");
       }
 
@@ -683,7 +683,7 @@ public class GraphService {
   </p>
   <p>
     The implementation of the validator is straightforward. The constructor gives you access to the attribute
-    values of the validated constraint and allows you to store them in a field of the validator as shown in the example.
+    values of the constraint being validated and allows you to store them in a field as shown in the example.
   </p>
   <p>
     The <code>isValid()</code> method contains the actual validation logic. For <code>@CheckCase</code> this is the
