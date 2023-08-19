@@ -343,9 +343,9 @@
       We can also return configuration values as a List/Set of String, int, long.
     </p>
     <pre content="java">
-        List<|Integer> codes = Config.getList().ofInt("my.codes", 42, 54);
+        List<|Integer> codes = Config.list().ofInt("my.codes", 42, 54);
 
-        Set<|String> operations = Config.getSet().of("my.operations", "put", "delete");
+        Set<|String> operations = Config.set().of("my.operations", "put", "delete");
     </pre>
 
     <h5>Function</h5>

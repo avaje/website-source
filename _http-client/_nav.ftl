@@ -10,9 +10,9 @@
   <@nav url="#httpClientContext" title="HttpClient"/>
   <@nav url="#json-bodyAdapter" title="JSON BodyAdapter">
     <ul>
+      <li><a href="#json-jsonb">Avaje-Jsonb</a></li>
       <li><a href="#json-jackson">Jackson</a></li>
       <li><a href="#json-gson">Gson</a></li>
-      <li><a href="#json-jsonb">Avaje-Jsonb</a></li>
     </ul>
   </@nav>
   <@nav url="#request-body" title="Request Body">

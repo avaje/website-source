@@ -26,6 +26,7 @@
     <ul>
       <li><a href="#constraint">@Constraint</a></li>
       <li><a href="#adapter">@ConstraintAdapter</a></li>
+      <li><a href="#cross">@CrossParamContraint</a></li>
     </ul>
   </@nav>
   <@nav url="#composable" title="Composing Constraints"/>

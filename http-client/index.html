@@ -66,7 +66,7 @@
 </ul>
 <p>
   This client API generation targets <em>avaje-http-client / JDK HttpClient</em> only
-  and uses source code generation via annotation processing so there is no use of reflection/dynamic proxies.
+  and uses source code generation via annotation processing so there is no use of reflection/dynamic proxies to slow things down.
 </p>
 
 <h5>Example client API</h5>
@@ -179,7 +179,6 @@ dependencies {
 </p>
 <pre content="groovy">
 dependencies {
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
     implementation 'io.avaje:avaje-http-client:1.35'
 
     implementation 'io.avaje:avaje-http-api:1.17'
@@ -202,11 +201,8 @@ dependencies {
 
 <h4>HttpClient</h4>
 <p>
-  Create a HttpClient with a base URL and BodyAdapter (plus other options as necessary like retry,
-  interceptors etc).
-</p>
-<p>
-  Use HttpClient to create requests. Requests can be executed synchronously or asynchronously with
+  Create an HttpClient with a base URL and BodyAdapter (plus other options as necessary like retry,
+  interceptors etc). It can be used to create requests. Requests can be executed synchronously or asynchronously with
   CompletableFuture.
 </p>
 
@@ -328,6 +324,38 @@ dependencies {
   adapt request and response body content from JSON to java types and from java types to JSON.
 </p>
 
+<h3 id="json-jsonb">Using Avaje-Jsonb</h3>
+<p>
+  To use <em>avaje-jsonb</em> for serialization of request and response body content to and from JSON we need to:
+</p>
+<h4>1. Add avaje-jsonb dependency</h4>
+<pre content="xml">
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-jsonb</artifactId>
+    <version>${avaje.jsonb.version}</version>
+  </dependency>
+</pre>
+
+<h4>2. Register JsonbBodyAdapter</h4>
+<p>
+  Register the JsonbBodyAdapter with the HttpClient builder. We can supply a jsonb instance
+  to JsonbBodyAdapter or just use defaults. For example:
+</p>
+<pre content="java">
+  Jsonb jsonb = Jsonb.builder().build();
+
+  HttpClient client = HttpClient.builder()
+    .baseUrl(baseUrl)
+    .bodyAdapter(new JsonbBodyAdapter(jsonb))
+    .build();
+</pre>
+<p>
+  <a href="https://github.com/avaje/avaje-jsonb">Avaje-jsonb</a> uses APT source code generation to generate
+  adapters for types annotated with <code>@Json</code>. This makes it a fast and light dependency, especially good for
+  http clients, CLI applications and use with GraalVM native images.
+</p>
+
 <h3 id="json-jackson">Using Jackson</h3>
 <p>
   To use Jackson for serialization of request/response body content to/from JSON we need to:
@@ -378,38 +406,6 @@ dependencies {
     .bodyAdapter(new GsonBodyAdapter(new Gson()))
     .build();
 </pre>
-
-<h3 id="json-jsonb">Using Avaje-Jsonb</h3>
-<p>
-  To use <em>avaje-jsonb</em> for serialization of request and response body content to and from JSON we need to:
-</p>
-<h4>1. Add avaje-jsonb dependency</h4>
-<pre content="xml">
-  <dependency>
-    <groupId>io.avaje</groupId>
-    <artifactId>avaje-jsonb</artifactId>
-    <version>${avaje.jsonb.version}</version>
-  </dependency>
-</pre>
-
-<h4>2. Register JsonbBodyAdapter</h4>
-<p>
-  Register the JsonbBodyAdapter with the HttpClient builder. We can supply a jsonb instance
-  to JsonbBodyAdapter or just use defaults. For example:
-</p>
-<pre content="java">
-  Jsonb jsonb = Jsonb.builder().build();
-
-  HttpClient client = HttpClient.builder()
-    .baseUrl(baseUrl)
-    .bodyAdapter(new JsonbBodyAdapter(jsonb))
-    .build();
-</pre>
-<p>
-  <a href="https://github.com/avaje/avaje-jsonb">Avaje-jsonb</a> uses APT source code generation to generate
-  adapters for types annotated with <code>@Json</code>. This makes it a fast and light dependency, especially good for
-  http clients, CLI applications and use with GraalVM native images.
-</p>
 
 <h2 id="request-body">Request body</h2>
 <p>
@@ -1837,6 +1833,3 @@ Caveat: Proper performance benchmarks are really hard and take a lot of effort.
 
 </body>
 </html>
-
-
-
