@@ -79,6 +79,8 @@
   to some extent look pretty similar. avaje-inject has taken a source code generation
   approach for readability and excluded <code>@Value</code> with a preference instead to
   use a simple <a href="/config">avaje-config</a> style approach to external configuration.
+
+  In addition, avaje determines wiring order at compile-time, hence it doesn't need to take time to figure out all the dependency relationships at runtime.
 </p>
 <p>
   Ultimately, <em>avaje-inject</em> is a relatively tiny library in comparison to Micronaut or Quarkus
