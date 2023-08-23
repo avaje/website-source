@@ -24,7 +24,7 @@
   <@nav url="#groups" title="Grouping Constraints"/>
   <@nav url="#custom" title="Custom Constraints">
     <ul>
-      <li><a href="#constraint">@Constraint</a></li>
+      <li><a href="#constraints">@Constraint</a></li>
       <li><a href="#adapter">@ConstraintAdapter</a></li>
       <li><a href="#cross">@CrossParamContraint</a></li>
     </ul>

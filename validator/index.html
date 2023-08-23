@@ -29,13 +29,13 @@
   </table>
 
   <p><br><br>
-    Reflection-free pojo validation via apt source code generation.
+    Reflection-free POJO validation via apt source code generation.
     A light (~85kb + generated code) source code generation style alternative to Hibernate Validation. (code generation
     vs reflection)
   </p>
 
   <ul>
-    <li>Annotate java classes with <code>@Valid</code> (or use <code>@Valid.Import</code> for types we "don't own" or
+    <li>Annotate java classes with <code>@Valid</code> (or use <code>@ImportValidPojo</code> for types we "don't own" or
       can't annotate)</li>
     <li>Supports Avaje/Jakarta/Javax Constraint Annotations</li>
     <li>Validation Group Support</li>
@@ -628,7 +628,7 @@ public class GraphService {
       <li>Implement an adapter to validate objects</li>
     </ol>
 
-    <h3 id="constraint">@Constraint</h3>
+    <h3 id="constraints">@Constraint</h3>
     <p>
       We use the <code>@Constraint</code> annotation to mark an annotation class as a composable constraint annotation.
       The below example section shows how to write a constraint annotation which ensures that a given string is either
