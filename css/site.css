@@ -5,7 +5,7 @@
   --bg-side: #eee;
   --bg-banner: #132d45;
   --bg-banner2: #143554;
-  --fg-banner: #fff;
+  --fg-banner: #E79B3D;
   --fg-banner-nav: #0e84b5;
   --fg-article: #d07f34;
   --fg-link1-color: #0e84b5;
@@ -25,6 +25,7 @@
   --body-color: #cecece;
   --body-bg-color: #292929;
   --bg-side: #272727;
+  --fg-banner: #fff;
   --fg-link1-color: #0e9ccf;
   --fg-link1Visit-color: #0e85be;
   --bg-code: #303030;
@@ -115,11 +116,23 @@ header, footer {
   padding: 2rem;
   margin-bottom: 1.5rem;
 }
-#hero h1 {
+#hero h2 {
   font-family: 'Ubuntu', sans-serif;
-  font-size: 4rem;
-  color: var(--fg-banner);
+  font-size: 2rem;
+  color: #fff;
   text-align: center;
+  margin-top: auto;
+}
+
+#hero path {
+  fill: var(--fg-banner);
+}
+
+@media only screen and (max-width: 454px) {
+  #hero svg {
+    width: 100%;
+    height: auto;
+  }
 }
 
 body {

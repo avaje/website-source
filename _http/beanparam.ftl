@@ -1,22 +1,24 @@
 <h2 id="bean-param">@BeanParam</h2>
 <p>
-  We can create a bean and annotate with <code>@BeanParam</code>.
+  We can create a bean and annotate it in a controller method with <code>@BeanParam</code>.
   The properties on the bean default to being <code>query parameters</code>.
 </p>
 <p>
-  We typically do this when we have a set of query parameters that are
+  We typically do this when we have a set of query parameters/headers that are
   common / shared across a number of endpoints.
 </p>
 <pre content="java">
 public class CommonParams {
 
-  public Long firstRow;
-  public Long maxRows;
-  public String sortBy;
-  public Set<String> filter;
+  private Long firstRow;
+  private Long maxRows;
+  private String sortBy;
+  private Set<String> filter;
   //you can use ignore to mark a field as not a request parameter
   @Ignore
-  public String ignored;
+  private String ignored;
+
+  //getters/setters or a constructor
 }
 </pre>
 <p>
@@ -36,11 +38,11 @@ List<|Cat> findCats(String type, @BeanParam CommonParams params) {
 ApiBuilder.get("/cats/search/{type}", ctx -> {
   ctx.status(200);
   String type = ctx.pathParam("type");
-  CommonParams params =  new CommonParams();
-  params.firstRow = toLong(ctx.queryParam("firstRow"));
-  params.maxRows = toLong(ctx.queryParam("maxRows"));
-  params.sortBy = ctx.queryParam("sortBy");
-  params.filter = list(Objects::toString, ctx.queryParams("filter"));
+  CommonParams params = new CommonParams();
+  params.setFirstRow(toLong(ctx.queryParam("firstRow")));
+  params.setMaxRows(toLong(ctx.queryParam("maxRows")));
+  params.setSortBy(ctx.queryParam("sortBy"));
+  params.setfilter(list(Objects::toString, ctx.queryParams("filter")));
 
   ctx.json(controller.findCats(type, params));
 });
@@ -49,8 +51,7 @@ ApiBuilder.get("/cats/search/{type}", ctx -> {
 <h4>@Form</h4>
 <p>
   <em>@BeanParam</em> and <em>@Form</em> are very similar except with <em>@Form</em> beans the
-  properties default to form parameters and with <em>@BeanParam</em> they default to query
-  parameters.
+  properties default to form parameters instead of query parameters.
 </p>
 
 <h4>JAX-RS @BeanParam</h4>
@@ -68,15 +69,17 @@ ApiBuilder.get("/cats/search/{type}", ctx -> {
 <pre content="java">
 public class CommonParams {
 
-  public Long firstRow;
-  public Long maxRows;
-  public String sortBy;
-  public String filter
+  private Long firstRow;
+  private Long maxRows;
+  private String sortBy;
+  private String filter
 
   @Header
-  public String ifModifiedSince;
+  private String ifModifiedSince;
 
   @Cookie
-  public String myState;
+  private String myState;
+
+  //getters/setters or a constructor
 }
 </pre>

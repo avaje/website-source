@@ -86,7 +86,7 @@ ApiBuilder.post("/baz/form", ctx -> {
 
 ApiBuilder.post("/baz/bean", ctx -> {
   ctx.status(201);
-  HelloBean helloBean =  new HelloBean(
+  HelloBean helloBean = new HelloBean(
     ctx.queryParam("name"),
     ctx.queryParam("email")
   );

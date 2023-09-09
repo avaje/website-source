@@ -16,7 +16,7 @@
       <li><a href="#matrix-parameters">Matrix parameters</a></li>
       <li><a href="#query-parameters">@QueryParam</a></li>
       <li><a href="#bean-param">@BeanParam</a></li>
-      <li><a href="#post">@Post</a></li>
+      <li><a href="#post">Request Body</a></li>
       <li><a href="#form">@Form</a></li>
       <li><a href="#form-param">@FormParam</a></li>
       <li><a href="#form-beans">Form beans</a></li>
@@ -24,10 +24,13 @@
       <li><a href="#header">@Header</a></li>
       <li><a href="#cookie">@Cookie</a></li>
       <li><a href="#default">@Default</a></li>
-      <li><a href="#get">@Get</a></li>
-      <li><a href="#delete">@Delete</a></li>
-      <li><a href="#put">@Put</a></li>
-      <li><a href="#patch">@Patch</a></li>
+    </ul>
+  </@nav>
+  <@nav url="#filter" title="Filters/Exceptions">
+    <ul>
+      <li><a href="#filter">@Filter</a></li>
+      <li><a href="#exceptions">@ExceptionHandler</a></li>
+      <li><a href="#javalin-filter">@Before/@After</a></li>
     </ul>
   </@nav>
   <@nav url="#context" title="Context">

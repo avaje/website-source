@@ -24,12 +24,6 @@
   <!-- Annotation processors -->
   <dependency>
     <groupId>io.avaje</groupId>
-    <artifactId>avaje-inject-generator</artifactId>
-    <version>${avaje-inject.version}</version>
-    <scope>provided</scope>
-  </dependency>
-  <dependency>
-    <groupId>io.avaje</groupId>
     <artifactId>avaje-http-{javalin/helidon}-generator</artifactId>
     <version>${avaje-http.version}</version>
     <scope>provided</scope>
@@ -72,13 +66,12 @@ public class WidgetController {
 <h2 id=usage>Usage</h2>
 <p>
   The natural way to use the generated adapters is to
-  get a DI library to find and wire them. This is what the below examples do and
-  they use <em>Avaje</em> to do this.
+  get a DI library to find and wire them.
 </p>
 <p>
   Note that there isn't a requirement to use Avaje for dependency injection.
   Any DI library that can find and wire the generated <em>@Singleton</em> beans can
-  be used. You can even use Dagger2 or Guice to wire the controllers if you so desire.
+  be used.
 </p>
 
 <h4>Usage with Javalin</h2>
@@ -87,26 +80,22 @@ public class WidgetController {
 get all the WebRoutes and register them with Javalin using:
 </p>
 <pre content="java">
-List<WebRoutes> routes = BeanScope.builder().build().list(WebRoutes.class);
+ List<Plugin> routes = ...; //retrieve using a DI framework
 
-Javalin.create()
-        .routes(() -> routes.forEach(WebRoutes::registerRoutes))
-        .start();
+Javalin.create(cfg -> routes.forEach(cfg.plugins::register)).start();
 </pre>
 
 <h4>Usage with Helidon SE (4.x)</h2>
 <p>
-The annotation processor will generate controller classes implementing the Helidon HttpService interface, which we can use
+The annotation processor will generate controller classes implementing the Helidon HttpFeature interface, which we can use
 get all the services and register them with the Helidon `HttpRouting`.
 </p>
 
 <pre content="java">
-List<HttpService> routes = BeanScope.builder().build().list(HttpService.class);
+List<HttpFeature> routes = ... //retrieve using a DI framework
 final var builder = HttpRouting.builder();
 
-for (final HttpService httpService : routes) {
-   httpService.routing(builder);
-}
+routes.forEach(builder::addFeature);
 
 WebServer.builder()
          .addRouting(builder.build())
