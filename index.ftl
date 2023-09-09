@@ -18,7 +18,7 @@
         </clipPath>
       </defs>
     </svg>
-    <h2>JVM Libraries and Utilities</h2>
+    <h2>Compile-time libraries for JVM applications</h2>
   </div>
   <div class="c-narrow">
     <table class="index-toc">
@@ -26,7 +26,7 @@
         <th width="25%"><a href="/config">Configuration</a></th>
         <td>
           <p>
-            Provides external configuration for applications. Loads <em>yaml</em> and
+            Provides external configuration. Loads <em>yaml</em> and
             <em>properties</em> files, supports dynamic configuration and plugins.
           </p>
         </td>
@@ -36,12 +36,10 @@
         <td>
           <p>
             Cloud Native/Kubernetes friendly <a href="/inject">dependency injection</a>
-            by generating source code using java annotation processing.
+            via source code generation instead of expensive reflection and classpath scanning.
           </p>
           <p>
-            Similar to Dagger2, it uses annotation processing to perform dependency injection
-            using source code generation. Unlike Dagger2, it includes lifecycle support and support
-            for component testing.
+            It includes bean lifecycle support and component testing.
           </p>
         </td>
       </tr>
