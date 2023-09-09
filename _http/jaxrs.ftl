@@ -1,15 +1,11 @@
 
 <h2 id="jaxrs">JAX-RS</h2>
 <p>
-  With the annotation processor we have chosen to use our own annotations rather than use JAX-RS.
-</p>
-<p>
   Why not use the standard JAX-RS annotations?
 </p>
 <ul>
   <li>The JAX-RS API dependency also has a LOT of other stuff we don't want</li>
   <li>We can improve on JAX-RS making our controllers <b>less verbose</b></li>
-  <li>We may support JAX-RS annotations at some future point</li>
 </ul>
 
 <p>&nbsp;</p>

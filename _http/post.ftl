@@ -1,10 +1,4 @@
-
-<h2 id="post">@Post</h2>
-<p>
-  Annotate methods with <code>@Post</code> for HTTP POST web routes.
-</p>
-
-<h3 id="post-json">Post JSON</h3>
+<h2 id="post">Request Body</h2>
 <p>
   Avaje auto detects that a parameter is a request body if the type is a <code>POJO</code>/<code>byte[]</code>/<code>InputStream</code> and not marked with a <code>@BeanParam</code> annotation. To mark a string parameter as a body, use the <code>@BodyString</code> annotation.
 </p>
