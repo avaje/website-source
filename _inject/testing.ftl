@@ -529,7 +529,7 @@ class MyTestConfiguration {
 </p>
 
 <p>
-  Note that <code>@InjectTest</code> is syntactic sugar for junit5 <code>@ExtendWith(InjectExtension.class)</code>
+  <code>@InjectTest</code> is syntactic sugar for junit5 <code>@ExtendWith(InjectExtension.class)</code>
 </p>
 
 

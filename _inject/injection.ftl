@@ -11,11 +11,6 @@
 public class CoffeeMaker {
   ...
 </pre>
-<h5>Spring DI Note</h5>
-<p>
-  Spring <code>@Component</code>, <code>@Service</code> and <code>@Repository</code> are all
-  singleton scoped. With avaje-inject these would map to <code>@Singleton</code>.
-</p>
 
 <h3 id="component">@Component</h3>
 <p>
@@ -70,14 +65,13 @@ public class CoffeeMaker {
 <h3 id="inject">@Inject</h3>
 <p>
   Put <code>@Inject</code> on the constructor that should be used for constructor dependency injection.
-  If there is <code>only one constructor</code> we don't need this annotation.
 </p>
 <p>
-  If we want to use field injection put the <code>@Inject</code> on the field. Note that the field must not
+  If we want to use field injection put the <code>@Inject</code> on the field. The field must not
   be <code>private</code> and must not be <code>final</code> for field injection.
 </p>
 
-<h3 id="constructor">Constructor injection</h3>
+<h3 id="constructor">Constructor Injection</h3>
 <pre content="java">
 @Singleton
 public class CoffeeMaker {
@@ -97,29 +91,33 @@ public class CoffeeMaker {
   The above CoffeeMaker is using constructor injection. Both a Pump and Ginder will be injected into the
   constructor when the DI creates (or "wires") the CoffeeMaker.
 </p>
+
+<h4>Single Constructors</h4>
 <p>
-  If there is only 1 constructor it is used for dependency injection and we don't need
-  to specify <code>@Inject</code>.
-</p>
-<p>
-  In general we do not expect to see logic in constructors as this typically makes it
-  more difficult to write tests. If we see logic in a constructor then it is likely that we
-  should try and move that logic to a <a href="#factory">Factory</a> method instead.
+  If there is only one constructor, <b>we don't need
+  to specify <code>@Inject</code></b>. This includes records and kotlin data classes.
 </p>
 
-<h4>Kotlin constructor</h4>
-<p>
-  With Kotlin we frequently will not specify <em>@Inject</em> with only one constructor.
-  The CoffeeMaker constructor injection then looks like:
-</p>
-<pre content="kotlin">
+<pre content="java">
 @Singleton
-class CoffeeMaker(private val pump: Pump , private val grinder: Grinder)  {
+public class CoffeeMaker {
 
-  fun makeCoffee() {
-    ...
+  private final Pump pump;
+  private final Grinder grinder;
+
+  public CoffeeMaker(Pump pump, Grinder grinder) {
+    this.pump = pump;
+    this.grinder = grinder;
   }
 }
+</pre>
+<pre content="java">
+@Singleton
+public record CoffeeMaker(Pump pump, Grinder grinder) {}
+</pre>
+<pre content="kotlin">
+@Singleton
+class CoffeeMaker(private val pump: Pump , private val grinder: Grinder) {}
 </pre>
 
 <h3 id="field">Field Injection</h3>
@@ -177,7 +175,7 @@ class Grinder {
 
 <h3 id="method">Method Injection</h3>
 <p>
-  For method injection annotate the method with <code>@Inject</code>.
+  For method injection annotate a method with <code>@Inject</code>.
 </p>
 <pre content="java">
 @Singleton
@@ -439,14 +437,9 @@ class UseFoo  {
   same as <em>Prototype scope</em>.
 </p>
 <p>
-  Note that the alternative to implementing the <code>Provider&lt;T&gt;</code> interface is
+  An alternative to implementing the <code>Provider&lt;T&gt;</code> interface is
   to instead use <code><a href="#factory">@Factory</a></code> and <code><a href="#bean">@Bean</a></code>
-  as it is more flexible and convenient than implementing the provider interface.
-</p>
-<h5>Spring DI Note</h5>
-<p>
-  The JSR 330 <code>javax.inject.Provider&lt;T&gt;</code> interface is functionally the same
-  as Spring DI <code>FactoryBean&lt;T&gt;</code>.
+  as can be more flexible and convenient.
 </p>
 
 <h3 id="factory">@Factory</h3>

@@ -124,7 +124,7 @@ public class App {
   We specify these dependencies using <code>@InjectModule(requires = ...)</code>.
 </p>
 <p>
-  Note that custom scope beans are allowed to depend on any bean in the "default scope" implicitly. We do not
+  Custom scope beans are allowed to depend on any bean in the "default scope" implicitly. We do not
   need to specify a dependency for custom scoped beans to use default scoped beans.
 </p>
 <p>

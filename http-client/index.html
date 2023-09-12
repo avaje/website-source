@@ -193,8 +193,7 @@ dependencies {
   Current notable limitations are:
 </p>
 <ul>
-  <li>No support for multipart-form body (Though some <a href="https://github.com/yskszk63/jnhttp-multipartformdata-bodypublisher">libraries</a> provide bodyPublishers that can be used to send multi-part data)</li>
-  <li>Retry (when specified) does not currently apply to <em>async</em> request processing</li>
+  <li>No built-in support for multipart-form body (Though some <a href="https://github.com/yskszk63/jnhttp-multipartformdata-bodypublisher">libraries</a> provide bodyPublishers that can be used to send multi-part data)</li>
 </ul>
 
 <h3 id="quick-overview">Quick Overview</h3>
@@ -842,7 +841,7 @@ dependencies {
     });
 </pre>
 
-<h2 id="retry">Retry (Sync Requests Only)</h2>
+<h2 id="retry">Retry</h2>
 <p>
   To add Retry funtionality, use <code>.retryHandler(yourhandler)</code> on the builder to provide your retry handler.
 </p>
