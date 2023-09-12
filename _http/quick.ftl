@@ -76,8 +76,7 @@ public class WidgetController {
 
 <h4>Usage with Javalin</h2>
 
-<p>The annotation processor will generate controller classes implementing the WebRoutes interface, which means we can
-get all the WebRoutes and register them with Javalin using:
+<p>The annotation processor will generate controller classes implementing the javalin <code>Plugin</code> interface, which means we can register them using:
 </p>
 <pre content="java">
  List<Plugin> routes = ...; //retrieve using a DI framework
@@ -87,8 +86,7 @@ Javalin.create(cfg -> routes.forEach(cfg.plugins::register)).start();
 
 <h4>Usage with Helidon SE (4.x)</h2>
 <p>
-The annotation processor will generate controller classes implementing the Helidon HttpFeature interface, which we can use
-get all the services and register them with the Helidon `HttpRouting`.
+The annotation processor will generate controller classes implementing the Helidon <code>HttpFeature</code> interface, which we can register with the Helidon <code>HttpRouting</code>.
 </p>
 
 <pre content="java">
