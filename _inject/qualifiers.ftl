@@ -7,7 +7,7 @@
   they are injected. This is a standard part of most Java DI frameworks.
 </p>
 <p>
-  Note that qualifier names are treated as case insensitive.
+  Qualifier names are case insensitive.
 </p>
 <p>
   Lets say we have a Store interface with multiple implementations. We can have
