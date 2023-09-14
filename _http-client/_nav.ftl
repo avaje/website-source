@@ -38,7 +38,7 @@
   </@nav>
   <@nav url="#httpException" title="HttpException">
     <ul>
-      <li><a href="#error-mapping">Error Mapping</a></li>
+      <li><a href="#error-mapping">Exception Mapping</a></li>
     </ul>
   </@nav>
 
