@@ -663,11 +663,11 @@ dependencies {
 
 <h2 id="httpException">HttpException</h2>
 <p>
-  An HttpException is thrown when the status code is not in the 2XX range and the call is one of <a href="#bean">bean()</a>,
+  An <code>HttpException</code> is thrown when the status code is not in the 2XX range and the call is one of <a href="#bean">bean()</a>,
   <a href="#list">list()</a>, <a href="#stream">stream()</a>, <a href="#asVoid">asVoid()</a>.
 </p>
 <p>
-  HttpException effectively wraps the HttpResponse and provides helper methods to get the response body
+  <code>HttpException</code> effectively wraps the <code>HttpResponse</code> and provides helper methods to get the response body
   as String, byte[] or bean (via the registered body adapter).
 </p>
 <pre content="java">
@@ -685,9 +685,77 @@ dependencies {
   MyErrorBean errorResponse = httpException.bean(MyErrorBean.class);
 </pre>
 
+<h3 id="error-mapping">Exception Mapping</h2>
 <p>
-  Reference javadoc <a target="_blank" href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/HttpException.html">HttpException</a>
+  To automatically map <code>HttpException</code> into a custom exception you can provide a mapper function globally or per request.
 </p>
+<pre content="java">
+  HttpClient client = HttpClient.builder()
+  .baseUrl("https://api.github.com")
+  //set a global mapper any http exceptions will be mapped using this function
+  .globalErrorMapper(httpException -> new CustomException(httpException))
+  .build();
+
+  //can also set a mapper per request (will override the global one)
+  client.request()
+        .errorMapper(httpException -> new CustomException(httpException))
+        .GET()
+        .asPlainString();
+</pre>
+
+<p>
+  On request failure the function will receive the <code>HttpException</code> to be mapped into your custom exception and be rethrown.
+</p>
+
+<h4>Client Generation</h4>
+  <p>
+    If a method has a <code>throws</code> clause, and the exception has a constructor that takes a single <code>HttpException</code>, then the generated code will automatically register the contructor as an error mapper.
+  </p>
+  <p>
+    Given the below exception and client interface:
+  </p>
+  <pre content="java">
+    public class CustomException extends RuntimeException {
+
+      public CustomException(HttpException httpException) {
+        //process the exception (perhaps get the status code or response body)
+      }
+      ...
+    }
+  </pre>
+  <pre content="java">
+    @Client
+    public interface ApiClient {
+
+      @Get("/mapped")
+      String mapped() throws CustomException;
+    }
+  </pre>
+  <p>
+    The below implementation will be generated:
+  </p>
+  <pre content="java">
+    @Generated("avaje-http-client-generator")
+    public class ApiClientHttpClient implements ApiClient {
+
+      private final HttpClient client;
+
+      public ApiClientHttpClient(HttpClient client) {
+        this.client = client;
+      }
+
+      // GET /mapped
+      @Override
+      public String mapped() {
+        return client.request()
+          .path("mapped")
+          .errorMapper(CustomException::new) // error mapper registered
+          .GET()
+          .asPlainString().body();
+      }
+
+    }
+  </pre>
 
 <h2 id="async">Async</h2>
 <p>

@@ -36,7 +36,12 @@
       <li><a href="#withHandler">withHandler</a></li>
     </ul>
   </@nav>
-  <@nav url="#httpException" title="HttpException"/>
+  <@nav url="#httpException" title="HttpException">
+    <ul>
+      <li><a href="#error-mapping">Exception Mapping</a></li>
+    </ul>
+  </@nav>
+
   <@nav url="#async" title="Async">
     <ul>
       <li><a href="#async-join">testing with join</a></li>
