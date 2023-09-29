@@ -81,7 +81,7 @@ public class WidgetController {
 <pre content="java">
  List<Plugin> routes = ...; //retrieve using a DI framework
 
-Javalin.create(cfg -> routes.forEach(cfg.plugins::register)).start();
+ Javalin.create(cfg -> routes.forEach(cfg.plugins::register)).start();
 </pre>
 
 <h4>Usage with Helidon SE (4.x)</h2>
