@@ -33,9 +33,9 @@
    * @return funny phrase (this part of the javadoc is added to the response desc)
    */
   @Post("/post")
-  ResponseModel endpoint(RequestModel) {
+  ResponseModel endpoint(RequestModel model) {
   ...
- }
+  }
 </pre>
 
 <p>In Addition, the generator can read the request/response class javadoc to generate openAPI component description.</p>
