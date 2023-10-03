@@ -123,7 +123,7 @@ public class BeanValidator implements Validator {
 
 <h4>Using Avaje Validation</h4>
 <p>
-  Add a dependency on <em>avaje-validator</em>. This will transitively
+  Add a dependency on <a target="_blank" href="https://avaje.io/validator/"><em>avaje-validator</em></a>. This will transitively
   bring in a <em>Validator</em> instance which will be used to validate beans.
 </p>
 <pre content="xml">
@@ -159,12 +159,12 @@ public class BeanValidator implements Validator {
 </p>
 
 <pre content="java">
-app.exception(ValidationException.class, (exception, ctx) -> {
+  record ErrorResponse(String message, List<Violation> violations){};
 
-  Map<|String, Object> map = new LinkedHashMap<>();
-  map.put("message", exception.getMessage());
-  map.put("errors", exception.getErrors());
-  ctx.json(map);
-  ctx.status(exception.getStatus());
-});
+  @Produces(statusCode = 400)
+  @ExceptionHandler
+  ErrorResponse validException(ValidationException ex) {
+
+   return new ErrorResponse(ex.getMessage(), ex.getErrors());
+  }
 </pre>

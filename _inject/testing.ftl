@@ -512,7 +512,7 @@ class MyTestConfiguration {
 </p>
 <h5>1. Extra bean</h5>
 <p>
-  For testing purposes we want to create an <b>extra</b> bean. For example, the LocalstackContainer that starts a docker container.
+  For testing purposes we want to create an <b>extra</b> bean. For example, the LocalStackContainer that starts a docker container.
 </p>
 
 <h5>2. Default bean</h5>

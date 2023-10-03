@@ -53,6 +53,12 @@ public class CoffeeMaker {
     // close resources
     ...
   }
+
+  @PreDestroy(priority=20) //default value is 1000
+  void onShutdownPriority() {
+    // close resources in a specific order
+    ...
+  }
   ...
 </pre>
 

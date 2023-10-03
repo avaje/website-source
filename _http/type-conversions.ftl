@@ -30,18 +30,18 @@ Hello hello(int id,
   with <code>toLocalDate()</code> and <code>toBoolean()</code>.
 </p>
 <pre content="java">
-ApiBuilder.get("/hello/:id/:name", ctx -> {
+ApiBuilder.get("/hello/{id}/{name}", ctx -> {
   ctx.status(200);
   int id = asInt(ctx.pathParam("id"));
   String name = ctx.pathParam("name");
   LocalDate startDate = toLocalDate(ctx.queryParam("startDate"));
   Boolean active = toBoolean(ctx.queryParam("active"));
   List<Long> longs = list(PathTypeConversion::toLong, ctx.queryParams("longs"));
-  ctx.json(controller.hello(id, name, startDate, active));
+  ctx.json(controller.hello(id, name, startDate, active, longs));
 });
 </pre>
 
-<h3>Exception handlers</h3>
+<h3>Conversion Exception Handling</h3>
 <p>
   If a parameter fails type conversion then <code>InvalidPathArgumentException</code> is thrown.
   This exception is typically mapped to a <code>404</code> response in the exception handler.
@@ -59,21 +59,19 @@ ApiBuilder.get("/hello/:id/:name", ctx -> {
 </p>
 
 <pre content="java">
-  app.exception(InvalidPathArgumentException.class, (exception, ctx) -> {
+  record ErrorResponse(String path, String message){};
 
-    Map<|String, String> map = new LinkedHashMap<>();
-    map.put("path", ctx.path());
-    map.put("message", "invalid path argument");
-    ctx.json(map);
-    ctx.status(404);
-  });
+  @Produces(statusCode = 404)
+  @ExceptionHandler(InvalidPathArgumentException.class)
+  ErrorResponse validException(Context ctx) {
 
-  app.exception(InvalidTypeArgumentException.class, (exception, ctx) -> {
+   return new ErrorResponse(ctx.path(), "invalid path argument");
+  }
 
-    Map<|String, String> map = new LinkedHashMap<>();
-    map.put("path", ctx.path());
-    map.put("message", "invalid type argument");
-    ctx.json(map);
-    ctx.status(400);
-  });
+  @Produces(statusCode = 400)
+  @ExceptionHandler(InvalidTypeArgumentException.class)
+  ErrorResponse validException(Context ctx) {
+
+   return new ErrorResponse(ctx.path(), "invalid type argument");
+  }
 </pre>
