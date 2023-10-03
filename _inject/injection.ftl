@@ -117,7 +117,7 @@ public record CoffeeMaker(Pump pump, Grinder grinder) {}
 </pre>
 <pre content="kotlin">
 @Singleton
-class CoffeeMaker(private val pump: Pump , private val grinder: Grinder) {}
+class CoffeeMaker(private val pump: Pump, private val grinder: Grinder) {}
 </pre>
 
 <h3 id="field">Field Injection</h3>

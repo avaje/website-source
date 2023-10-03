@@ -23,6 +23,7 @@
    //... filter logic
   }
 </pre>
+
 <h2 id="exceptions">@ExceptionHandler</h2>
  As the name implies, this annotation marks a handler method for handling exceptions that are thrown by other handlers.
 
@@ -40,17 +41,6 @@
  <p>Handler methods may be void or return an object for serialization. When returning an object, we can combine the <code>@ExceptionHandler</code> annotation with <code>@Produces</code> for a
  specific HTTP error status and media type.
 </p>
-
-<h4>Helidon</h4>
-<p>
-  Helidon filters must have a <code>FilterChain</code> parameter, and optionally can add <code>RoutingRequest</code> and <code>RoutingResponse</code>.
-</p>
-<pre content="java">
-  @Filter
-  void filter(FilterChain chain, RoutingRequest req, RoutingResponse res) {
-   //... filter logic
-  }
-</pre>
 
 <h4>Helidon</h4>
 <pre content="java">
@@ -84,3 +74,15 @@
 <p>
   For Javalin applications, we can use <code>@Before/@After</code> to mark a handler as a Javalin before/after handler.
 </p>
+
+<pre content="java">
+  @Before("/path")
+  void before(Context ctx) {
+   //... before logic
+  }
+
+  @After("/path")
+  void after(Context ctx) {
+   //... after logic
+  }
+</pre>

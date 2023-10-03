@@ -14,15 +14,15 @@
   multiple implementations with <em>@Named</em> qualifier like the example below.
 </p>
 <pre content="java">
-@Named("blue")
 @Singleton
+@Named("blue")
 public class BlueStore implements Store {
   ...
 }
 
 
-@Named("red")
 @Singleton
+@Named("red")
 public class RedStore implements Store {
   ...
 }
@@ -37,12 +37,14 @@ public class RedStore implements Store {
 @Factory
 public class StoreFactory {
 
-  @Bean @Named("red")
+  @Bean
+  @Named("red")
   public Store createRedStore() {
     return new RedStore(...);
   }
 
-  @Bean @Named("blue")
+  @Bean
+  @Named("blue")
   public Store createBlueStore() {
     return new BlueStore(...);
   }
@@ -71,7 +73,8 @@ public class OrderProcessor {
 @Singleton
 public class OrderProcessor {
 
-  @Inject @Named("red")  // field injection
+  @Inject
+  @Named("red")  // field injection
   Store store;
 
   ...

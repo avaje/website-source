@@ -120,12 +120,12 @@
   and <code>@PreDestroy</code> lifecycle annotations.
 </p>
 
-<h3 id="extensions">Spring-like DI extensions to JSR-330</h3>
+<h3 id="extensions">DI extensions to JSR-330</h3>
 
-<h4>@InjectTest - component testing</h4>
+<h4>Component Testing</h4>
 <p>
-  We use <code><a href="#inject-test">@InjectTest</a></code> for <a href="#component-testing">component testing</a> which is similar
-  to Spring's junit extensions <code>SpringExtension</code>, <code>@SpringBootTest</code>.
+  We use <code><a href="#inject-test">@InjectTest</a></code> for <a href="#component-testing">component testing</a>, similar
+  to Spring's <code>@SpringBootTest</code>.
 </p>
 <p>
   This is where we get avaje-inject to wire the test class using <code>@Inject, @Mock, @Spy</code>.

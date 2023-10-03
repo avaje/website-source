@@ -77,12 +77,11 @@ module org.example {
   <code>target/generated-sources/annotations</code>.
 </p>
 
-<h5>External Avaje Dependencies</h5>
+<h3>External Avaje Dependencies</h3>
 <p>
   If your project uses the module system and imports maven dependencies that provide inject </code>Plugin</code>/</code>Module</code> classes,
   you will need to add the <a href="#autoRequires">maven/gradle inject plugin</a> so that the generated DI classes from the dependencies are discovered.
 </p>
-
 
 <h2 id="generated">Generated Sources</h2>
 
