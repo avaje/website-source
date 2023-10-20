@@ -1,5 +1,8 @@
 
 <h2 id="modules">Modules</h2>
+<p>
+  To wire all the beans into a scope, <i>avaje-inject</i> generates module classes that run all the constructors/factory methods and adds all beans to the <i>scope</i>.
+</p>
 <h3 id="single-module">Single Module Apps</h3>
 <p>
   When we are wiring dependencies that are all part of a single jar/module then we don't
