@@ -1,20 +1,5 @@
 
 <h2 id="modules">Modules</h2>
-<p>
-  To wire all the beans into a scope, <i>avaje-inject</i> generates module classes that run all the constructors/factory methods and adds all beans to the <i>scope</i>.
-</p>
-<h3 id="unnamed-module">Unnamed Modules</h3>
-<p>
-  When we don't specify <em>@InjectModule</em> on a module it is an <em>unnamed module</em>.
-  In effect, the module name is derived from the top most package and that module has no
-  <em>provides</em> or <em>requires</em> specified.
-</p>
-<p>
-  For example, if the top level package is determined to be <code>org.foo.coffee</code> then
-  the module is called <code>CoffeeModule</code>. In <code>target/generated-sources/annotations</code>
-  we will see the generated <code>org.foo.coffee.CoffeeModule</code>.
-</p>
-
 <h3 id="single-module">Single Module Apps</h3>
 <p>
   When we are wiring dependencies that are all part of a single jar/module then we don't

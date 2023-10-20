@@ -65,6 +65,33 @@ class CustomerController {
 }
 </pre>
 
+<h3>Module/Package Wide Root Paths</h3>
+<p>
+  When a <code>@Path</code> annotation is placed on a module-info or package-info file, that path wil be prepended to all controllers contained within the packages and sub-packages.
+</p>
+<pre content="java">
+@Path("/module")
+module example.module {
+//contents...
+}
+</pre>
+<p>
+  The URI's for the CustomerController below are:
+</p>
+<pre content="text">
+  GET /module/customer
+</pre>
+<pre content="java">
+@Controller("/customer")
+class CustomerController {
+
+  @Get
+  List<|Customer> findAll() {
+    ...
+  }
+}
+</pre>
+
 <h2 id="path-parameters">Path parameters</h2>
 <p>
   Path parameters start with <code>{</code> and end with <code>}</code>.
