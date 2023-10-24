@@ -98,13 +98,14 @@ ApiBuilder.post("/customers/register", ctx -> {
 public class MyForm {
 
   @Size(min=2, max=100)
-  public String name;
-  public String email;
-  public String url;
+  private String name;
+  private String email;
+  //getters/setters/constructors
 }
 </pre>
 <pre content="java">
-@Form @Post("register")
+@Form
+@Post("register")
 void register(MyForm myForm) {
   ...
 }
@@ -114,11 +115,7 @@ The generated Javalin code for the above is.
 <pre content="java">
 ApiBuilder.post("/contacts/register", ctx -> {
   ctx.status(201);
-  MyForm myForm =  new MyForm();
-  myForm.name = ctx.formParam("name");
-  myForm.email = ctx.formParam("email");
-  myForm.url = ctx.formParam("url");
-
+  MyForm myForm = new MyForm(ctx.formParam("name"), ctx.formParam("name"), ctx.formParam("email"));
   controller.register(myForm);
 });
 </pre>

@@ -66,7 +66,7 @@
 <p>
   Dagger2 is not particularly orientated for server side developers. It has no lifecycle
   support (@PostConstruct + @PreDestroy) and does not have some features that we like from
-  Spring DI (@Factory + @Bean, @Primary + @Secondary).
+  Spring DI (@Factory + @Bean, @Primary + @Secondary, conditional wiring, etc.).
 </p>
 <h5>Why not use Quarkus?</h5>
 <p>

@@ -1337,6 +1337,35 @@ public interface Cats {
   .path("api").path("cats")
 </pre>
 
+<h3 id="property">Property Paths</h3>
+<p>
+  A path can by configured via system properties or avaje config. Property parameters start with <code>${</code> and end with <code>}</code>.
+</p>
+<p>
+  For example <code>{id}</code>, <code>{startDate}</code>, <code>{type}</code>
+  in the path are matched to method parameters of the same name.
+</p>
+<pre content="java">
+@Get("/{id}/{startDate}/{type}")
+List<|Bazz> findBazz(long id, LocalDate startDate, String type);
+</pre>
+<p>
+  The generated code includes <code>.path(id).path(startDate).path(type)</code>:
+</p>
+<pre content="java">
+  // GET /{id}/{startDate}/{type}
+  @Override
+  public List<|Bazz> findBazz(long id, LocalDate startDate, String type) {
+    return clientContext.request()
+      .path(id).path(startDate).path(type)
+      .GET()
+      .list(Bazz.class);
+  }
+</pre>
+<p>
+  Unlike JAX-RS we do not need a <code>@PathParam</code> annotation.
+</p>
+
 <h3 id="pathParameters">Path parameters</h3>
 <p>
   Path parameters start with <code>{</code> and end with <code>}</code> and matched

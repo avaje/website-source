@@ -66,13 +66,13 @@
 
 <pre content="java">
  @Post("/post")
- @OpenAPIResponse(responseCode = "200", description = "overrides @return javadoc description")
- @OpenAPIResponse(responseCode = "201") // Will use @return javadoc description
+ @OpenAPIResponse(responseCode = 200, description = "overrides @return javadoc description")
+ @OpenAPIResponse(responseCode = 201) // Will use @return javadoc description
  @OpenAPIResponse(
-      responseCode = "404",
+      responseCode = 404,
       description = "User not found (Will not have an associated response schema)")
  @OpenAPIResponse(
-      responseCode = "500",
+      responseCode = 500,
       description = "Some other Error (Will have this error class as the response class reference)",
       type = ErrorResponse.class)
  ResponseModel endpoint() {}
