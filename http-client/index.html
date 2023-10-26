@@ -914,7 +914,7 @@ dependencies {
   To add Retry funtionality, use <code>.retryHandler(yourhandler)</code> on the builder to provide your retry handler.
 </p>
 <p>
-  The RetryHandler interface provides two methods, one for status exceptions (e.g. you get a 4xx/5xx from the server) and another for exceptions thrown by the underlying client (e.g. server times out or client couldn't send request).
+  The <code>RetryHandler</code> interface provides two methods, one for status exceptions (e.g. you get a 4xx/5xx from the server) and another for exceptions thrown by the underlying client (e.g. server times out or client couldn't send request).
   <br></br>Here is example implementation of RetryHandler.
 </p>
 
@@ -947,6 +947,38 @@ dependencies {
 
       return false;
     }
+</pre>
+
+<h2 id="intercept">Interceptors</h2>
+<p>
+  To support request interception, you can add one or more interceptors with the <code>.requestIntercept(yourinterceptors)</code> on the client builder.
+</p>
+<p>
+  The <code>RequestIntercept</code> interface provides methods for performing actions before/after a request is sent.
+  <br></br>Here is an example implementation.
+</p>
+
+<pre content="java">
+  class MyIntercept implements RequestIntercept {
+    int counter;
+    long responseTimeMicros;
+    long customAttributeTimeMillis;
+    String label;
+
+    @Override
+    public void beforeRequest(HttpClientRequest request) {
+      // we can augment a request before it's sent
+      request.header("NEW_HEADER", "val");
+      request.setAttribute("MY_START_TIME", System.currentTimeMillis()).label();
+    }
+
+    @Override
+    public void afterResponse(HttpResponse<?> response, HttpClientRequest request) {
+
+      long start = request.getAttribute("MY_START_TIME");
+      long customAttributeTimeMillis = System.currentTimeMillis() - start;
+    }
+  }
 </pre>
 
 <h2 id="auth">Authorization</h2>
@@ -1340,33 +1372,27 @@ public interface Cats {
 <h3 id="property">Property Paths</h3>
 <p>
   A path can by configured via system properties or avaje config. Property parameters start with
-  <code>&#x0024;{</code> and end with <code>}</code>.
+  <code>&#x0024;{</code> and end with <code>}</code>. These will be evaluated on class load.
 </p>
-<p>
-  For example <code>{id}</code>, <code>{startDate}</code>, <code>{type}</code>
-  in the path are matched to method parameters of the same name.
-</p>
-
 <pre content="java">
-@Get("/{id}/{startDate}/{type}")
-List<|Bazz> findBazz(long id, LocalDate startDate, String type);
+@Get("/${get.path}")
+List<|Bazz> findBazz();
 </pre>
 <p>
-  The generated code includes <code>.path(id).path(startDate).path(type)</code>:
+  The generated code will generate code to retrive the value.
 </p>
 <pre content="java">
-  // GET /{id}/{startDate}/{type}
+  // GET /{get.path}
+  // Avaje Config will be used if detected on classpath
+  private static final String GET_PATH = System.getProperty("get.path")
   @Override
-  public List<|Bazz> findBazz(long id, LocalDate startDate, String type) {
+  public List<|Bazz> findBazz() {
     return clientContext.request()
-      .path(id).path(startDate).path(type)
+      .path(GET_PATH)
       .GET()
       .list(Bazz.class);
   }
 </pre>
-<p>
-  Unlike JAX-RS we do not need a <code>@PathParam</code> annotation.
-</p>
 
 <h3 id="pathParameters">Path parameters</h3>
 <p>

@@ -52,6 +52,8 @@
   </@nav>
   <@nav url="#retry" title="Retry">
   </@nav>
+  <@nav url="#intercept" title="Interceptors">
+  </@nav>
   <@nav url="#auth" title="Authorization">
     <ul>
       <li><a href="#auth-basic">basic auth</a></li>
