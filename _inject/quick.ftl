@@ -20,6 +20,18 @@
 </dependency>
 </pre>
 
+<h4>2a. JDK 22+ </h4>
+<p>In JDK 22+, annotation processors are disabled by default, so we need to add a flag to re-enable.</p>
+<pre content="xml">
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-compiler-plugin</artifactId>
+  <configuration>
+    <compilerArgument>-proc:full</compilerArgument>
+  </configuration>
+</plugin>
+</pre>
+
 <h4>3. Create a Bean Class annotated with <code>@Singleton</code></h4>
 
 <pre content="java">

@@ -91,6 +91,18 @@
   </dependency>
 </pre>
 
+<h4>2a. JDK 22+ </h4>
+<p>In JDK 22+, annotation processors are disabled by default, so we need to add a flag to re-enable.</p>
+<pre content="xml">
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-compiler-plugin</artifactId>
+  <configuration>
+    <compilerArgument>-proc:full</compilerArgument>
+  </configuration>
+</plugin>
+</pre>
+
  <h4>3. Add <code>@Json</code> onto types we want to serialize.</h4>
 <p>
   <br>The avaje-jsonb-generator annotation processor will generate a JsonAdapter as java source code for each type annotated with <code>@Json</code>.

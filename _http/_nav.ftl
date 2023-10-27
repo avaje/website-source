@@ -1,6 +1,8 @@
 <ul>
   <@nav url="#overview" title="Overview"/>
   <@nav url="#quick-start" title="Quick-Start"/>
+  <@nav url="#jpms" title="Java Modules"/>
+  <@nav url="#generated" title="Generated Adapters"/>
   <@nav url="#usage" title="Usage"/>
   <@nav url="#dependencies" title="Dependencies">
     <ul>

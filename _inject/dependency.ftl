@@ -94,7 +94,6 @@ DI classes will be generated to call the constructors for annotated type/factory
 <p>
 Below is the class generated for the Example class in the above quickstart.
 </p>
-
 <pre content="java">
 @Generated("io.avaje.inject.generator")
 public final class Example$DI  {
@@ -117,6 +116,8 @@ public final class Example$DI  {
 The inject annotation processor will determine the dependency wiring order of a project and generate a Module class that will wire the beans.
 </p>
 
+<details>
+  <summary>Generated ExampleModule</summary>
 <pre content="java">
 @Generated("io.avaje.inject.generator")
 @InjectModule
@@ -176,3 +177,4 @@ public final class ExampleModule implements Module {
   }
 }
 </pre>
+</details>
