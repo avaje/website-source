@@ -72,6 +72,49 @@ class BazController  {
   The generated code now includes validation of the beans before they are
   passed to the controller method. The generated code is:
 </p>
+
+<details>
+    <summary>Helidon 4.x</summary>
+
+<pre content="java">
+  private String language(ServerRequest req) {
+    return req.headers().first(HEADER_ACCEPT_LANGUAGE).orElse(null);
+  }
+
+  private void _saveForm(ServerRequest req, ServerResponse res) throws Exception {
+    var formParams = req.content().as(Parameters.class);
+    var helloForm =  new HelloForm(
+        formParams.first("name").orElse(null),
+        formParams.first("email").orElse(null)
+      );
+
+    validator.validate(helloForm, language(req));
+    controller.saveForm(helloForm, res);
+    ...
+  }
+
+  private void _saveBean(ServerRequest req, ServerResponse res) throws Exception {
+    var helloBean =  new HelloBean(
+        req.query().first("name").orElse(null),
+        req.query().first("email").orElse(null)
+      );
+
+    validator.validate(helloBean, language(req), Default.class, EmailCheck.class);
+    controller.saveBean(helloBean, res);
+  }
+
+  private void _saveBody(ServerRequest req, ServerResponse res) throws Exception {
+    res.status(CREATED_201);
+    var body = bodyClassJsonType.fromJson(req.content().inputStream());
+    validator.validate(body, language(req));
+    controller.saveBody(body, res);
+  }
+</pre>
+</details>
+
+<details>
+  <summary>Javalin</summary>
+
 <pre content="java">
 ApiBuilder.post("/baz/form", ctx -> {
   ctx.status(201);
@@ -103,6 +146,8 @@ ApiBuilder.post("/baz/body", ctx -> {
 });
 </pre>
 
+</details>
+<br>
 <h4>Custom Validation</h4>
 <p>
   For custom validation, you can can implement the avaje validator interface yourself and add custom logic.

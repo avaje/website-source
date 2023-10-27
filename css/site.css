@@ -352,3 +352,9 @@ table.table {
   padding-top: 2rem;
 }
 
+summary {
+  padding: 1rem 2em 1rem 0;
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+}
