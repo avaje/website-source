@@ -1,15 +1,9 @@
 
 <h2 id="quick-start">Quick Start</h2>
 <p>
-  1. Add <em>avaje-inject</em> and <em>avaje-http-api</em> dependencies.
+  1. Add <em>avaje-http-api</em> dependency.
 </p>
 <pre content="xml">
-<dependency>
-  <groupId>io.avaje</groupId>
-  <artifactId>avaje-inject</artifactId>
-  <version>${avaje-inject.version}</version>
-</dependency>
-
 <dependency>
   <groupId>io.avaje</groupId>
   <artifactId>avaje-http-api</artifactId>
@@ -24,7 +18,7 @@
   <!-- Annotation processors -->
   <dependency>
     <groupId>io.avaje</groupId>
-    <artifactId>avaje-http-{javalin/helidon}-generator</artifactId>
+    <artifactId>avaje-http-{helidon/javalin}-generator</artifactId>
     <version>${avaje-http.version}</version>
     <scope>provided</scope>
     <optional>true</optional>
