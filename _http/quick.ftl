@@ -31,6 +31,18 @@
   </dependency>
 </pre>
 
+<h4>2a. JDK 22+ </h4>
+<p>In JDK 22+, annotation processors are disabled by default, so we need to add a flag to re-enable.</p>
+<pre content="xml">
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-compiler-plugin</artifactId>
+  <configuration>
+    <compilerArgument>-proc:full</compilerArgument>
+  </configuration>
+</plugin>
+</pre>
+
 <p>3. Define a Controller (These APT processors work with both Java and Kotlin.)</p>
 
 <pre content="java">
