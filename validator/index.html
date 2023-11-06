@@ -7,7 +7,6 @@
 </head>
 
 <body>
-
   <h1 id="overview">Avaje Validator</h1>
 
   <table style="width: 100%;">
@@ -735,7 +734,7 @@ public class GraphService {
 
       @Component
       public class Geometry {
-        @Cross
+        @Pythagorean
         @ValidMethod
         String triangle(Integer sideA, Integer sideB, Integer hypotenuse) {
           return regular;
