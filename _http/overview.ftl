@@ -5,14 +5,14 @@ for Javalin and Helidon SE/Nima APIs via Annotation Processing.
 </p>
 <table width="100%">
   <tr>
-    <th>License</th>
+    <th>Discord</th>
     <th>Source</th>
     <th>API Docs</th>
     <th>Issues</th>
     <th>Releases</th>
   </tr>
   <tr>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-http/blob/master/LICENSE">Apache2</a></td>
+    <td><a href="https://discord.gg/Qcqf9R27BR">Discord</td>
     <td><a target="_blank" href="https://github.com/avaje/avaje-http">Github</a></td>
     <td><a target="_blank" href="/apidocs/avaje-http">Javadoc</a></td>
     <td><a target="_blank" href="https://github.com/avaje/avaje-http/issues">Github</a></td>
