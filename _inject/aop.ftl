@@ -8,7 +8,7 @@ This library has several contructs that support Aspect Oriented Programmming
   To import an existing annotation, use <code>@Aspect.Import</code>.
 </p>
 <pre content="java">
-@Aspect(ordering=1) // The default is 1000 so this aspect will execute before others
+@Aspect(ordering=1) // Determines priority among other aspects
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MyAround {
@@ -56,7 +56,7 @@ With the provider set, we can use our newly created aspect annotation on a class
 public class ExampleService {
 
   @MyAround
-  public String other(
+  public String example(
       String param0, int param1) {
     return "other " + param0 + " " + param1;
   }
@@ -73,31 +73,90 @@ public class ExampleService$Proxy extends ExampleService {
 
   private final MyAroundAspect myAroundAspect;
 
-  private Method other0;
-  private MethodInterceptor other0MyAround;
+  private Method example0;
+  private MethodInterceptor example0MyAround;
 
   public ExampleService$Proxy(MyAroundAspect myAroundAspect) {
     super();
     this.myAroundAspect = myAroundAspect;
     try {
-      other0 = ExampleService.class.getDeclaredMethod("other", String.class, int.class);
-      other0MyAround = myAroundAspect.interceptor(other0, other0.getAnnotation(MyAround.class));
+      example0 = ExampleService.class.getDeclaredMethod("example", String.class, int.class);
+      example0MyAround = myAroundAspect.interceptor(example0, example0.getAnnotation(MyAround.class));
     } catch (Exception e) {
       throw new IllegalStateException(e);
     }
   }
 
   @Override
-  public java.lang.String other(String param0, int param1) {
-    var call = new Invocation.Call<>(() -> super.other(param0, param1))
-      .with(this, other0, param0, param1);
+  public String example(String param0, int param1) {
+    var call = new Invocation.Call<>(() -> super.example(param0, param1))
+      .with(this, example0, param0, param1);
     try {
-      other0MyAround.invoke(call);
+      example0MyAround.invoke(call);
       return call.finalResult();
     } catch (InvocationException e) {
       throw e;
     } catch (Throwable e) {
       throw new InvocationException(e);
+    }
+  }
+}
+</pre>
+
+<h3 id="fallback">@AOPFallback</h3>
+<p>
+  We can use <code>@AOPFallback</code> to register a fallback method for an aspect method invocation.
+  Recovery methods must return the same type as the target method and may have 4 options for arguments:
+
+ <ul>
+   <li>zero arguments
+   <li>one <code>Throwable</code> argument
+   <li>all the target method's arguments
+   <li>the target method's arguments + <code>Throwable</code>.
+ </ul>
+</p>
+
+<pre content="java">
+@Singleton
+class ExampleService {
+
+  @MyAround
+  public String example(
+      String param0, int param1) {
+    throw new IllegalStateException();
+  }
+
+  @AOPFallback("example")
+  public String fallback(
+      String param0, int param1, Throwable e) {
+    return "fallback-" + param0 + ":" + param1 + ":" + e.getMessage();
+  }
+}
+</pre>
+
+<p>
+ Inside our method interceptor, we can use <code>Invocation#invokeRecoveryMethod</code> to recover from an exception.
+</p>
+
+<pre content="java">
+@Singleton
+public class MyAroundAspect implements AspectProvider<MyAround> {
+
+  //rest of aspect provider...
+
+  static class ExampleInterceptor implements MethodInterceptor {
+    // MethodInterceptor interception method
+    @Override
+    public void invoke(Invocation invoke) throws Throwable {
+      System.out.println("before args: " + Arrays.toString(invoke.arguments()) + " method: " + invoke.method());
+      try {
+        invoke.invoke();
+      } catch(Exception ex) {
+        //recover
+        invoke.invokeRecoveryMethod(ex);
+      } finally {
+        System.out.println("after");
+      }
     }
   }
 }

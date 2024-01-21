@@ -62,6 +62,7 @@
 <@nav url="#aop" title="AOP">
   <ul>
     <li><a href="#aspect">@Aspect</a></li>
+    <li><a href="#fallback">@AOPFallback</a></li>
   </ul>
 </@nav>
 <@nav url="#scope" title="Scope">
