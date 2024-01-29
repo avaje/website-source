@@ -84,11 +84,20 @@
         </td>
       </tr>
       <tr>
+        <th><a href="/spi">SPI Service</a></th>
+        <td>
+          <p>
+            Zero-dependency library that adds SPI <em>META-INF/services</em> entries for classes and validates module-info <em>provides</em> clauses.
+          </p>
+        </td>
+      </tr>
+      <tr>
         <th></th>
         <td></td>
       </tr>
     </table>
   </div>
+  <p><br><br><br><br></p>
 </body>
 
 </html>
