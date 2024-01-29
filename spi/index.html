@@ -1,0 +1,121 @@
+<html>
+
+<head>
+  <meta name="layout" content="_layout/base-spi.html" />
+  <meta name="bread1" content="spi-service" href="/spi-service/" />
+  <#assign index="active">
+</head>
+
+<body>
+
+  <h1 id="overview">Avaje SPI</h1>
+
+  <table style="width: 100%;">
+    <tr>
+      <th>Discord</th>
+      <th>Source</th>
+      <th>API Docs</th>
+      <th>Issues</th>
+      <th>Releases</th>
+    </tr>
+    <tr>
+      <td><a href="https://discord.gg/Qcqf9R27BR">Discord</td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-spi-service">Github</a></td>
+      <td><a target="_blank" href="/apidocs/avaje-spi-service">Javadoc</a></td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-spi-service/issues">Github</a></td>
+      <td><a href="https://github.com/avaje/avaje-spi-service/releases"><img
+            src="https://img.shields.io/maven-central/v/io.avaje/avaje-spi-service.svg?label=Maven%20Central"></a></td>
+    </tr>
+  </table>
+
+  <p><br><br>
+    The Java <a href="https://www.baeldung.com/java-spi"> Service Provider
+      Interface</a> uses configuration files to
+    find and load concrete implementations of given
+    service provider interfaces. The downside of this system is that
+    configuration files are not checked by the java
+    compiler.
+    As such it is a common occurence to forget to add the correct entries.
+    <br>
+    <br>
+    This zero-dependency library uses annotation processing to automatically
+    generate the required <em>META-INF/services</em>
+    entries for
+    annotated classes. In addition, it will validate that the required
+    <em>provides</em> clauses are present in an application's <code>module-info</code> files.
+  </p>
+
+  <h2 id="deps">Dependency</h2>
+  <p>
+    To use this library add the <em>avaje-spi-service</em> as a
+    provided/optional dependency. (The dependencies need
+    only be included at
+    compile-time and are not required at runtime)
+  </p>
+  <pre content="xml">
+<dependency>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje-spi-service</artifactId>
+  <version>1.2</version>
+  <optional>true</optional>
+  <scope>provided</scope>
+</dependency>
+</pre>
+
+  <h2>@ServiceProvider</h2>
+  <p>
+    On classes that you'd like registered, place the
+    <code>@ServiceProvider</code> annotation.
+    As long as you only have one interface/ superclass, that type is
+    assumed to be the SPI interface. So given the
+    example below:
+  </p>
+  <pre content="java">
+    @ServiceProvider
+    public class BassServiceProvider implements MusicService {
+      ...
+    }
+</pre>
+
+  <h3>Multi-Interfaced classes</h3>
+  <p>
+    If you have multiple interfaces and/or a base type, the library cannot infer the contract type. In such a case, we
+    specify the contract type explicitly in the <code>@ServiceProvider</code>:
+  </p>
+  <pre content="java">
+  @ServiceProvider(MusicService.class)
+  public class BassServiceProvider extends Instrument implements Stringed, MusicService {
+    ...
+  }
+</pre>
+
+  <h3>Module Validation</h3>
+  <p>
+    For modular projects, the processor will validate that all the required <em>provides</em> clauses are accounted for. A compile error describing what `provides` statements are missing will be throw if validations fail. So given the following class and module-info:
+  </p>
+  <pre content="java">
+    @ServiceProvider
+    public class BassServiceProvider implements MusicService {
+      ...
+    }
+</pre>
+
+<pre content="java">
+  module my.module {
+
+    requires static io.avaje.spi;
+    //provides not defined
+  }
+</pre>
+<p>
+  You will get the compile error:
+</p>
+<pre>
+  Compilation failure /src/main/java/module-info.java:[1,1]
+  Missing `provides MusicService with BassServiceProvider;`
+</pre>
+  <p><br><br><br><br><br><br></p>
+
+</body>
+
+</html>

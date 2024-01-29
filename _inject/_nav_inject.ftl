@@ -45,6 +45,11 @@
     <li><a href="#qualifiedmap">@QualifiedMap</a></li>
   </ul>
 </@nav>
+<@nav url="#assistInject" title="Assisted Injection">
+  <ul>
+    <li><a href="#assistFactory">@AssistFactory</a></li>
+  </ul>
+</@nav>
 <@nav url="#lifecycle" title="Lifecycle">
   <ul>
     <li><a href="#post-construct">@PostConstruct</a></li>

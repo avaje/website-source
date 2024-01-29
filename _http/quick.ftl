@@ -25,8 +25,8 @@
   </dependency>
 </pre>
 
-<h4>2a. JDK 22+ </h4>
-<p>In JDK 22+, annotation processors are disabled by default, so we need to add a flag to re-enable.</p>
+<h4>2a. JDK 23+ </h4>
+<p>In JDK 23+, annotation processors are disabled by default, so we need to add a flag to re-enable.</p>
 <pre content="xml">
 <plugin>
   <groupId>org.apache.maven.plugins</groupId>

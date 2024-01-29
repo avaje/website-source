@@ -61,12 +61,12 @@
 
 <h2 id="quick-start">Quick Start</h2>
 <h4>
-  1. Add <em>avaje.jsonb</em> dependencies.
+  1. Add <em>avaje-jsonb</em> dependencies.
 </h4>
 <pre content="xml">
 <dependency>
   <groupId>io.avaje</groupId>
-  <artifactId>avaje.jsonb</artifactId>
+  <artifactId>avaje-jsonb</artifactId>
   <version>${avaje.jsonb.version}</version>
 </dependency>
 <!-- if using spring web, add the below to use jsonb for http messaging -->
@@ -91,8 +91,8 @@
   </dependency>
 </pre>
 
-<h4>2a. JDK 22+ </h4>
-<p>In JDK 22+, annotation processors are disabled by default, so we need to add a flag to re-enable.</p>
+<h4>2a. JDK 23+ </h4>
+<p>In JDK 23+, annotation processors are disabled by default, so we need to add a flag to re-enable.</p>
 <pre content="xml">
 <plugin>
   <groupId>org.apache.maven.plugins</groupId>
@@ -322,6 +322,8 @@ enum Naming {
   }
 </pre>
 <p>The following JsonAdapter is generated:</p>
+<details>
+  <summary>Generated Code: (click to expand) </summary>
 <pre content="java">
   @Generated
   public final class AddressJsonAdapter implements JsonAdapter<Address>, ViewBuilderAware {
@@ -400,6 +402,7 @@ enum Naming {
     }
   }
 </pre>
+</details>
 
 <h2 id="import">@Json.Import</h2>
 <p> When we are unable to or do not wish to put <code>@Json</code> on the types we can use <code>@Json.Import</code>.
@@ -532,6 +535,64 @@ public class Customer {
       }
 
       return _$customer;
+    }
+  }
+</pre>
+
+<h2 id="creator">@Json.Creator</h2>
+<p>
+  With <code>@Json.Creator</code>, we can override deserialization using a constructor or static factory method. Contructor/Method parameters can be annotated with <code>@Alias</code> to rename a deserialization field.
+</p>
+
+<pre content="java">
+  @Json
+  public record Kingfisher(@Json.Alias("species") String name, int fishCaught) {
+
+    @Json.Creator
+    public static Kingfisher construct(String name) {
+      return new Kingfisher(name, 42);
+    }
+  }
+</pre>
+
+<h4>Generated Code</h4>
+
+<p><code>@Json.Creator</code> makes the following changes to the generated JsonAdapter:</p>
+<pre content="java">
+  @Generated
+  public final class KingfisherJsonAdapter implements JsonAdapter<Kingfisher>, ViewBuilderAware {
+
+    ...
+
+    @Override
+    public Kingfisher fromJson(JsonReader reader) {
+      // variables to read json values into, constructor params don't need _set$ flags
+      String     _val$name = null;
+
+      // read json
+      reader.beginObject(names);
+      while (reader.hasNextField()) {
+        final String fieldName = reader.nextField();
+        switch (fieldName) {
+          case "name":
+          case "species":
+            _val$name = stringJsonAdapter.fromJson(reader);
+            break;
+
+          case "fishCaught":
+            reader.skipValue(); //value ignored since not in factory method
+            break;
+
+          default:
+            reader.unmappedField(fieldName);
+            reader.skipValue();
+        }
+      }
+      reader.endObject();
+
+      // build and return Kingfisher
+      Kingfisher _$kingfisher = Kingfisher.construct(_val$name);
+      return _$kingfisher;
     }
   }
 </pre>
@@ -1059,5 +1120,6 @@ Note: There is a current limitation that polymorphic types do not yet support "J
   }
 </pre>
 
+<p><br><br><br><br><br><br></p>
 </body>
 </html>

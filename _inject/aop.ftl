@@ -56,8 +56,7 @@ With the provider set, we can use our newly created aspect annotation on a class
 public class ExampleService {
 
   @MyAround
-  public String example(
-      String param0, int param1) {
+  public String example(String param0, int param1) {
     return "other " + param0 + " " + param1;
   }
 }
@@ -121,14 +120,12 @@ public class ExampleService$Proxy extends ExampleService {
 class ExampleService {
 
   @MyAround
-  public String example(
-      String param0, int param1) {
+  public String example(String param0, int param1) {
     throw new IllegalStateException();
   }
 
   @AOPFallback("example")
-  public String fallback(
-      String param0, int param1, Throwable e) {
+  public String fallback(String param0, int param1, Throwable e) {
     return "fallback-" + param0 + ":" + param1 + ":" + e.getMessage();
   }
 }
