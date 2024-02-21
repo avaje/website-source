@@ -1,0 +1,858 @@
+<html>
+
+<head>
+  <meta name="layout" content="_layout/base-prisms.html" />
+  <meta name="bread1" content="prisms" href="/prisms/" />
+  <#assign index="active">
+</head>
+
+<body>
+
+  <h1 id="overview">Avaje Prisms</h1>
+
+  <table style="width: 100%;">
+    <tr>
+      <th>Discord</th>
+      <th>Source</th>
+      <th>API Docs</th>
+      <th>Issues</th>
+      <th>Releases</th>
+    </tr>
+    <tr>
+      <td><a href="https://discord.gg/Qcqf9R27BR">Discord</td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-prisms">Github</a></td>
+      <td><a target="_blank" href="/apidocs/avaje-prisms">Javadoc</a></td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-prisms/issues">Github</a></td>
+      <td><a href="https://github.com/avaje/avaje-prisms/releases"><img
+            src="https://img.shields.io/maven-central/v/io.avaje/avaje-prisms.svg?label=Maven%20Central"></a></td>
+    </tr>
+  </table>
+
+  <p><br><br>
+    This library is an upgraded fork of the unmaintained hickory library that helps make coding annotation processors
+    more straighforward by generating annotation "Prisms" and other various utilities.
+  </p>
+
+  <h2 id="what">What's A Prism?</h2>
+  <p>
+    When writing annotation processors, the two conventional mechanisms to access the annotation attributes are both
+    awkward. <code>Element.getAnnotation()</code> can throw Exceptions if the annotation or its members are not
+    semantically correct, and it can also fail to work on some modular projects.
+    (This is one the reasons why <code>annotationProcessorPaths</code> is required for modular projects. This solution
+    is seriously limited and has it's own issues (See
+    <a target="_blank" href="https://issues.apache.org/jira/browse/MCOMPILER-412">MCOMPILER-412</a>).
+    Moreover, when calling a member with a <code>Class</code> return type, you need to catch an exception to extract the
+    <code>TypeMirror</code>.
+    <br><br>
+    On the other hand, <code>AnnotationMirror</code> and <code>AnnotationValue</code> do a good job of modeling both
+    correct and incorrect annotations. Unfortunately, they provide no simple mechanism to determine whether correctness,
+    and provide no convenient functionality to access the member values in a simple type-specific way.
+    <br><br>
+    A <em>Prism</em> provides a solution to this problem by combining the advantages of the pure reflective model of
+    <code>AnnotationMirror</code> and the runtime (real) model provided by <code>Element#getAnnotation()</code>, hence
+    the term <em>Prism</em> to capture this idea of partial reflection.
+    <br><br>
+    A prism has the same member methods as the annotation except that the return types are translated from runtime types
+    to compile time types as follows...
+  </p>
+  <ul>
+    <li>Primitive members return their equivalent boxed class in the prism.</li>
+    <li>Class members return a <code>TypeMirror</code> from the mirror API.</li>
+    <li>Enum members return a String bearing the name of the enum constant (because the constant value in the mirror API
+      might not match those available in the runtime it cannot consistently return the appropriate enum).</li>
+    <li>Annotation members return a <em>Prism</em> of the annotation. If a prism for that annotation is generated from
+      the same <code>@GeneratePrisms</code> annotation as the prism that uses it, then an instance of that prism will be
+      returned. Otherwise, a <em>Prism</em> for that annotation is supplied as an inner class of the dependant
+      <em>Prism</em>.
+    </li>
+    <li>Array members return a <code>List<X></code> where <em>X</em> is the appropriate prism mapping of the array
+      component as above.</li>
+  </ul>
+
+  <h2 id="quick">Quick Start</h2>
+  <h4>
+    1. Add <em>avaje-prisms</em> dependency.
+  </h4>
+  <pre content="xml">
+    <dependency>
+      <groupId>io.avaje</groupId>
+      <artifactId>avaje-prisms</artifactId>
+      <version>{prism.versions}</version>
+      <optional>true</optional>
+      <scope>provided</scope>
+    </dependency>
+  </pre>
+
+  <h4>2. Add <em>@GeneratePrism</em> containing the desired Annotation Type to any class/package.info</h4>
+  <p>
+    <br>The annotation processor will generate a prism class that will help extract an annotation's values.
+  </p>
+  <p>Example:</p>
+  <pre content="java">
+    public @interface ExampleAnnotation {
+
+      String someAttribute();
+
+    }
+  </pre>
+
+  <pre content="java">
+    @GeneratePrism(ExampleAnnotation.class)
+    @SupportedAnnotationTypes(ExampleAnnotationPrism.PRISM_TYPE)
+    public final class MyProcessor extends AbstractProcessor {
+
+      //processing logic...
+
+      void someFunction(Element element) {
+
+        ExampleAnnotationPrism exampleAnnotation = ExampleAnnotationPrism.getInstanceOn(element);
+
+        //can get the fully qualified annotation type as a string
+        String annotationQualifiedType = MyExampleAnnotationPrism.PRISM_TYPE;
+
+        //can easily retrieve the annotation values as if the annotation was present on the classpath.
+        String value = exampleAnnotation.someAttribute();
+          ...
+      }
+    }
+  </pre>
+
+  <h2 id="prism">@GeneratedPrism</h2>
+  <p>
+    We use <code>@GeneratedPrism</code> to let the generator create a prism for an annotation. Prisms contain useful
+    static methods to extract annotation values from Elements.
+  </p>
+
+  <h3 id="common">Common Prism Members</h3>
+
+  <h4>PRISM_TYPE</h4>
+  <p>
+    All generated prisms will have a <em>public static final String PRISM_TYPE</em> field containing the target
+    annotation's fully qualified type.
+  </p>
+
+  <h4>isPresent</h4>
+  <p>
+    Returns a true if the target annotation is present on the element.
+  </p>
+
+  <pre content="java">
+  Element e = ...;
+
+  boolean value = ExampleAnnotationPrism.isPresent(e);
+  </pre>
+
+  <h4>getInstanceOn/getOptionalOn</h4>
+  <p>
+    Returns a prism representing the target annotation present on the given element.
+  </p>
+
+  <pre content="java">
+  Element e = ...;
+
+  ExampleAnnotationPrism value = ExampleAnnotationPrism.getInstanceOn(e);
+  Optional<ExampleAnnotationPrism> value = ExampleAnnotationPrism.getOptionalOn(e);
+  </pre>
+
+  <h4>getInstance/getOptional</h4>
+  <p>
+    Converts an <code>AnnotationMirror</code> into the target prism if applicable.
+  </p>
+
+  <pre content="java">
+AnnotationMirror m = ...;
+
+ExampleAnnotationPrism value = ExampleAnnotationPrism.getInstance(m);
+Optional<ExampleAnnotationPrism> value = ExampleAnnotationPrism.getOptional(m);
+</pre>
+
+  <h4>getAllInstancesOn (<em>@Repeatable</em> Annotations only)</h4>
+  <p>
+    Returns a list of prisms representing the target annotation present on the given element.
+  </p>
+
+  <pre content="java">
+  Element e = ...;
+  List<ExampleAnnotationPrism> value = ExampleAnnotationPrism.getAllInstancesOn(e);
+</pre>
+
+  <h4>getAllOnMetaAnnotations (<em>ANNOTATION_TYPE</em> Annotations only)</h4>
+  <p>
+    Return a list of prisms representing the target annotation on all the annotations of the given element. Will
+    recursively search all the annotations on the element.
+  </p>
+
+  <pre content="java">
+  Element e = ...;
+  List<ExampleAnnotationPrism> value = ExampleAnnotationPrism.getAllOnMetaAnnotations(e);
+</pre>
+
+  <h3 id="inheritance">Prism Naming and Inheritance</h3>
+  <p>
+    If we have similar annotations (Think javax and jakarta) we can create a common interface the generated
+    prisms will extend.
+  </p>
+  <pre content="java">
+@GeneratePrism(
+    value = javax.validation.NotNull.class,
+    name = "JavaxNotNullPrism",
+    superInterfaces = NotNullPrism.class)
+@GeneratePrism(
+    value = jakarta.validation.NotNull.class,
+    name = "JakartaNotNullPrism",
+    superInterfaces = NotNullPrism.class)
+public interface NotNullPrism {
+
+  //we create methods for the common annotation members
+  String message();
+
+  //we also need to create static methods to get the prisms
+  static Optional<NotNullPrism> getInstanceOn(Element e) {
+
+    return Optional.<NotNullPrism>empty()
+        .or(() -> JakartaNotNullPrism.getOptionalOn(e))
+        .or(() -> JavaxNotNullPrism.getOptionalOn(e))
+        .orElse(null);
+  }
+
+  static Optional<NotNullPrism> getOptionalOn(Element e) {
+
+    return Optional.<NotNullPrism>empty()
+        .or(() -> JakartaNotNullPrism.getOptionalOn(e))
+        .or(() -> JavaxNotNullPrism.getOptionalOn(e));
+  }
+}
+</pre>
+
+  <h2 id="apcontext">@GenerateAPContext</h2>
+  <p>
+    As your annotation processor grows in size and complexity, you may find it difficult to properly access the
+    <code>ProcessingEnvironment</code> and its utilities. <code>@GenerateAPContext</code> generates a helper class that
+    stores the processing env and its utilities in a ThreadLocal for easy access anywhere in the processor.
+  </p>
+  <p>
+    To initialize/cleanup the generated <em>APContext</em>, we must initialize it during the init phase and clear it
+    when processing is over.
+  </p>
+  <pre content="java">
+    @GenerateAPContext
+    public final class MyProcessor extends AbstractProcessor {
+
+      @Override
+      public synchronized void init(ProcessingEnvironment env) {
+        super.init(env);
+        APContext.init(env);
+      }
+
+      @Override
+      public boolean process(Set<? extends TypeElement> tes, RoundEnvironment renv) {
+        if (renv.processingOver()) {
+          APContext.clear();
+          return true;
+        }
+
+        //can call these from anywhere
+        ProcessingEnvironment env = APContext.processingEnv();
+        Types types = APContext.types();
+        Elements elements = APContext.elements();
+      }
+    }
+</pre>
+  <h4>Generated Code</h4>
+  <p>
+    The generated <em>APContext</em> looks like the below.
+  </p>
+  <details>
+    <summary>Generated Code: (click to expand) </summary>
+    <pre content="java">
+      /**
+      * Utiliy Class that stores the {@link ProcessingEnvironment} and provides various helper methods
+      */
+     @Generated("avaje-prism-generator")
+     public final class APContext {
+
+       private static int jdkVersion;
+       private static boolean previewEnabled;
+       private static final ThreadLocal<Ctx> CTX = new ThreadLocal<>();
+
+       private APContext() {}
+
+       public static final class Ctx {
+         private final ProcessingEnvironment processingEnv;
+         private final Messager messager;
+         private final Filer filer;
+         private final Elements elementUtils;
+         private final Types typeUtils;
+         private ModuleElement module;
+
+         public Ctx(ProcessingEnvironment processingEnv) {
+
+           this.processingEnv = processingEnv;
+           messager = processingEnv.getMessager();
+           filer = processingEnv.getFiler();
+           elementUtils = processingEnv.getElementUtils();
+           typeUtils = processingEnv.getTypeUtils();
+         }
+
+         public Ctx(Messager messager, Filer filer, Elements elementUtils, Types typeUtils) {
+
+           this.processingEnv = null;
+           this.messager = messager;
+           this.filer = filer;
+           this.elementUtils = elementUtils;
+           this.typeUtils = typeUtils;
+         }
+       }
+
+       /**
+        * Initialize the ThreadLocal containing the Processing Enviroment. this typically should be
+        * called during the init phase of processing. Be sure to run the clear method at the last round
+        * of processing
+        *
+        * @param processingEnv the current annotation processing enviroment
+        */
+       public static void init(ProcessingEnvironment processingEnv) {
+         CTX.set(new Ctx(processingEnv));
+         jdkVersion = processingEnv.getSourceVersion().ordinal();
+         previewEnabled = processingEnv.isPreviewEnabled();
+       }
+
+       /**
+        * Initialize the ThreadLocal containing the {@link ProcessingEnvironment}. Be sure to run the
+        * clear method at the last round of processing
+        *
+        * @param context the current annotation processing enviroment
+        * @param jdkVersion the JDK version number
+        * @param preview whether preview features are enabled
+        */
+       public static void init(Ctx context, int jdkVersion, boolean preview) {
+         CTX.set(context);
+         jdkVersion = jdkVersion;
+         previewEnabled = preview;
+       }
+       /** Clears the ThreadLocal containing the {@link ProcessingEnvironment}. */
+       public static void clear() {
+         CTX.remove();
+       }
+
+       /**
+        * Returns the source version that any generated source and class files should conform to
+        *
+        * @return the source version as an int
+        */
+       public static int jdkVersion() {
+         return jdkVersion;
+       }
+
+       /**
+        * Returns whether {@code --preview-enabled} has been added to compiler flags.
+        *
+        * @return true if preview features are enabled
+        */
+       public static boolean previewEnabled() {
+         return previewEnabled;
+       }
+
+       /**
+        * Prints an error at the location of the element.
+        *
+        * @param e the element to use as a position hint
+        * @param msg the message, or an empty string if none
+        * @param args {@code String#format} arguments
+        */
+       public static void logError(Element e, String msg, Object... args) {
+         messager().printMessage(Diagnostic.Kind.ERROR, String.format(msg, args), e);
+       }
+
+       /**
+        * Prints an error.
+        *
+        * @param msg the message, or an empty string if none
+        * @param args {@code String#format} arguments
+        */
+       public static void logError(String msg, Object... args) {
+         messager().printMessage(Diagnostic.Kind.ERROR, String.format(msg, args));
+       }
+
+       /**
+        * Prints an warning at the location of the element.
+        *
+        * @param e the element to use as a position hint
+        * @param msg the message, or an empty string if none
+        * @param args {@code String#format} arguments
+        */
+       public static void logWarn(Element e, String msg, Object... args) {
+         messager().printMessage(Diagnostic.Kind.WARNING, String.format(msg, args), e);
+       }
+
+       /**
+        * Prints a warning.
+        *
+        * @param msg the message, or an empty string if none
+        * @param args {@code String#format} arguments
+        */
+       public static void logWarn(String msg, Object... args) {
+         messager().printMessage(Diagnostic.Kind.WARNING, String.format(msg, args));
+       }
+
+       /**
+        * Prints a note.
+        *
+        * @param msg the message, or an empty string if none
+        * @param args {@code String#format} arguments
+        */
+       public static void logNote(Element e, String msg, Object... args) {
+         messager().printMessage(Diagnostic.Kind.NOTE, String.format(msg, args), e);
+       }
+
+       /**
+        * Prints a note at the location of the element.
+        *
+        * @param e the element to use as a position hint
+        * @param msg the message, or an empty string if none
+        * @param args {@code String#format} arguments
+        */
+       public static void logNote(String msg, Object... args) {
+         messager().printMessage(Diagnostic.Kind.NOTE, String.format(msg, args));
+       }
+
+       /**
+        * Returns the elements annotated with the given annotation interface.
+        *
+        * @param round RoundEnviroment to extract the elements
+        * @param annotationFQN the fqn of the annotation
+        * @return the elements annotated with the given annotation interface,or an empty set if there are
+        *     none
+        */
+       public static Set<? extends Element> elementsAnnotatedWith(
+           RoundEnvironment round, String annotationFQN) {
+
+         return Optional.ofNullable(typeElement(annotationFQN))
+             .map(round::getElementsAnnotatedWith)
+             .orElse(Set.of());
+       }
+
+       /**
+        * Create a file writer for the given class name.
+        *
+        * @param name canonical (fully qualified) name of the principal class or interface being declared
+        *     in this file or a package name followed by {@code ".package-info"} for a package
+        *     information file
+        * @param originatingElements class, interface, package, or module elements causally associated
+        *     with the creation of this file, may be elided or {@code null}
+        * @return a JavaFileObject to write the new source file
+        */
+       public static JavaFileObject createSourceFile(CharSequence name, Element... originatingElements)
+           throws IOException {
+         return filer().createSourceFile(name, originatingElements);
+       }
+
+       /**
+        * Returns a type element given its canonical name.
+        *
+        * @param name the canonical name
+        * @return the named type element, or null if no type element can be uniquely determined
+        */
+       public static TypeElement typeElement(String name) {
+         return elements().getTypeElement(name);
+       }
+
+       /**
+        * Returns the element corresponding to a type.The type may be a DeclaredType or
+        * TypeVariable.Returns null if the type is not one with a corresponding element.
+        *
+        * @param t the type to map to an element
+        * @return the element corresponding to the given type
+        */
+       public static TypeElement asTypeElement(TypeMirror t) {
+
+         return (TypeElement) types().asElement(t);
+       }
+
+       /**
+        * Get current {@link ProcessingEnvironment}
+        *
+        * @return the enviroment
+        */
+       public static ProcessingEnvironment processingEnv() {
+         return CTX.get().processingEnv;
+       }
+
+       /**
+        * Get current {@link Filer} from the {@link ProcessingEnvironment}
+        *
+        * @return the filer
+        */
+       public static Filer filer() {
+         return CTX.get().filer;
+       }
+
+       /**
+        * Get current {@link Elements} from the {@link ProcessingEnvironment}
+        *
+        * @return the filer
+        */
+       public static Elements elements() {
+         return CTX.get().elementUtils;
+       }
+
+       /**
+        * Get current {@link Messager} from the {@link ProcessingEnvironment}
+        *
+        * @return the messager
+        */
+       public static Messager messager() {
+         return CTX.get().messager;
+       }
+
+       /**
+        * Get current {@link Types} from the {@link ProcessingEnvironment}
+        *
+        * @return the types
+        */
+       public static Types types() {
+         return CTX.get().typeUtils;
+       }
+
+       /**
+        * Determine whether the first type can be assigned to the second
+        *
+        * @param type string type to check
+        * @param superType the type that should be assignable to.
+        * @return true if type can be assinged to supertype
+        */
+       public static boolean isAssignable(String type, String superType) {
+         return type.equals(superType) || isAssignable(typeElement(type), superType);
+       }
+
+       /**
+        * Determine whether the first type can be assigned to the second
+        *
+        * @param type type to check
+        * @param superType the type that should be assignable to.
+        * @return true if type can be assinged to supertype
+        */
+       public static boolean isAssignable(TypeElement type, String superType) {
+         return Optional.ofNullable(type).stream()
+             .flatMap(APContext::superTypes)
+             .anyMatch(superType::equals);
+       }
+
+       private static Stream<String> superTypes(TypeElement element) {
+         final var types = types();
+         return types.directSupertypes(element.asType()).stream()
+             .filter(type -> !type.toString().contains("java.lang.Object"))
+             .map(superType -> (TypeElement) types.asElement(superType))
+             .flatMap(e -> Stream.concat(superTypes(e), Stream.of(e)))
+             .map(Object::toString);
+       }
+
+       /**
+        * Discover the {@link ModuleElement} for the project being processed and set in the context.
+        *
+        * @param annotations the annotation interfaces requested to be processed
+        * @param roundEnv environment for information about the current and prior round
+        */
+       public static void setProjectModuleElement(
+           Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+         if (CTX.get().module == null) {
+           CTX.get().module =
+               annotations.stream()
+                   .map(roundEnv::getElementsAnnotatedWith)
+                   .filter(not(Collection::isEmpty))
+                   .findAny()
+                   .map(s -> s.iterator().next())
+                   .map(elements()::getModuleOf)
+                   .orElse(null);
+         }
+       }
+
+       /**
+        * Retrieve the project's {@link ModuleElement}. {@code setProjectModuleElement} must be called
+        * before this.
+        *
+        * @return the {@link ModuleElement} associated with the current project
+        */
+       public static ModuleElement getProjectModuleElement() {
+         return CTX.get().module;
+       }
+
+       /**
+        * Gets a {@link BufferedReader} for the project's {@code module-info.java} source file.
+        *
+        * <p>Calling {@link ModuleElement}'s {@code getDirectives()} method has a chance of making
+        * compilation fail in certain situations. Therefore, manually parsing {@code module-info.java}
+        * seems to be the safest way to get module information.
+        *
+        * @return
+        * @throws IOException if unable to read the module-info
+        */
+       public static BufferedReader getModuleInfoReader() throws IOException {
+         var inputStream =
+             filer()
+                 .getResource(StandardLocation.SOURCE_PATH, "", "module-info.java")
+                 .toUri()
+                 .toURL()
+                 .openStream();
+         return new BufferedReader(new InputStreamReader(inputStream));
+       }
+     }
+    </pre>
+  </details>
+
+  <h2 id="modules">@GenerateModuleInfoReader</h2>
+  <p>
+    There is currently a bug in javac where in certain situations calling <em>ModuleElement#getDirectives</em> on
+    the application's root module crashes compilation. Using <em>@GenerateModuleInfoReader</em> in combination with
+    <em>APContext</em> generates classes that allow you to read a
+    module's directives by parsing the <em>module-info.java</em> source file.
+  </p>
+  <pre content="java">
+    @GenerateAPContext
+    @GenerateModuleInfoReader
+    public final class MyProcessor extends AbstractProcessor {
+
+      @Override
+      public synchronized void init(ProcessingEnvironment env) {
+        super.init(env);
+        APContext.init(env);
+      }
+
+      @Override
+      public boolean process(Set<? extends TypeElement> tes, RoundEnvironment renv) {
+        if (renv.processingOver()) {
+          APContext.clear();
+          return true;
+        }
+
+        APContext.setProjectModuleElement(tes, renv);
+
+        try (var reader = APContext.getModuleInfoReader()) {
+
+          var moduleInfo = new ModuleInfoReader(APContext.getProjectModuleElement(), reader);
+          boolean contains = moduleInfo.containsOnModulePath("some.module");
+          var provides = moduleInfo.provides();
+          var requires = moduleInfo.requires();
+          //and so on...
+        }
+      }
+    }
+</pre>
+  <h2 id="utils">@GenerateUtils</h2>
+  <p>
+    Using this annotation will generate classes with useful methods for processing TypeMirrors and their component
+    parts.
+  </p>
+
+  <h3 id="utype">UType</h3>
+  <p>
+    This generated utility interface has methods for handling type mirrors and extracting their
+    component types and annotations (including <em>TYPE_USE</em>). In addition it allows us to get a readable
+    source-code safe string of the type names as well as the required imports.
+  </p>
+  <pre content="java">
+public class TypeUseExample {
+
+  @NotEmpty
+  Map<@NotBlank String, @NotEmpty Map<NestedKey, @NotNull(groups=Default.class) DataRecord>>
+      map;
+
+  record NestedKey(){}
+  record DataRecord(){}
+}
+</pre>
+  <pre content="java">
+    @GenerateUtils
+    @GeneratePrism(NotNull.class)
+    public final class MyProcessor extends AbstractProcessor {
+
+      @Override
+      public boolean process(Set<? extends TypeElement> tes, RoundEnvironment renv) {
+
+        TypeMirror type =  //... some processing logic that gets the map field type mirror;
+
+        var utilityType = UType.parse(type);
+
+        var map = typeUseFields.get(0);
+
+        assertThat(map.importTypes())
+            .contains(
+                "jakarta.validation.constraints.NotBlank",
+                "java.util.Map",
+                "jakarta.validation.constraints.NotEmpty",
+                "jakarta.validation.groups.Default"
+                "io.avaje.prisms.example.TypeUseExample");
+
+        assertThat(map.mainType()).isEqualTo("java.util.Map");
+
+        assertThat(map.full())
+            .isEqualTo(
+                "@jakarta.validation.constraints.NotEmpty java.util.Map<@jakarta.validation.constraints.NotBlank java.lang.String, @jakarta.validation.constraints.NotEmpty java.util.Map<io.avaje.prisms.example.TypeUseExample.NestedKey, io.avaje.prisms.example.TypeUseExample.@jakarta.validation.constraints.NotNull(groups={jakarta.validation.groups.Default.class}) DataRecord>>");
+
+        assertThat(map.shortType())
+            .isEqualTo(
+                "@NotEmpty Map<@NotBlank String, @NotEmpty Map<TypeUseExample.NestedKey, io.avaje.prisms.example.TypeUseExample.@NotNull(groups={Default.class}) DataRecord>>");
+
+        assertThat(map.fullWithoutAnnotations())
+            .isEqualTo(
+                "java.util.Map<java.lang.String, java.util.Map<io.avaje.prisms.example.TypeUseExample.NestedKey, io.avaje.prisms.example.TypeUseExample.DataRecord>>");
+
+        assertThat(map.shortWithoutAnnotations())
+            .isEqualTo("Map<String, Map<TypeUseExample.NestedKey, TypeUseExample.DataRecord>>");
+
+        //We can retrieve the mirror component types as a UType
+        AnnotationMirror notNullMirror = map.param1().param1().annotations().get(0);
+        NotNullPrism notNull = NotNullPrism.getInstance(notNullMirror);
+      }
+    }
+</pre>
+
+  <h4>Generated Code</h4>
+  <p>
+    The generated <em>UType</em> interface looks like the below.
+  </p>
+  <details>
+    <summary>Generated Code: (click to expand) </summary>
+    <pre content="java">
+  @Generated("avaje-prism-generator")
+  public interface UType {
+
+    /**
+     * Create a UType from the given TypeMirror.
+     */
+    static UType parse(TypeMirror mirror) {
+      //interface implementation is generated too
+      return TypeMirrorVisitor.create(mirror);
+    }
+
+    /**
+     * Return all the import types needed to write this mirror in source code (annotations included).
+     *
+     * @return Return the import types required.
+     */
+    Set<String> importTypes();
+
+    /**
+     * Return the full type as a code safe string. (with annotations if present)
+     *
+     * @return the full typeName
+     */
+    String full();
+
+    /**
+     *  Return the main type (outermost type). e.g for mirror {@ java.util.List<Something> you'll get java.util.List
+     *
+     * @return the outermost type
+     */
+    String mainType();
+
+    /**
+     * Return the full (but unqualified) type as a code safe string. Use in tandem with {@link
+     * #importTypes()} to generate readable code
+     *
+     * @return the short name with unqualified type
+     */
+    String shortType();
+
+    /**
+     * Return the first generic parameter.
+     *
+     * @see UType#componentTypes
+     */
+    default UType param0() {
+      return null;
+    }
+
+    /**
+     * Return the second componentType.
+     *
+     * @see UType#componentTypes
+     */
+    default UType param1() {
+      return null;
+    }
+
+    /**
+     * Retrieve the component types associated with this mirror.
+     *
+     * <ul>
+     *   <li>{@link TypeKind#ARRAY}: will contain the array componentType
+     *   <li>{@link TypeKind#DECLARED}: will contain the generic parameters
+     *   <li>{@link TypeKind#TYPEVAR}: will contain the upper bound for the type variable
+     *   <li>{@link TypeKind#WILDCARD}: will contain the extends bound or super bound
+     *   <li>{@link TypeKind#INTERSECTION}: will contain the bounds of the intersection
+     *   <li>{@link TypeKind#UNION}: will contain the alternative types
+     * </ul>
+     *
+     * @return the component types
+     */
+    default List<UType> componentTypes() {
+      return List.of();
+    }
+
+    /** The {@link TypeKind} of the type mirror used to create this Utype. */
+    TypeKind kind();
+
+    /**
+     * Returns whether the type mirror is generic
+     *
+     * @return whether the type is generic
+     */
+    default boolean isGeneric() {
+      return false;
+    }
+
+    /**
+     * Return the annotation mirrors directly on the type.
+     *
+     * <p>For a {@code UType} representing {@code @NotEmpty Map<@Notblank String, Object>} you will
+     * get mirrors for {@code @NotEmpty} only
+     *
+     * @return the annotations directly present
+     */
+    default List<AnnotationMirror> annotations() {
+      return List.of();
+    }
+
+    /**
+     * Return the annotation mirrors directly on the type and in within generic type use.
+     *
+     * <p>For a {@code UType} representing {@code @NotEmpty Map<@Notblank String, Object>} you will
+     * get mirrors for {@code @NotEmpty} and {@code @Notblank}
+     *
+     * @return all annotations present on this type
+     */
+    default List<AnnotationMirror> allAnnotationsInType() {
+      return List.of();
+    }
+
+    /**
+     * Return the full type as a string, stripped of annotations.
+     *
+     * @return full type, but without annotations
+     */
+    default String fullWithoutAnnotations() {
+      return ProcessorUtils.trimAnnotations(full()).replace(",", ", ");
+    }
+
+    /**
+     * Return the short type as a string, stripped of annotations.
+     *
+     * @return short type, but without annotations
+     */
+    default String shortWithoutAnnotations() {
+      return ProcessorUtils.trimAnnotations(shortType()).replace(",", ", ");
+    }
+
+    /** Compare whether the current full() type is identical to the given UType's full() type */
+    @Override
+    boolean equals(Object other);
+  }
+</pre>
+  </details>
+
+  <p><br><br><br><br><br><br></p>
+
+</body>
+
+</html>
