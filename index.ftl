@@ -84,18 +84,18 @@
         </td>
       </tr>
       <tr>
-        <th><a href="/spi">SPI Service</a></th>
-        <td>
-          <p>
-            Zero-dependency library that adds SPI <em>META-INF/services</em> entries for classes and validates module-info <em>provides</em> clauses.
-          </p>
-        </td>
-      </tr>
-      <tr>
         <th><a href="/prisms">Prisms</a></th>
         <td>
           <p>
             Zero-dependency utility library for building annotation processors.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <th><a href="/spi">SPI Service</a></th>
+        <td>
+          <p>
+            Zero-dependency library that adds SPI <em>META-INF/services</em> entries for classes and validates module-info <em>provides</em> clauses.
           </p>
         </td>
       </tr>

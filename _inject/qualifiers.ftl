@@ -110,7 +110,7 @@ public class OrderProcessor {
 </p>
 <h5>example</h5>
 <pre content="java">
-import javax.inject.Qualifier;
+import jakarta.inject.Qualifier;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -139,6 +139,40 @@ public class StoreManager {
   ...
 </pre>
 
+<h3 id="qualifier-member">Qualifiers with members</h3>
+<p>
+  Java annotations can have members. We can use these members to further discriminate a qualifier.
+  This prevents a potential explosion of new annotation interfaces.
+  For example, instead of creating several qualifiers representing different payment methods, we could aggregate them into a single annotation with a member:
+</p>
+<pre content="java">
+@Qualifier
+@Retention(RUNTIME)
+@Target({METHOD, FIELD, PARAMETER, TYPE})
+public @interface Accepts {
+   CardType value();
+}
+</pre>
+<p>
+  Then we select one of the possible member values when applying the qualifier:
+</p>
+<pre content="java">
+@Accepts(VISA)
+@Singleton
+public class VisaStore implements Store {
+  ...
+</pre>
+<pre content="java">
+@Singleton
+public class StoreManager {
+
+  private final Store store;
+
+  public StoreManager(@Accepts(VISA) Store store) {
+    this.store = store;
+  }
+  ...
+</pre>
 
 <h3 id="qualifiedmap">@QualifiedMap</h3>
 <p>

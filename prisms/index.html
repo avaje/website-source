@@ -40,7 +40,7 @@
     semantically correct, and it can also fail to work on some modular projects.
     (This is one the reasons why <code>annotationProcessorPaths</code> is required for modular projects. This solution
     is seriously limited and has it's own issues (See
-    [MCOMPILER-412](https://issues.apache.org/jira/browse/MCOMPILER-412)).
+    <a target="_blank" href="https://issues.apache.org/jira/browse/MCOMPILER-412">MCOMPILER-412</a>).
     Moreover, when calling a member with a <code>Class</code> return type, you need to catch an exception to extract the
     <code>TypeMirror</code>.
     <br><br>
@@ -69,7 +69,7 @@
       component as above.</li>
   </ul>
 
-  <h2 id="quick-start">Quick Start</h2>
+  <h2 id="quick">Quick Start</h2>
   <h4>
     1. Add <em>avaje-prisms</em> dependency.
   </h4>
@@ -83,7 +83,7 @@
     </dependency>
   </pre>
 
-  <h4>2. Add <code>@GeneratePrism</code> containing the desired Annotation Type to any class/package.info</h4>
+  <h4>2. Add <em>@GeneratePrism</em> containing the desired Annotation Type to any class/package.info</h4>
   <p>
     <br>The annotation processor will generate a prism class that will help extract an annotation's values.
   </p>
@@ -122,234 +122,6 @@
     We use <code>@GeneratedPrism</code> to let the generator create a prism for an annotation. Prisms contain useful
     static methods to extract annotation values from Elements.
   </p>
-
-  <h4>Generated Code</h4>
-
-  Given:
-  <pre content="java">
-    @GeneratePrism(ExampleAnnotation.class)
-    @SupportedAnnotationTypes(ExampleAnnotationPrism.PRISM_TYPE)
-    public final class MyProcessor extends AbstractProcessor {
-
-      //processing logic...
-
-    }
-  </pre>
-  <p>The following class is generated:</p>
-  <details>
-    <summary>Generated Code: (click to expand) </summary>
-    <pre content="java">
-
-/** A Prism representing a {@link io.avaje.inject.generator.ExampleAnnotation @ExampleAnnotation} annotation. */
-@Generated("avaje-prism-generator")
-final class ExampleAnnotationPrism {
-  /** store prism value of someAttribute */
-  private final String _someAttribute;
-
-  public static final String PRISM_TYPE = "io.avaje.inject.generator.ExampleAnnotation";
-
-  /**
-   * An instance of the Values inner class whose
-   * methods return the AnnotationValues used to build this prism.
-   * Primarily intended to support using Messager.
-   */
-  final Values values;
-
-  /** Returns true if the mirror is an instance of {@link io.avaje.inject.generator.ExampleAnnotation @ExampleAnnotation} is present on the element, else false.
-   *
-   * @param mirror mirror.
-   * @return true if prism is present.
-   */
-  static boolean isInstance(AnnotationMirror mirror) {
-    return getInstance(mirror) != null;
-  }
-
-  /** Returns true if {@link io.avaje.inject.generator.ExampleAnnotation @ExampleAnnotation} is present on the element, else false.
-   *
-   * @param element element.
-   * @return true if annotation is present on the element.
-   */
-  static boolean isPresent(Element element) {
-    return getInstanceOn(element) != null;
-  }
-
-  /** Return a prism representing the {@link io.avaje.inject.generator.ExampleAnnotation @ExampleAnnotation} annotation present on the given element.
-   * similar to {@code element.getAnnotation(ExampleAnnotation.class)} except that
-   * an instance of this class rather than an instance of {@link io.avaje.inject.generator.ExampleAnnotation @ExampleAnnotation}
-   * is returned.
-   *
-   * @param element element.
-   * @return prism on element or null if no annotation is found.
-   */
-  static ExampleAnnotationPrism getInstanceOn(Element element) {
-    final var mirror = getMirror(element);
-    if (mirror == null) return null;
-    return getInstance(mirror);
-  }
-
-  /** Return a Optional representing a nullable {@link io.avaje.inject.generator.ExampleAnnotation @ExampleAnnotation} annotation on the given element.
-   * similar to {@code element.getAnnotation(io.avaje.inject.generator.ExampleAnnotation.class)} except that
-   * an Optional of this class rather than an instance of {@link io.avaje.inject.generator.ExampleAnnotation}
-   * is returned.
-   *
-   * @param element element.
-   * @return prism optional for element.
-   */
-  static Optional<ExampleAnnotationPrism> getOptionalOn(Element element) {
-    final var mirror = getMirror(element);
-    if (mirror == null) return Optional.empty();
-    return getOptional(mirror);
-  }
-
-  /** Return a list of prisms representing the {@link io.avaje.inject.generator.ExampleAnnotation @ExampleAnnotation} meta annotation on all the annotations on the given element.
-   * this method will recursively search all the annotations on the element.
-   *
-   * @param element element.
-   * @return list of prisms on the element's annotation.
-   */
-  static List<ExampleAnnotationPrism> getAllOnMetaAnnotations(Element element) {
-    if (element == null || element.getAnnotationMirrors().isEmpty()) return List.of();
-
-    //use a hashset to keep track of seen annotations
-    return getAllOnMetaAnnotations(element, new HashSet<>()).collect(toList());
-  }
-
-  /** Recursively search annotation elements for prisms.
-   * Uses a set to keep track of known annotations to avoid repeats/recursive loop.
-   *
-   * @param element element.
-   * @param seen set that tracks seen elements.
-   * @return stream of prisms on the element's annotation.
-   */
-  private static Stream<ExampleAnnotationPrism> getAllOnMetaAnnotations(Element element, Set<String> seen) {
-    if (element == null || element.getAnnotationMirrors().isEmpty()) return Stream.of();
-
-    return element.getAnnotationMirrors().stream()
-      .map(AnnotationMirror::getAnnotationType)
-      //only search annotations
-      .filter(t -> seen.add(t.toString()))
-        .map(DeclaredType::asElement)
-        .flatMap(
-            e ->
-                Stream.concat(
-                    getAllOnMetaAnnotations(e, seen),
-                    getMirrors(element).map(ExampleAnnotationPrism::getInstance)));
-  }
-
-  /** Return a prism of the {@link io.avaje.inject.generator.ExampleAnnotation @ExampleAnnotation} annotation from an annotation mirror.
-   *
-   * @param mirror mirror.
-   * @return prism for mirror or null if mirror is an incorrect type.
-   */
-  static ExampleAnnotationPrism getInstance(AnnotationMirror mirror) {
-    if (mirror == null || !PRISM_TYPE.equals(mirror.getAnnotationType().toString())) return null;
-
-    return new ExampleAnnotationPrism(mirror);
-  }
-
-  /** Return an Optional representing a nullable {@link ExampleAnnotationPrism @ExampleAnnotationPrism} from an annotation mirror.
-   * similar to {@code e.getAnnotation(io.avaje.inject.generator.ExampleAnnotation.class)} except that
-   * an Optional of this class rather than an instance of {@link io.avaje.inject.generator.ExampleAnnotation @ExampleAnnotation}
-   * is returned.
-   *
-   * @param mirror mirror.
-   * @return prism optional for mirror.
-   */
-  static Optional<ExampleAnnotationPrism> getOptional(AnnotationMirror mirror) {
-    if (mirror == null || !PRISM_TYPE.equals(mirror.getAnnotationType().toString())) return Optional.empty();
-
-    return Optional.of(new ExampleAnnotationPrism(mirror));
-  }
-
-  private ExampleAnnotationPrism(AnnotationMirror mirror) {
-    for (final ExecutableElement key : mirror.getElementValues().keySet()) {
-      memberValues.put(key.getSimpleName().toString(), mirror.getElementValues().get(key));
-    }
-    for (final ExecutableElement member : ElementFilter.methodsIn(mirror.getAnnotationType().asElement().getEnclosedElements())) {
-      defaults.put(member.getSimpleName().toString(), member.getDefaultValue());
-    }
-    _someAttribute = getValue("someAttribute", String.class);
-    this.values = new Values(memberValues);
-    this.mirror = mirror;
-    this.isValid = valid;
-  }
-
-  /**
-   * Returns a String representing the value of the {@code java.lang.String public abstract java.lang.String someAttribute() } member of the Annotation.
-   * @see io.avaje.inject.generator.ExampleAnnotation#someAttribute()
-   */
-  public String someAttribute() { return _someAttribute; }
-
-  /**
-   * Determine whether the underlying AnnotationMirror has no errors.
-   * True if the underlying AnnotationMirror has no errors.
-   * When true is returned, none of the methods will return null.
-   * When false is returned, a least one member will either return null, or another
-   * prism that is not valid.
-   */
-   final boolean isValid;
-
-  /**
-   * The underlying AnnotationMirror of the annotation
-   * represented by this Prism.
-   * Primarily intended to support using Messager.
-   */
-   final AnnotationMirror mirror;
-  /**
-   * A class whose members corespond to those of {@link io.avaje.inject.generator.ExampleAnnotation @ExampleAnnotation}
-   * but which each return the AnnotationValue corresponding to
-   * that member in the model of the annotations. Returns null for
-   * defaulted members. Used for Messager, so default values are not useful.
-   */
-  static final class Values {
-    private final Map<String, AnnotationValue> values;
-
-    private Values(Map<String, AnnotationValue> values) {
-      this.values = values;
-    }
-    /** Return the AnnotationValue corresponding to the someAttribute()
-     * member of the annotation, or null when the default value is implied.
-     */
-    AnnotationValue someAttribute(){ return values.get("someAttribute");}
-  }
-
-  private final Map<String, AnnotationValue> defaults = new HashMap<String, AnnotationValue>(10);
-  private final Map<String, AnnotationValue> memberValues = new HashMap<String, AnnotationValue>(10);
-  private boolean valid = true;
-
-  private <T> T getValue(String name, Class<T> clazz) {
-    final T result = ExampleAnnotationPrism.getValue(memberValues, defaults, name, clazz);
-    if (result == null) valid = false;
-    return result;
-  }
-
-  private static AnnotationMirror getMirror(Element target) {
-    for (final var m : target.getAnnotationMirrors()) {
-      final CharSequence mfqn = ((TypeElement) m.getAnnotationType().asElement()).getQualifiedName();
-      if (PRISM_TYPE.contentEquals(mfqn)) return m;
-    }
-    return null;
-  }
-
-  private static Stream<? extends AnnotationMirror> getMirrors(Element target) {
-    return target.getAnnotationMirrors().stream()
-        .filter(
-             m -> PRISM_TYPE.contentEquals(((TypeElement) m.getAnnotationType().asElement()).getQualifiedName()));
-  }
-
-  private static <T> T getValue(Map<String, AnnotationValue> memberValues, Map<String, AnnotationValue> defaults, String name, Class<T> clazz) {
-    AnnotationValue av = memberValues.get(name);
-    if (av == null) av = defaults.get(name);
-    if (av == null) {
-      return null;
-    }
-    if (clazz.isInstance(av.getValue())) return clazz.cast(av.getValue());
-    return null;
-  }
-
-}
-    </pre>
-  </details>
 
   <h3 id="common">Common Prism Members</h3>
 
@@ -452,7 +224,7 @@ public interface NotNullPrism {
 }
 </pre>
 
-  <h2>@GenerateAPContext</h2>
+  <h2 id="apcontext">@GenerateAPContext</h2>
   <p>
     As your annotation processor grows in size and complexity, you may find it difficult to properly access the
     <code>ProcessingEnvironment</code> and its utilities. <code>@GenerateAPContext</code> generates a helper class that
@@ -828,12 +600,12 @@ public interface NotNullPrism {
     </pre>
   </details>
 
-  <h2>@GenerateModuleInfoReader</h2>
+  <h2 id="modules">@GenerateModuleInfoReader</h2>
   <p>
-    There is currently a bug in the compiler where in certain situations calling <em>ModuleElement#getDirectives</em> on
-    the application's root module crashes compilation. <em>@GenerateModuleInfoReader</em> in combination with
+    There is currently a bug in javac where in certain situations calling <em>ModuleElement#getDirectives</em> on
+    the application's root module crashes compilation. Using <em>@GenerateModuleInfoReader</em> in combination with
     <em>APContext</em> generates classes that allow you to read a
-    module's directives by parsing the <em> module-info.java</em> source file.
+    module's directives by parsing the <em>module-info.java</em> source file.
   </p>
   <pre content="java">
     @GenerateAPContext
@@ -866,7 +638,7 @@ public interface NotNullPrism {
       }
     }
 </pre>
-  <h2>@GenerateUtils</h2>
+  <h2 id="utils">@GenerateUtils</h2>
   <p>
     Using this annotation will generate classes with useful methods for processing TypeMirrors and their component
     parts.
@@ -874,7 +646,7 @@ public interface NotNullPrism {
 
   <h3 id="utype">UType</h3>
   <p>
-    This generated utility interface and implementation has methods for handling type mirrors and extracting their
+    This generated utility interface has methods for handling type mirrors and extracting their
     component types and annotations (including <em>TYPE_USE</em>). In addition it allows us to get a readable
     source-code safe string of the type names as well as the required imports.
   </p>
