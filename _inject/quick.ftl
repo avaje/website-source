@@ -10,7 +10,14 @@
 <h4>2. Add <em>avaje-inject-generator</em> annotation processor as a dependency with <em>provided scope</em>.</h4>
 
 <pre content="xml">
-<!-- Annotation processor -->
+<!-- Annotation processors -->
+<!-- if using lombok, it must be placed before the inject generator.
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.30</version>
+    <scope>provided</scope>
+</dependency> -->
 <dependency>
   <groupId>io.avaje</groupId>
   <artifactId>avaje-inject-generator</artifactId>
@@ -20,7 +27,7 @@
 </dependency>
 </pre>
 
-<h4>2a. JDK 23+ </h4>
+<#--  <h4>2a. JDK 23+ </h4>
 <p>In JDK 23+, annotation processors are disabled by default, so we need to add a flag to re-enable.</p>
 <pre content="xml">
 <plugin>
@@ -30,7 +37,7 @@
     <compilerArgument>-proc:full</compilerArgument>
   </configuration>
 </plugin>
-</pre>
+</pre>  -->
 
 <h4>3. Create a Bean Class annotated with <code>@Singleton</code></h4>
 

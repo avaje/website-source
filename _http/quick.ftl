@@ -25,7 +25,7 @@
   </dependency>
 </pre>
 
-<h4>2a. JDK 23+ </h4>
+<#--  <h4>2a. JDK 23+ </h4>
 <p>In JDK 23+, annotation processors are disabled by default, so we need to add a flag to re-enable.</p>
 <pre content="xml">
 <plugin>
@@ -35,7 +35,7 @@
     <compilerArgument>-proc:full</compilerArgument>
   </configuration>
 </plugin>
-</pre>
+</pre>  -->
 
 <p>3. Define a Controller (These APT processors work with both Java and Kotlin.)</p>
 
