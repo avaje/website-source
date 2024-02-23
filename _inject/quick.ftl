@@ -27,7 +27,7 @@
 </dependency>
 </pre>
 
-<h4>2a. JDK 23+ </h4>
+<#--  <h4>2a. JDK 23+ </h4>
 <p>In JDK 23+, annotation processors are disabled by default, so we need to add a flag to re-enable.</p>
 <pre content="xml">
 <plugin>
@@ -37,7 +37,7 @@
     <compilerArgument>-proc:full</compilerArgument>
   </configuration>
 </plugin>
-</pre>
+</pre>  -->
 
 <h4>3. Create a Bean Class annotated with <code>@Singleton</code></h4>
 
