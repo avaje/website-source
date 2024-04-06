@@ -10,18 +10,23 @@
   <@nav url="#json" title="@Json">
     <ul>
       <li><a href="#adapter">Generated JsonAdapter</a></li>
-      <li><a href="#import">@Import</a></li>
-      <li><a href="#raw">@Raw</a></li>
-      <li><a href="#property">@Property</a></li>
-      <li><a href="#alias">@Alias</a></li>
-      <li><a href="#creator">@Creator</a></li>
-      <li><a href="#iggy">@Ignore</a></li>
-      <li><a href="#mapped">@Unmapped</a></li>
-      <li><a href="#value">@Value</a></li>
-      <li><a href="#mixin">@Mixin</a></li>
-      <li><a href="#subtype">@Subtype</a></li>
     </ul>
   </@nav>
-  <@nav url="#custom" title="@CustomAdapter"></@nav>
+  <@nav url="#import" title="@Import"/>
+  <@nav url="#raw" title="@Raw"/>
+  <@nav url="#property" title="@Property"/>
+  <@nav url="#alias" title="@Alias"/>
+  <@nav url="#creator" title="@Creator"/>
+  <@nav url="#iggy" title="@Ignore"/>
+  <@nav url="#mapped" title="@Unmapped"/>
+  <@nav url="#value" title="@Value">
+    <ul>
+      <li><a href="#valueclass">Inline Classes</a></li>
+      <li><a href="#valueEnum">Enum Mapping</a></li>
+    </ul>
+  </@nav>
+  <@nav url="#mixin" title="@Mixin"/>
+  <@nav url="#subtype" title="@Subtype"/>
+  <@nav url="#custom" title="@CustomAdapter"/>
 </ul>
 <p>&nbsp;</p>

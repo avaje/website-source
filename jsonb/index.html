@@ -1,69 +1,74 @@
 <html>
 
 <head>
-  <meta name="layout" content="_layout/base-jsonb.html"/>
-  <meta name="bread1" content="jsonb" href="/jsonb/"/>
+  <meta name="layout" content="_layout/base-jsonb.html" />
+  <meta name="bread1" content="jsonb" href="/jsonb/" />
   <#assign index="active">
 </head>
+
 <body>
 
-<h1 id="overview">Avaje Jsonb</h1>
+  <h1 id="overview">Avaje Jsonb</h1>
 
-<table style="width: 100%;">
-  <tr>
-    <th>Discord</th>
-    <th>Source</th>
-    <th>API Docs</th>
-    <th>Issues</th>
-    <th>Releases</th>
-  </tr>
-  <tr>
-    <td><a href="https://discord.gg/Qcqf9R27BR">Discord</td>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-jsonb">Github</a></td>
-    <td><a target="_blank" href="https://javadoc.io/doc/io.avaje/avaje-jsonb/latest/io.avaje.jsonb/io/avaje/jsonb/package-summary.html">Javadoc</a></td>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-jsonb/issues">Github</a></td>
-    <td><a href="https://github.com/avaje/avaje-jsonb/releases"><img src="https://img.shields.io/maven-central/v/io.avaje/avaje-jsonb.svg?label=Maven%20Central"></a></td>
-  </tr>
-</table>
+  <table style="width: 100%;">
+    <tr>
+      <th>Discord</th>
+      <th>Source</th>
+      <th>API Docs</th>
+      <th>Issues</th>
+      <th>Releases</th>
+    </tr>
+    <tr>
+      <td><a href="https://discord.gg/Qcqf9R27BR">Discord</td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-jsonb">Github</a></td>
+      <td><a target="_blank"
+          href="https://javadoc.io/doc/io.avaje/avaje-jsonb/latest/io.avaje.jsonb/io/avaje/jsonb/package-summary.html">Javadoc</a>
+      </td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-jsonb/issues">Github</a></td>
+      <td><a href="https://github.com/avaje/avaje-jsonb/releases"><img
+            src="https://img.shields.io/maven-central/v/io.avaje/avaje-jsonb.svg?label=Maven%20Central"></a></td>
+    </tr>
+  </table>
 
-<p><br><br>
-  This is a light (~200kb + generated code), fast, and reflection free Json binding library
-</p>
+  <p><br><br>
+    This is a light (~200kb + generated code), fast, and reflection free Json binding library
+  </p>
 
-<ul>
-  <li>Use Java annotation processing to generate java source for adapting JSON to/from java objects</li>
-  <li>No need to manually register generated adapters. (Uses service loading to auto-register)</li>
-  <li>Has no fallback to reflection - avaje is code generation or bust.</li>
-  <li>Constructors and accessors/getters/setters of any style should all "just work" (record type, constructors, 'fluid setters' all just work)</li>
-  <li>Jackson-like annotations</li>
-  <li>Provide support for dynamic json views</li>
-  <li>Supports importing and generating adapters for library types</li>
-  <li>Supports Jackson-like mixins</li>
-  <li>Supports generic types</li>
-</ul>
+  <ul>
+    <li>Use Java annotation processing to generate java source for adapting JSON to/from java objects</li>
+    <li>No need to manually register generated adapters. (Uses service loading to auto-register)</li>
+    <li>Has no fallback to reflection - avaje is code generation or bust.</li>
+    <li>Constructors and accessors/getters/setters of any style should all "just work" (record type, constructors,
+      'fluid setters' all just work)</li>
+    <li>Jackson-like annotations</li>
+    <li>Provide support for dynamic json views</li>
+    <li>Supports importing and generating adapters for library types</li>
+    <li>Supports Jackson-like mixins</li>
+    <li>Supports generic types</li>
+  </ul>
 
-<h4 id="default-types">Default Supported Types</h4>
+  <h4 id="default-types">Default Supported Types</h4>
 
-<p>
-  Jsonb has built-in support for reading and writing Java’s core data types:
-</p>
+  <p>
+    Jsonb has built-in support for reading and writing Java’s core data types:
+  </p>
 
-<ul>
-  <li>Primitives (int, float, char...) and their boxed counterparts (Integer, Float, Character...).</li>
-  <li>BigInteger and BigDecimal</li>
-  <li>java.time classes (Instant, LocalDate, LocalDateTime...)</li>
-  <li>Arrays, Collections, Streams, Lists, Sets, and Maps</li>
-  <li>Strings</li>
-  <li>Enums</li>
-  <li>Other miscellaneous types (UUID, URL, URI)</li>
-</ul>
+  <ul>
+    <li>Primitives (int, float, char...) and their boxed counterparts (Integer, Float, Character...).</li>
+    <li>BigInteger and BigDecimal</li>
+    <li>java.time classes (Instant, LocalDate, LocalDateTime...)</li>
+    <li>Arrays, Collections, Streams, Lists, Sets, and Maps</li>
+    <li>Strings</li>
+    <li>Enums</li>
+    <li>Other miscellaneous types (UUID, URL, URI)</li>
+  </ul>
 
 
-<h2 id="quick-start">Quick Start</h2>
-<h4>
-  1. Add <em>avaje-jsonb</em> dependencies.
-</h4>
-<pre content="xml">
+  <h2 id="quick-start">Quick Start</h2>
+  <h4>
+    1. Add <em>avaje-jsonb</em> dependencies.
+  </h4>
+  <pre content="xml">
 <dependency>
   <groupId>io.avaje</groupId>
   <artifactId>avaje-jsonb</artifactId>
@@ -77,10 +82,10 @@
 </dependency>
 </pre>
 
-<h4>
-2. Add the annotation processor to your pom.
-</h4>
-<pre content="xml">
+  <h4>
+    2. Add the annotation processor to your pom.
+  </h4>
+  <pre content="xml">
   <!-- Annotation processors -->
   <dependency>
     <groupId>io.avaje</groupId>
@@ -91,7 +96,7 @@
   </dependency>
 </pre>
 
-<!-- <h4>2a. JDK 23+ </h4>
+  <!-- <h4>2a. JDK 23+ </h4>
 <p>In JDK 23+, annotation processors are disabled by default, so we need to add a flag to re-enable.</p>
 <pre content="xml">
 <plugin>
@@ -103,13 +108,14 @@
 </plugin>
 </pre> -->
 
- <h4>3. Add <code>@Json</code> onto types we want to serialize.</h4>
-<p>
-  <br>The avaje-jsonb-generator annotation processor will generate a JsonAdapter as java source code for each type annotated with <code>@Json</code>.
-  These will be automatically registered with Jsonb using a service loader mechanism.
-  <br>For types we can not annotate with <code>@Json</code> we can instead use <code>@Json.Import</code>.
-</p>
-<pre content="java">
+  <h4>3. Add <code>@Json</code> onto types we want to serialize.</h4>
+  <p>
+    <br>The avaje-jsonb-generator annotation processor will generate a JsonAdapter as java source code for each type
+    annotated with <code>@Json</code>.
+    These will be automatically registered with Jsonb using a service loader mechanism.
+    <br>For types we can not annotate with <code>@Json</code> we can instead use <code>@Json.Import</code>.
+  </p>
+  <pre content="java">
   @Json
   public class Address {
     private String street;
@@ -122,18 +128,18 @@
   }
 </pre>
 
-<p>Also works with records:</p>
+  <p>Also works with records:</p>
 
-<pre content="java">
+  <pre content="java">
   @Json
   public record Address(String street, String suburb, String city){}
 </pre>
 
-<h4>
-  4. Serialize/Deserialize your JSON/POJO
-</h4>
+  <h4>
+    4. Serialize/Deserialize your JSON/POJO
+  </h4>
 
-<pre content="java">
+  <pre content="java">
   // build using defaults
   Jsonb jsonb = Jsonb.builder().build();
 
@@ -151,12 +157,13 @@
   Customer customer = customerType.fromJson(asJson);
 </pre>
 
-<h4>
-  5. JsonViews
-</h4>
-<p>This library supports dynamic json views which allow us to specify which specific properties to include when serialising to json.</p>
+  <h4>
+    5. JsonViews
+  </h4>
+  <p>This library supports dynamic json views which allow us to specify which specific properties to include when
+    serialising to json.</p>
 
-<pre content="java">
+  <pre content="java">
   Jsonb jsonb = Jsonb.builder().build();
 
   JsonType<Customer> customerType = jsonb.type(Customer.class);
@@ -164,20 +171,21 @@
   // only including the id and name
   JsonView<Customer> idAndNameView = customerType.view("(id, name)");
 
-  String asJson =  idAndNameView.toJson(customer);
+  String asJson = idAndNameView.toJson(customer);
 
   JsonView<Customer> myView =
     customerType.view("(id, name, billingAddress(*), contacts(lastName, email))");
 
   // serialize to json the above specified properties only
-  String asJson =  myView.toJson(customer);
+  String asJson = myView.toJson(customer);
   </pre>
 
   <h2 id="integration">Spring/Avaje Inject Integration</h2>
   <p>
-    When used with Spring or Avaje Inject, a default <code>Jsonb</code> instance will be provided and used for serializing/deserializing Http messages. The following properties can be added to configure the default instance.
+    When used with Spring or Avaje Inject, a default <code>Jsonb</code> instance will be provided and used for
+    serializing/deserializing Http messages. The following properties can be added to configure the default instance.
 
-    <pre content="java">
+  <pre content="java">
     jsonb.deserialize.failOnUnknown (default false)
     jsonb.serialize.mathTypesAsString (default false)
     jsonb.serialize.empty (default true)
@@ -211,30 +219,34 @@
   }
   </pre>
   <p>
-   In the example above, <code>org.example.jsonb.GeneratedComponent</code> is generated code typically found in
+    In the example above, <code>org.example.jsonb.GeneratedComponent</code> is generated code typically found in
     <code>target/generated-sources/annotations</code>.
   </p>
 
-<h2 id="json">@Json</h2>
-<p>
-Types with <code>@Json</code> are picked up by avaje-jsonb-generator at compile time and a JsonAdapter is generated as java source code typically in target/generated-sources/annotations.
-</p>
-<h4>Constructors</h4>
-<p>
-  The types can be a record/class and have constructors. When types do not have a default constructor (e.g. record types) then the generated code will use the constructor. Fields in the constructor do not need or use setter methods.
-</p>
+  <h2 id="json">@Json</h2>
+  <p>
+    Types with <code>@Json</code> are picked up by avaje-jsonb-generator at compile time and a JsonAdapter is generated
+    as java source code typically in target/generated-sources/annotations.
+  </p>
+  <h4>Constructors</h4>
+  <p>
+    The types can be a record/class and have constructors. When types do not have a default constructor (e.g. record
+    types) then the generated code will use the constructor. Fields in the constructor do not need or use setter
+    methods.
+  </p>
 
-<pre content="java">
+  <pre content="java">
   //Example record - all fields set via constructor
   @Json
   public record Address(String street, String suburb, String city) { }
 </pre>
-<p>
-All the fields of record types are set via constructor - no setters here.
-<br><br>
-When a class has a constructor like the City example below, then fields in the constructor do not need or use a setter method. We only need a setter method for fields that are not in the constructor.
-</p>
-<pre content="java">
+  <p>
+    All the fields of record types are set via constructor - no setters here.
+    <br><br>
+    When a class has a constructor like the City example below, then fields in the constructor do not need or use a
+    setter method. We only need a setter method for fields that are not in the constructor.
+  </p>
+  <pre content="java">
 @Json
 public class City {
   UUID id;
@@ -253,16 +265,17 @@ public class City {
 }
 </pre>
 
-<p>
-  In the example above the id and name fields are set via constructor
-  and only zone is set via setter method.
-</p>
+  <p>
+    In the example above the id and name fields are set via constructor
+    and only zone is set via setter method.
+  </p>
 
-<h4>Setter methods</h4>
-<p>
-  Fields that are not set via the constructor need to have a setter methods. There are 4 styles of setter methods that avaje-jsonb-generator will find.
-</p>
-<pre content="java">
+  <h4>Setter methods</h4>
+  <p>
+    Fields that are not set via the constructor need to have a setter methods. There are 4 styles of setter methods that
+    avaje-jsonb-generator will find.
+  </p>
+  <pre content="java">
 // traditional setter
 public void setSuburb(String suburb) {
   this.suburb = suburb;
@@ -283,20 +296,20 @@ public Address suburb(String suburb) {
 }
 </pre>
 
-<h4>Naming Convention</h4>
-<p>
-  We can specify a naming convention via the naming attribute of <code>@Json</code>.
-  This naming convention translates field names to json property names.
-  The result of changing the naming convention can be seen in the generated JsonAdapter code.
-</p>
-<pre content="java">
+  <h4>Naming Convention</h4>
+  <p>
+    We can specify a naming convention via the naming attribute of <code>@Json</code>.
+    This naming convention translates field names to json property names.
+    The result of changing the naming convention can be seen in the generated JsonAdapter code.
+  </p>
+  <pre content="java">
 @Json(naming = LowerHyphen)
 public class Customer {
 ...
 }
 </pre>
 
-<pre content="java">
+  <pre content="java">
 //The Naming options are below with the default of Match.
 enum Naming {
   Match,
@@ -310,9 +323,9 @@ enum Naming {
 }
 </pre>
 
-<h3 id="adapter">Generated JsonAdapter</h3>
-<p>Given the class:</p>
-<pre content="java">
+  <h3 id="adapter">Generated JsonAdapter</h3>
+  <p>Given the class:</p>
+  <pre content="java">
   @Json
   public class Address {
     private String street;
@@ -321,10 +334,10 @@ enum Naming {
     //getters/setters ommited for brevity
   }
 </pre>
-<p>The following JsonAdapter is generated:</p>
-<details>
-  <summary>Generated Code: (click to expand) </summary>
-<pre content="java">
+  <p>The following JsonAdapter is generated:</p>
+  <details>
+    <summary>Generated Code: (click to expand) </summary>
+    <pre content="java">
   @Generated
   public final class AddressJsonAdapter implements JsonAdapter<Address>, ViewBuilderAware {
 
@@ -402,53 +415,55 @@ enum Naming {
     }
   }
 </pre>
-</details>
+  </details>
 
-<h2 id="import">@Json.Import</h2>
-<p> When we are unable to or do not wish to put <code>@Json</code> on the types we can use <code>@Json.Import</code>.
-<br><br>
-We can put <code>@Json.Import</code> on a package or type and specify the types to generate a JsonAdapter for.
-</p>
-<pre content="java">
+  <h2 id="import">@Json.Import</h2>
+  <p> When we are unable to or do not wish to put <code>@Json</code> on the types we can use <code>@Json.Import</code>.
+    <br><br>
+    We can put <code>@Json.Import</code> on a package or type and specify the types to generate a JsonAdapter for.
+  </p>
+  <pre content="java">
 @Json.Import({Customer.class, Address.class, Order.class})
 package org.example;
 </pre>
 
-<h2 id="raw">@Json.Raw</h2>
-<p>
-We can use <code>@Json.Raw</code> to mark a String field as containing raw JSON content. This is then read and written (as a string containing raw json).
-</p>
+  <h2 id="raw">@Json.Raw</h2>
+  <p>
+    We can use <code>@Json.Raw</code> to mark a String field as containing raw JSON content. This is then read and
+    written (as a string containing raw json).
+  </p>
 
-<pre content="java">
+  <pre content="java">
   @Json.Raw
   String rawJson
 </pre>
 
-<h2 id="property">@Json.Property</h2>
-<p>
-We can override the serialization/deserialization name of a field using <code>@Json.Property</code>.
-</p>
+  <h2 id="property">@Json.Property</h2>
+  <p>
+    We can override the serialization/deserialization name of a field using <code>@Json.Property</code>.
+  </p>
 
-<pre content="java">
+  <pre content="java">
 @Json
 public class Customer {
 
   @Json.Property("SomeOtherName")
-  private name
+  private String name;
   ...
 }
 </pre>
 
-<p>
-  Effectively, we have renamed this property and will not be able to deserialize this from a json of <code>{"name":"Jolyne"}</code>.
-  It will now only deserialize for the new name. <code>{"SomeOtherName":"Jolyne"}</code>.
-  <br>If you wish to only specify an alias for the json property, use <code>@Alias</code>.
-</p>
+  <p>
+    Effectively, we have renamed this property and will not be able to deserialize this from a json of
+    <code>{"name":"Jolyne"}</code>.
+    It will now only deserialize for the new name. <code>{"SomeOtherName":"Jolyne"}</code>.
+    <br>If you wish to only specify an alias for the json property, use <code>@Alias</code>.
+  </p>
 
-<h4>Generated Code</h4>
-
-<p><code>@Json.Property</code> makes the following changes to the generated JsonAdapter:</p>
-<pre content="java">
+  <details>
+    <summary>Generated Code: (click to expand)</summary>
+    <p><code>@Json.Property</code> makes the following changes to the generated JsonAdapter:</p>
+    <pre content="java">
   @Generated
   public final class CustomerJsonAdapter implements JsonAdapter<Customer>, ViewBuilderAware {
 
@@ -486,14 +501,16 @@ public class Customer {
     }
   }
 </pre>
+  </details>
 
-<h2 id="alias">@Json.Alias</h2>
+  <h2 id="alias">@Json.Alias</h2>
 
-<p>
-  We can define a deserialization alias for a field using <code>@Json.Alias</code>. It is compatible with, and can work in tandem with <code>@Property</code>
-</p>
+  <p>
+    We can define a deserialization alias for a field using <code>@Json.Alias</code>. It is compatible with, and can
+    work in tandem with <code>@Property</code>
+  </p>
 
-<pre content="java">
+  <pre content="java">
 @Json
 public class Customer {
 
@@ -503,10 +520,10 @@ public class Customer {
 }
 </pre>
 
-<h4>Generated Code</h4>
-
-<p><code>@Json.Alias</code> makes the following changes to the generated JsonAdapter:</p>
-<pre content="java">
+  <details>
+    <summary>Generated Code: (click to expand)</summary>
+    <p><code>@Json.Alias</code> makes the following changes to the generated JsonAdapter:</p>
+    <pre content="java">
   @Generated
   public final class CustomerJsonAdapter implements JsonAdapter<Customer>, ViewBuilderAware {
 
@@ -538,13 +555,15 @@ public class Customer {
     }
   }
 </pre>
+  </details>
 
-<h2 id="creator">@Json.Creator</h2>
-<p>
-  With <code>@Json.Creator</code>, we can override deserialization using a constructor or static factory method. Contructor/Method parameters can be annotated with <code>@Alias</code> to rename a deserialization field.
-</p>
+  <h2 id="creator">@Json.Creator</h2>
+  <p>
+    With <code>@Json.Creator</code>, we can override deserialization using a constructor or static factory method.
+    Contructor/Method parameters can be annotated with <code>@Alias</code> to rename a deserialization field.
+  </p>
 
-<pre content="java">
+  <pre content="java">
   @Json
   public record Kingfisher(@Json.Alias("species") String name, int fishCaught) {
 
@@ -555,10 +574,10 @@ public class Customer {
   }
 </pre>
 
-<h4>Generated Code</h4>
-
-<p><code>@Json.Creator</code> makes the following changes to the generated JsonAdapter:</p>
-<pre content="java">
+  <details>
+    <summary>Generated Code: (click to expand)</summary>
+    <p><code>@Json.Creator</code> makes the following changes to the generated JsonAdapter:</p>
+    <pre content="java">
   @Generated
   public final class KingfisherJsonAdapter implements JsonAdapter<Kingfisher>, ViewBuilderAware {
 
@@ -596,14 +615,14 @@ public class Customer {
     }
   }
 </pre>
+  </details>
 
+  <h2 id="iggy">@Json.Ignore</h2>
+  <p>
+    We can exclude a field from json serialisation using @Json.Ignore
+  </p>
 
-<h2 id="iggy">@Json.Ignore</h2>
-<p>
-  We can exclude a field from json serialisation using @Json.Ignore
-</p>
-
-<pre content="java">
+  <pre content="java">
   @Json
   public class Secrets {
 
@@ -621,10 +640,10 @@ public class Customer {
   }
 </pre>
 
-<h4>Generated Code</h4>
-
-<p><code>@Json.Ignore</code> makes the following changes to the generated JsonAdapter:</p>
-<pre content="java">
+  <details>
+    <summary>Generated Code: (click to expand)</summary>
+    <p><code>@Json.Ignore</code> makes the following changes to the generated JsonAdapter:</p>
+    <pre content="java">
   @Generated
   public final class SecretsJsonAdapter implements JsonAdapter<Secrets>, ViewBuilderAware {
 
@@ -673,15 +692,17 @@ public class Customer {
   }
 </pre>
 
+  </details>
 
-<h2 id="mapped">@Json.Unmapped</h2>
-<p>
-We can use <code>@Json.Unmapped</code> to collect unmapped json during de-serialization and include it in serialization.
-<br></br>
-The @Json.Unmapped annotation must be on a field of type <code>Map<String, Object></code>
-</p>
+  <h2 id="mapped">@Json.Unmapped</h2>
+  <p>
+    We can use <code>@Json.Unmapped</code> to collect unmapped json during de-serialization and include it in
+    serialization.
+    <br></br>
+    The @Json.Unmapped annotation must be on a field of type <code>Map<String, Object></code>
+  </p>
 
-<pre content="java">
+  <pre content="java">
   @Json
   public class UnmappedJson {
     private String mapped;
@@ -689,10 +710,10 @@ The @Json.Unmapped annotation must be on a field of type <code>Map<String, Objec
   }
 </pre>
 
-<h4>Generated Code</h4>
-
-<p><code>@Json.Unmapped</code> makes the following changes to the generated JsonAdapter:</p>
-<pre content="java">
+  <details>
+    <summary>Generated Code: (click to expand)</summary>
+    <p><code>@Json.Unmapped</code> makes the following changes to the generated JsonAdapter:</p>
+    <pre content="java">
   @Generated
   public final class UnmappedJsonJsonAdapter implements JsonAdapter<UnmappedJson>, ViewBuilderAware {
 
@@ -741,16 +762,76 @@ The @Json.Unmapped annotation must be on a field of type <code>Map<String, Objec
     }
   }
 </pre>
+  </details>
 
-<h2 id="value">Enum Mapping with @Json.Value</h2>
+  <h2 id="value">@Json.Value</h2>
+  <p>
+    We can use <code>@Json.Value</code> to specify a method that will provide the value used to serialize to/from json.
+    <br></br>
+  </p>
 
-<p>
-We can use <code>@Json.Value</code> on Enum types to specify a method that provides the values that will be used to serialize to/from json. This works for any type that can be compared with <code>.equals()</code>
-<br></br>
-In the example below the values used in the json content is "one value" and "two value" rather than the usual "ONE" and "TWO".
-</p>
+  <h3 id="valueClass">Inlining Classes</h3>
 
-<pre content="java">
+  <p>
+    When using <code>@Json.Value</code> on a class method, a special adapter is generated that will use this value to
+    (de)serialize.
+    <br></br>
+    In the example below, the class is serialized as it were a <code>String</code> object.
+  </p>
+
+  <pre content="java">
+public class Inlined {
+  private final String value;
+  private final int otherValue; //notUsed
+
+  public Inlined(String value) {
+    this.value = value;
+  }
+
+  @Json.Value
+  public String value() {
+    return value;
+  }
+}
+</pre>
+  <details>
+    <summary>Generated Code: (click to expand)</summary>
+    <p>The specialized adapter generated to (de)serialize the object:</p>
+    <pre content="java">
+  @Generated
+  public final class InlinedJsonAdapter implements JsonAdapter<Inlined> {
+
+    private final JsonAdapter<String> adapter;
+
+    public InlinedJsonAdapter(Jsonb jsonb) {
+      this.adapter = jsonb.adapter(String.class);
+    }
+
+    @Override
+    public void toJson(JsonWriter writer, Inlined value) {
+      adapter.toJson(writer, value.value());
+    }
+
+    @Override
+    public Inlined fromJson(JsonReader reader) {
+      return new Inlined(adapter.fromJson(reader));
+    }
+  }
+</pre>
+  </details>
+
+  <h3 id="valueEnum">Enum Mapping with @Json.Value</h3>
+
+  <p>
+    When using <code>@Json.Value</code> with Enum methods, a specialized adapter using an <code>EnumMap</code> will be
+    generated to cache the constant values for (de)serialization. This works for any method return type that can be
+    compared with <code>.equals()</code>
+    <br></br>
+    In the example below the values used in the json content is "one value" and "two value" rather than the usual "ONE"
+    and "TWO".
+  </p>
+
+  <pre content="java">
 public enum MyEnum {
 
   ONE("one value"),
@@ -769,11 +850,9 @@ public enum MyEnum {
 }
 </pre>
 
-<h4>Generated Code</h4>
-
-<p>A specialized adapter is generated to handle the enum mapping</p>
-
-<pre content="java">
+  <details>
+    <summary>Generated Code: (click to expand)</summary>
+    <pre content="java">
   @Generated
   public final class MyEnumJsonAdapter implements JsonAdapter<MyEnum> {
 
@@ -807,16 +886,17 @@ public enum MyEnum {
     }
   }
 </pre>
+  </details>
+  <h2 id="mixin">@Json.Mixin</h2>
 
-<h2 id="mixin">@Json.Mixin</h2>
+  <p>
+    Mark this Class as a MixIn Type that can add Jsonb Annotations on the specified type.
+    <br>
+    Say we want to override the field serialization behavior on a class we can't modify.(Typically in an external
+    project/dependency or otherwise)
+  </p>
 
-<p>
-  Mark this Class as a MixIn Type that can add Jsonb Annotations on the specified type.
-  <br>
-  Say we want to override the field serialization behavior on a class we can't modify.(Typically in an external project/dependency or otherwise)
-</p>
-
-<pre content="java">
+  <pre content="java">
 public class MixinTarget {
   private String name;
   private String stand;
@@ -824,8 +904,8 @@ public class MixinTarget {
   //getters/setters...
 }
 </pre>
-<p>We can use the <code>@Json.Mixin</code> annotation on an abstract class to effectively add @Json Annotations </p>
-<pre content="java">
+  <p>We can use the <code>@Json.Mixin</code> annotation on an abstract class to effectively add @Json Annotations </p>
+  <pre content="java">
 @Json.MixIn(MixinTarget.class)
 public abstract class MixinClass {
 
@@ -837,11 +917,11 @@ public abstract class MixinClass {
 }
 </pre>
 
-<h4>Generated Code</h4>
+  <details>
+    <summary>Generated Code: (click to expand)</summary>
+    <p><code>@Json.Mixin</code> makes the following changes to the generated MixinTargetJsonAdapter:</p>
 
-<p><code>@Json.Mixin</code> makes the following changes to the generated MixinTargetJsonAdapter:</p>
-
-  <pre content="java">
+    <pre content="java">
     @Generated
     public final class MixinTargetJsonAdapter implements JsonAdapter<MixinTarget>, ViewBuilderAware {
 
@@ -896,16 +976,20 @@ public abstract class MixinClass {
       }
     }
   </pre>
+  </details>
 
-<h2 id="subtype">@Json.Subtype</h2>
+  <h2 id="subtype">@Json.Subtype</h2>
 
-<p>For mapping polymorphic types we specify on the parent type a <code>@Json.Subtype</code> for each concrete sub-type that can represent that type.
+  <p>For mapping polymorphic types we specify on the parent type a <code>@Json.Subtype</code> for each concrete sub-type
+    that can represent that type.
 
-<p>By default the "type property" that specifies the type in json is <code>"@type"</code>. Use <code>@Json(typeProperty=...)</code> to specify the name of the type property.</p>
+  <p>By default the "type property" that specifies the type in json is <code>"@type"</code>. Use
+    <code>@Json(typeProperty=...)</code> to specify the name of the type property.
+  </p>
 
-Note: There is a current limitation that polymorphic types do not yet support "Json Views".</p>
+  Note: There is a current limitation that polymorphic types do not yet support "Json Views".</p>
 
-<pre content="java">
+  <pre content="java">
   @Json
   @Json.SubType(type = Car.class, name = "CAR")
   @Json.SubType(type = Truck.class, name = "TRUCK")
@@ -930,9 +1014,9 @@ Note: There is a current limitation that polymorphic types do not yet support "J
     //For interfaces, the typeProperty needs to be defined in the subClasses
    </pre>
 
-   <p>Additionally, you can deserialize the typeProperty to an enum.</p>
+  <p>Additionally, you can deserialize the typeProperty to an enum.</p>
 
-   <pre content="java">
+  <pre content="java">
     enum TypeEnum {
       CAR,
       TRUCK;
@@ -948,11 +1032,11 @@ Note: There is a current limitation that polymorphic types do not yet support "J
     }
    </pre>
 
-  <h4>Generated Code</h4>
+  <details>
+    <summary>Generated Code: (click to expand)</summary>
+    <p>Given this class:</p>
 
-  <p>Given this class:</p>
-
-  <pre content="java">
+    <pre content="java">
     @Json
     @Json.SubType(type = Car.class)
     @Json.SubType(type = Truck.class, name = "TRUCK")
@@ -972,9 +1056,8 @@ Note: There is a current limitation that polymorphic types do not yet support "J
     }
     </pre>
 
-  <p>The below adapter will be generated:</p>
-
-  <pre content="java">
+    <p>The below adapter will be generated:</p>
+    <pre content="java">
     @Generated
     public final class VehicleJsonAdapter implements JsonAdapter<Vehicle> {
 
@@ -1064,16 +1147,19 @@ Note: There is a current limitation that polymorphic types do not yet support "J
       }
     }
   </pre>
+  </details>
 
-<h2 id="custom">@CustomAdapter</h2>
-<p>
-  With <code>@CustomAdapter</code>, you can define your own JsonAdapter for your more esoteric serialization needs.
-  A custom adapter registered using this annotation must have a public constructor accepting a Jsonb instance (or a <code>public static JsonAdapter.Factory FACTORY</code> field for generic adapters), and must directly implement the JsonAdapter Interface.
-</p>
+  <h2 id="custom">@CustomAdapter</h2>
+  <p>
+    With <code>@CustomAdapter</code>, you can define your own JsonAdapter for your more esoteric serialization needs.
+    A custom adapter registered using this annotation must have a public constructor accepting a Jsonb instance (or a
+    <code>public static JsonAdapter.Factory FACTORY</code> field for generic adapters), and must directly implement the
+    JsonAdapter Interface.
+  </p>
 
-<h4>Standard Adapters</h4>
+  <h4>Standard Adapters</h4>
 
-<pre content="java">
+  <pre content="java">
   @CustomAdapter
   public class CustomClassJsonAdapter implements JsonAdapter<CustomClass> {
 
@@ -1092,9 +1178,9 @@ Note: There is a current limitation that polymorphic types do not yet support "J
   }
 </pre>
 
-<h4>Generic Adapters</h4>
+  <h4>Generic Adapters</h4>
 
-<pre content="java">
+  <pre content="java">
   @CustomAdapter(isGeneric = true)
   public class CustomGenericClassJsonAdapter<T> implements JsonAdapter<GenericClass<T>> {
 
@@ -1120,6 +1206,7 @@ Note: There is a current limitation that polymorphic types do not yet support "J
   }
 </pre>
 
-<p><br><br><br><br><br><br></p>
+  <p><br><br><br><br><br><br></p>
 </body>
+
 </html>
