@@ -386,7 +386,7 @@ public class CombinedBars {
 
 <h3 id="provider">Provider</h3>
 <p>
-  A Singleton bean can implement <code>javax.inject.Provider&lt;T&gt;</code> to create a bean to
+  A Singleton bean can implement <code>(javax/jakarta).inject.Provider&lt;T&gt;</code> to create a bean to
   be used in injection.
 </p>
 <pre content="java">
@@ -654,5 +654,54 @@ class ProtoFactory {
     return new Example();
   }
 
+}
+</pre>
+
+<h3 id="lazy">@Lazy</h3>
+<p>
+  We can use <code>@Lazy</code> on beans/factory methods to defer bean initialization until the annotated bean is requested.
+</p>
+
+<pre content="java">
+@Lazy
+public class Sloth {
+
+  private final Moss moss;
+
+  @Inject //this will not be called until the bean is requested
+  Sloth(Moss moss) {
+    this.moss = moss;
+  }
+}
+</pre>
+<p>
+  There are two ways to lazily load the bean.
+</p>
+<h4>1. Directly retrieve from the bean scope:</h4>
+<pre content="java">
+      final var scope = BeanScope.builder().build();
+      scope.get(Sloth.class); //Sloth is initialized here
+</pre>
+
+<h4>2. Use a <em>Provider</em></h4>
+
+<p>Unlike regular provider beans, the providers for lazy beans will return the same singleton instance.</p>
+
+<pre content="java">
+@Singleton
+class UseSloth  {
+
+  private final Provider<|Sloth> slothProvider;
+
+  UseFoo(Provider<|Sloth> slothProvider) {
+    this.slothProvider = slothProvider;
+  }
+
+  void doStuff() {
+
+    // get the singleton Sloth instance and use it
+    Sloth sloth = slothProvider.get();
+    ...
+  }
 }
 </pre>
