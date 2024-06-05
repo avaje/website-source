@@ -125,7 +125,7 @@
 <plugin>
   <groupId>io.avaje</groupId>
   <artifactId>avaje-inject-maven-plugin</artifactId>
-  <version>1.2</version>
+  <version>${avaje.inject.version}</version>
   <executions>
     <execution>
       <phase>process-sources</phase>
@@ -203,6 +203,23 @@ These are the components and plugins provides by all the other modules that exis
 <pre content="java">
   // anything at or below the package of Feature is provided externally
   @InjectModule(name = "job-system", requiresPackages=Feature.class)
+</pre>
+
+<h4 id="strict-wiring">strictWiring</h4>
+<p>
+   Optimizes multi-module wiring by enforcing wiring checks at compile-time. Will cause the generator to throw a descriptive
+   compilation error if all inter-module <code>InjectModule#requires</code> dependencies are not satisfied at compile time.
+</p>
+
+<p>Set true if your project:</p>
+
+<ol>
+  <li>Is not itself consumed by another project/library
+  <li>Does not dynamically provide beans at runtime
+ </ol>
+</p>
+<pre content="java">
+@InjectModule(strictWiring =true)
 </pre>
 
 <p>

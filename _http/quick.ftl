@@ -25,17 +25,15 @@
   </dependency>
 </pre>
 
-<#--  <h4>2a. JDK 23+ </h4>
-<p>In JDK 23+, annotation processors are disabled by default, so we need to add a flag to re-enable.</p>
+<h4>2a. JDK 23+ </h4>
+
+<p>In JDK 23+, annotation processors are disabled by default, so we need to add a compiler property to re-enable.</p>
+
 <pre content="xml">
-<plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-compiler-plugin</artifactId>
-  <configuration>
-    <compilerArgument>-proc:full</compilerArgument>
-  </configuration>
-</plugin>
-</pre>  -->
+<properties>
+  <maven.compiler.proc>full</maven.compiler.proc>
+</properties>
+</pre>
 
 <p>3. Define a Controller (These APT processors work with both Java and Kotlin.)</p>
 
