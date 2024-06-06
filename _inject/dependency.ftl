@@ -59,18 +59,18 @@ dependencies {
 </p>
 <ol>
   <li>Add a <em>requires</em> clause for <em>io.avaje.inject</em></li>
-  <li>Add a <em>provides</em> clause for <em>io.avaje.inject.spi.Module</em></li>
+  <li>Add a <em>provides</em> clause for <em>io.avaje.inject.spi.InjectSPI</em></li>
 </ol>
 
 <h5>Example module-info</h5>
 <pre content="java">
-import io.avaje.inject.spi.Module;
+import io.avaje.inject.spi.InjectSPI;
 
 module org.example {
 
   requires io.avaje.inject;
   // you must define the fully qualified class name of the generated classes. if you use an import statement, compilation will fail
-  provides Module with org.example.ExampleModule;
+  provides InjectSPI with org.example.ExampleModule;
 }
 </pre>
 <p>
@@ -113,7 +113,7 @@ public final class Example$DI  {
 
 <h3>Generated Wiring Class</h3>
 <p>
-The inject annotation processor will determine the dependency wiring order of a project and generate a Module class that will wire the beans.
+The inject annotation processor will determine the dependency wiring order of a project and generate an AvajeModule class that will wire the beans.
 </p>
 
 <details>
@@ -121,7 +121,7 @@ The inject annotation processor will determine the dependency wiring order of a 
 <pre content="java">
 @Generated("io.avaje.inject.generator")
 @InjectModule
-public final class ExampleModule implements Module {
+public final class ExampleModule implements AvajeModule {
 
   private Builder builder;
 
