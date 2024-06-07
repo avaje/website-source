@@ -984,7 +984,7 @@ dependencies {
 <h2 id="auth">Authorization</h2>
 <p>
   <em>avaje-http-client</em> has built in support for <a href="#auth-basic">basic auth</a> and
-  <a href="#auth-bearer">bearer token</a> based authorisation.
+  <a href="#auth-bearer">bearer token</a> based authorization.
 </p>
 
 <h3 id="auth-basic">Basic Auth</h3>
@@ -1464,6 +1464,52 @@ Bar postIt(Foo payload, @Header Collection<String> accept); // Accept
 
 @Get
 Bazz find(@Header String lastModified); // Last-Modified
+</pre>
+
+<h4>@Header Map&lt;String, ?&gt;</h4>
+<p>
+  We can use <code>@Header</code> with a <code>Map&lt;String, ?&gt;</code>, <code>Map&lt;String, String&gt;</code>
+  or <code>Map&lt;String, Object&gt;</code>.
+</p>
+<pre content="java">
+  @Get("{type}")
+  List<|Cat> searchByType(String type, String query, @Header Map<|String, ?> myHeaders);
+</pre>
+<p>
+  The generated code includes <code>.header(myHeaders)</code>
+</p>
+<pre content="java">
+  // GET {type}
+  @Override
+  public List<|Cat> searchByType(String type, String query, Map<|String,?> myHeaders) {
+    return clientContext.request()
+      .header(myHeaders)
+      .path("api").path("cats").path(type)
+      .queryParam("query", query)
+      .GET()
+      .list(Cat.class);
+  }
+</pre>
+
+<h3 id="headers">@Headers</h3>
+<p>
+  Use <code>@Headers</code> to set default header parameters.
+</p>
+
+<pre content="java">
+@Client
+@Headers("Content-Type: applicaton/json")
+public interface TitanFall {
+
+  @Get("/${titan}/${drop.point}")
+  @Headers("Something: \\invalid\n\t")
+  Titan titanFall();
+
+
+  @Get("/${titan}/copium")
+  @Headers("      Accept    :   applicaton/json")
+  Titan titanFall3();
+}
 </pre>
 
 <h4>@Header Map&lt;String, ?&gt;</h4>

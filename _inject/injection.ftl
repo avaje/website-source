@@ -352,6 +352,30 @@ class Pump {
 }
 </pre>
 
+<h3 id="external">@External</h3>
+<p>
+ <code>@External</code> essentially signals that this dependency is provided at runtime. This is needed because Avaje validates the entire dependency graph at compile-time and fails compilation when all required beans are not provided by avaje.
+</p>
+<p>
+  When using <code>@External</code>, the dependency is expected to be provided to avaje manually via <code>BeanScopeBuilder#bean</code>.
+</p>
+
+<pre content="java">
+@Singleton
+class Pump {
+
+  private final Heater heater;
+
+  private final ExternalWidget widget;
+
+  @Inject
+  Pump(Heater heater, @External ExternalWidget widget) {
+    this.heater = heater;
+    this.widget = widget;
+  }
+}
+</pre>
+
 <h3 id="list">List</h3>
 <p>
   We can inject a <code>java.util.List&lt;T&gt;</code> of beans that implement an interface.
@@ -659,7 +683,7 @@ class ProtoFactory {
 
 <h3 id="lazy">@Lazy</h3>
 <p>
-  We can use <code>@Lazy</code> on beans/factory methods to defer bean initialization until the annotated bean is requested.
+  We can use <code>@Lazy</code> on beans/factory methods to defer bean initialization until the annotated bean is requested. Once requested, the same singleton will be returned by all subsequent bean requests.
 </p>
 
 <pre content="java">
@@ -685,7 +709,7 @@ public class Sloth {
 
 <h4>2. Use a <em>Provider</em></h4>
 
-<p>Unlike regular provider beans, the providers for lazy beans will return the same singleton instance.</p>
+<p>Lazy providers have the<em>Singleton scope</em>. The same singleton instance will be returned on all requests to <em>Provider#get</em>.</p>
 
 <pre content="java">
 @Singleton
@@ -699,7 +723,7 @@ class UseSloth  {
 
   void doStuff() {
 
-    // get the singleton Sloth instance and use it
+    // get the singleton Sloth instance
     Sloth sloth = slothProvider.get();
     ...
   }

@@ -28,7 +28,8 @@
     <li><a href="#method">Method Injection</a></li>
     <li><a href="#circular">Circular Dependencies</a></li>
     <li><a href="#optional">Optional</a></li>
-    <li><a href="#nullable">Nullable</a></li>
+    <li><a href="#nullable">@Nullable</a></li>
+    <li><a href="#external">@External</a></li>
     <li><a href="#list">List and Set</a></li>
     <li><a href="#provider">Provider</a></li>
     <li><a href="#factory">@Factory</a></li>
@@ -79,6 +80,13 @@
     <li><a href="#request-scope">Request Scope</a></li>
     <li><a href="#custom-scope">Custom Scope</a></li>
     <li><a href="#bean-scope">BeanScope</a></li>
+  </ul>
+</@nav>
+<@nav url="#events" title="Events">
+  <ul>
+    <li><a href="#observes">@Observes</a></li>
+    <li><a href="#eventProducers">Event Producers</a></li>
+    <li><a href="#sending">Sending Events</a></li>
   </ul>
 </@nav>
 <@nav url="#modules" title="Modules">

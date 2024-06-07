@@ -62,6 +62,15 @@
 </dependency>
 </pre>
 
+<h4>JDK 23+ note:</h4>
+<p>In JDK 23+, annotation processors are disabled by default, so we need to add a compiler property to re-enable.</p>
+
+<pre content="xml">
+<properties>
+  <maven.compiler.proc>full</maven.compiler.proc>
+</properties>
+</pre>
+
   <h2>@ServiceProvider</h2>
   <p>
     On classes that you'd like registered, place the
