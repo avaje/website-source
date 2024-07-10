@@ -467,7 +467,7 @@
     <p>
       Plugins implement the <code>ConfigurationSource</code> interface and are found
       and registered via <code>ServiceLoader</code>. This means they have a
-      file at <code>src/main/resources/META-INF/services/io.avaje.config.ConfigurationSource</code>
+      file at <code>src/main/resources/META-INF/services/io.avaje.config.ConfigExtension</code>
       which contains the class name of the implementation.
     </p>
     <p>
@@ -493,7 +493,7 @@
     <p>
       By default, <code>avaje-config</code> will immediately log initialization events to it's own configured system logger. If you want to use your own configured logger, you can extend the <code>ConfigurationLog</code> interface and
       register via <code>ServiceLoader</code>. This means you have a
-      file at <code>src/main/resources/META-INF/services/io.avaje.config.ConfigurationLog</code>
+      file at <code>src/main/resources/META-INF/services/io.avaje.config.ConfigExtension</code>
       which contains the class name of the implementation.
     </p>
     <p>

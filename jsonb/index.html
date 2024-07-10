@@ -198,19 +198,19 @@
   </p>
   <ol>
     <li>Add a <em>requires</em> clause for <em>io.avaje.jsonb</em></li>
-    <li>Add a <em>provides</em> clause for <em>io.avaje.jsonb.Jsonb.GeneratedComponent</em></li>
+    <li>Add a <em>provides</em> clause for <em>io.avaje.jsonb.spi.JsonbExtension</em></li>
   </ol>
 
   <h5>Example module-info</h5>
   <pre content="java">
-  import io.avaje.jsonb.Jsonb.GeneratedComponent;
+  import io.avaje.jsonb.spi.JsonbExtension;
 
   module org.example {
 
     requires io.avaje.jsonb;
 
     // you must define the fully qualified class name of the generated classes. if you use an import statement, compilation will fail
-    provides GeneratedComponent with org.example.jsonb.GeneratedComponent;
+    provides JsonbExtension with org.example.jsonb.GeneratedComponent;
 
     //if running using Jlink application images with avaje-inject add:
     //requires io.avaje.jsonb.plugin;
@@ -888,31 +888,30 @@ public enum MyEnum {
   <h2 id="mixin">@Json.Mixin</h2>
 
   <p>
-    Mark this Class as a MixIn Type that can add Jsonb Annotations on the specified type.
-    <br>
-    Say we want to override the field serialization behavior on a class we can't modify.(Typically in an external
-    project/dependency or otherwise)
+    Say we want to override the field serialization behavior on a class we can't modify (For example, a class in an external
+    project/dependency).  We can use <code>@Mixin</code> to add Jsonb Annotations to the specified type.
   </p>
 
   <pre content="java">
-public class MixinTarget {
-  private String name;
-  private String stand;
-  private String bandReference;
-  //getters/setters...
-}
+    public class Kingfisher {
+      private String name;
+      //getters/setters...
+    }
 </pre>
-  <p>We can use the <code>@Json.Mixin</code> annotation on an abstract class to effectively add @Json Annotations </p>
+  <p>Given the above class, we can use the <code>@Json.Mixin</code> annotation on an abstract class to effectively add @Json annotations and even change how the class is constructed </p>
   <pre content="java">
-@Json.MixIn(MixinTarget.class)
-public abstract class MixinClass {
+    @MixIn(Kingfisher.class)
+    public abstract class KingfisherMixin {
 
-  @Json.Property("part")
-  private String name;
+      @Json.Property("species")
+      String name;
 
-  @Json.Ignore
-  private String stand;
-}
+      //we can even change how the target is constructed with @Json.Creator
+      @Json.Creator
+      static Kingfisher construct(String name) {
+        return new Kingfisher(species);
+      }
+    }
 </pre>
 
   <details>
@@ -920,59 +919,53 @@ public abstract class MixinClass {
     <p><code>@Json.Mixin</code> makes the following changes to the generated MixinTargetJsonAdapter:</p>
 
     <pre content="java">
-    @Generated
-    public final class MixinTargetJsonAdapter implements JsonAdapter<MixinTarget>, ViewBuilderAware {
+      @Generated("io.avaje.jsonb.generator")
+      public final class KingfisherJsonAdapter implements JsonAdapter<Kingfisher>, ViewBuilderAware {
 
-      ...
-      public MixinTargetJsonAdapter(Jsonb jsonb) {
-        this.stringJsonAdapter = jsonb.adapter(String.class);
-        //the mixin class renamed "name" property to "part"
-        this.names = jsonb.properties("part", "stand", "bandReference");
-      }
+        ...
 
-      ...
+        public KingfisherJsonAdapter(Jsonb jsonb) {
+          this.stringJsonAdapter = jsonb.adapter(String.class);
+          //name attribute replaced with species
+          this.names = jsonb.properties("species");
+        }
 
-      @Override
-      public void toJson(JsonWriter writer, MixinTarget mixinTarget) {
-        writer.beginObject(names);
-        writer.name(0);
-        stringJsonAdapter.toJson(writer, mixinTarget.getName());
-        writer.name(2);
-        // stand property is absent
-        stringJsonAdapter.toJson(writer, mixinTarget.getBandReference());
-        writer.endObject();
-      }
+        ...
 
-      @Override
-      public MixinTarget fromJson(JsonReader reader) {
-        MixinTarget _$mixinTarget = new MixinTarget();
+        @Override
+        public void toJson(JsonWriter writer, Kingfisher kingfisher) {
+          writer.beginObject(names);
+          writer.name(0);
+          stringJsonAdapter.toJson(writer, kingfisher.getName());
+          writer.endObject();
+        }
 
-        // read json
-        reader.beginObject(names);
-        while (reader.hasNextField()) {
-          final String fieldName = reader.nextField();
-          switch (fieldName) {
-            case "part": {
-              _$mixinTarget.setName(stringJsonAdapter.fromJson(reader)); break;
-            }
-            case "stand": {
-              //now ignored
-              reader.skipValue(); break;
-            }
-            case "bandReference": {
-              _$mixinTarget.setBandReference(stringJsonAdapter.fromJson(reader)); break;
-            }
-            default: {
-              reader.unmappedField(fieldName);
-              reader.skipValue();
+        @Override
+        public Kingfisher fromJson(JsonReader reader) {
+          // variables to read json values into, constructor params don't need _set$ flags
+          String     _val$name = null;
+
+          // read json
+          reader.beginObject(names);
+          while (reader.hasNextField()) {
+            final String fieldName = reader.nextField();
+            switch (fieldName) {
+              case "species":
+                _val$name = stringJsonAdapter.fromJson(reader);
+                break;
+
+              default:
+                reader.unmappedField(fieldName);
+                reader.skipValue();
             }
           }
-        }
-        reader.endObject();
+          reader.endObject();
 
-        return _$mixinTarget;
+          // build and return Kingfisher using the mixin creator
+          Kingfisher _$kingfisher = KingfisherMixin.construct(_val$name);
+          return _$kingfisher;
+        }
       }
-    }
   </pre>
   </details>
 
@@ -981,8 +974,8 @@ public abstract class MixinClass {
   <p>For mapping polymorphic types we specify on the parent type a <code>@Json.Subtype</code> for each concrete sub-type
     that can represent that type.
 
-  <p>By default the "type property" that specifies the type in json is <code>"@type"</code>. Use
-    <code>@Json(typeProperty=...)</code> to specify the name of the type property.
+  <p>By default the "type property" that specifies the type in json is <code>"@type"</code>. To specify alternate values for the type property, use
+    <code>@Json(typeProperty=...)</code>.
   </p>
 
   Note: There is a current limitation that polymorphic types do not yet support "Json Views".</p>

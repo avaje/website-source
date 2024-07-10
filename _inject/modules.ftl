@@ -166,6 +166,7 @@ These are the components and plugins provides by all the other modules that exis
 <p>
   Give the module an explicit name. Otherwise, it is derived from the top level package.
 </p>
+
 <h4 id="module-ignoreSingleton">ignoreSingleton</h4>
 <p>
   Set this to true in order to specify that we want

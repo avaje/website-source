@@ -64,13 +64,13 @@ dependencies {
 
 <h5>Example module-info</h5>
 <pre content="java">
-import io.avaje.inject.spi.InjectSPI;
+import io.avaje.inject.spi.InjectExtension;
 
 module org.example {
 
   requires io.avaje.inject;
   // you must define the fully qualified class name of the generated classes. if you use an import statement, compilation will fail
-  provides InjectSPI with org.example.ExampleModule;
+  provides InjectExtension with org.example.ExampleModule;
 }
 </pre>
 <p>
