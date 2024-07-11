@@ -153,17 +153,14 @@
   <h5>Example module-info</h5>
   <pre content="java">
   import io.avaje.validation.Validator.GeneratedComponent;
-  import io.avaje.validation.spi.ValidatorCustomizer;
+  import io.avaje.validation.spi.ValidationExtension;
 
   module org.example {
 
     requires io.avaje.validator;
 
-    //if defining validation customizers add:
-    provides ValidatorCustomizer with org.example.validator.MyCustomizer;
-
     // you must define the fully qualified class name of the generated classes. if you use an import statement, compilation will fail
-    provides GeneratedComponent with org.example.validator.GeneratedComponent;
+    provides ValidationExtension with org.example.validator.GeneratedComponent;
 
     //if running using Jlink application images with avaje-inject add:
     //requires io.avaje.validator.plugin;
@@ -194,7 +191,7 @@
 
   </p>
 
-  <h3 id="boot">ValidatorCustomizer</h2>
+    <h3 id="boot">ValidatorCustomizer</h2>
     <p>
       We can create a class that implements <code>ValidatorCustomizer</code> that can be loaded via
       <code>ServiceLoader</code> while the builder is constructing a
@@ -405,6 +402,87 @@ class Crewmate {
       would be
       evaluated in addition to the <code>@NotNull</code> constraint from the superclass.
     </p>
+
+    <h2 id="mixin">@Mixin</h2>
+
+    <p>
+      Say we want to override the validation behavior on a class we can't modify. (For example, a class in an external
+      project/dependency). We can use <code>@Mixin</code> to add/override constraint annotations on the specified type.
+    </p>
+
+    <pre content="java">
+      public class Swallow {
+        private String species;
+        @Positive
+        private int avgSpeed;
+        @AssertTrue
+        private boolean isLaden;
+        //getters/setters...
+      }
+  </pre>
+    <p>Given the above class, we can use the <code>@Mixin</code> annotation on an abstract class to effectively add/override constraint annotations.</p>
+    <pre content="java">
+      @MixIn(Swallow.class)
+      @EntryRiddleCheck //class constraints can be added as well
+      public abstract class SwallowMixin {
+        //Add NotBlank
+        @NotBlank("species shouldn't be null")
+        String species;
+
+        //adding the target field without any annotations disables the constraints
+        boolean isLaden;
+      }
+  </pre>
+
+    <details>
+      <summary>Generated Code: (click to expand)</summary>
+      <p>Given the above mixin, the SwallowValidationAdapter becomes:</p>
+
+      <pre content="java">
+        @Generated("avaje-validator-generator")
+        public final class SwallowValidationAdapter implements ValidationAdapter<Swallow> {
+
+          private final ValidationAdapter<String> speciesValidationAdapter;
+          private final ValidationAdapter.Primitive avgSpeedValidationAdapter;
+          private final ValidationAdapter<Swallow> swallowValidationAdapter;
+
+          public SwallowValidationAdapter(ValidationContext ctx) {
+            this.speciesValidationAdapter =
+                ctx.<String>adapter(NotBlank.class, Map.of("max",0, "message","species shouldn\'t be null", "_type","String"));
+
+            this.avgSpeedValidationAdapter =
+                ctx.<Integer>adapter(Positive.class, Map.of("message","{avaje.Positive.message}", "_type","Integer"))
+                    .primitive();
+
+            this.swallowValidationAdapter =
+                ctx.<Swallow>adapter(EntryRiddleCheck.class, Map.of());
+
+          }
+
+          @Override
+          public boolean validate(Swallow value, ValidationRequest request, String field) {
+            if (field != null) {
+              request.pushPath(field);
+            }
+            var _$species = value.getSpecies();
+            speciesValidationAdapter.validate(_$species, request, "species");
+
+            var _$avgSpeed = value.getAvgSpeed();
+            avgSpeedValidationAdapter.validate(_$avgSpeed, request, "avgSpeed");
+
+            if (!request.hasViolations()) {
+              swallowValidationAdapter.validate(value, request, field);
+            }
+
+
+            if (field != null) {
+              request.popPath();
+            }
+            return true;
+          }
+        }
+    </pre>
+    </details>
 
     <h2 id="methods">Method Validation</h2>
     <p>

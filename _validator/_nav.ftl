@@ -14,6 +14,7 @@
       <li><a href="#inherited">Inherited Constraints</a></li>
     </ul>
   </@nav>
+  <@nav url="#mixin" title="@Mixin"/>
   <@nav url="#methods" title="Method Validation"/>
   <@nav url="#message" title="Constraint Error Message">
     <ul>
