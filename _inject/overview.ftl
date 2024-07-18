@@ -63,7 +63,7 @@
       </ul>
     </td>
     <td>
-      <img src="/images/di-lib-size.png" alt="DI library size comparison">
+      <img style="max-width:460px" src="/images/di-lib-size.png" alt="DI library size comparison">
     </td>
   </tr>
 </table>
