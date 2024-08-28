@@ -56,13 +56,12 @@
   <ul>
     <li>Primitives (int, float, char...) and their boxed counterparts (Integer, Float, Character...).</li>
     <li>BigInteger and BigDecimal</li>
-    <li>java.time classes (Instant, LocalDate, LocalDateTime...)</li>
+    <li>Date and java.time classes (Instant, LocalDate, LocalDateTime...)</li>
     <li>Arrays, Collections, Streams, Lists, Sets, and Maps</li>
     <li>Strings</li>
     <li>Enums</li>
     <li>Other miscellaneous types (UUID, URL, URI)</li>
   </ul>
-
 
   <h2 id="quick-start">Quick Start</h2>
   <h4>
@@ -1196,6 +1195,41 @@ public enum MyEnum {
     ... write your custom serialization logic
   }
 </pre>
+
+<h2 id="serializer">@Serializer</h2>
+<p>
+  A case may arise where you need custom (de)serialization for a certain field without affecting the serialization for a type globally. This is the use case for <code>@Serializer</code>.
+</p>
+
+<pre content="java">
+@Json
+public class Example {
+
+  @Json.Serializer(MoneySerializer.class)
+  BigDecimal amountOwed;
+    ...
+}
+</pre>
+
+<p>
+  A non-global custom adapter must be created and registered with <code>@CustomAdapter(global = false)</code>. This signals that this adapter is exclusive for <code>@Serializer</code> use.
+</p>
+<pre content="java">
+  @CustomAdapter(global = false)
+  public class MoneySerializer implements JsonAdapter<BigDecimal> {
+
+    @Override
+    public BigDecimal fromJson(JsonReader reader) {
+      return reader.readDecimal().setScale(2, RoundingMode.DOWN);
+    }
+
+    @Override
+    public void toJson(JsonWriter writer, BigDecimal value) {
+      writer.value(value.setScale(2, RoundingMode.DOWN));
+    }
+  }
+</pre>
+
 
   <p><br><br><br><br><br><br></p>
 </body>

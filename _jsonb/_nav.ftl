@@ -21,7 +21,7 @@
   <@nav url="#mapped" title="@Unmapped"/>
   <@nav url="#value" title="@Value">
     <ul>
-      <li><a href="#valueclass">Inline Classes</a></li>
+      <li><a href="#valueClass">Inline Classes</a></li>
       <li><a href="#valueEnum">Enum Mapping</a></li>
     </ul>
   </@nav>

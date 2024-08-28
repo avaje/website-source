@@ -71,7 +71,7 @@
 </properties>
 </pre>
 
-  <h2>@ServiceProvider</h2>
+  <h2 id="serviceProvider">@ServiceProvider</h2>
   <p>
     On classes that you'd like registered, place the
     <code>@ServiceProvider</code> annotation.
@@ -122,6 +122,36 @@
 <pre>
   Compilation failure /src/main/java/module-info.java:[1,1]
   Missing `provides MusicService with BassServiceProvider;`
+</pre>
+<h2 id="service">@Service</h2>
+  <p>
+    As a library developer, should you wish to define an spi interface for multiple layers of extension, the
+    <code>@Service</code> annotation will help ensure those using <code>@ServiceProvider</code> will automatically register the correct top-level type.
+  </p>
+  <p>
+    Consider the example of avaje-validaton:
+  </p>
+  <pre content="java">
+    /** Super interface for all validation SPIs */
+    @Service
+    public sealed interface ValidationExtension
+        permits AdapterFactory,
+            AnnotationFactory,
+            GeneratedComponent,
+            MessageInterpolator,
+            ValidatorCustomizer {}
+</pre>
+
+<p>
+  To reduce calls to the <code>ServiceLoader</code>, avaje-validation only loads the top level <code>ValidationExtension</code> interface instead of loading the individual interfaces.
+  The presence of the <code>@Service</code> annotation ensures the below will be registered correctly.
+</p>
+<pre content="java">
+  //this class is registered as a ValidationExtension rather than a ValidatorCustomizer
+  @ServiceProvider
+  public class Customizer implements ValidatorCustomizer {
+    ....
+  }
 </pre>
   <p><br><br><br><br><br><br></p>
 

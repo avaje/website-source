@@ -42,12 +42,7 @@
   <tr>
     <td>
       <p>
-        Do we care about the size of a DI library? Why is dagger and avaje-inject so much
-        smaller?
-      </p>
-      <p>
-        <em>avaje-inject</em> exists with the view that it should be <em>really</em> small and
-        provide JSR-330 dependency injection using source code generation.
+        <em>avaje-inject</em> exists with the view that it should be <em>really</em> small and compact. To this end, it uses source code generation to provide JSR-330 dependency injection and many other features while keeping size low.
       </p>
       <p>
         avaje-inject includes:
@@ -58,8 +53,10 @@
         <li><a href="#factory">@Factory + @Bean</a></li>
         <li><a href="#primary">@Primary + @Secondary</a></li>
         <li><a href="#conditional">Conditional Beans</a></li>
-        <li><a href="#test-scope">Test scope</a> and component testing</li>
-        <li><a href="#aspect">Aspect Oriented Programming</a> around method advice</li>
+        <li><a href="#test-scope">Test scoped beans</a> and component testing</li>
+        <li><a href="#aspect">Aspect Oriented Programming</a></li>
+        <li><a href="#events">Event publishing/handling</a></li>
+        <li><a href="#assistInject">Assisted Injection</a></li>
       </ul>
     </td>
     <td>

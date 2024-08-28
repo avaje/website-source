@@ -89,7 +89,7 @@ final class Car$AssistFactory implements CarFactory {
 
   @Inject
   void injectMethod(Steel steel) {
-    this.m$method = steel;
+    this.steel$method = steel;
   }
 }
 </pre>
