@@ -42,7 +42,12 @@
   <tr>
     <td>
       <p>
-        <em>avaje-inject</em> exists with the view that it should be <em>really</em> small and compact. To this end, it uses source code generation to provide JSR-330 dependency injection and many other features while keeping size low.
+        Do we care about the size of a DI library? Why is dagger and avaje-inject so much
+        smaller?
+      </p>
+      <p>
+        <em>avaje-inject</em> exists with the view that it should be <em>really</em> small and
+        provide JSR-330 dependency injection using source code generation.
       </p>
       <p>
         avaje-inject includes:
