@@ -34,6 +34,7 @@
     <li><a href="#provider">Provider</a></li>
     <li><a href="#factory">@Factory</a></li>
     <li><a href="#bean">@Bean</a></li>
+    <li><a href="#beantypes">Limiting Injectable Types</a></li>
     <li><a href="#primary">@Primary</a></li>
     <li><a href="#secondary">@Secondary</a></li>
     <li><a href="#prototype">@Prototype</a></li>

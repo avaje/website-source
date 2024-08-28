@@ -41,16 +41,17 @@
     <li>Composable Contraints</li>
     <li>Inherited Contraints</li>
     <li>Cascaded Validation</li>
+    <li>Adding/Modify constraints on 3rd Party classes</li>
   </ul>
 
   <h2 id="quick-start">Quick Start</h2>
   <h4>
-    1. Add <em>avaje.validator</em> dependencies.
+    1. Add <em>avaje-validator</em> dependencies.
   </h4>
   <pre content="xml">
 <dependency>
   <groupId>io.avaje</groupId>
-  <artifactId>avaje.validator</artifactId>
+  <artifactId>avaje-validator</artifactId>
   <version>${avaje.validator.version}</version>
 </dependency>
 <!-- Alternatively can use Jakarta/Javax Constraints-->
@@ -59,6 +60,14 @@
   <artifactId>avaje-validator-constraints</artifactId>
   <version>${avaje.validator.version}</version>
 </dependency>
+
+<!-- If using spring:
+<dependency>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje-validator-spring-starter</artifactId>
+  <version>${avaje.validator.version}</version>
+</dependency>
+-->
 </pre>
 
   <h4>
@@ -75,7 +84,7 @@
   </dependency>
 </pre>
 
-  <h4>2a. JDK 23+ </h4>
+  <h4>2a. JDK 23+</h4>
 
   <p>In JDK 23+, annotation processors are disabled by default, so we need to add a compiler property to re-enable.</p>
 
@@ -90,7 +99,7 @@
     <br>The avaje-validator-generator annotation processor will generate a ValidationAdapter as java source code for
     each type annotated with <code>@Valid</code>.
     These will be automatically registered with validator using a service loader mechanism.
-    <br><br>For types we cannot annotate with <code>@Valid</code> we can instead use <code>@ImportValidPojo</code>.
+    <br><br>For types we cannot annotate with <code>@Valid</code> we can instead use <code>@ImportValidPojo</code> or <code>@Mixin</code> to modify validation behavior of external classes.
   </p>
   <pre content="java">
   @Valid
@@ -159,13 +168,13 @@
 
     requires io.avaje.validator;
 
-    // you must define the fully qualified class name of the generated classes. if you use an import statement, compilation will fail
+    // you must define the fully qualified class name of generated classes. If you use an import statement, compilation will fail
     provides ValidationExtension with org.example.validator.GeneratedComponent;
 
-    //if running using Jlink application images with avaje-inject add:
+    //if running using jlink/jpackage application images with avaje-inject add:
     //requires io.avaje.validator.plugin;
 
-    //if running using Jlink application images with both avaje-http and inject add:
+    //if running using jlink/jpackage application images with both avaje-http and inject add:
     //requires io.avaje.validator.http;
   }
   </pre>
@@ -174,24 +183,24 @@
     <code>target/generated-sources/annotations</code>.
   </p>
 
-  <h2 id="integration">Avaje Integrations</h2>
+  <h2 id="integration">Avaje/Spring Integration</h2>
   <p>
-    When used with Avaje Inject, a default <code>Validator</code> and <code>AOPMethodValidator</code> instance will be
-    provided. The following properties can be added to configure the default <code>Validator</code> instance.
+    When used with Avaje Inject or the Spring Framework, a default <code>Validator</code> and <code>AOPMethodValidator</code> instance will be
+    provided. The following properties can be added to configure the construction of the default instance.
   </p>
 
   <pre content="java">
     validation.failFast //enable fail fast mode
     validation.resourcebundle.names // name of ResourceBundle files to load
-    validation.locale.default //default local to use (default Locale.getDefault())
+    validation.locale.default //default locale to use (defaults to Locale.getDefault())
     validation.locale.addedLocales //Additional Locales this validator should support
     validation.temporal.tolerance.value //temporal tolerance value
     validation.temporal.tolerance.chronoUnit //What ChronoUnit enum value to use for temporal tolerance (default MILLIS)
-    </pre>
+  </pre>
 
   </p>
 
-    <h3 id="boot">ValidatorCustomizer</h2>
+  <h3 id="boot">ValidatorCustomizer</h2>
     <p>
       We can create a class that implements <code>ValidatorCustomizer</code> that can be loaded via
       <code>ServiceLoader</code> while the builder is constructing a
@@ -256,6 +265,12 @@
     }
 }
 </pre>
+
+    <h4 id="nullable">@Nullable</h4>
+    <p>
+      When a field/method is marked with any form of <code>@Nullable</code>, constraints will only take effect when the
+      field/method result is not null.
+    </p>
 
     <h3 id="container">Container element constraints</h3>
     <p>
@@ -420,7 +435,8 @@ class Crewmate {
         //getters/setters...
       }
   </pre>
-    <p>Given the above class, we can use the <code>@Mixin</code> annotation on an abstract class to effectively add/override constraint annotations.</p>
+    <p>Given the above class, we can use the <code>@Mixin</code> annotation on an abstract class to effectively
+      add/override constraint annotations.</p>
     <pre content="java">
       @MixIn(Swallow.class)
       @EntryRiddleCheck //class constraints can be added as well
@@ -800,7 +816,8 @@ public class GraphService {
       several parameter values.
     </p>
 
-    <p>In the following example, we create a cross param contraint that validates whether a triangle abides by Pythagoras' theorum.
+    <p>In the following example, we create a cross param contraint that validates whether a triangle abides by
+      Pythagoras' theorum.
     </p>
     <pre content="java">
       @CrossParamConstraint
@@ -818,9 +835,10 @@ public class GraphService {
       }
   </pre>
 
-  <p>Now we create the corresponding adapter for <code>@Pythagorean</code>. Cross-param adapters must accept an <code>Object[]</code> representing a method's parameters.
-  </p>
-  <pre content="java">
+    <p>Now we create the corresponding adapter for <code>@Pythagorean</code>. Cross-param adapters must accept an
+      <code>Object[]</code> representing a method's parameters.
+    </p>
+    <pre content="java">
     @ConstraintAdapter(Pythagorean.class)
     public final class PythagoreanAdapter extends AbstractConstraintAdapter<Object[]> {
 
@@ -874,6 +892,7 @@ public class GraphService {
     }
 </pre>
 
-<p><br><br><br><br><br><br></p>
+    <p><br><br><br><br><br><br></p>
 </body>
+
 </html>

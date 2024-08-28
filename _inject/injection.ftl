@@ -466,7 +466,7 @@ class UseFoo  {
   as can be more flexible and convenient.
 </p>
 
-<h3 id="factory">@Factory</h3>
+<h2 id="factory">@Factory</h2>
 <p>
   Factory beans allow us to programmatically creating a bean. Often the logic is based
   on external configuration, environment variables, system properties etc.
@@ -603,6 +603,26 @@ class Configuration {
   factory bean method and keep the constructors simple. Logic in constructors typically
   makes it harder from a testing perspective.
 </p>
+
+<h2 id="beantypes">Limiting Injectable Types</h2>
+<p>
+  When you annotate a bean with <code>@Singleton</code> or create via a </code>@Factory</code> class, the bean class and all interfaces it implements and super classes it extends become injectable.
+<br>For cases where this is not desired, we can use <code>@BeanTypes</code> to limit the types available to inject a particular bean.
+</p>
+<pre content="java">
+@Singleton
+@BeanTypes(Appliance.class)
+public class CoffeeMaker implements Machine, Appliance {
+  ...
+</pre>
+
+<pre content="java">
+  var scope = BeanScope.builder().build();
+  //we can only retrieve the bean as an instance of Appliance
+  scope.get(Appliance.class);
+  //throws not found exception
+  scope.get(CoffeeMaker.class);
+</pre>
 
 <h2 id="primary">@Primary</h2>
 <p>

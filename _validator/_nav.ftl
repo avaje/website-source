@@ -2,7 +2,7 @@
   <@nav url="#overview" title="Overview"/>
   <@nav url="#quick-start" title="Quick Start"/>
   <@nav url="#jpms" title="Java Modules"/>
-  <@nav url="#integration" title="Avaje Integration"/>
+  <@nav url="#integration" title="Avaje/Spring Integration"/>
   <@nav url="#boot" title="Customizer"/>
   <@nav url="#constraint" title="Declaring Bean Constraints">
     <ul>

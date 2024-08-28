@@ -138,14 +138,13 @@
 </pre>
 
 <p>
-What this does is generate 2 files in target before the code is compiled: <code>target/avaje-module-provides.txt</code> and <code>target/avaje-plugin-provides.txt</code>
+This generates 2 files in the target folder before the code is compiled: <code>target/avaje-module-dependencies.csv</code> and <code>target/avaje-plugin-provides.txt</code>.
 
-These are the components and plugins provides by all the other modules that exist in the classpath/maven dependencies. The annotation processor then reads the txt files at compile time and will not error if these components are required dependencies (as they are known to be provided by other modules or plugins).
-
+These files contain all the metadata for all the modules and plugins provided by all external modules on the classpath/maven dependencies. The annotation processor then reads the files at compile time and will not throw a compilation error if these components are required dependencies.
 
 <h3 id="shading">Shading Note</h3>
 
-<p> As avaje uses the <code>ServiceLoader</code> to load Module classes, be sure to have the following configuration set when using the maven shade plugin on multi-module projects.
+<p> As avaje uses the <code>ServiceLoader</code> to load <code>AvajeModule</code> instances, be sure to have the following configuration set when using the maven shade plugin on multi-module projects.
 <pre content="xml">
 <plugin>
   <groupId>org.apache.maven.plugins</groupId>

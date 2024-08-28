@@ -18,7 +18,7 @@ public @interface MyAround {
 </pre>
 
 <p>
-For this aspect to work, a corresponding AspectProvider must be wired into the scope.
+For this aspect to work, a corresponding <code>AspectProvider</code> must be wired into the scope.
 The AspectProvider should be a <code>@Singleton</code> or <code>@Component</code> that provides a <code>MethodInterceptor</code>.
  (Which will intercept the method call).
 </p>
