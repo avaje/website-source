@@ -42,15 +42,15 @@
    }
 </pre>
 
-<h4>PropertyRequiresPlugin</h4>
+<h4>ConfigPropertyPlugin</h4>
 
-<p>To test property/profile conditions, an instance of <code>io.avaje.inject.spi.PropertyRequiresPlugin</code> is loaded via <code>java.util.ServiceLoader</code>.
+<p>To test property/profile conditions, an instance of <code>io.avaje.inject.spi.ConfigPropertyPlugin</code> is loaded via <code>java.util.ServiceLoader</code>.
 
-If there are no <code>PropertyRequiresPlugin</code> found, a default implementation will be provided that uses <code>System.getProperty(String)</code> and <code>System.getenv(String)</code>.
+If there are no <code>ConfigPropertyPlugin</code> found, a default implementation will be provided that uses <code>System.getProperty(String)</code> and <code>System.getenv(String)</code>.
 
-<p><a href="https://avaje.io/config/">Avaje Config</a> provides a <code>PropertyRequiresPlugin</code>, so when it's detected in the classpath, it will be used to test the property conditions.
+<p><a href="https://avaje.io/config/">Avaje Config</a> provides a <code>ConfigPropertyPlugin</code>, so when it's detected in the classpath, it will be used to test the property conditions.
 
-<p>You can provide your own implementation of <code>PropertyRequiresPlugin</code> via service loader if you want to use your own custom testing of property condition.
+<p>You can provide your own implementation of <code>ConfigPropertyPlugin</code> via service loader if you want to use your own custom testing of property condition.
 
 </p>
 
