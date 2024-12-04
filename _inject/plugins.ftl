@@ -11,12 +11,14 @@
 
 <p>Below is an example plugin that provides a default ExampleBean instance. </p>
 <pre content="java">
+ //this is read at compile-time to tell the avaje generator what bean classes are provided
+@PluginProvides({ExampleBean.class})
 public final class DefaultBeanProvider implements io.avaje.inject.spi.InjectPlugin {
 
-  //this is called at compile time to tell avaje what bean classes (if any) this plugin provides
+  //this is called at runtime to tell avaje beanscope what bean classes this plugin provides
   @Override
-  public Class<?>[] provides() {
-    return new Class<?>[]{ExampleBean.class};
+  public Type[] provides() {
+    return new Type[]{ExampleBean.class};
   }
 
   // this is called at runtime before any beans are wired

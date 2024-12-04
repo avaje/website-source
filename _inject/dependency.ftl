@@ -102,7 +102,7 @@ public final class Example$DI  {
    * Create and register Example.
    */
   public static void build(Builder builder) {
-    if (builder.isAddBeanFor(Example.class)) {
+    if (builder.isBeanAbsent(Example.class)) {
       var bean = new Example(builder.get(DependencyClass.class,"!d1"), builder.get(DependencyClass2.class,"!d2"));
       builder.register(bean);
       // depending on the type of bean, callbacks for field/method injection, and lifecycle support will be generated here as well.
