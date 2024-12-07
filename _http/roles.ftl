@@ -100,17 +100,14 @@ Javalin app = Javalin.create(config -> {
 
 <h2 id="roles-jex">Jex Roles</h2>
 <p>
-  Example reference <a target="_blank" href="https://github.com/avaje/avaje-http/blob/master/tests/test-jex/src/main/java/org/example/web/HelloController.java#L28">test-jex - HelloController</a>
+  Example reference <a target="_blank" href="https://github.com/avaje/avaje-http/blob/master/tests/test-jex/src/main/java/org/example/web/HelloController.java#L33">test-jex - HelloController</a>
 </p>
 <p>
 
 </p>
-<h4>Step 1: Create an enum that implements io.avaje.jex.Role</h4>
-<p>
-  Create an enum that implements <code>io.avaje.jex.Role</code>.
-</p>
+<h4>Step 1: Create an enum that implements io.avaje.jex.security.Role</h4>
 <pre content="java">
-import io.avaje.jex.Role
+import io.avaje.jex.security.Role
 
 public enum AppRoles implements Role {
   ANYONE, ADMIN, BASIC_USER, ORG_ADMIN
@@ -172,7 +169,11 @@ public @interface Roles {
 
 <h5>Example</h5>
 <pre content="java">
-jex.accessManager((handler, ctx, permittedRoles) -> {
-  ...
+jex.filter((ctx, chain) -> {
+    var userRole = getUserRole(ctx); // some user defined function that returns a user role
+    if (!ctx.routeRoles().contains(userRole)) { // routeRoles are provided through the Context interface
+        throw new HttpResponseException(403,"unauthorized"); // request will have to be explicitly stopped by throwing an exception
+    }
+    chain.proceed();
 })
 </pre>

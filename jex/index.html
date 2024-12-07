@@ -1,0 +1,289 @@
+<html>
+
+<head>
+  <meta name="layout" content="_layout/base-jex.html" />
+  <meta name="bread1" content="jex" href="/jex/" />
+  <#assign index="active">
+</head>
+
+<body>
+  <h1 id="overview">Avaje Jex</h1>
+
+  <table style="width: 100%;">
+    <tr>
+      <th>Discord</th>
+      <th>Source</th>
+      <th>API Docs</th>
+      <th>Issues</th>
+      <th>Releases</th>
+    </tr>
+    <tr>
+      <td><a href="https://discord.gg/Qcqf9R27BR">Discord</td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-jex">Github</a></td>
+      <td><a target="_blank" href="https://javadoc.io/doc/io.avaje/avaje-jex">Javadoc</a></td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-jex/issues">Github</a></td>
+      <td><a href="https://github.com/avaje/avaje-jex/releases"><img
+            src="https://img.shields.io/maven-central/v/io.avaje/avaje-jex.svg?label=Maven%20Central"></a></td>
+    </tr>
+  </table>
+
+  <p><br><br>
+    An uncommonly known fact is that the JDK comes <a
+      href="https://docs.oracle.com/en/java/javase/21/docs/api/jdk.httpserver/com/sun/net/httpserver/package-summary.html">built
+      in with an http server</a>. Avaje Jex is a lightweight (~105kb) wrapper over the built-in api with some key
+    enhancements.
+  </p>
+
+  <ul>
+    <li>Fluent API</li>
+    <li>Path parameter parsing</li>
+    <li>Virtual Threads</li>
+    <li>Json (de)serialization</li>
+    <li>Compression</li>
+    <li>Context abstraction over HttpExchange to easily retrieve and send request/response data.</li>
+  </ul>
+
+  <h2 id="quick-start">Quick Start</h2>
+  <h4>
+    1. Add <em>avaje-jex</em> dependencies.
+  </h4>
+  <pre content="xml">
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-jex</artifactId>
+    <version>${avaje.jex.version}</version>
+  </dependency>
+   <!-- perhaps also a json dependency like avaje jsonb or jackson  --->
+  </pre>
+
+  <h4>
+    2. Create basic server
+  </h4>
+  <p>
+    Below is an example of a basic server.
+  </p>
+  <pre content="java">
+    Jex.create()
+        .get("/", ctx -> ctx.text("hello"))
+        .get("/one/{id}", ctx -> ctx.text("one-" + ctx.pathParam("id")))
+        .filter(
+            (ctx, chain) -> {
+              System.out.println("before request");
+              chain.proceed();
+              System.out.println("after request");
+            })
+        .error(
+            IllegalStateException.class,
+            (ctx, exception) -> ctx.status(500).text(exception.getMessage()))
+        .port(8080)
+        .start();
+</pre>
+
+  <h2 id="handlers">Handling Requests</h2>
+  <p>
+    With Jex, there are three main handler types: endpoint-handlers, filters, and exception-handlers.
+
+    Each kind of handler accept a <code>Context</code> instance as one of the parameters and have a <code>void</code>
+    return type.
+    You use methods like <code>ctx.write(result)</code>, </code>ctx.json(obj)</code>, or <code>ctx.html(html)</code> to
+    set the response which will be returned to
+    the user.
+  </p>
+  <h3 id="end">Endpoint Handlers</h3>
+  <p>
+    Endpoint handlers are the main handler type that define your API.
+    You can add a GET handler to serve data to a client, or a POST handler to receive some data.
+    Handlers. Common methods are supported directly on the <code>Routing</code> class (GET, POST, PUT, PATCH, DELETE,
+    HEAD, OPTIONS, TRACE)
+  </p>
+
+  <p>Endpoint-handlers are matched in the order they are defined.</p>
+  <pre content="java">
+    Jex app = Jex.create();
+    Routing routing = Jex.create().routing();
+    routing.get("/output", ctx -> {
+        // some code
+        ctx.json(object);
+    });
+    //alternatively can use a consumer to configure
+    app.routing(r ->
+       r.post("/input", ctx -> {
+        // some code
+        ctx.status(201);
+    }));
+    //or can use convenience methods directly on jex
+    app.post("/something", ctx -> {
+        // some code
+        ctx.status(201);
+    });
+  </pre>
+
+  <p>Handler paths can include path-parameters. These are available via ctx.pathParam("key"):
+  </p>
+
+  <pre content="java">
+  var app = Jex.create();
+  // the {} syntax does not allow slashes ('/') as part of the parameter
+  app.get("/hello/{name}", ctx -> ctx.write("Hello: " + ctx.pathParam("name")));
+  // the <> syntax allows slashes ('/') as part of the parameter
+  app.get("/hello/<name>", ctx -> ctx.write("Hello: " + ctx.pathParam("name")));
+</pre>
+
+  <p>Handler paths can also include wildcard parameters:</p>
+
+  <pre content="java">
+  Jex.create()
+      .get("/path/*",
+         ctx -> ctx.write("You are here because " + ctx.path() + " matches " + ctx.matchedPath())
+         ));
+</pre>
+
+  <h3 id="ctx">Context</h3>
+  <p>The Context object provides you with everything you need to handle a http-request. It contains the underlying
+    JDK <code>HttpExchange</code>, and a bunch of convenience methods for extracting data from a request and sending a
+    response.</p>
+
+  <p>See the <a href="https://javadoc.io/doc/io.avaje/avaje-jex/latest/io.avaje.jex/io/avaje/jex/Context.html"> Context
+      Javadoc</a> for a description of all the methods available</p>
+
+  <h3 id="filters">Filters</h3>
+  <p>
+    Filters are used to pre/post process incoming requests. Pre-processing occurs before the application's exchange
+    handler is invoked, and post-processing occurs after the exchange handler returns.
+    Filters are organised in chains, and are executed in the order they were
+    registered. This can be useful for adding authentication, caching, extra logging, etc.
+    <br><br>
+    Each Filter in the chain invokes the next filter within its own <code>filter(Context, FilterChain)</code>
+    implementation. The final Filter in the chain invokes the applications exchange handler..
+  </p>
+  <pre content="java">
+    Jex.create()
+        .filter(
+            (ctx, chain) -> {
+              System.out.println("before request");
+              // proceed to the next filter in the chain, or the endpoint handler if  at the end of
+              // the chain
+              chain.proceed();
+              System.out.println("after request");
+            });
+  </pre>
+
+  <p>The Filter may decide to terminate the chain, by not calling the method. In this case, the filter must send the
+    response to the request, because the application's exchange handler will <i>not</i> be invoked.</p>
+
+  <h3 id="exception">Exceptions</h3>
+  <p>
+    Exception handlers give you a way of handling thrown exceptions during request processing;
+  </p>
+  <pre content="java">
+    var app = Jex.create();
+
+    app.error(NullPointerException.class, (ctx, e) -> {
+        // handle nullpointers here
+    });
+
+    app.error(Exception.class, (ctx, e) -> {
+        // handle general exceptions here
+        // will not trigger if more specific exception handler found
+    });
+
+  </pre>
+
+  <h4 id="responseEx">HttpResponseException</h4>
+  <p>
+    Jex comes with a built in class called <code>HttpResponseException</code>, which can be used for default responses.
+    If not caught by an exception handler, the exception is automatically converted into a response and sent to the
+    user.
+  </p>
+
+  <h2 id="access">Access Management</h3>
+  <p>
+    When registering a route, you can specify security roles that can be accessed from within a request.
+  </p>
+  <p>
+    A common way to manage access is to use a filter as seen in the example below:
+  </p>
+  <pre content="java">
+    //custom enum for access roles
+    enum Access implements Role {
+      USER,
+      ADMIN
+    }
+
+    public static void main(String[] args) {
+      Jex.create()
+          .get("/user", ctx -> ctx.text("user"), Access.USER)
+          .get("/admin", ctx -> ctx.text("admin"), Access.ADMIN)
+          .filter(
+              (ctx, chain) -> {
+                // some user defined function that returns a user role
+                Access userRole = getUserRole(ctx);
+                // routeRoles are provided through the Context interface
+                if (!ctx.routeRoles().contains(userRole)) {
+                  // request can be aborted by throwing an exception or by not calling chain.proceed()
+                  throw new HttpResponseException(403, "unauthorized");
+                }
+                chain.proceed();
+              });
+    }
+  </pre>
+
+  <h2 id="json">Json Content</h2>
+  <p>
+    Jex has a <a
+      href="https://javadoc.io/doc/io.avaje/avaje-jex/latest/io.avaje.jex/io/avaje/jex/spi/JsonService.html"><code>JsonService</code></a>
+    SPI to allow for (de)serialization from/to json. It requires only the <code>toJson</code>/<code>fromJson</code>
+    methods to be implemented.
+  </p>
+
+  <p>
+    If jackson or avaje-jsonb is present on the class path, jex will create a default JsonService automatically if none
+    are manually registered.
+  </p>
+
+  <p>When a JsonService is available, we can use the Context methods <code>bodyAsClass</code> and
+    <code>bodyAsType</code> to deserialize json and the <code>json</code> method to serialize and send a response
+    back
+  </p>
+
+  <pre content="java">
+    Jex.create()
+        .jsonService(new JacksonJsonService())
+        .post(
+            "/json",
+            ctx -> {
+              MyBody body = ctx.bodyAsClass(MyBody.class);
+              ctx.json(new CustomResponse());
+            });
+  </pre>
+
+  <h2 id="static">Static Resources</h2>
+  <p>
+    There is a separate module for static resources that allows you to serve static resources from the classpath or
+    filesystem.
+  </p>
+  <p>
+    It provides a <code>StaticContent</code> class to configure the location, http path of your static resources, and other attributes.
+  </p>
+  <pre content="xml">
+      <dependency>
+        <groupId>io.avaje</groupId>
+        <artifactId>avaje-jex-static-content</artifactId>
+        <version>${avaje.jex.version}</version>
+      </dependency>
+  </pre>
+  <pre content="java">
+    StaticContent singleFile =
+        StaticContent.createFile("src/main/resources/example.txt").httpPath("/single").build();
+    StaticContent directoryCP =
+        StaticContent.createCP("/public/").httpPath("/").directoryIndex("index.html").build();
+    Jex app =
+        Jex.create()
+            .plugin(singleFile) // will serve the src/main/resources/example.txt
+            .plugin(directoryCP); // will serve files from the /public classpath directory
+  </pre>
+
+  <p><br><br><br><br><br><br></p>
+</body>
+
+</html>
