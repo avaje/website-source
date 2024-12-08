@@ -84,6 +84,14 @@
         </td>
       </tr>
       <tr>
+        <th><a href="/jex">Jex</a></th>
+        <td>
+          <p>
+            Lightweight Javalin style wrapper over the JDK's own <a href="https://docs.oracle.com/en/java/javase/21/docs/api/jdk.httpserver/com/sun/net/httpserver/package-summary.html">built-in HTTP server</a> adding various capabilities. (virtual threads, json, compression, etc.).
+          </p>
+        </td>
+      </tr>
+      <tr>
         <th><a href="/prisms">Prisms</a></th>
         <td>
           <p>
