@@ -28,5 +28,6 @@
   <@nav url="#mixin" title="@Mixin"/>
   <@nav url="#subtype" title="@Subtype"/>
   <@nav url="#custom" title="@CustomAdapter"/>
+  <@nav url="#serializer" title="@Serializer"/>
 </ul>
 <p>&nbsp;</p>
