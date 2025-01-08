@@ -12,5 +12,7 @@
   <@nav url="#access" title="Access Management"/>
   <@nav url="#json" title="Json Content"/>
   <@nav url="#static" title="Static Resources"/>
+  <@nav url="#config" title="Server Configuration"/>
+  <@nav url="#ssl" title="Configuring Https"/>
 </ul>
 <p>&nbsp;</p>
