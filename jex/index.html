@@ -511,61 +511,58 @@
     <p>
       Below are the available configuration options for the Jex server:
     </p>
-    <details>
-      <summary>Available Server Configuration: (click to expand) </summary>
-      <table style="width:75%;" class="table">
-        <tr>
-          <th style="width: 50%;">Method</th>
-          <th>Description</th>
-        </tr>
-        <tr>
-          <td><strong><code>compression(c->{...})</code></strong></td>
-          <td>Configures compression settings using a consumer function.</td>
-        </tr>
-        <tr>
-          <td><strong><code>contextPath("/")</code></strong></td>
-          <td>Sets the contextPath passed to the underlying HttpServer.</td>
-        </tr>
-        <tr>
-          <td><strong><code>executor(executor)</code></strong></td>
-          <td>Sets the executor service used to handle incoming requests. (Defaults to a virtual thred executor)</td>
-        </tr>
-        <tr>
-          <td><strong><code>health(true)</code></strong></td>
-          <td>Enables/Disables a default health endpoint.</td>
-        </tr>
-        <tr>
-          <td><strong><code>host("host")</code></strong></td>
-          <td>Sets the host on which the HttpServer will bind to.</td>
-        </tr>
-        <tr>
-          <td><strong><code>httpsConfig(httpsConfigurator)</code></strong></td>
-          <td>Enables https with the provided
-            <code><a  href="https://docs.oracle.com/en/java/javase/21/docs/api/jdk.httpserver/com/sun/net/httpserver/HttpsConfigurator.html">HttpsConfigurator</a></code>.
-          </td>
-        </tr>
-        <tr>
-          <td><strong><code>ignoreTrailingSlashes(false)</code></strong></td>
-          <td>Configures whether trailing slashes in request URIs should be ignored.</td>
-        </tr>
-        <tr>
-          <td><strong><code>jsonService(jsonService)</code></strong></td>
-          <td>Sets the JSON service used for (de)serialization.</td>
-        </tr>
-        <tr>
-          <td><strong><code>port(8080)</code></strong></td>
-          <td>Sets the port number on which the HttpServer will listen for incoming requests.</td>
-        </tr>
-        <tr>
-          <td><strong><code>renderer("ftl", ftlRenderer)</code></strong></td>
-          <td>Registers a template renderer for a specific file extension.</td>
-        </tr>
-        <tr>
-          <td><strong><code>socketBacklog(int backlog)</code></strong></td>
-          <td>Sets the underlying HttpServer socket backlog.</td>
-        </tr>
-      </table>
-    </details>
+    <table style="width:75%;" class="table">
+      <tr>
+        <th style="width: 50%;">Method</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><strong><code>compression(c->{...})</code></strong></td>
+        <td>Configures compression settings using a consumer function.</td>
+      </tr>
+      <tr>
+        <td><strong><code>contextPath("/")</code></strong></td>
+        <td>Sets the contextPath passed to the underlying HttpServer.</td>
+      </tr>
+      <tr>
+        <td><strong><code>executor(executor)</code></strong></td>
+        <td>Sets the executor service used to handle incoming requests. (Defaults to a virtual thred executor)</td>
+      </tr>
+      <tr>
+        <td><strong><code>health(true)</code></strong></td>
+        <td>Enables/Disables a default health endpoint.</td>
+      </tr>
+      <tr>
+        <td><strong><code>host("host")</code></strong></td>
+        <td>Sets the host on which the HttpServer will bind to.</td>
+      </tr>
+      <tr>
+        <td><strong><code>httpsConfig(httpsConfigurator)</code></strong></td>
+        <td>Enables https with the provided
+          <code><a  href="https://docs.oracle.com/en/java/javase/21/docs/api/jdk.httpserver/com/sun/net/httpserver/HttpsConfigurator.html">HttpsConfigurator</a></code>.
+        </td>
+      </tr>
+      <tr>
+        <td><strong><code>ignoreTrailingSlashes(false)</code></strong></td>
+        <td>Configures whether trailing slashes in request URIs should be ignored.</td>
+      </tr>
+      <tr>
+        <td><strong><code>jsonService(jsonService)</code></strong></td>
+        <td>Sets the JSON service used for (de)serialization.</td>
+      </tr>
+      <tr>
+        <td><strong><code>port(8080)</code></strong></td>
+        <td>Sets the port number on which the HttpServer will listen for incoming requests.</td>
+      </tr>
+      <tr>
+        <td><strong><code>renderer("ftl", ftlRenderer)</code></strong></td>
+        <td>Registers a template renderer for a specific file extension.</td>
+      </tr>
+      <tr>
+        <td><strong><code>socketBacklog(int backlog)</code></strong></td>
+        <td>Sets the underlying HttpServer socket backlog.</td>
+      </tr>
+    </table>
 
     <h2 id="ssl">Configuring Https</h2>
     <p>
@@ -573,10 +570,7 @@
       The below example demonstrates how to configure a <code>HttpsConfigurator</code> with <code>SSLContext</code>.
     </p>
 
-    <details>
-      <summary>HttpsServer Example: (click to expand) </summary>
-
-      <pre content="java">
+    <pre content="java">
 
         char[] passphrase = "changeit".toCharArray();
 
@@ -610,7 +604,6 @@
           e.printStackTrace();
         }
       </pre>
-    </details>
 
     <p><br><br><br><br><br><br></p>
 </body>
