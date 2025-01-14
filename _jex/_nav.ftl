@@ -13,6 +13,7 @@
   <@nav url="#json" title="Json Content"/>
   <@nav url="#static" title="Static Resources"/>
   <@nav url="#config" title="Server Configuration"/>
-  <@nav url="#ssl" title="Configuring Https"/>
+  <@nav url="#alternate" title="Alternate Implementations"/>
+  <@nav url="#avaje-http" title="Use with Avaje Http"/>
 </ul>
 <p>&nbsp;</p>
