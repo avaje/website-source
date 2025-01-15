@@ -1,6 +1,6 @@
-<h1 id="overview">Avaje HTTP Server & Client</h1>
+<h1 id="overview">Avaje HTTP Generator</h1>
 <p>
-Library that generates extremely fast adapter code
+Library that generates adapter code
 for Javalin and Helidon SE/Nima APIs via Annotation Processing.
 </p>
 <table width="100%">
@@ -65,9 +65,9 @@ for Javalin and Helidon SE/Nima APIs via Annotation Processing.
   as a nice clean separate dependency. The JAX-RS API has a lot of extra weight that we do not need.
 </p>
 
-<h2>HTTP Client</h2>
+<h2><a href="/http-client/">HTTP Client</a></h2>
 <p>
-  Avaje <a href="/http-client/">http client</a> is a lightweight wrapper of JDK HttpClient
-  that also supports Client API with annotation processing to generate source code that implements
+  Avaje <a href="/http-client/">http client</a> is a lightweight wrapper over the JDK's own HttpClient
+  that also supports client interfaces with annotation processing to generate source code that implements
   the API.
 </p>

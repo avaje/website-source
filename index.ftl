@@ -70,16 +70,15 @@
         </td>
       </tr>
       <tr>
-        <th><a href="/http">HTTP Server</a></th>
+        <th><a href="/http">HTTP Generator</a></th>
         <td>
           <p>
-            Lightweight JAX-RS style http servers using <a href="https://javalin.io">Javalin</a>
-            or <a href="https://helidon.io">Helidon SE</a>. Use annotations
-            like <code>@Path</code>, <code>@Get</code> etc to define a rest api.
+            Lightweight JAX-RS style http servers using <a href="https://helidon.io">Helidon SE</a>, <a href="https://javalin.io">Javalin</a>, or <a href="/jex">Jex</a>. Use annotations
+            like <code>@Controller</code>, <code>@Get</code> etc to define a rest api.
           </p>
           <p>
-            Uses java annotation processing generating source code for adapting rest API's
-            to servers making it much lighter and simpler than JAX-RS.
+            Uses java annotation processing to generate source code for adapting and registering JAX-RS style classes
+            to servers.
           </p>
         </td>
       </tr>
@@ -87,7 +86,7 @@
         <th><a href="/jex">Jex</a></th>
         <td>
           <p>
-            Lightweight Javalin style wrapper over the JDK's own <a href="https://docs.oracle.com/en/java/javase/21/docs/api/jdk.httpserver/com/sun/net/httpserver/package-summary.html">built-in HTTP server</a> adding various capabilities. (virtual threads, json, compression, etc.).
+            Lightweight wrapper over the JDK's own <a href="https://docs.oracle.com/en/java/javase/21/docs/api/jdk.httpserver/com/sun/net/httpserver/package-summary.html">built-in HTTP server</a>, adding various capabilities. (virtual threads, json, compression, etc.).
           </p>
         </td>
       </tr>
@@ -103,7 +102,7 @@
         <th><a href="/spi">SPI Service</a></th>
         <td>
           <p>
-            Zero-dependency library that adds SPI <em>META-INF/services</em> entries for classes and validates module-info <em>provides</em> clauses.
+            Zero-dependency library that adds SPI <em>META-INF/services</em> entries for classes and validates modular <em>provides</em> clauses.
           </p>
         </td>
       </tr>
