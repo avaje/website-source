@@ -30,16 +30,16 @@
   <p><br><br>
     An uncommonly known fact is that the JDK comes <a
       href="https://docs.oracle.com/en/java/javase/21/docs/api/jdk.httpserver/com/sun/net/httpserver/package-summary.html">built
-      in with an http server</a>. Avaje Jex is a lightweight (~105kb) wrapper over the built-in api with some key
+      in with an http server</a>. Avaje Jex is a lightweight (~110kb) wrapper over the built-in api with some key
     enhancements.
   </p>
 
   <ul>
     <li>Fluent API</li>
-    <li>Path parameter parsing</li>
-    <li>Virtual Thread Per Request</li>
-    <li>Json (de)serialization</li>
-    <li>Compression</li>
+    <li>Path/Query parameter parsing</li>
+    <li>Virtual Threads enabled by default</li>
+    <li>Json (de)serialization SPI</li>
+    <li>Automatic Compression</li>
     <li>Context abstraction over HttpExchange to easily retrieve and send request/response data.</li>
   </ul>
 
@@ -118,7 +118,8 @@
     });
   </pre>
 
-  <p>Handler paths can include path-parameters. These are available via ctx.pathParam("key"):
+  <p>
+    Handler paths can include path-parameters. These are available via ctx.pathParam("key"):
   </p>
 
   <pre content="java">
@@ -139,8 +140,7 @@
 </pre>
 
   <h3 id="ctx">Context</h3>
-  <p>The Context object provides you with everything you need to handle a http-request. It contains/wraps the underlying
-    JDK <code>HttpExchange</code>, and has convenience methods for extracting data from a request or sending a
+  <p>The Context object provides you with everything you need to handle a http-request. It contains/wraps the JDK <code>HttpExchange</code>, and has convenience methods for extracting data from a request or sending a
     response.</p>
 
   <p>See the <a href="https://javadoc.io/doc/io.avaje/avaje-jex/latest/io.avaje.jex/io/avaje/jex/Context.html"> Context
@@ -337,7 +337,7 @@
     Filters are organized in chains, and are executed in the order they were
     registered. This can be useful for adding authentication, caching, extra logging, etc.
     <br><br>
-    Each Filter in the chain invokes the next filter within its own <code>filter(Context, FilterChain)</code>
+    Each filter in the chain invokes the next filter within its own <code>filter(Context, FilterChain)</code>
     implementation. The final filter in the chain invokes the application's exchange handler.
   </p>
   <pre content="java">
@@ -423,8 +423,7 @@
 
     <p>
       If jackson or avaje-jsonb is present on the class path, jex will create a default JsonService automatically if
-      none
-      are manually registered.
+      none are manually registered.
     </p>
 
     <p>When a JsonService is available, we can use the Context methods <code>bodyAsClass</code> and
@@ -445,11 +444,11 @@
 
     <h2 id="static">Static Resources</h2>
     <p>
-      There is a separate module for static resources that allows you to serve static resources from the classpath or
+      There is a separate module that allows you to serve static resources from the classpath or
       filesystem.
     </p>
     <p>
-      It provides a <code>StaticContent</code> class to configure the location, http path of your static resources, and
+      It provides a <code>StaticContent</code> class to configure the location and http path of your static resources, as well as
       other attributes.
     </p>
     <pre content="xml">
@@ -482,7 +481,7 @@
         </tr>
         <tr>
           <td><strong><code>route("/public")</code></strong></td>
-          <td>Sets the HTTP path for the static resource handler.</td>
+          <td>Sets the HTTP path and security role for the static resource handler.</td>
         </tr>
         <tr>
           <td><strong><code>preCompress()</code></strong></td>
@@ -567,7 +566,7 @@
     <h2 id="ssl">Configuring Https</h2>
     <p>
       The JDK HttpsServer can be configured using a <code>HttpsConfigurator</code> instance to provide SSL termination.
-      The below example demonstrates how to configure a <code>HttpsConfigurator</code> with <code>SSLContext</code>.
+      The below example demonstrates how to configure a <code>HttpsConfigurator</code> with an <code>SSLContext</code>.
     </p>
 
     <pre content="java">
@@ -622,7 +621,7 @@
             <dependency>
               <groupId>io.github.robaho</groupId>
               <artifactId>httpserver</artifactId>
-              <version>1.0.19</version>
+              <version>1.0.21</version>
             </dependency>
       </pre>
 
