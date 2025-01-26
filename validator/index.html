@@ -220,6 +220,81 @@
     }
   }
   </pre>
+  <h2 id="configuration">Configuration</h2>
+  <p>
+    Configuration of the Validator is provided by the <code>Validator.builder()</code>
+    including setting the default locale, additional locales, additional resource
+    bundles for overriding or customising messages etc.
+  </p>
+  <p>
+    Refer to <a target="_blank" href="https://javadoc.io/doc/io.avaje/avaje-validator/latest/io.avaje.validation/io/avaje/validation/Validator.Builder.html">Validator.Builder</a>
+    for full details of all the configuration options.
+  </p>
+
+  <h3 id="locales">Locales</h3>
+  <p>
+    We can specify the Locales that will be used for message interpolation
+    and the default Locale.
+  </p>
+  <pre content="java">
+  // build using defaults
+  Validator validator = Validator.builder()
+    .setDefaultLocale(Locale.ENGLISH)
+    .addLocales(Locale.GERMAN, Locale.FRENCH, Locale.ITALIAN)
+    .build();
+  </pre>
+
+  <h3 id="supportedLocales">Supported Locales</h3>
+  <p>
+    Locales with builtin messages for the standard validation annotations are:
+  </p>
+  <ul>
+    <li>de - German</li>
+    <li>en - English</li>
+    <li>es - Spanish</li>
+    <li>fa - Farsi</li>
+    <li>fr - French</li>
+    <li>hu - Hungarian</li>
+    <li>it - Italian</li>
+    <li>ja - Japanese</li>
+    <li>ko - Korean</li>
+    <li>nl - Dutch</li>
+    <li>pl - Polish</li>
+    <li>pt - Portuguese</li>
+    <li>ro - Romanian</li>
+    <li>sk - Slovak</li>
+    <li>tr - Turkish</li>
+    <li>zh, zh_ZN, zh_TW - Chinese</li>
+  </ul>
+
+  <h3 id="additionalResourceBundles">Additional resource bundles</h3>
+  <p>
+    To override the built in messages or add messages for your own
+    custom validation annotations, we can add custom resource bundles
+    to the validator.
+  </p>
+  <pre content="java">
+  // build using defaults
+  Validator validator = Validator.builder()
+    .addResourceBundles("my.example.CustomMessages")
+    .build();
+  </pre>
+  <p>
+    Where <code>src/main/resources/my/example/CustomMessages.properties</code> contains
+    extra messages that will be used.
+  </p>
+  <p>
+    To support multiple Locales we would additionally add a properties file per Locale like below:
+  </p>
+  <ul>
+    <li><code>src/main/resources/my/example/CustomMessages.properties</code></li>
+    <li><code>src/main/resources/my/example/CustomMessages_en.properties</code></li>
+    <li><code>src/main/resources/my/example/CustomMessages_de.properties</code></li>
+    <li><code>src/main/resources/my/example/CustomMessages_fr.properties</code></li>
+  </ul>
+  <p>
+    In this way the Locale specific message will be used, with a fallback to <em>CustomMessages.properties</em>.
+  </p>
 
   <h2 id="constraint">Declaring and Validating Bean Constraints</h2>
   <p>
