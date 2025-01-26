@@ -44,6 +44,11 @@
     <li>Adding/Modify constraints on 3rd Party classes</li>
   </ul>
 
+  <h2 id="requires">Requires Java 17+</h2>
+  <p>
+    Avaje Validator requires Java 17 or higher.
+  </p>
+
   <h2 id="quick-start">Quick Start</h2>
   <h4>
     1. Add <em>avaje-validator</em> dependencies.
@@ -103,21 +108,20 @@
   </p>
   <pre content="java">
   @Valid
-  public class RingedCity {
+  public class Address {
 
-    @NotBlank
+    @NotBlank @Size(max = 100)
     private String street;
 
-    @NotEmpty(message="must not be empty")
-    private List<@NotBlank(message="{message.bundle.key}") String> judges; // message will be interpolated from bundle
+    @Size(max = 80)
+    private String suburb;
 
-    @Valid //cascaded validation
-    @NotNull(groups=Sunlight.class) //groups
-    private DarkEater dragon;
+    @NotBlank @Size(max = 80)
+    private String city;
 
-    //add getters/setters
+    // accessors/getters/setters etc
   }
-</pre>
+  </pre>
 
   <p>Also works with records:</p>
 
@@ -125,10 +129,10 @@
   @Valid
   public record RingedCity(
         @NotBlank String street,
-        List<@NotBlank(message="{message.bundle.key}") String> judges,
-        @Valid @NotNull(groups=Sunlight.class) DarkEater dragon
-        ) {}
-</pre>
+        List<@NotBlank String> judges,
+        @Valid @NotNull DarkEater dragon
+  ) {}
+  </pre>
 
   <h4>
     4. Validate your POJO
@@ -200,35 +204,33 @@
 
   </p>
 
-  <h3 id="boot">ValidatorCustomizer</h2>
-    <p>
-      We can create a class that implements <code>ValidatorCustomizer</code> that can be loaded via
-      <code>ServiceLoader</code> while the builder is constructing a
-      <code>Validator</code> instance.
-    </p>
+  <h2 id="boot">ValidatorCustomizer</h2>
+  <p>
+    We can create a class that implements <code>ValidatorCustomizer</code> that can be loaded via
+    <code>ServiceLoader</code> while the builder is constructing a
+    <code>Validator</code> instance.
+  </p>
 
-    <pre content="java">
+  <pre content="java">
+  public final class Customizer implements ValidatorCustomizer {
 
-    public final class Customizer implements ValidatorCustomizer {
-
-      @Override
-      public void customize(Builder builder) {
-        builder.failFast(true);
-      }
+    @Override
+    public void customize(Builder builder) {
+      builder.failFast(true);
     }
+  }
+  </pre>
 
-</pre>
-
-    <h2 id="constraint">Declaring and Validating Bean Constraints</h2>
-    <p>
-      Types annotated with <code>@Valid</code> are picked up by the avaje-validator-generator at compile time and an
-      adapter is generated to perform validations.
-    </p>
-    <h3 id="field">Field Validation</h3>
-    <p>
-      Constraints can be expressed by annotating a field of a class with an annotation.
-    </p>
-    <pre content="java">
+  <h2 id="constraint">Declaring and Validating Bean Constraints</h2>
+  <p>
+    Types annotated with <code>@Valid</code> are picked up by the avaje-validator-generator at compile time and an
+    adapter is generated to perform validations.
+  </p>
+  <h3 id="field">Field Validation</h3>
+  <p>
+    Constraints can be expressed by annotating a field of a class with an annotation.
+  </p>
+  <pre content="java">
   @Valid
   public class Car {
 
