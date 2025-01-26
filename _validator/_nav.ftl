@@ -1,5 +1,6 @@
 <ul>
   <@nav url="#overview" title="Overview"/>
+  <@nav url="#requires" title="Requirements"/>
   <@nav url="#quick-start" title="Quick Start"/>
   <@nav url="#jpms" title="Java Modules"/>
   <@nav url="#integration" title="Avaje/Spring Integration"/>
