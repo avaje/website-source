@@ -5,6 +5,14 @@
   <@nav url="#jpms" title="Java Modules"/>
   <@nav url="#integration" title="Avaje/Spring Integration"/>
   <@nav url="#boot" title="Customizer"/>
+  <@nav url="#configuration" title="Configuration">
+    <ul>
+      <li><a href="#locales">Locales</a></li>
+      <li><a href="#supportedLocales">Supported Locales</a></li>
+      <li><a href="#additionalResourceBundles">Message bundles</a></li>
+    </ul>
+  </@nav>
+
   <@nav url="#constraint" title="Declaring Bean Constraints">
     <ul>
       <li><a href="#field">Field Validation</a></li>
