@@ -302,19 +302,19 @@
   </p>
   <h3 id="field">Field Validation</h3>
   <p>
-    Constraints can be expressed by annotating a field of a class with an annotation.
+    Constraints can be expressed by annotating a field with 1 or more validation annotations.
   </p>
   <pre content="java">
   @Valid
   public class Car {
 
-    @NotNull
+    @NotBlank @Size(max=40)
     private String manufacturer;
 
     @AssertTrue
     private boolean isRegistered;
 
-    //getters...
+    // getters...
   }
   </pre>
 
@@ -389,38 +389,74 @@
         @Positive(message = "You Died") OptionalLong souls,
         @Positive(message = "vigor check failed") OptionalDouble vigor) {}
   </pre>
-  <h3 id="classlvl">Class-level constraints</h3>
+
+  <h3 id="classlvl">Cross-Field / Class-level constraints</h3>
   <p>
-    Last but not least, a constraint can also be placed on the class level. In this case not a single property is
-    subject
-    of the validation but the complete object. Class-level constraints are useful if the validation depends on a
-    correlation between several properties of an object.
+    A constraint can also be placed on the class level for "Cross Field" validation.
+    The input for the validation is the complete object and this is used when the validation depends
+    on multiple properties of an object.
   </p>
   <p>
-    The below version of the <code>Ship</code> class has the two attributes <em>crew</em> and <em>imposters</em> and
-    it should
-    be ensured that the list of imposters is proportional to the amount of crewmates. For that purpose the
-    <code>@BalancedGame</code> constraint is added on the class level. The validator of that constraint has access to
-    the
-    complete <code>Ship</code> object, allowing to compare the fields and validate correctly.
+    A class level constraint is <em>ONLY</em> executed if all field level validations have already passed.
+    The implementation is allowed to assume that all fields have already been deemed valid passing all
+    field level validation constraints.
+  </p>
+  <p>
+    The <code>UserRegistrationForm</code> class has <em>email</em> and <em>confirmEmail</em>
+    and the validation requirement is that these 2 fields need to have matching values.
   </p>
   <pre content="java">
   @Valid
-  @BalancedGame
-  public class Ship {
+  @RegistrationFormValidation
+  public class UserRegistrationForm {
 
-      private List<CrewMate> crew;
+    @NotBlank @Email
+    private String email;
 
-      private List<Imposters> imposters;
+    @NotBlank @Email
+    private String confirmEmail;
 
-      //...
+    // ...
   }
   </pre>
+  <h5>Step 1: Define the validation constraint annotation</h5>
+  <pre content="java">
+    @Target(TYPE)
+    @Constraint
+    @Retention(SOURCE)
+    public @interface RegistrationFormValidation {
+      String message() default "Confirm Email must match Email"; // default error message
+
+      Class<?>[] groups() default {}; // groups
+    }
+  </pre>
+
+  <h5>Step 2: Define a ConstraintAdapter for the annotation</h5>
+  <p>
+    We need to define a ConstraintAdapter that processes the <code>@RegistrationFormValidation</code>
+    taking the <code>UserRegistrationForm</code> as input, and validation logic has access to
+    all the fields.
+  </p>
+  <pre content="java">
+    @ConstraintAdapter(RegistrationFormValidation.class)
+    public final class RegistrationFormValidationAdapter extends AbstractConstraintAdapter<UserRegistrationForm> {
+
+      public RegistrationFormValidationAdapter(AdapterCreateRequest request) {
+        super(request);
+      }
+
+      @Override
+      public boolean isValid(UserRegistrationForm registrationForm) {
+        // all field validation has passed
+        return registrationForm.email().equals(registrationForm.confirmEmail());
+      }
+    }
+  </pre>
+
   <h3 id="cascade">Cascaded Validation</h3>
   <p>
     Avaje Validator supports validating complete object graphs. To do so, just annotate a field or property
-    representing
-    a reference to another object with <code>@Valid</code>
+    representing a reference to another object with <code>@Valid</code>
   </p>
   <pre content="java">
     @Valid
@@ -430,7 +466,7 @@
       @NotNull
       private Crewmate mate;
 
-      //...
+      // ...
     }
 
     class Crewmate {
@@ -441,7 +477,7 @@
       @AssertFalse
       private boolean sus;
 
-      //...
+      // ...
     }
   </pre>
 
@@ -463,7 +499,7 @@
           return manufacturer;
       }
 
-      //...
+      // ...
   }
 
   class RentalCar extends Car {
@@ -475,7 +511,7 @@
         return rentalStation;
     }
 
-    //...
+    // ...
   }
   </pre>
 
@@ -961,7 +997,7 @@
       @ValidLicensePlate
       private String licensePlate;
 
-      //...
+      // ...
     }
   </pre>
     <p><br><br><br><br><br><br></p>
