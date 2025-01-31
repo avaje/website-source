@@ -14,7 +14,12 @@
   <@nav url="#static" title="Static Resources"/>
   <@nav url="#config" title="Server Configuration"/>
   <@nav url="#ssl" title="Configuring Https"/>
-  <@nav url="#alternate" title="Alternate Implementations"/>
   <@nav url="#avaje-http" title="Use with Avaje Http"/>
+  <@nav url="#alternate" title="Alternate Implementations">
+    <ul>
+      <li><a href="#robaho">Robaho</a></li>
+      <li><a href="#jetty">Jetty</a></li>
+    </ul>
+  </@nav>
 </ul>
 <p>&nbsp;</p>
