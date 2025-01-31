@@ -79,13 +79,107 @@
         .start();
 </pre>
 
+      <p>If you find yourself pining for the JAX-RS style of controllers, you can have avaje-http generate jex adapters
+        for your annotated classes.</p>
+
+      <h3>Add dependencies</h3>
+      <a href="https://github.com/avaje/avaje-http/releases"><img
+          src="https://img.shields.io/maven-central/v/io.avaje/avaje-http-api.svg?label=avaje.http.version"></a>
+      <br></br>
+      <pre content="xml">
+        <dependency>
+          <groupId>io.avaje</groupId>
+          <artifactId>avaje-jex</artifactId>
+          <version>${jex.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>io.avaje</groupId>
+          <artifactId>avaje-http-api</artifactId>
+          <version>${avaje.http.version}</version>
+        </dependency>
+        <!-- Annotation processor -->
+        <dependency>
+          <groupId>io.avaje</groupId>
+          <artifactId>avaje-http-jex-generator</artifactId>
+          <version>${avaje.http.version}</version>
+          <scope>provided</scope>
+          <optional>true</optional>
+        </dependency></pre>
+
+      <h4>JDK 23+</h4>
+      <p>In JDK 23+, annotation processors are disabled by default, you will need to add a flag to re-enable.</p>
+      <pre content="xml">
+        <properties>
+          <maven.compiler.proc>full</maven.compiler.proc>
+        </properties>
+      </pre>
+
+      <h3>Define a Controller</h3>
+      <pre content="java">
+              package org.example.hello;
+              import io.avaje.http.api.Controller;
+              import io.avaje.http.api.Get;
+              import java.util.List;
+
+              @Controller("/widgets")
+              public class WidgetController {
+                private final HelloComponent hello;
+                public WidgetController(HelloComponent hello) {
+                  this.hello = hello;
+                }
+                @Get("/{id}")
+                Widget getById(int id) {
+                  return new Widget(id, "you got it"+ hello.hello());
+                }
+                @Get()
+                List<Widget> getAll() {
+                  return List.of(new Widget(1, "Rob"), new Widget(2, "Fi"));
+                }
+                record Widget(int id, String name){};
+              }</pre>
+
+      <p>This will generate routing code that we can register using any JSR-330 compliant DI:</p>
+      <pre content="java">
+              @Generated("avaje-jex-generator")
+              @Singleton
+              public class WidgetController$Route implements Routing.HttpService {
+                private final WidgetController controller;
+                public WidgetController$Route(WidgetController controller) {
+                  this.controller = controller;
+                }
+                @Override
+                public void add(Routing routing) {
+                  routing.get("/widgets/{id}", this::_getById);
+                  routing.get("/widgets", this::_getAll);
+                }
+                private void _getById(Context ctx) throws IOException {
+                  ctx.status(200);
+                  var id = asInt(ctx.pathParam("id"));
+                  ctx.json(controller.getById(id));
+                }
+                private void _getAll(Context ctx) throws IOException {
+                  ctx.status(200);
+                  ctx.json(controller.getAll());
+                }
+              }</pre>
+
+      <h3>JSR-330 DI Usage</h3>
+      <p>You can use whatever DI library you like.</p>
+      <pre content="java">
+              public class Main {
+                public static void main(String[] args ) {
+                  List<Routing.HttpService> services = // Retrieve HttpServices via DI;
+                  Jex.create().routing(services).start();
+                }
+              }</pre>
+
   <h2 id="handlers">Handling Requests</h2>
   <p>
     With Jex, there are three main handler types: endpoint-handlers, filters, and exception-handlers.
 
     Each kind of handler accept a <code>Context</code> instance as one of the parameters and have a <code>void</code>
     return type.
-    You use methods like <code>ctx.write(result)</code>, </code>ctx.json(obj)</code>, or <code>ctx.html(html)</code> to
+    You use methods like <code>ctx.write(result)</code>, <code>ctx.json(obj)</code>, or <code>ctx.html(html)</code> to
     set the response which will be returned to
     the user.
   </p>
@@ -606,101 +700,6 @@
           e.printStackTrace();
         }
       </pre>
-
-      <h2 id="avaje-http">Use with <a href="https://avaje.io/http/">Avaje Http</a></h2>
-      <p>If you find yourself pining for the JAX-RS style of controllers, you can have avaje http generate jex adapters
-        for your annotated classes.</p>
-
-      <h3>Add dependencies</h3>
-      <a href="https://github.com/avaje/avaje-http/releases"><img
-          src="https://img.shields.io/maven-central/v/io.avaje/avaje-http-api.svg?label=avaje.http.version"></a>
-      <br></br>
-      <pre content="xml">
-        <dependency>
-          <groupId>io.avaje</groupId>
-          <artifactId>avaje-jex</artifactId>
-          <version>${jex.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>io.avaje</groupId>
-          <artifactId>avaje-http-api</artifactId>
-          <version>${avaje.http.version}</version>
-        </dependency>
-        <!-- Annotation processor -->
-        <dependency>
-          <groupId>io.avaje</groupId>
-          <artifactId>avaje-http-jex-generator</artifactId>
-          <version>${avaje.http.version}</version>
-          <scope>provided</scope>
-          <optional>true</optional>
-        </dependency></pre>
-
-      <h4>JDK 23+</h4>
-      <p>In JDK 23+, annotation processors are disabled by default, you will need to add a flag to re-enable.</p>
-      <pre content="xml">
-        <properties>
-          <maven.compiler.proc>full</maven.compiler.proc>
-        </properties>
-      </pre>
-
-      <h3>Define a Controller</h3>
-      <pre content="java">
-              package org.example.hello;
-              import io.avaje.http.api.Controller;
-              import io.avaje.http.api.Get;
-              import java.util.List;
-
-              @Controller("/widgets")
-              public class WidgetController {
-                private final HelloComponent hello;
-                public WidgetController(HelloComponent hello) {
-                  this.hello = hello;
-                }
-                @Get("/{id}")
-                Widget getById(int id) {
-                  return new Widget(id, "you got it"+ hello.hello());
-                }
-                @Get()
-                List<Widget> getAll() {
-                  return List.of(new Widget(1, "Rob"), new Widget(2, "Fi"));
-                }
-                record Widget(int id, String name){};
-              }</pre>
-
-      <p>This will generate routing code that we can register using any JSR-330 compliant DI:</p>
-      <pre content="java">
-              @Generated("avaje-jex-generator")
-              @Singleton
-              public class WidgetController$Route implements Routing.HttpService {
-                private final WidgetController controller;
-                public WidgetController$Route(WidgetController controller) {
-                  this.controller = controller;
-                }
-                @Override
-                public void add(Routing routing) {
-                  routing.get("/widgets/{id}", this::_getById);
-                  routing.get("/widgets", this::_getAll);
-                }
-                private void _getById(Context ctx) throws IOException {
-                  ctx.status(200);
-                  var id = asInt(ctx.pathParam("id"));
-                  ctx.json(controller.getById(id));
-                }
-                private void _getAll(Context ctx) throws IOException {
-                  ctx.status(200);
-                  ctx.json(controller.getAll());
-                }
-              }</pre>
-
-      <h3>JSR-330 DI Usage</h3>
-      <p>You can use whatever DI library you like.</p>
-      <pre content="java">
-              public class Main {
-                public static void main(String[] args ) {
-                  List<Routing.HttpService> services = // Retrieve HttpServices via DI;
-                  Jex.create().routing(services).start();
-                }
-              }</pre>
 
     <h2 id="alternate">Alternate HttpServer Implementations</h2>
 

@@ -1,6 +1,7 @@
 <ul>
   <@nav url="#overview" title="Overview"/>
   <@nav url="#quick-start" title="Quick Start"/>
+  <@nav url="#avaje-http" title="Quick Start with Avaje Http"/>
   <@nav url="#handlers" title="Handling Requests">
     <ul>
       <li><a href="#end">Endpoint Handlers</a></li>
@@ -14,7 +15,6 @@
   <@nav url="#static" title="Static Resources"/>
   <@nav url="#config" title="Server Configuration"/>
   <@nav url="#ssl" title="Configuring Https"/>
-  <@nav url="#avaje-http" title="Use with Avaje Http"/>
   <@nav url="#alternate" title="Alternate Implementations">
     <ul>
       <li><a href="#robaho">Robaho</a></li>
