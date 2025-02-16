@@ -886,9 +886,6 @@
 
       @Override
       public boolean isValid(String object) {
-        if (object == null) {
-          return true;
-        }
         if (caseMode == CaseMode.UPPER) {
           return object.equals(object.toUpperCase());
         } else {

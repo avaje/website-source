@@ -17,8 +17,8 @@
   <@nav url="#ssl" title="Configuring Https"/>
   <@nav url="#alternate" title="Alternate Implementations">
     <ul>
-      <li><a href="#robaho">Robaho</a></li>
       <li><a href="#jetty">Jetty</a></li>
+      <li><a href="#robaho">Robaho</a></li>
     </ul>
   </@nav>
 </ul>
