@@ -530,6 +530,76 @@
     evaluated in addition to the <code>@NotNull</code> constraint from the superclass.
   </p>
 
+  <h2 id="subtype">@ValidSubtypes</h2>
+
+  <p>For dynamic validation of polymorphic types, we specify on the parent type a <code>@ValidSubtypes</code> for each concrete sub-type
+    that can represent that type.</p>
+
+  <pre content="java">
+  @ValidSubtypes({Car.class, Truck.class})
+  public abstract class Vehicle {
+    //...
+  }
+  </pre>
+
+  <p>Sealed abstract classes/interfaces do not require specifying the types in the annotation.</p>
+
+  <pre content="java">
+    @ValidSubtypes
+    public sealed interface Vehicle permits Car, Truck {
+      ...
+    }
+   </pre>
+
+  <details>
+    <summary>Generated Code: (click to expand)</summary>
+    <p>Given this class:</p>
+
+    <pre content="java">
+    @Json
+    @ValidSubtypes(type = Car.class)
+    @ValidSubtypes(type = Truck.class, name = "TRUCK")
+    public abstract class Vehicle {
+      ...
+    }
+
+    public class Car extends Vehicle {
+      ...
+    }
+
+    public class Truck extends Vehicle {
+      ...
+    }
+    </pre>
+
+    <p>The below adapter will be generated to route to respective adapters:</p>
+    <pre content="java">
+      @Generated("avaje-validation-generator")
+      public class VehicleValidationAdapter implements ValidationAdapter<Vehicle> {
+      
+        private final ValidationAdapter<Car> subAdapter0;
+        private final ValidationAdapter<Truck> subAdapter1;
+      
+        public VehicleValidationAdapter(ValidationContext ctx) {
+          this.subAdapter0 = ctx.adapter(Car.class);
+          this.subAdapter1 = ctx.adapter(Truck.class);
+        }
+      
+        @Override
+        public boolean validate(Vehicle value, ValidationRequest request, String field) {
+          //will generate a pattern matching switch expression on JDK 21+ 
+          if (value instanceof Car val) {
+            return subAdapter0.validate(val, request, field);
+          }
+          if (value instanceof Truck val) {
+            return subAdapter1.validate(val, request, field);
+          }
+          return true;
+        }
+      }
+  </pre>
+  </details>
+
   <h2 id="mixin">@Mixin</h2>
 
   <p>

@@ -21,6 +21,7 @@
       <li><a href="#classlvl">Class-Level Constraints</a></li>
       <li><a href="#cascade">Cascaded Validation</a></li>
       <li><a href="#inherited">Inherited Constraints</a></li>
+      <li><a href="#subtype">@ValidSubtype</a></li>
     </ul>
   </@nav>
   <@nav url="#mixin" title="@Mixin"/>
