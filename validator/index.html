@@ -556,9 +556,7 @@
     <p>Given this class:</p>
 
     <pre content="java">
-    @Json
-    @ValidSubtypes(type = Car.class)
-    @ValidSubtypes(type = Truck.class, name = "TRUCK")
+    @ValidSubtypes
     public abstract class Vehicle {
       ...
     }
