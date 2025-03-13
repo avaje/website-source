@@ -13,6 +13,7 @@
   <@nav url="#access" title="Access Management"/>
   <@nav url="#json" title="Json Content"/>
   <@nav url="#static" title="Static Resources"/>
+  <@nav url="#sse" title="Server Sent Events"/>
   <@nav url="#config" title="Server Configuration"/>
   <@nav url="#ssl" title="Configuring Https"/>
   <@nav url="#alternate" title="Alternate Implementations">

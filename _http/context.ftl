@@ -1,8 +1,8 @@
 <h2 id="context">Context</h2>
 
-<h3 id="javalin-context">Javalin Context</h3>
+<h3 id="javalin-context">Javalin/Jex Context</h3>
 <p>
-  The Javalin <code>Context</code> can be passed as a method argument or injected
+  The Javalin/Jex <code>Context</code> can be passed as a method argument or injected
   as a dependency of the controller.
 </p>
 
@@ -10,7 +10,7 @@
 <pre content="java">
 @Get
 Response save(HelloDto dto, Context context) {
-  // use Javalin context as desired
+  // use context as desired
   ctx.status(202);
   ...
   return new Response();
@@ -18,7 +18,7 @@ Response save(HelloDto dto, Context context) {
 
 @Post
 void save(HelloDto dto, Context context) {
-  // use Javalin context as desired
+  // use context as desired
   ...
 }
 </pre>

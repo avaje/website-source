@@ -37,13 +37,13 @@
   </@nav>
   <@nav url="#context" title="Context">
     <ul>
-      <li><a href="#javalin-context">Javalin Context</a></li>
-      <li><a href="#helidon-request">Helidon request</a></li>
-      <li><a href="#helidon-request">Helidon response</a></li>
+      <li><a href="#javalin-context">Javalin/Jex</a></li>
+      <li><a href="#helidon-request">Helidon</a></li>
       <li><a href="#request-scoped">Request scope</a></li>
       <li><a href="#instrument-context">Instrumenting Context</a></li>
     </ul>
   </@nav>
+  <@nav url="#jstachio" title="Jstachio templating"/>
   <@nav url="#type-conversions" title="Type conversions"/>
   <@nav url="#bean-validation" title="Bean validation"/>
   <@nav url="#roles" title="Roles">

@@ -540,6 +540,32 @@
             });
   </pre>
 
+    <h2 id="sse">Server Sent Events</h2>
+    <p>
+      You can use <em>app.sse()</em> to create an SSE handler.
+    </p>
+    <pre content="java">
+      var app = Jex.create();
+
+      app.sse("/sse", client -> {
+        client.sendEvent("connected", "Hello, SSE");
+        client.onClose(() -> System.out.println("Client disconnected"));
+        client.close(); // close the client
+      });
+    </pre>
+    <p>
+      SSE Clients are automatically closed when leaving the handler, if you need to use the client outside the handler, you
+      can use <em>client.keepAlive()</em> to block the handler thread to keep the client alive.
+    </p>
+    <pre content="java">
+      Queue<SseClient> clients = new ConcurrentLinkedQueue<SseClient>();
+
+      app.sse("/sse", client -> {
+            client.onClose(() - > clients.remove(client));
+            clients.add(client);
+            client.keepAlive(); // handler thread is blocked
+      });
+    </pre>
     <h2 id="static">Static Resources</h2>
     <p>
       There is a separate module that allows you to serve static resources from the classpath or
@@ -559,9 +585,9 @@
   </pre>
     <pre content="java">
     StaticContent singleFile =
-        StaticContent.createFile("src/main/resources/example.txt").httpPath("/single").build();
+        StaticContent.ofFile("src/main/resources/example.txt").httpPath("/single").build();
     StaticContent directoryCP =
-        StaticContent.createCP("/public/").httpPath("/").directoryIndex("index.html").build();
+        StaticContent.ofClassPath("/public/").httpPath("/").directoryIndex("index.html").build();
     Jex app =
         Jex.create()
             .plugin(singleFile) // will serve the src/main/resources/example.txt
