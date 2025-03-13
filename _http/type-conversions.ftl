@@ -11,6 +11,9 @@
  For multivalue parameters like query parameters or headers, we can use <code>List&ltT&gt</code> or <code>Set&ltT&gt</code> where <code>T</code> is any of the previously mentioned types.
 </p>
 <p>
+ For optional parameters, we can use <code>Optional&ltT&gt</code> where <code>T</code> is any of the previously mentioned types.
+</p>
+<p>
   In the following example there is a type conversion for <em>startDate</em> and <em>active</em>.
 </p>
 
