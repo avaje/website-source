@@ -121,12 +121,6 @@
     <li><a href="#why-comparison">Comparison to other DI</a></li>
   </ul>
 </@nav>
-<@nav url="#http" title="http servers">
-  <ul>
-    <li><a href="#http-javalin">Javalin</a></li>
-    <li><a href="#http-helidon">Helidon SE</a></li>
-  </ul>
-</@nav>
 <@nav url="#spring" title="Spring DI"/>
 <@nav url="#value" title="Why no @Value?"/>
 </ul>
