@@ -574,18 +574,18 @@
     <pre content="java">
       @Generated("avaje-validation-generator")
       public class VehicleValidationAdapter implements ValidationAdapter<Vehicle> {
-      
+
         private final ValidationAdapter<Car> subAdapter0;
         private final ValidationAdapter<Truck> subAdapter1;
-      
+
         public VehicleValidationAdapter(ValidationContext ctx) {
           this.subAdapter0 = ctx.adapter(Car.class);
           this.subAdapter1 = ctx.adapter(Truck.class);
         }
-      
+
         @Override
         public boolean validate(Vehicle value, ValidationRequest request, String field) {
-          //will generate a pattern matching switch expression on JDK 21+ 
+          //will generate a pattern matching switch expression on JDK 21+
           if (value instanceof Car val) {
             return subAdapter0.validate(val, request, field);
           }
@@ -669,6 +669,61 @@
             swallowValidationAdapter.validate(value, request, field);
           }
 
+
+          if (field != null) {
+            request.popPath();
+          }
+          return true;
+        }
+      }
+  </pre>
+  </details>
+
+  <h2 id="nullmarked">@NullMarked</h2>
+
+  <p>
+    Avaje validator respects the <code>@NullMarked</code>/<code>@NullUnmarked</code> annotations provided by <a href="https://jspecify.dev/docs/user-guide/#nullmarked">Jspecify</a>.
+    When you apply <code>@NullMarked</code> to a module, package, class, or method, it means that unannotated fields of pojos in that scope are treated as if they were annotated with a <code>@NotNull</code> constraint.
+  </p>
+
+  <pre content="java">
+    //package-info.java
+    @org.jspecify.annotations.NullMarked
+    package example.avaje.jspecify;
+  </pre>
+  <pre content="java">
+    package example.avaje.jspecify;
+
+    import org.jspecify.annotations.Nullable;
+    import jakarta.validation.Valid;
+
+    @Valid
+    public record JSpecifyNotNull(String nonNull, @Nullable String nullable) {}
+  </pre>
+  <p>In the above example, the <code>nonNull</code> field effectively gains a not null constraint by default.</p>
+
+  <details>
+    <summary>Generated Code: (click to expand)</summary>
+    <p>Given the above, the generated adapter becomes:</p>
+    <pre content="java">
+      @Generated("avaje-validator-generator")
+      public final class JSpecifyNotNullValidationAdapter implements ValidationAdapter<JSpecifyNotNull> {
+
+        private final ValidationAdapter<String> nonNullValidationAdapter;
+
+        public JSpecifyNotNullValidationAdapter(ValidationContext ctx) {
+          this.nonNullValidationAdapter =
+              ctx.<String>adapter(NonNull.class, Map.of("message","{avaje.NotNull.message}"));
+        }
+
+        @Override
+        public boolean validate(JSpecifyNotNull value, ValidationRequest request, String field) {
+
+          if (field != null) {
+            request.pushPath(field);
+          }
+          var _$nonNull = value.nonNull();
+          nonNullValidationAdapter.validate(_$nonNull, request, "nonNull");
 
           if (field != null) {
             request.popPath();
