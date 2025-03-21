@@ -13,10 +13,7 @@
     <nav class="side scroll">
       <ul>
         <li><a href="#about">Avaje Config</a>
-          <ul>
-            <li><a href="#dependency">Dependency</a></li>
-          </ul>
-        </li>
+        <li><a href="#quick">Quick Start</a></li>
         <li><a href="#eval">Expression evaluation</a></li>
         <li><a href="#startup">Startup</a></li>
         <li><a href="#loading">Loading configuration</a>
@@ -85,11 +82,29 @@
     </table>
 
     <p>&nbsp;</p>
-    <h3 id="dependency">Dependency</h3>
-    <#include "/_common/dependency.html">
+    <h3 id="quick">Quick Start</h3>
+    <h4>Add Dependency</h4>
+    <pre content="xml">
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-config</artifactId>
+    <version>${config-version}</version>
+  </dependency>
+    </pre>
 
+    <h4>Add a <em>src/main/resources/application.properties</em> file (or yml)</h4>
+    <pre content="java">
+    database.example.username=notSecretUsername
+    database.example.password=secretPassword
+    </pre>
 
-    <p>&nbsp;</p>
+    <h4>Retrieve properties with <em>Config.get</em></h4>
+
+    <pre content="java">
+      String username = Config.get("database.example.username");
+      String password = Config.get("database.example.password");
+    </pre>
+
     <h2 id="eval">Expression evaluation</h2>
     <p>
       Expressions start with <code>&dollar;{</code> end with <code>}</code>. They can optionally
