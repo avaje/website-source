@@ -58,6 +58,7 @@
     <ul>
       <li><a href="#auth-basic">basic auth</a></li>
       <li><a href="#auth-bearer">bearer token</a></li>
+      <li><a href="#aws-cognito">AWS Cognito</a></li>
     </ul>
   </@nav>
   <@nav url="#logging" title="Logging">

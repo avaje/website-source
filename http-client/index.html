@@ -1048,6 +1048,53 @@ dependencies {
   obtained for the initial request and then renewed when the token has expired.
 </p>
 
+<h2 id="aws-cognito">AWS Cognito</h2>
+<p>
+  When using AWS Cognito for JWT Bearer tokens (OAuth2 client credentials flow) we can use
+  the supplied <em>io.avaje.aws:avaje-cognito-client-token</em> component.
+</p>
+
+<h4>Step 1: Add dependency</h4>
+<pre content="xml">
+  <dependency>
+    <groupId>io.avaje.aws</groupId>
+    <artifactId>avaje-cognito-client-token</artifactId>
+    <version>1.0</version>
+  </dependency>
+</pre>
+
+<h4>Step 2: Configure the HttpClient</h4>
+<p>
+  Use <em>CognitoAuthTokenProvider</em> to create an AuthTokenProvider.
+  Configure the HttpClient to use that AuthTokenProvider.
+</p>
+<p>
+  This will then automatically obtain access tokens from Cognito when
+  needed based on the access token expiry, and use the access token
+  in the Authorization header as a Bearer token.
+</p>
+<pre content="java">
+  // create the Cognito AuthTokenProvider
+  AuthTokenProvider authTokenProvider = CognitoAuthTokenProvider.builder()
+    .url(tokenUrl)
+    .clientId(clientId)
+    .clientSecret(clientSecret)
+    .scope(scope)
+    .build();
+
+  // use the authTokenProvider when building the HttpClient
+  HttpClient client = HttpClient.builder()
+    .authTokenProvider(authTokenProvider)  // HERE !!
+    .bodyAdapter(new JacksonBodyAdapter())
+    .retryHandler(retry)
+    .baseUrl(url)
+    .build();
+</pre>
+<p>
+  Note: the <em>Token URL</em> will typically be in the form: <br/>
+  <em>https://{my-app}.auth.{region}.amazoncognito.com/oauth2/token</em>
+</p>
+
 
 <h2 id="logging">Logging</h2>
 <p>
