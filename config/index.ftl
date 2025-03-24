@@ -37,6 +37,7 @@
           </ul>
         </li>
         <li><a href="#plugins">ConfigurationSource</a></li>
+        <li><a href="#aws-appconfig">AWS AppConfig</a></li>
         <li><a href="#logging">Event Logging</a></li>
       </ul>
     </nav>
@@ -503,6 +504,59 @@
     <p>
       Refer to the example plugin - <a href="https://github.com/avaje/avaje-config/blob/master/avaje-config/src/test/java/org/example/MyExternalLoader.java">MyExternalLoader.java</a>
     </p>
+
+
+    <h2 id="aws-appconfig">AWS App Config</h2>
+    <p>
+      If using AWS App Config as a configuration source (refer: <a href="https://docs.aws.amazon.com/appconfig/">https://docs.aws.amazon.com/appconfig</a>), 
+      then we can use the <em>avaje-aws-appconfig</em> component.
+    </p>
+
+    <h4>Step 1: Add dependency</h4> 
+    <pre content="xml">
+      <dependency>
+        <groupId>io.avaje</groupId>
+        <artifactId>avaje-aws-appconfig</artifactId>
+        <version>1.2</version>
+      </dependency>
+    </pre>
+
+    <h4>Step 2: Add configuration</h4>
+    <p>
+      In src/main/resources add configuration like below to specify for <em>aws.appconfig</em> the <em>application, environment, configuration</em>.
+    </p>    
+    <pre content="yml">
+    # In src/main/resources
+    aws.appconfig:
+        application: ${ENVIRONMENT_NAME:dev}-my-application
+        environment: ${ENVIRONMENT_NAME:dev}
+        configuration: default
+    </pre>
+
+    <p>
+      In src/test/resources add <em>aws.appconfig.enabled: false</em> to disable loading the AWS App Configuration when running tests.
+    </p>
+    <pre content="yml">
+      # In src/test/resources
+      aws.appconfig.enabled: false
+    </pre>
+
+    <h4>Logging</h4>
+    <p>
+      When Config starts up we show see <em>ConfigurationSource:AppConfigPlugin</em> included in the <em>Loaded properties from ...</em> log message like:
+    </p>
+    <pre content="json">
+     {"level":"INFO",
+      "logger":"io.avaje.config",
+      "message":"Loaded properties from [resource:application.yaml, ConfigurationSource:AppConfigPlugin] "}
+    </pre>	
+    <p>
+      To increase the logging we can set the log level of <em>io.avaje.config.appconfig</em> to DEBUG or TRACE.
+    </p>
+    <pre content="xml">
+      <logger name="io.avaje.config.appconfig" level="TRACE"/>
+    </pre>
+
 
     <h2 id="logging">Event Logging</h2>
     <p>
