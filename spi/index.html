@@ -53,23 +53,23 @@
     compile-time and are not required at runtime)
   </p>
   <pre content="xml">
-<dependency>
-  <groupId>io.avaje</groupId>
-  <artifactId>avaje-spi-service</artifactId>
-  <version>2.9</version>
-  <optional>true</optional>
-  <scope>provided</scope>
-</dependency>
-</pre>
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-spi-service</artifactId>
+    <version>2.9</version>
+    <optional>true</optional>
+    <scope>provided</scope>
+  </dependency>
+  </pre>
 
-<h4>JDK 23+ note:</h4>
-<p>In JDK 23+, annotation processors are disabled by default, so we need to add a compiler property to re-enable.</p>
+  <h4>JDK 23+ note:</h4>
+  <p>In JDK 23+, annotation processors are disabled by default, so we need to add a compiler property to re-enable.</p>
 
-<pre content="xml">
-<properties>
-  <maven.compiler.proc>full</maven.compiler.proc>
-</properties>
-</pre>
+  <pre content="xml">
+  <properties>
+    <maven.compiler.proc>full</maven.compiler.proc>
+  </properties>
+  </pre>
 
   <h2 id="serviceProvider">@ServiceProvider</h2>
   <p>
@@ -84,7 +84,7 @@
     public class BassServiceProvider implements MusicService {
       ...
     }
-</pre>
+  </pre>
 
   <h3>Multi-Interfaced classes</h3>
   <p>
@@ -96,37 +96,40 @@
   public class BassServiceProvider extends Instrument implements Stringed, MusicService {
     ...
   }
-</pre>
+  </pre>
 
   <h3>Module Validation</h3>
   <p>
-    For modular projects, the processor will validate that all the required <em>provides</em> clauses are accounted for. A compile error describing what `provides` statements are missing will be throw if validations fail. So given the following class and module-info:
+    For modular projects, the processor will validate that all the required <em>provides</em> clauses are accounted for.
+    A compile error describing what `provides` statements are missing will be throw if validations fail. So given the
+    following class and module-info:
   </p>
   <pre content="java">
     @ServiceProvider
     public class BassServiceProvider implements MusicService {
       ...
     }
-</pre>
+  </pre>
 
-<pre content="java">
+  <pre content="java">
   module my.module {
 
     requires static io.avaje.spi;
     //provides not defined
   }
-</pre>
-<p>
-  You will get the compile error:
-</p>
-<pre>
+  </pre>
+  <p>
+    You will get the compile error:
+  </p>
+  <pre>
   Compilation failure /src/main/java/module-info.java:[1,1]
   Missing `provides MusicService with BassServiceProvider;`
-</pre>
-<h2 id="service">@Service</h2>
+  </pre>
+  <h2 id="service">@Service</h2>
   <p>
     As a library developer, should you wish to define an spi interface for multiple layers of extension, the
-    <code>@Service</code> annotation will help ensure those using <code>@ServiceProvider</code> will automatically register the correct top-level type.
+    <code>@Service</code> annotation will help ensure those using <code>@ServiceProvider</code> will automatically
+    register the correct top-level type.
   </p>
   <p>
     Consider the example of avaje-validaton:
@@ -140,20 +143,77 @@
             GeneratedComponent,
             MessageInterpolator,
             ValidatorCustomizer {}
-</pre>
+  </pre>
 
-<p>
-  To reduce calls to the <code>ServiceLoader</code>, avaje-validation only loads the top level <code>ValidationExtension</code> interface instead of loading the individual interfaces.
-  The presence of the <code>@Service</code> annotation ensures the below will be registered correctly.
-</p>
-<pre content="java">
+  <p>
+    To reduce calls to the <code>ServiceLoader</code>, avaje-validation only loads the top level
+    <code>ValidationExtension</code> interface instead of loading the individual interfaces.
+    The presence of the <code>@Service</code> annotation ensures the below will be registered correctly.
+  </p>
+  <pre content="java">
   //this class is registered as a ValidationExtension rather than a ValidatorCustomizer
   @ServiceProvider
   public class Customizer implements ValidatorCustomizer {
     ....
   }
-</pre>
-  <p><br><br><br><br><br><br></p>
+  </pre>
+
+  <h2 id="plugin">Provides Maven Plugin (JDK 24+)</h1>
+
+    <p>If on JDK 24+, the provides maven plugin can be used to automatically post-process modular applications'
+      <code>module-info.class</code> files to add all the required <code>provides</code> clauses for all services
+      registered under <code>META-INF/services</code>.
+    </p>
+
+    <pre content="xml">
+    <plugin>
+      <groupId>io.avaje</groupId>
+      <artifactId>avaje-provides-maven-plugin</artifactId>
+      <version>2.1</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>disable-apt-validation</goal>
+            <goal>add-module-spi</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+    </pre>
+
+    <h3 id="goals">Goals</h3>
+
+    <h3 id="disable">disable-apt-validation</h3>
+    <p>Most avaje processors will fail compilation if the module-info is missing <code>provides</code> clauses for the
+      generated SPI classes.
+      This goal generates a file before compilation that
+      signals to any apt project using avaje-prisms's <code>ModuleInfoReader</code> for module-info service validation
+      to not fail compilation.
+    </p>
+
+    <h3 id="add">add-module-spi</h3>
+    <p>Given a module-info:</p>
+    <pre content="java">
+      module avaje.example {
+        requires io.avaje.inject;
+        requires static io.avaje.spi;
+      }
+    </pre>
+    <p>And a <code>META-INF/services/io.avaje.inject.spi.InjectExtension</code> file (either manually created or
+      generated by
+      an
+      APT):</p>
+    <pre>org.example.ExampleModule</pre>
+    <p>This goal will transform the module-info classfile after compilation to roughly look like:</p>
+    <pre content="java">
+      module avaje.example {
+        requires io.avaje.inject;
+        requires static io.avaje.spi;
+        provides io.avaje.inject.spi.InjectExtension with org.example.ExampleModule;
+      }
+    </pre>
+
+    <p><br><br><br><br><br><br></p>
 
 </body>
 
