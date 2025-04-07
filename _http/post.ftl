@@ -73,7 +73,7 @@ ApiBuilder.post("/customers/register", ctx -> {
 
 <h3>@Default</h3>
 <p>
-  We can use <code>@Default</code> to specify a default value for form parameters.
+  Use <code>@Default</code> to specify a default value for form parameters.
 </p>
 <pre content="java">
   @Form @Post("register")
@@ -84,14 +84,14 @@ ApiBuilder.post("/customers/register", ctx -> {
 
 <h2 id="form-beans">@Form "Form Beans"</h2>
 <p>
-  In the case where we are posting a form with a lot of parameters we can define a bean with
-  properties for each of the form parameters rather than have a method with lots of arguments.
+  When posting a form with a lot of parameters, try defining a bean with
+  properties for each of the form parameters rather than a controller method with lots of arguments.
 </p>
 <p>
   "Form beans" can have a constructor with arguments. They do not require a no-arg constructor.
 </p>
 <p>
-  Using a form bean can make the code nicer and gives us a nicer option to
+  Using a form bean can make the code more readable and gives the option to
   use validation annotations on the "form bean" properties.
 </p>
 <pre content="java">

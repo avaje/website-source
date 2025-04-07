@@ -1,11 +1,11 @@
 <h2 id="bean-param">@BeanParam</h2>
 <p>
-  We can create a bean and annotate it in a controller method with <code>@BeanParam</code>.
+  Annotate a bean parameter in a controller method with <code>@BeanParam</code> to map various request values into a class.
   The properties on the bean default to being <code>query parameters</code>.
 </p>
 <p>
-  We typically do this when we have a set of query parameters/headers that are
-  common / shared across a number of endpoints.
+  This is typically done when there are a set of query parameters/headers/etc that are
+  common across a number of endpoints.
 </p>
 <pre content="java">
 public class CommonParams {
@@ -22,7 +22,7 @@ public class CommonParams {
 }
 </pre>
 <p>
-  We annotate the bean with <code>@BeanParam</code>
+  Annotate the bean with <code>@BeanParam</code>
 </p>
 <pre content="java">
 @Get("search/{type}")
@@ -50,7 +50,7 @@ ApiBuilder.get("/cats/search/{type}", ctx -> {
 </pre>
 <h4>@Form</h4>
 <p>
-  <em>@BeanParam</em> and <em>@Form</em> are very similar except with <em>@Form</em> beans the
+  <em>@BeanParam</em> and <em>@Form</em> are similar except with <em>@Form</em> beans the
   properties default to form parameters instead of query parameters.
 </p>
 

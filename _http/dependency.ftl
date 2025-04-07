@@ -63,7 +63,7 @@ dependencies {
 
 <h3>OpenAPI Plugin configuration</h3>
 <p>
-  We can change the location of the generated openapi file by adding an <code>openapi</code> configuration
+  Change the location of the generated openapi file by adding an <code>openapi</code> configuration
   section in build.gradle.
 </p>
 <pre content="groovy">

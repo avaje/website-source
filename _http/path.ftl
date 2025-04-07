@@ -112,13 +112,12 @@ List<|Bazz> findBazz(long id, LocalDate startDate, String type) {
 }
 </pre>
 <p>
-  This means that unlike JAX-RS we do not need a <code>@PathParam</code> annotation
-  and this makes our code less verbose and nicer to read.
+  Unlike JAX-RS avaje-http does not need a <code>@PathParam</code> annotation.
+  Making the code less verbose and nicer to read.
 </p>
 
 <p>
-  Note that the JAX-RS equivalent to the above is below. The method declaration starts
-  to get long and harder to read quite quickly.
+  Compare and contrast the above with the following JAX-RS equivalent.
 </p>
 <pre content="java">
 
@@ -138,7 +137,7 @@ List<|Bazz> findBazz(@PathParam("id") long id, @PathParam("startDate") LocalDate
 <h2 id="matrix-parameters">Matrix parameters</h2>
 <p>
   Matrix parameters are optional sub-parameters that relate to a specific segment of the path.
-  They are effectively an alternative to using query parameters where we have optional parameters
+  They are an alternative to using query parameters when you have optional parameters
   that relate to a specific path segment.
 </p>
 <pre content="java">
@@ -177,12 +176,11 @@ GET /products/chair/commercial;style=classical
 
 <h4>JAX-RS @MatrixParam</h4>
 <p>
-  Our matrix parameters are equivalent to JAX-RS except that they relate by convention to
-  method parameters of the same name and we do not need explicit <code>@MatrixParam</code>.
+  Our matrix parameters are equivalent to JAX-RS except they relate by convention to
+  method parameters of the same name and do not need explicit <code>@MatrixParam</code>.
 </p>
 <p>
-  The JAX-RS equivalent to the above is below. The method declaration starts
-  to get long and harder to read quite quickly.
+  Compare and contrast the above with the following JAX-RS equivalent.
 </p>
 <pre content="java">
 
@@ -200,7 +198,7 @@ List<|Product> products(@PathParam("type") String type, @MatrixParam("category")
 
 <h2 id="query-parameters">@QueryParam</h2>
 <p>
-  We explicitly specify query parameters using <code>@QueryParam</code>.
+  Explicitly specify query parameters using <code>@QueryParam</code>.
 </p>
 <pre content="java">
 // Explicit query parameter order-by
@@ -214,7 +212,7 @@ List<|Cat> findCats(LocalDate bornAfter, @QueryParam("order-by") String orderBy)
 <h3>Implied query parameters</h3>
 <p>
   Query parameters can be <em>implied</em> by not being a path parameter.
-  That is, if a method parameter does not match a path parameter then it is
+  That is, when a method parameter does not match a path parameter, it is
   implied to be a query parameter.
 </p>
 <p>
@@ -241,9 +239,7 @@ List<|Cat> findCats(LocalDate bornAfter, String orderBy) {  // orderBy implied a
 </pre>
 
 <p>
-  Note that we must explicitly use <code>@QueryParam</code> when the query parameter
-  is not a valid java identifier. For example, if the query parameter includes a hyphen
-  then we must use <code>@QueryParam</code> explicitly.
+  When the query parameter is not a valid java identifier, the explicit <code>@QueryParam</code> is required.
 </p>
 
 <h4>Example</h4>
@@ -266,7 +262,7 @@ List<|Cat> findCats(@QueryParam("order-by") String orderBy) {
 <p>
   Query parameters can be one of the following types:
   <em>String, Integer, Long, Short, Float, Double, Boolean, BigDecimal, UUID, LocalDate, LocalTime, LocalDateTime, or Enums</em>(Will use <code>Enum.valueOf(EnumType, parameter)</code> ).
-  To get multivalue parameters we can use <code>List&ltT&gt</code> or <code>Set&ltT&gt</code> where <code>T</code> is any of the previously mentioned types.
+  To get multivalue parameters, use <code>List&ltT&gt</code> or <code>Set&ltT&gt</code> where <code>T</code> is any of the previously mentioned types.
   To get all query parameters define a parameter of type <code>Map&ltList&ltT&gt&gt</code>.
 </p>
 <p>

@@ -18,7 +18,7 @@
   <!-- Annotation processors -->
   <dependency>
     <groupId>io.avaje</groupId>
-    <artifactId>avaje-http-{helidon/javalin}-generator</artifactId>
+    <artifactId>avaje-http-{helidon/javalin/jex}-generator</artifactId>
     <version>${avaje-http.version}</version>
     <scope>provided</scope>
     <optional>true</optional>
@@ -157,6 +157,33 @@ public class WidgetController$Route implements Plugin {
 </details>
 
 <details>
+  <summary>Avaje Jex</summary>
+      <pre content="java">
+              @Generated("avaje-jex-generator")
+              @Singleton
+              public class WidgetController$Route implements Routing.HttpService {
+                private final WidgetController controller;
+                public WidgetController$Route(WidgetController controller) {
+                  this.controller = controller;
+                }
+                @Override
+                public void add(Routing routing) {
+                  routing.get("/widgets/{id}", this::_getById);
+                  routing.get("/widgets", this::_getAll);
+                }
+                private void _getById(Context ctx) throws IOException {
+                  ctx.status(200);
+                  var id = asInt(ctx.pathParam("id"));
+                  ctx.json(controller.getById(id));
+                }
+                private void _getAll(Context ctx) throws IOException {
+                  ctx.status(200);
+                  ctx.json(controller.getAll());
+                }
+              }</pre>
+</details>
+
+<details>
     <summary>Helidon 4.x (Avaje-Jsonb on classpath)</summary>
 
 <pre content="java">
@@ -257,6 +284,19 @@ public class WidgetController$Route implements Plugin {
  List<Plugin> routes = ...; //retrieve using a DI framework
 
  Javalin.create(cfg -> routes.forEach(cfg.plugins::register)).start();
+</pre>
+
+<h4>Usage with Jex</h4>
+
+<p>The annotation processor will generate controller classes implementing the javalin <code>Routing.HttpService</code> interface, which means we can register them using:
+</p>
+<pre content="java">
+  public class Main {
+    public static void main(String[] args ) {
+      List<Routing.HttpService> services = // Retrieve HttpServices via DI;
+      Jex.create().routing(services).start();
+    }
+  }
 </pre>
 
 <h4>Usage with Helidon SE (4.x)</h2>

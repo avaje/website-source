@@ -90,13 +90,13 @@
 
 <h3 id=swag>Swagger annotations</h3>
 <p>
-  We can add a dependency on <code>io.swagger.core.v3:swagger-annotations:2.0.8</code>
+  Add a dependency on <code>io.swagger.core.v3:swagger-annotations:2.0.8</code>
   and add swagger annotations.
 </p>
 
 <h4>@OpenAPIDefinition</h4>
 <p>
-  We use <em>@OpenAPIDefinition</em> to define a title and description for the api.
+  Use <em>@OpenAPIDefinition</em> to define a title and description for the api.
   This annotation would often go on the Main method class or on package-info.java
   in the controllers package.
 </p>
@@ -112,7 +112,7 @@
 </pre>
 <h4>@Hidden</h4>
 <p>
-  Put <code>@Hidden</code> on controller methods that we want to exclude
+  Put <code>@Hidden</code> on controller methods to exclude
   from the OpenAPI documentation.
 </p>
 
