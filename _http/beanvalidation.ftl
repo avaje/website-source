@@ -1,7 +1,7 @@
 
 <h2 id="bean-validation">Bean validation</h2>
 <p>
-  We can optionally add bean validation through the validator interface. We can validate a request body and Form Bean/BeanParam
+  Bean validation is done through through the validator interface. It can validate a request body and/or Form Bean/BeanParam
 </p>
 <p>
   Example: <a target="_blank" href="https://github.com/dinject/examples/blob/master/javalin-maven-java-basic/src/main/java/org/example/myapp/web/HelloController.java#L30">HelloController</a>
@@ -9,9 +9,9 @@
 
 <h3>Add @Valid</h3>
 <p>
-  Add a jakarta/javax/avaje <code>@Valid</code> annotation on controllers/methods and the types that we want bean validation to
-  be included for. When we do this, controller methods that take a request payload
-  will then have the request bean (populated by JSON payload or form/header/query parameters)
+  Add a jakarta/javax/avaje <code>@Valid</code> annotation on controllers/methods and the types that require bean validation.
+   Controller methods that take a request payload
+  will have the request bean (populated by JSON payload or form/header/query parameters)
   validated before it is passed to the controller method.
 </p>
 <p>
@@ -150,7 +150,7 @@ ApiBuilder.post("/baz/body", ctx -> {
 <br>
 <h4>Custom Validation</h4>
 <p>
-  For custom validation, you can can implement the avaje validator interface yourself and add custom logic.
+  For custom validation, implement the avaje http validator interface and add custom logic.
 </p>
 <pre content="java">
 import io.avaje.http.api.Validator;
@@ -196,8 +196,7 @@ public class BeanValidator implements Validator {
 <h3>ValidationException handler</h3>
 <p>
   Add an exception handler for <code>ValidationException</code> like the one below.
-  With bean validation we collect all the validation errors and these are included
-  in the exception as a map keyed by the property path.
+  All the validation errors are included in the exception as a map keyed by the property path.
 </p>
 <p>
   <em>exception.getErrors()</em> in the handler below is returning a <code>Map&lt;String, Object&gt;</code>

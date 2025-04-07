@@ -62,7 +62,6 @@
 <ul>
   <li>Generates the implementation as source code via annotation processing</li>
   <li>No reflection and no use of dynamic proxies</li>
-  <li>Targets <em>avaje-http-client / JDK HttpClient</em> only</li>
 </ul>
 <p>
   This client API generation targets <em>avaje-http-client / JDK HttpClient</em> only
@@ -168,7 +167,7 @@
 dependencies {
 
   implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
-  implementation 'io.avaje:avaje-http-client:1.35'
+  implementation 'io.avaje:avaje-http-client:3.2'
   ...
 }
 </pre>
@@ -179,10 +178,10 @@ dependencies {
 </p>
 <pre content="groovy">
 dependencies {
-    implementation 'io.avaje:avaje-http-client:1.35'
+    implementation 'io.avaje:avaje-http-client:3.2'
 
-    implementation 'io.avaje:avaje-http-api:1.17'
-    annotationProcessor 'io.avaje:avaje-http-client-generator:1.35'
+    implementation 'io.avaje:avaje-http-api:3.2'
+    annotationProcessor 'io.avaje:avaje-http-client-generator:3.2'
     ...
 }
 </pre>
@@ -1904,7 +1903,7 @@ public record RegisterForm(
 
 <h2 id="jpms">@Client Java Module Setup</h2>
 <p>
-  If using java modules with generated Client Interfaces, in the <code>module-info.java</code> we need to:
+  When using java modules with generated Client Interfaces, in the <code>module-info.java</code> we need to:
 </p>
 <ol>
   <li>Add a <em>requires</em> clause for <em>io.avaje.http.api</em></li>
@@ -1927,126 +1926,6 @@ module org.example {
  In the example above, <code>org.example.GeneratedHttpComponent</code> is generated code typically found in
   <code>target/generated-sources/annotations</code>.
 </p>
-
-<h2 id="10k">10K requests - Loom vs Async</h2>
-<p>
-  The following is a very quick and rough comparison of running 10,000 requests
-  using <em>Async</em> vs <em>Loom</em>.
-</p>
-<p>
-  The intention is to test the thought that in a "future Loom world" the
-  desire to use <code>async()</code> execution with HttpClient reduces.
-</p>
-<p>
-  TLDR: Caveat, caveat, more caveats ... initial testing shows Loom to be just a
-  touch faster (~10%) than async.
-</p>
-<p>
-  To run my tests I use <a target="_blank" href="https://github.com/avaje/avaje-jex">Jex</a> as the server
-  (Jetty based) and have it running using Loom. For whatever testing you do
-  you will need a server that can handle a very large number of concurrent requests.
-</p>
-<p>
-  The Loom blocking request (make 10K of these)
-</p>
-<pre content="java">
-  HttpResponse<|String> hres =  httpClient.request()
-    .path("s200")
-    .GET()
-    .asString();
-</pre>
-<p>
-  The equivalent async request (make 10K of these joining the CompletableFuture's).
-</p>
-<pre content="java">
-  CompletableFuture<|HttpResponse<|String>> future = httpClient.request()
-    .path("s200")
-    .GET()
-    .async()
-    .asString()
-    .whenComplete((hres, throwable) -> {
-      ...
-    });
-</pre>
-
-<h3 id="10k-async">10K requests using Async and reactive streams</h3>
-<p>
-  Use <code>.async()</code> to execute the requests which internally is using JDK
-  HttpClient's reactive streams. The <code>whenComplete()</code> callback is invoked
-  when the response is ready. Collect all the resulting CompletableFuture
-  and wait for them all to complete.
-</p>
-<p>
-Outline:
-</p>
-<pre content="java">
-  // Collect all the CompletableFuture's
-  List<|CompletableFuture<|HttpResponse<|String>>> futures = new ArrayList<>();
-
-  for (int i = 0; i < 10_000; i++) {
-    futures.add(httpClient.request().path("s200")
-      .GET()
-      .async().asString()
-      .whenComplete((hres, throwable) -> {
-          // confirm 200 response etc
-          ...
-      }));
-  }
-
-  // wait for all requests to complete via join() ...
-  CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-</pre>
-
-<h3 id="10k-loom">10K requests using Loom</h3>
-<p>
-  With Loom Java 17 EA Release we can use <code>Executors.newVirtualThreadExecutor()</code>
-  to return an ExecutorService that uses Loom Virtual Threads. These are backed
-  by "Carrier threads" (via ForkedJoinPool).
-</p>
-<p>
-Outline:
-</p>
-<pre content="java">
-  // use Loom's Executors.newVirtualThreadExecutor()
-  try (ExecutorService executorService = Executors.newVirtualThreadExecutor()) {
-      for (int i = 0; i < 10_000; i++) {
-          executorService.submit(this::task);
-      }
-  }
-</pre>
-<pre content="java">
-  private void task() {
-    HttpResponse<|String> hres =
-      httpClient.request().path("s200")
-       .GET()
-       .asString();
-
-    // confirm 200 response etc
-    ...
-  }
-</pre>
-<p>
-Caveat: Proper performance benchmarks are really hard and take a lot of effort.
-</p>
-<p>
-  Running some "rough/approx performance comparison tests" using <em>Loom</em>
-  build <code>17 EA 2021-09-14 / (build 17-loom+7-342)</code> vs <em>Async</em> for my environment
-  and 10K request scenarios has loom execution around 10% faster than async.
-</p>
-<p>
-  It looks like Loom and Async run in pretty much the same time although it
-  currently looks that Loom is just a touch faster (perhaps due to how it does
-  park/unpark). More investigation required.
-</p>
-<p>
-  Date: 2021-06 <br/>
-  Build: <code>17 EA 2021-09-14 / (build 17-loom+7-342)</code>.
-</p>
-<pre>
-  openjdk version "17-loom" 2021-09-14
-  OpenJDK Runtime Environment (build 17-loom+7-342)
-  OpenJDK 64-Bit Server VM (build 17-loom+7-342, mixed mode, sharing)
-</pre>
 
 </body>
 </html>

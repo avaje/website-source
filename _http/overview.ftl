@@ -1,7 +1,7 @@
 <h1 id="overview">Avaje HTTP Generator</h1>
 <p>
 Library that generates adapter code
-for Javalin and Helidon SE/Nima APIs via Annotation Processing.
+for Jex, Javalin and Helidon SE APIs via Annotation Processing.
 </p>
 <table width="100%">
   <tr>
@@ -23,47 +23,34 @@ for Javalin and Helidon SE/Nima APIs via Annotation Processing.
 <p>
  This library enables your service to be fast and light at runtime by using source code generation
   (java annotation processors) to adapt annotated rest controllers with (<code>@Path, @Get, @Post etc</code>)
-  to <a target="_blank" href="https://javalin.io">Javalin</a>, <a target="_blank" href="https://helidon.io">Helidon SE</a>
+  to <a target="_blank" href="https://avaje.io/jex/">Jex</a>, <a target="_blank" href="https://javalin.io">Javalin</a>, <a target="_blank" href="https://helidon.io">Helidon SE</a>
   and similar web routing http servers.
 </p>
 <p>
   Effectively we are replacing Jersey or RestEasy with source code generation and the capabilities
-  of <a target="_blank" href="https://javalin.io">Javalin</a> or <a target="_blank" href="https://helidon.io">Helidon SE</a>
+  of <a target="_blank" href="https://avaje.io/jex/">Jex</a>, <a target="_blank" href="https://javalin.io">Javalin</a> or <a target="_blank" href="https://helidon.io">Helidon SE</a>
   (web routing).
 </p>
 <p>
- The generated source code is very simple and readable, so developers can navigate to it and add break points and debug just as if we wrote it all
+ The generated source code is very simple and readable, so developers can navigate to it and add breakpoints and debug as if they wrote it all
   manually ourselves.
 </p>
 <p>
-  What we <b>lose</b> in doing this is automatic
-  <a target="_blank" href="https://en.wikipedia.org/wiki/Content_negotiation">Content negotiation</a>. For example, if
-  we need endpoints that serve response content as <i>either</i> JSON or XML content based on request headers
-  then we would need to handle this ourselves.
+  What is <b>lost</b> in doing this is automatic
+  <a target="_blank" href="https://en.wikipedia.org/wiki/Content_negotiation">Content negotiation</a>.
+  For example, endpoints that serve response content as <i>either</i> JSON or XML content based on request headers need to handle manually.
 </p>
 
 <h4>Summary</h4>
 <ul>
   <li>Provides a similar programming style to JAX-RS and Spring MVC</li>
-  <li>Light weight by using code generation - no reflection, no extra overhead</li>
+  <li>Lightweight by using code generation - no reflection, no extra overhead</li>
   <li>Automatically generates <a href="#openapi">Swagger/OpenAPI</a> documentation</li>
-  <li>Allows use of underlying Javalin/Helidon request/response constructs as needed</li>
-  <li>Supports request scope injection of Javalin Context, Helidon request and response</li>
+  <li>Allows use of underlying server request/response constructs as needed</li>
+  <li>Supports request scope injection of server request and response</li>
   <li>Supports using <a href="#bean-validation">Bean validation</a> on request payloads</li>
-  <li>Requires Fewer annotations than typical JAX-RS - avoid annotation overload</li>
+  <li>Requires fewer annotations than typical JAX-RS - avoid annotation overload</li>
 </ul>
-
-<h4>JAX-RS Annotations</h4>
-<p>
-  As we are using Java annotation processing our generators are exposed to more information
-  than is obtained via reflection at runtime. This means we can reduce annotation verbosity
-  making nicer cleaner API's.
-</p>
-<p>
-  A design decision has been to not use JAX-RS annotations. This is because
-  the JAX-RS annotations are a lot more verbose than we desire and because they are not provided
-  as a nice clean separate dependency. The JAX-RS API has a lot of extra weight that we do not need.
-</p>
 
 <h2><a href="/http-client/">HTTP Client</a></h2>
 <p>

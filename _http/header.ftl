@@ -1,7 +1,7 @@
 <h2 id="produces">@Produces</h2>
 <p>
-  Use <code>@Produces</code> to modify the response content type and generated OpenAPI definition.
-  When not specified, we default to <code>application/json</code>. We can set the default http status code for the method as well.
+  Use <code>@Produces</code> to modify the response content type, default status code and generated OpenAPI definition.
+  When not specified, it defaults to <code>application/json</code>.
   If not specified, the default status codes for the different http verbs are as follows:<br>
   <code>GET(200)</code> <br>
   <code>POST(201)</code> <br>
@@ -108,7 +108,7 @@ private void _foo(ServerRequest req, ServerResponse res) {
 
 <h2 id="default">@Default</h3>
 <p>
-  We can use <code>@Default</code> to specify a default value for a Query Parameter/Header/Cookie/Form Parameter.
+  Use <code>@Default</code> to specify a default value for a Query Parameter/Header/Cookie/Form Parameter.
 </p>
 
 <pre content="java">

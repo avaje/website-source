@@ -47,20 +47,20 @@ void save(HelloDto dto, ServerRequest request, ServerResponse response) {
 
 <h3>Controllers are singleton scoped by default</h3>
 <p>
-  By default controllers are singleton scoped. When we pass context objects like
+  By default controllers are singleton scoped. Using context objects like
   <em>Javalin Context</em> or <em>Helidon ServerRequest</em> as method arguments
   then the controllers remain singleton scoped.
 </p>
 
 <h3 id="request-scoped">Request scoped controllers</h3>
 <p>
-  We can define the Javalin context, Helidon ServerRequest
+  Define the Javalin context, Helidon ServerRequest
   or ServerResponse as a dependency to be injected using constructor injection
   or field injection (rather than passed as a method argument).
 </p>
 <p>
   <a href="/inject">avaje-inject</a> knows that these types need to be injected
-  per request and automatically makes the controller request scoped.
+  per request and automatically makes the controller request-scoped.
 </p>
 <p>
   Request scoped means that a new instance of the controller will be instantiated

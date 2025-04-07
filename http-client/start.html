@@ -30,24 +30,17 @@
 <pre content="groovy">
 dependencies {
   implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
-  implementation 'io.avaje:avaje-http-client:1.20'
+  implementation 'io.avaje:avaje-http-client:3.2'
   ...
 }
 </pre>
 <h3 id="A2">A2. Create HttpClient</h3>
 <p>
-  We will use <code>https://api.github.com</code> as the base URL and use
-  <code>JacksonBodyAdapter</code> to decode the json response.
-</p>
-<p>
-  Often we want to use a specific Jackson ObjectMapper and pass that to
-  JacksonBodyAdapter. The default constructor for JacksonBodyAdapter
-  uses an ObjectMapper with reasonable default options.
+  We will use <code>https://api.github.com</code> as the base URL.
 </p>
 <pre content="java">
     final HttpClient client = HttpClient.builder()
       .baseUrl("https://api.github.com")
-      .bodyAdapter(new JacksonBodyAdapter())
       .build();
 </pre>
 
@@ -56,11 +49,7 @@ dependencies {
   We will use this to hold the response json results.
 </p>
 <pre content="java">
-  public static class Contributor {
-    // just using public fields to get going ...
-    public String login;
-    public int contributions;
-  }
+  public record Contributor(String login, int contributions) {}
 </pre>
 
 
@@ -89,22 +78,17 @@ dependencies {
 package org.example;
 
 import io.avaje.http.client.HttpClient;
-import io.avaje.http.client.JacksonBodyAdapter;
 
 import java.util.List;
 
 public class Main {
 
-  public static class Contributor {
-    public String login;
-    public int contributions;
-  }
+  public record Contributor(String login, int contributions) {}
 
   public static void main(String[] args) {
 
     final HttpClient client = HttpClient.builder()
       .baseUrl("https://api.github.com")
-      .bodyAdapter(new JacksonBodyAdapter())
       .build();
 
     final List<|Contributor> contributors = client.request()
@@ -173,10 +157,10 @@ public class Main {
 <pre content="groovy">
 dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
-    implementation 'io.avaje:avaje-http-client:1.20'
+    implementation 'io.avaje:avaje-http-client:3.2'
 
-    implementation 'io.avaje:avaje-http-api:1.20'
-    annotationProcessor 'io.avaje:avaje-http-client-generator:1.20'
+    implementation 'io.avaje:avaje-http-api:3.2'
+    annotationProcessor 'io.avaje:avaje-http-client-generator:3.2'
     ...
 }
 </pre>
