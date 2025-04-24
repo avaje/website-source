@@ -536,7 +536,6 @@ class Configuration {
   }
 }
 </pre>
-
 <h3 id="initMethod">@Bean initMethod & destroyMethod</h3>
 <p>
   With <code>@Bean</code> we can specify an <code>initMethod</code>
@@ -544,16 +543,26 @@ class Configuration {
   Similarly a <code>destroyMethod</code> which execute on shutdown like <code>@PreDestroy</code>.
 </p>
 
+<h4>Example</h4>
+<pre content="java">
+@Factory
+class Configuration {
+  ...
+  @Bean(initMethod = "init", destroyMethod = "close")
+  CoffeeMaker buildCoffeeMaker(Pump pump) {
+    return new CoffeeMaker(pump);
+  }
+}
+</pre>
 <p>
   The CoffeeMaker has the appropriate methods that are executed as part of the lifecycle.
 </p>
 <pre content="java">
 class CoffeeMaker {
-
-  void init() {
+  public void init() {
     // lifecycle executed on start/PostConstruct
   }
-  void close() {
+  public void close() {
     // lifecycle executed on shutdown/PreDestroy
   }
   ...
