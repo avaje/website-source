@@ -51,7 +51,7 @@ class LoginObserver {
 <pre content="java">
 @Singleton
 public class CustomEventSender {
-  @Inject @Named("qualified") Event<|CustomEvent> CustomEvent;
+  @Inject @Named("qualified") Event<|CustomEvent> customEvent;
 }
 </pre>
 
