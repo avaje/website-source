@@ -77,9 +77,9 @@
       </tr>
       <tr>
         <td><a target="_blank" href="https://github.com/avaje/avaje-config/blob/master/LICENSE">Apache2</a></td>
-        <td><a target="_blank" href="https://github.com/avaje/avaje-config">Github</a></td>
+        <td><a target="_blank" href="https://github.com/avaje/avaje-config">GitHub</a></td>
         <td><a target="_blank" href="https://javadoc.io/doc/io.avaje/avaje-config/latest/io.avaje.config/io/avaje/config/package-summary.html">Javadoc</a></td>
-        <td><a target="_blank" href="https://github.com/avaje/avaje-config/issues">Github</a>
+        <td><a target="_blank" href="https://github.com/avaje/avaje-config/issues">GitHub</a>
         </td> <td><a href="https://github.com/avaje/avaje-config/releases"><img src="https://img.shields.io/maven-central/v/io.avaje/avaje-config.svg?label=Maven%20Central"></a></td>
       </tr>
     </table>

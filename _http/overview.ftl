@@ -15,9 +15,9 @@ for Jex, Javalin and Helidon SE APIs via Annotation Processing.
   </tr>
   <tr>
     <td><a href="https://discord.gg/Qcqf9R27BR">Discord</td>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-http">Github</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-http">GitHub</a></td>
     <td><a target="_blank" href="https://javadoc.io/doc/io.avaje/avaje-http-api">Javadoc</a></td>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-http/issues">Github</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-http/issues">GitHub</a></td>
     <td><a href="https://github.com/avaje/avaje-http/releases"><img src="https://img.shields.io/maven-central/v/io.avaje/avaje-http-api.svg?label=Maven%20Central"></a></td>
   </tr>
 </table>

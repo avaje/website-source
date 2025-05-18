@@ -523,8 +523,8 @@ class MyTestConfiguration {
 
 <h5>3. Replacement</h5>
 <p>
-  Say we have a remote API (e.g. Rest call to Github). We don't want any component tests to actually make <em>real calls</em>
-  to Github. Instead, we want to have a default stub response and have that as the default. This is similar to (2) but more
+  Say we have a remote API (e.g. Rest call to GitHub). We don't want any component tests to actually make <em>real calls</em>
+  to GitHub. Instead, we want to have a default stub response and have that as the default. This is similar to (2) but more
   that the default is more like a stub test double.
 </p>
 
