@@ -7,7 +7,7 @@ Source for the website documentation
 ### 1. Clone website-source repo
 
 ```
-git clone git@github.com:ebean-orm/website-source.git
+git clone git@github.com:avaje/website-source.git
 ```
 
 ### 2. Make a destination directory
