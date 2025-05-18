@@ -1,4 +1,6 @@
-<h1 id="overview">Avaje Inject</h1>
+<h1 id="overview">
+  <span class="logo">Avaje</span>&thinsp;Inject
+</h1>
 <p>
   Fast and light dependency injection library for Java and Kotlin developers.
 </p>

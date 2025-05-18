@@ -58,7 +58,9 @@
       </nav>
     </header>
 
-    <h1 id="about">Avaje Config</h1>
+    <h1 id="overview">
+      <span class="logo">Avaje</span>&thinsp;Config
+    </h1>
     <p>
       <em>avaje-config</em> provides external configuration for JVM apps. We can provide configuration
       via <em>yaml</em> or <em>properties</em> files and specify which files to load using
@@ -508,11 +510,11 @@
 
     <h2 id="aws-appconfig">AWS App Config</h2>
     <p>
-      If using AWS App Config as a configuration source (refer: <a href="https://docs.aws.amazon.com/appconfig/">https://docs.aws.amazon.com/appconfig</a>), 
+      If using AWS App Config as a configuration source (refer: <a href="https://docs.aws.amazon.com/appconfig/">https://docs.aws.amazon.com/appconfig</a>),
       then we can use the <em>avaje-aws-appconfig</em> component.
     </p>
 
-    <h4>Step 1: Add dependency</h4> 
+    <h4>Step 1: Add dependency</h4>
     <pre content="xml">
       <dependency>
         <groupId>io.avaje</groupId>
@@ -524,7 +526,7 @@
     <h4>Step 2: Add configuration</h4>
     <p>
       In src/main/resources add configuration like below to specify for <em>aws.appconfig</em> the <em>application, environment, configuration</em>.
-    </p>    
+    </p>
     <pre content="yml">
     # In src/main/resources
     aws.appconfig:
@@ -549,7 +551,7 @@
      {"level":"INFO",
       "logger":"io.avaje.config",
       "message":"Loaded properties from [resource:application.yaml, ConfigurationSource:AppConfigPlugin] "}
-    </pre>	
+    </pre>
     <p>
       To increase the logging we can set the log level of <em>io.avaje.config.appconfig</em> to DEBUG or TRACE.
     </p>

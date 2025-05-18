@@ -358,3 +358,16 @@ summary {
   font-weight: bold;
   cursor: pointer;
 }
+
+#overview {
+  margin-top: 2rem;
+  font-family: 'Kalam', 'Ubuntu', sans-serif;
+  font-size: 72px;
+  letter-spacing: -4px;
+  text-transform: lowercase;
+  color: var(--body-text-color);
+
+  .logo {
+    color: var(--fg-article);
+  }
+}

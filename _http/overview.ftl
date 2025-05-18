@@ -1,4 +1,6 @@
-<h1 id="overview">Avaje HTTP Generator</h1>
+<h1 id="overview">
+  <span class="logo">Avaje</span>&thinsp;Http&thinsp;Generator
+</h1>
 <p>
 Library that generates adapter code
 for Jex, Javalin and Helidon SE APIs via Annotation Processing.
