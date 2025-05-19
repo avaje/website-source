@@ -1,4 +1,6 @@
-<h1 id="overview">Avaje Inject</h1>
+<h1 id="overview">
+  <span class="logo">Avaje</span>&thinsp;Inject
+</h1>
 <p>
   Fast and light dependency injection library for Java and Kotlin developers.
 </p>
@@ -12,9 +14,9 @@
   </tr>
   <tr>
     <td><a href="https://discord.gg/Qcqf9R27BR">Discord</td>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-inject">Github</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-inject">GitHub</a></td>
     <td><a target="_blank" href="https://javadoc.io/doc/io.avaje/avaje-inject">Javadoc</a></td>
-    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/issues">Github</a></td>
+    <td><a target="_blank" href="https://github.com/avaje/avaje-inject/issues">GitHub</a></td>
     <td><a href="https://github.com/avaje/avaje-inject/releases"><img src="https://img.shields.io/maven-central/v/io.avaje/avaje-inject.svg?label=Maven%20Central"></a></td>
   </tr>
 </table>
