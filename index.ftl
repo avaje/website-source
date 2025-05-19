@@ -18,7 +18,7 @@
         </clipPath>
       </defs>
     </svg>
-    <h2>Compile-time libraries for JVM microservices</h2>
+    <h2>Compile-time libraries for JVM applications</h2>
   </div>
   <div class="c-narrow">
     <table class="index-toc">
