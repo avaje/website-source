@@ -63,8 +63,8 @@
     </h1>
     <p>
       <em>avaje-config</em> provides external configuration for JVM apps. We can provide configuration
-      via <em>yaml</em> or <em>properties</em> files and specify which files to load using
-      command line argument and resources.
+      via <em>YAML</em>, <em>TOML</em> &amp; <em>properties</em> files, specifying which files to load using
+      command line arguments and resources.
     </p>
 
     <table width="100%">
@@ -93,6 +93,16 @@
     <artifactId>avaje-config</artifactId>
     <version>${config-version}</version>
   </dependency>
+
+  <!--
+  add for optional TOML support
+  
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-config-toml</artifactId>
+    <version>${config-version}</version>
+  </dependency>
+  -->
     </pre>
 
     <h4>Add a <em>src/main/resources/application.properties</em> file (or yml)</h4>

@@ -18,7 +18,7 @@
         </clipPath>
       </defs>
     </svg>
-    <h2>Compile-time libraries for JVM applications</h2>
+    <h2>Compile-time libraries for JVM microservices</h2>
   </div>
   <div class="c-narrow">
     <table class="index-toc">
@@ -26,8 +26,8 @@
         <th width="25%"><a href="/config">Configuration</a></th>
         <td>
           <p>
-            Provides external configuration. Loads <em>yaml</em> and
-            <em>properties</em> files, supports dynamic configuration and plugins.
+            Provides external configuration. Loads <em>YAML</em>, <em>TOML</em>
+            &amp; <em>properties</em> files, supports dynamic configuration and plugins.
           </p>
         </td>
       </tr>
@@ -47,7 +47,7 @@
         <th><a href="/jsonb">Jsonb</a></th>
         <td>
           <p>
-            Flexible and reflection-free JSON library that uses Java annotation processing to generate JSON adapters. One of the <a href="https://github.com/fabienrenaud/java-json-benchmark#users-model">Top 3 fastest</a> Java Json libraries
+            Flexible and reflection-free JSON library that uses Java annotation processing to generate JSON adapters. One of the <a href="https://github.com/fabienrenaud/java-json-benchmark#users-model">top 3 fastest</a> Java JSON libraries.
           </p>
         </td>
       </tr>
@@ -55,7 +55,7 @@
         <th><a href="/validator">Validator</a></th>
         <td>
           <p>
-           Reflection-free Pojo validation library that uses annotation processing to generate validation adapters to run constraints.
+           Reflection-free POJO validation library that uses annotation processing to generate validation adapters to run constraints.
           </p>
         </td>
       </tr>
@@ -64,7 +64,7 @@
         <td>
           <p>
             A wrapper on JDK 11's HttpClient. Includes support for defining client API's
-            similar to JAX-RS, Retrofit and Feign. Uses java annotation processing to generate
+            similar to JAX-RS, Retrofit and Feign. Uses Java annotation processing to generate
             client API implementations.
           </p>
         </td>
@@ -73,11 +73,11 @@
         <th><a href="/http">HTTP Generator</a></th>
         <td>
           <p>
-            Lightweight JAX-RS style http servers using <a href="https://helidon.io">Helidon SE</a>, <a href="https://javalin.io">Javalin</a>, or <a href="/jex">Jex</a>. Use annotations
-            like <code>@Controller</code>, <code>@Get</code> etc to define a rest api.
+            Lightweight JAX-RS style HTTP servers using <a href="https://helidon.io">Helidon SE</a>, <a href="https://javalin.io">Javalin</a>, or <a href="/jex">Jex</a>. Use annotations
+            like <code>@Controller</code>, <code>@Get</code> etc to define a REST API.
           </p>
           <p>
-            Uses java annotation processing to generate source code for adapting and registering JAX-RS style classes
+            Uses Java annotation processing to generate source code for adapting and registering JAX-RS style classes
             to servers.
           </p>
         </td>
@@ -86,7 +86,7 @@
         <th><a href="/jex">Jex</a></th>
         <td>
           <p>
-            Lightweight wrapper over the JDK's own <a href="https://docs.oracle.com/en/java/javase/21/docs/api/jdk.httpserver/com/sun/net/httpserver/package-summary.html">built-in HTTP server</a>, adding various capabilities. (virtual threads, json, compression, etc.).
+            Lightweight wrapper over the JDK's own <a href="https://docs.oracle.com/en/java/javase/21/docs/api/jdk.httpserver/com/sun/net/httpserver/package-summary.html">built-in HTTP server</a>, adding various capabilities. (virtual threads, JSON, compression, etc.).
           </p>
         </td>
       </tr>
