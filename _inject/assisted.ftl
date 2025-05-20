@@ -1,15 +1,15 @@
-<h2 id="assistInject">Assisted Injection</h3>
-  Assisted injection is a dependency injection pattern used to construct an object where some parameters may be provided by the DI framework and others must be passed in at creation time (“assisted” if you will) by the user.
+<h2 id="assistInject">Assisted Injection</h3><hr/>
+Assisted injection is a dependency injection pattern used to construct an object where some parameters may be provided by the DI framework and others must be passed in at creation time (“assisted” if you will) by the user.
 
-  <br><br>Avaje Inject will generate a factory implementation responsible for combining all of the parameters and creating the object.
+<br><br>Avaje Inject will generate a factory implementation responsible for combining all of the parameters and creating the object.
 
-  <h3 id="assistFactory">@AssistFactory</h3>
-  <p>
-    To use assisted injection, we annotate our desired class with <code>@AssistFactory</code> to signal the generator to create a factory class.
-     <code>@AssistFactory</code> requires an interface/abstract class type that has the assisted types as parameters.
-  </p>
+<h3 id="assistFactory">@AssistFactory</h3>
 <p>
-   To mark fields/method parameters as assisted, we annotate them with @Assisted, as shown below:
+    To use assisted injection, we annotate our desired class with <code>@AssistFactory</code> to signal the generator to create a factory class.
+    <code>@AssistFactory</code> requires an interface/abstract class type that has the assisted types as parameters.
+</p>
+<p>
+    To mark fields/method parameters as assisted, we annotate them with @Assisted, as shown below:
 </p>
 
 <pre content="java">

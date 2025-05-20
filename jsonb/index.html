@@ -65,7 +65,7 @@
     <li>Other miscellaneous types (UUID...)</li>
   </ul>
 
-  <h2 id="quick-start">Quick Start</h2>
+  <h2 id="quick-start">Quick Start</h2><hr/>
   <h4>
     1. Add <em>avaje-jsonb</em> dependencies.
   </h4>
@@ -179,7 +179,7 @@
   String asJson = myView.toJson(customer);
   </pre>
 
-  <h2 id="integration">Spring/Avaje Inject Integration</h2>
+  <h2 id="integration">Spring/Avaje Inject Integration</h2><hr/>
   <p>
     When used with Spring or Avaje Inject, a default <code>Jsonb</code> instance will be provided and used for
     serializing/deserializing Http messages. The following properties can be added to configure the default instance.
@@ -193,7 +193,7 @@
 
   </p>
 
-  <h2 id="jpms">Java Module Setup</h2>
+  <h2 id="jpms">Java Module Setup</h2><hr/>
   <p>
     If using java modules, in the <code>module-info.java</code> we need to:
   </p>
@@ -222,7 +222,7 @@
     <code>target/generated-sources/annotations</code>.
   </p>
 
-  <h2 id="json">@Json</h2>
+  <h2 id="json">@Json</h2><hr/>
   <p>
     Types with <code>@Json</code> are picked up by avaje-jsonb-generator at compile time and a JsonAdapter is generated
     as java source code typically in target/generated-sources/annotations.
@@ -416,7 +416,7 @@ enum Naming {
 </pre>
   </details>
 
-  <h2 id="import">@Json.Import</h2>
+  <h2 id="import">@Json.Import</h2><hr/>
   <p> When we are unable to or do not wish to put <code>@Json</code> on the types we can use <code>@Json.Import</code>.
     <br><br>
     We can put <code>@Json.Import</code> on a package or type and specify the types to generate a JsonAdapter for.
@@ -437,7 +437,7 @@ package org.example;
   String rawJson
 </pre>
 
-  <h2 id="property">@Json.Property</h2>
+  <h2 id="property">@Json.Property</h2><hr/>
   <p>
     We can override the serialization/deserialization name of a field using <code>@Json.Property</code>.
   </p>
@@ -502,7 +502,7 @@ public class Customer {
 </pre>
   </details>
 
-  <h2 id="alias">@Json.Alias</h2>
+  <h2 id="alias">@Json.Alias</h2><hr/>
 
   <p>
     We can define a deserialization alias for a field using <code>@Json.Alias</code>. It is compatible with, and can
@@ -556,7 +556,7 @@ public class Customer {
 </pre>
   </details>
 
-  <h2 id="creator">@Json.Creator</h2>
+  <h2 id="creator">@Json.Creator</h2><hr/>
   <p>
     With <code>@Json.Creator</code>, we can override deserialization using a constructor or static factory method.
     Contructor/Method parameters can be annotated with <code>@Alias</code> to rename a deserialization field.
@@ -616,7 +616,7 @@ public class Customer {
 </pre>
   </details>
 
-  <h2 id="iggy">@Json.Ignore</h2>
+  <h2 id="iggy">@Json.Ignore</h2><hr/>
   <p>
     We can exclude a field from json serialisation using @Json.Ignore
   </p>
@@ -693,7 +693,7 @@ public class Customer {
 
   </details>
 
-  <h2 id="mapped">@Json.Unmapped</h2>
+  <h2 id="mapped">@Json.Unmapped</h2><hr/>
   <p>
     We can use <code>@Json.Unmapped</code> to collect unmapped json during de-serialization and include it in
     serialization.
@@ -763,7 +763,7 @@ public class Customer {
 </pre>
   </details>
 
-  <h2 id="value">@Json.Value</h2>
+  <h2 id="value">@Json.Value</h2><hr/>
   <p>
     We can use <code>@Json.Value</code> to specify a method that will provide the value used to serialize to/from json.
     <br></br>
@@ -886,7 +886,7 @@ public enum MyEnum {
   }
 </pre>
   </details>
-  <h2 id="mixin">@Json.Mixin</h2>
+  <h2 id="mixin">@Json.Mixin</h2><hr/>
 
   <p>
     Say we want to override the field serialization behavior on a class we can't modify (For example, a class in an external
@@ -970,7 +970,7 @@ public enum MyEnum {
   </pre>
   </details>
 
-  <h2 id="subtype">@Json.Subtype</h2>
+  <h2 id="subtype">@Json.Subtype</h2><hr/>
 
   <p>For mapping polymorphic types we specify on the parent type a <code>@Json.Subtype</code> for each concrete sub-type
     that can represent that type.
@@ -1141,7 +1141,7 @@ public enum MyEnum {
   </pre>
   </details>
 
-  <h2 id="custom">@CustomAdapter</h2>
+  <h2 id="custom">@CustomAdapter</h2><hr/>
   <p>
     With <code>@CustomAdapter</code>, you can define your own JsonAdapter for your more esoteric serialization needs.
     A custom adapter registered using this annotation must have a public constructor accepting a Jsonb instance (or a
@@ -1198,7 +1198,7 @@ public enum MyEnum {
   }
 </pre>
 
-<h2 id="serializer">@Serializer</h2>
+<h2 id="serializer">@Serializer</h2><hr/>
 <p>
   A case may arise where you need custom (de)serialization for a certain field without affecting the serialization for a type globally. This is the use case for <code>@Serializer</code>.
 </p>

@@ -1,4 +1,4 @@
-<h2 id="testing">Testing</h2>
+<h2 id="testing">Testing</h2><hr/>
 
 <h3 id="unit-testing">Unit Testing</h3>
 <p>
@@ -61,7 +61,7 @@
 
 
 
-<h2 id="component-testing">Component Testing</h2>
+<h2 id="component-testing">Component Testing</h2><hr/>
 <p>
   Component testing is where we look to run tests that use most of the objects with their real
   behaviour with less mocked / stubbed behaviour. With component testing we are looking to test a scenario / piece

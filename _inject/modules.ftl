@@ -1,5 +1,5 @@
 
-<h2 id="modules">Modules</h2>
+<h2 id="modules">Modules</h2><hr/>
 <p>
   To wire all the beans into a scope, <i>avaje-inject</i> generates module classes that run all the constructors/factory methods and adds all beans to the <i>scope</i>.
 </p>

@@ -1,4 +1,4 @@
-<h2 id="lifecycle">Lifecycle</h2>
+<h2 id="lifecycle">Lifecycle</h2><hr/>
 
 <h3 id="post-construct">@PostConstruct</h3>
 <p>

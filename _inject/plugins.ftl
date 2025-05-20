@@ -1,4 +1,4 @@
-<h2 id="plugins">Plugins</h3>
+<h2 id="plugins">Plugins</h3><hr/>
 
 <P>If you want to execute code when creating a bean scope, you can implement the <code>InjectPlugin</code> SPI.
   Typically, a plugin might provide a default dependency via <code>BeanScopeBuilder.provideDefault()</code>.

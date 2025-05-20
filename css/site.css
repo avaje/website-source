@@ -10,6 +10,7 @@
   --fg-article: #d07f34;
   --fg-link1-color: #0e84b5;
   --fg-link1Visit-color: #0e6ea1;
+  --fg-hr: #ababab;
   --cd-bg: #f9f9f9;
   --cd-fg: #333333;
   --bg-code: #f9f9f9;
@@ -28,6 +29,7 @@
   --fg-banner: #fff;
   --fg-link1-color: #0e9ccf;
   --fg-link1Visit-color: #0e85be;
+  --fg-hr: #777777;
   --bg-code: #303030;
   --bg-code-border: #505050;
   --bg-code-tab: #636363;
@@ -370,4 +372,9 @@ summary {
   .logo {
     color: var(--fg-article);
   }
+}
+
+hr {
+  border: none;
+  border-bottom: 2px solid var(--fg-hr);
 }

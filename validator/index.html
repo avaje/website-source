@@ -46,12 +46,12 @@
     <li>Adding/Modify constraints on 3rd Party classes</li>
   </ul>
 
-  <h2 id="requires">Requires Java 17+</h2>
+  <h3 id="requires">Requires Java 17+</h3>
   <p>
     Avaje Validator requires Java 17 or higher.
   </p>
 
-  <h2 id="quick-start">Quick Start</h2>
+  <h2 id="quick-start">Quick Start</h2><hr/>
   <h4>
     1. Add <em>avaje-validator</em> dependencies.
   </h4>
@@ -156,7 +156,7 @@
   validator.validate(customer, Locale.ENGLISH, Group1.class);
 </pre>
 
-  <h2 id="jpms">Java Module Setup</h2>
+  <h2 id="jpms">Java Module Setup</h2><hr/>
   <p>
     If using java modules, in the <code>module-info.java</code> we need to:
   </p>
@@ -189,7 +189,7 @@
     <code>target/generated-sources/annotations</code>.
   </p>
 
-  <h2 id="integration">Avaje/Spring Integration</h2>
+  <h2 id="integration">Avaje/Spring Integration</h2><hr/>
   <p>
     When used with Avaje Inject or the Spring Framework, a default <code>Validator</code> and <code>AOPMethodValidator</code> instance will be
     provided. The following properties can be added to configure the construction of the default instance.
@@ -206,7 +206,7 @@
 
   </p>
 
-  <h2 id="boot">ValidatorCustomizer</h2>
+  <h2 id="boot">ValidatorCustomizer</h2><hr/>
   <p>
     We can create a class that implements <code>ValidatorCustomizer</code> that can be loaded via
     <code>ServiceLoader</code> while the builder is constructing a
@@ -222,7 +222,7 @@
     }
   }
   </pre>
-  <h2 id="configuration">Configuration</h2>
+  <h2 id="configuration">Configuration</h2><hr/>
   <p>
     Configuration of the Validator is provided by the <code>Validator.builder()</code>
     including setting the default locale, additional locales, additional resource
@@ -297,7 +297,7 @@
     In this way the Locale specific message will be used, with a fallback to <em>CustomMessages.properties</em>.
   </p>
 
-  <h2 id="constraint">Declaring and Validating Bean Constraints</h2>
+  <h2 id="constraint">Declaring and Validating Bean Constraints</h2><hr/>
   <p>
     Types annotated with <code>@Valid</code> are picked up by the avaje-validator-generator at compile time and an
     adapter is generated to perform validations.
@@ -600,7 +600,7 @@
   </pre>
   </details>
 
-  <h2 id="mixin">@Mixin</h2>
+  <h2 id="mixin">@Mixin</h2><hr/>
 
   <p>
     Say we want to override the validation behavior on a class we can't modify. (For example, a class in an external
@@ -681,7 +681,7 @@
   </pre>
   </details>
 
-  <h2 id="nullmarked">@NullMarked</h2>
+  <h2 id="nullmarked">@NullMarked</h2><hr/>
 
   <p>
     Avaje validator respects the <code>@NullMarked</code>/<code>@NullUnmarked</code> annotations provided by <a href="https://jspecify.dev/docs/user-guide/#nullmarked">Jspecify</a>.
@@ -736,7 +736,7 @@
   </pre>
   </details>
 
-  <h2 id="methods">Method Validation</h2>
+  <h2 id="methods">Method Validation</h2><hr/>
   <p>
     Constraints can not only be applied to POJOs and their properties, but also to the
     parameters and return values of the methods of Java types.
@@ -791,7 +791,7 @@
     }
   </pre>
 
-  <h2 id="message">Constraint Error Messages</h2>
+  <h2 id="message">Constraint Error Messages</h2><hr/>
 
   <h3 id="message">Declaring Messages</h3>
   <p>
@@ -882,7 +882,7 @@
     by default, the error message will be interpolated to: <em>Value must be between 2 and 14 characters long</em>.
   </p>
 
-  <h2 id="groups">Grouping Constraints</h2>
+  <h2 id="groups">Grouping Constraints</h2><hr/>
   <p>
     All validation methods on <code>Validator</code> take a var-arg argument <code>groups</code>. Groups allow you to
     restrict the set of constraints applied during validation. One use case for validation groups are UI wizards where
@@ -946,7 +946,7 @@
     The next validation using the <code>CarChecks</code> group fails until the car passes the vehicle inspection.
   </p>
 
-  <h2 id="custom">Custom Constraints</h2>
+  <h2 id="custom">Custom Constraints</h2><hr/>
   <p>
     Avaje Validation defines a whole set of standard constraint annotations such as <code>@NotNull</code>,
     <code>@Size</code> etc.
@@ -1087,7 +1087,7 @@
       }
     }
   </pre>
-  <h2 id="composable">Composing Constraints</h2>
+  <h2 id="composable">Composing Constraints</h2><hr/>
   <p>
     You can create high level constraints that composed of several basic constraints <code>@NotNull</code>,
     <code>@Size</code> etc.

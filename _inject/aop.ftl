@@ -1,4 +1,4 @@
-<h2 id="aop">Aspect Oriented Programming</h3>
+<h2 id="aop">Aspect Oriented Programming</h3><hr/>
 This library has several contructs that support Aspect Oriented Programmming
 
 <h3 id="aspect">@Aspect</h3>

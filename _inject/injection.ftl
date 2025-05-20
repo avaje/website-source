@@ -1,4 +1,4 @@
-<h2 id="injection">Injection</h2>
+<h2 id="injection">Injection</h2><hr/>
 
 <h3 id="singleton">@Singleton</h3>
 <p>

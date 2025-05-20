@@ -35,7 +35,7 @@
     more straighforward by generating annotation "Prisms" and other various utilities.
   </p>
 
-  <h2 id="what">What's A Prism?</h2>
+  <h3 id="what">What's A Prism?</h3>
   <p>
     When writing annotation processors, the two conventional mechanisms to access the annotation attributes are both
     awkward. <code>Element.getAnnotation()</code> can throw Exceptions if the annotation or its members are not
@@ -71,7 +71,7 @@
       component as above.</li>
   </ul>
 
-  <h2 id="quick">Quick Start</h2>
+  <h2 id="quick">Quick Start</h2><hr/>
   <h4>
     1. Add <em>avaje-prisms</em> dependency.
   </h4>
@@ -119,7 +119,7 @@
     }
   </pre>
 
-  <h2 id="prism">@GeneratedPrism</h2>
+  <h2 id="prism">@GeneratedPrism</h2><hr/>
   <p>
     We use <code>@GeneratedPrism</code> to let the generator create a prism for an annotation. Prisms contain useful
     static methods to extract annotation values from Elements.
@@ -226,7 +226,7 @@ public interface NotNullPrism {
 }
 </pre>
 
-  <h2 id="apcontext">@GenerateAPContext</h2>
+  <h2 id="apcontext">@GenerateAPContext</h2><hr/>
   <p>
     As your annotation processor grows in size and complexity, you may find it difficult to properly access the
     <code>ProcessingEnvironment</code> and its utilities. <code>@GenerateAPContext</code> generates a helper class that
@@ -602,7 +602,7 @@ public interface NotNullPrism {
     </pre>
   </details>
 
-  <h2 id="modules">@GenerateModuleInfoReader</h2>
+  <h2 id="modules">@GenerateModuleInfoReader</h2><hr/>
   <p>
     There is currently a bug in javac where in certain situations calling <em>ModuleElement#getDirectives</em> on
     the application's root module crashes compilation. Using <em>@GenerateModuleInfoReader</em> in combination with
@@ -640,7 +640,7 @@ public interface NotNullPrism {
       }
     }
 </pre>
-  <h2 id="utils">@GenerateUtils</h2>
+  <h2 id="utils">@GenerateUtils</h2><hr/>
   <p>
     Using this annotation will generate classes with useful methods for processing TypeMirrors and their component
     parts.

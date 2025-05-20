@@ -1,4 +1,4 @@
-<h2 id="dependency">Dependencies</h2>
+<h2 id="dependency">Dependencies</h2><hr/>
 
 <h3 id="maven">Maven</h3>
 <p>
@@ -53,7 +53,7 @@ dependencies {
 </pre>
 
 
-<h2 id="jpms">Java Module Setup</h2>
+<h2 id="jpms">Java Module Setup</h2><hr/>
 <p>
   If using java modules, in the <code>module-info.java</code> we need to:
 </p>
@@ -84,7 +84,7 @@ module org.example {
   you will need to add the <a href="#autoRequires">maven/gradle inject plugin</a> so that the generated DI classes from the dependencies are discovered.
 </p>
 
-<h2 id="generated">Generated Sources</h2>
+<h2 id="generated">Generated Sources</h2><hr/>
 
 <h3>DI classes</h3>
 

@@ -1,4 +1,4 @@
-<h2 id="qualifiers">Qualifiers</h2>
+<h2 id="qualifiers">Qualifiers</h2><hr/>
 
 <h3 id="named">@Named</h3>
 <p>

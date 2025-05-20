@@ -47,7 +47,7 @@
     <em>provides</em> clauses are present in an application's <code>module-info</code> files.
   </p>
 
-  <h2 id="deps">Dependency</h2>
+  <h2 id="deps">Dependency</h2><hr/>
   <p>
     To use this library add the <em>avaje-spi-service</em> as a
     provided/optional dependency. (The dependencies need
@@ -73,7 +73,7 @@
   </properties>
   </pre>
 
-  <h2 id="serviceProvider">@ServiceProvider</h2>
+  <h2 id="serviceProvider">@ServiceProvider</h2><hr/>
   <p>
     On classes that you'd like registered, place the
     <code>@ServiceProvider</code> annotation.
@@ -127,7 +127,8 @@
   Compilation failure /src/main/java/module-info.java:[1,1]
   Missing `provides MusicService with BassServiceProvider;`
   </pre>
-  <h2 id="service">@Service</h2>
+
+  <h2 id="service">@Service</h2><hr/>
   <p>
     As a library developer, should you wish to define an spi interface for multiple layers of extension, the
     <code>@Service</code> annotation will help ensure those using <code>@ServiceProvider</code> will automatically
@@ -160,7 +161,7 @@
   }
   </pre>
 
-  <h2 id="plugin">Provides Maven Plugin (JDK 24+)</h1>
+  <h2 id="plugin">Provides Maven Plugin (JDK 24+)</h1><hr/>
 
     <p>If on JDK 24+, the provides maven plugin can be used to automatically post-process modular applications'
       <code>module-info.class</code> files to add all the required <code>provides</code> clauses for all services

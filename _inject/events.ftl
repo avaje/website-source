@@ -1,4 +1,4 @@
-<h2 id="events">Events</h2>
+<h2 id="events">Events</h2><hr/>
 
 <h3 id="observes">@Observes/@ObservesAsync</h3>
 <p>

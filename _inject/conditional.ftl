@@ -1,4 +1,4 @@
-<h2 id="conditional">Conditional Beans</h2>
+<h2 id="conditional">Conditional Beans</h2><hr/>
 
 <h3 id="requirebean">@RequiresBean</h3>
 <p>
