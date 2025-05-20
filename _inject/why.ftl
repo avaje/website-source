@@ -1,5 +1,5 @@
 
-<h2 id="why">Why avaje inject exists</h2>
+<h2 id="why">Why does avaje-inject exist?</h2><hr/>
 
 <h3 id="why-history">Short History of DI on the JVM</h3>
 <p>

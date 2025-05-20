@@ -85,7 +85,7 @@
     </table>
 
     <p>&nbsp;</p>
-    <h3 id="quick">Quick Start</h3>
+    <h3 id="quick">Quick Start</h3><hr/>
     <h4>Add Dependency</h4>
     <pre content="xml">
   <dependency>
@@ -96,7 +96,7 @@
 
   <!--
   add for optional TOML support
-  
+
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-config-toml</artifactId>
@@ -118,7 +118,7 @@
       String password = Config.get("database.example.password");
     </pre>
 
-    <h2 id="eval">Expression evaluation</h2>
+    <h2 id="eval">Expression evaluation</h2><hr/>
     <p>
       Expressions start with <code>&dollar;{</code> end with <code>}</code>. They can optionally
       define a default value using a <code>:</code> as we see in the example below for the
@@ -142,7 +142,7 @@
           url: ${DB_URL}
     </pre>
 
-    <h2 id="startup">Startup</h2>
+    <h2 id="startup">Startup</h2><hr/>
     <p>
       <em>avaje-config</em> will initialize and load configuration when it is first used.
     </p>
@@ -162,7 +162,7 @@
       You can provide an additional property <code>system.excluded.properties</code> to provide a list of configuration properties you want to exclude from being loaded into System Properties.
     </p>
 
-    <h2 id="loading">Loading configuration</h2>
+    <h2 id="loading">Loading configuration</h2><hr/>
     <p>
       <em>avaje-config</em> provides ways to load external configuration for running
       an application and running tests. It also provides a simple mechanism to make it
@@ -278,7 +278,7 @@
       define the configuration we want to use when running locally.
     </p>
 
-    <h2 id="file-watch">File watching</h2>
+    <h2 id="file-watch">File watching</h2><hr/>
     <p>
       If <code>config.watch.enabled</code> is set to true, then <em>avaje-config</em> will
       watch the config files and reload configuration when the files change.
@@ -313,7 +313,7 @@
       }
     </pre>
 
-    <h2 id="config">Config</h2>
+    <h2 id="config">Config</h2><hr/>
     <p>
       We use <code>Config</code> to access the application configuration. <em>Config</em> can be used
       anywhere in application code - static initializers, enums, constructors etc. There is no limitation
@@ -491,7 +491,7 @@
       dbExampleConfiguration.get("username");
     </pre>
 
-    <h2 id="plugins">ConfigurationSource Plugins</h2>
+    <h2 id="plugins">ConfigurationSource Plugins</h2><hr/>
     <p>
       Plugins implement the <code>ConfigurationSource</code> interface and are found
       and registered via <code>ServiceLoader</code>. This means they have a
@@ -518,9 +518,9 @@
     </p>
 
 
-    <h2 id="aws-appconfig">AWS App Config</h2>
+    <h2 id="aws-appconfig">AWS AppConfig</h2><hr/>
     <p>
-      If using AWS App Config as a configuration source (refer: <a href="https://docs.aws.amazon.com/appconfig/">https://docs.aws.amazon.com/appconfig</a>),
+      If using AWS AppConfig as a configuration source (refer: <a href="https://docs.aws.amazon.com/appconfig/">https://docs.aws.amazon.com/appconfig</a>),
       then we can use the <em>avaje-aws-appconfig</em> component.
     </p>
 
@@ -570,7 +570,7 @@
     </pre>
 
 
-    <h2 id="logging">Event Logging</h2>
+    <h2 id="logging">Event Logging</h2><hr/>
     <p>
       By default, <code>avaje-config</code> will immediately log initialization events to it's own configured system logger. If you want to use your own configured logger, you can extend the <code>ConfigurationLog</code> interface and
       register via <code>ServiceLoader</code>. This means you have a

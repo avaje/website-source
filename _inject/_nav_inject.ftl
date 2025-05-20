@@ -115,7 +115,7 @@
     <li><a href="#programmatic-testing">Programmatic Testing</a></li>
   </ul>
 </@nav>
-<@nav url="#why" title="Why avaje-inject exists?">
+<@nav url="#why" title="Why does avaje-inject exist?">
   <ul>
     <li><a href="#why-history">Short history of DI</a></li>
     <li><a href="#why-comparison">Comparison to other DI</a></li>

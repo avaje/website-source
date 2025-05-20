@@ -1,4 +1,4 @@
-<h2 id="quick-start">Quick Start</h2>
+<h2 id="quick-start">Quick Start</h2><hr/>
 <h4>1. Add <em>avaje-inject</em> as a dependency.</h4>
 <pre content="xml">
 <dependency>
