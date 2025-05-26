@@ -1,0 +1,80 @@
+<html>
+<head>
+  <meta name="layout" content="_layout/base-nima.html" />
+  <meta name="bread1" content="jsonb" href="/nima/" />
+  <#assign index="active">
+</head>
+
+<body>
+  <h1 id="overview">
+    <span class="logo">Avaje</span>&thinsp;Nima
+  </h1>
+
+  <table style="width: 100%;">
+    <tr>
+      <th>Discord</th>
+      <th>Source</th>
+      <th>API Docs</th>
+      <th>Issues</th>
+      <th>Releases</th>
+    </tr>
+    <tr>
+      <td><a href="https://discord.gg/Qcqf9R27BR">Discord</td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-nima">GitHub</a></td>
+      <td><a target="_blank"
+          href="https://javadoc.io/doc/io.avaje/avaje-nima/latest/io.avaje.nima/io/avaje/nima/package-summary.html">Javadoc</a>
+      </td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-nima/issues">GitHub</a></td>
+      <td><a href="https://github.com/avaje/avaje-nima/releases"><img
+            src="https://img.shields.io/maven-central/v/io.avaje/avaje-nima.svg?label=Maven%20Central"></a></td>
+    </tr>
+  </table>
+
+  <p><br><br>
+    A combination of Helidon SE Webserver and Avaje libraries, includes:
+  </p>
+  <ul>
+    <li>Helidon 4 SE WebServer (Uses Virtual Threads)</li>
+    <li>avaje-inject - Dependency injection using source code generation via annotation processing</li>
+    <li>avaje-http - Controllers generated as source code using annotation processing</li>
+    <li>avaje-jsonb - JSON adapters generated as source code using annotation processing</li>
+    <li>avaje-validator - JSR validation generated as source code using annotation processing</li>
+    <li>avaje-config - External configuration</li>
+  </ul>
+
+
+  <h2 id="maven">Maven dependencies</h2>
+  <h4>1. Add <em>avaje-nima</em> dependencies</h4>
+  <pre content="xml">
+    <dependency>
+      <groupId>io.avaje</groupId>
+      <artifactId>avaje-nima</artifactId>
+      <version>${avaje.nima.version}</version>
+    </dependency>
+
+    <!-- test dependency -->
+    <dependency>
+      <groupId>io.avaje</groupId>
+      <artifactId>avaje-nima-test</artifactId>
+      <version>${avaje.nima.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </pre>
+
+  <h4>2. Add the annotation processor</h4>
+  <pre content="xml">
+    <!-- Annotation processors -->
+    <dependency>
+      <groupId>io.avaje</groupId>
+      <artifactId>avaje-nima-generator</artifactId>
+      <version>${avaje.nima.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+  </pre>
+
+
+  <p><br><br><br><br><br><br></p>
+</body>
+
+</html>
