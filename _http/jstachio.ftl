@@ -1,5 +1,5 @@
 
-<h2 id="jstachio"><a href="https://jstach.io/jstachio/">JStachio</a> Integration</h2>
+<h2 id="jstachio"><a href="https://jstach.io/jstachio/">JStachio</a> Integration</h2><hr/>
 <p>
   JStachio is a type-safe mustache templating engine. The various generators will automatically read jstachio annotations on return types, and generate code to automatically call the engine.
 </p>

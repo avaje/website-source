@@ -28,7 +28,7 @@
           <p>
             Provides external configuration. Loads <em>YAML</em>, <em>TOML</em>
             &amp; <em>properties</em> files, supports dynamic configuration and plugins.
-          </p>
+          </p><hr/>
         </td>
       </tr>
       <tr>
@@ -40,7 +40,7 @@
           </p>
           <p>
             It includes bean lifecycle support and component testing.
-          </p>
+          </p><hr/>
         </td>
       </tr>
       <tr>
@@ -48,7 +48,7 @@
         <td>
           <p>
             Flexible and reflection-free JSON library that uses Java annotation processing to generate JSON adapters. One of the <a href="https://github.com/fabienrenaud/java-json-benchmark#users-model">top 3 fastest</a> Java JSON libraries.
-          </p>
+          </p><hr/>
         </td>
       </tr>
       <tr>
@@ -56,7 +56,7 @@
         <td>
           <p>
            Reflection-free POJO validation library that uses annotation processing to generate validation adapters to run constraints.
-          </p>
+          </p><hr/>
         </td>
       </tr>
       <tr>
@@ -66,7 +66,7 @@
             A wrapper on JDK 11's HttpClient. Includes support for defining client API's
             similar to JAX-RS, Retrofit and Feign. Uses Java annotation processing to generate
             client API implementations.
-          </p>
+          </p><hr/>
         </td>
       </tr>
       <tr>
@@ -79,7 +79,7 @@
           <p>
             Uses Java annotation processing to generate source code for adapting and registering JAX-RS style classes
             to servers.
-          </p>
+          </p><hr/>
         </td>
       </tr>
       <tr>
@@ -87,7 +87,7 @@
         <td>
           <p>
             Lightweight wrapper over the JDK's own <a href="https://docs.oracle.com/en/java/javase/21/docs/api/jdk.httpserver/com/sun/net/httpserver/package-summary.html">built-in HTTP server</a>, adding various capabilities. (virtual threads, JSON, compression, etc.).
-          </p>
+          </p><hr/>
         </td>
       </tr>
       <tr>
@@ -95,7 +95,7 @@
         <td>
           <p>
             Zero-dependency utility library for building annotation processors.
-          </p>
+          </p><hr/>
         </td>
       </tr>
       <tr>
@@ -103,7 +103,7 @@
         <td>
           <p>
             Zero-dependency library that adds SPI <em>META-INF/services</em> entries for classes and validates modular <em>provides</em> clauses.
-          </p>
+          </p><hr/>
         </td>
       </tr>
       <tr>

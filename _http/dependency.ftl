@@ -1,5 +1,5 @@
 
-<h2 id="dependencies">Dependencies</h2>
+<h2 id="dependencies">Dependencies</h2><hr/>
 
 <h3 id="maven">Maven</h3>
 <p>

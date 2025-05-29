@@ -1,5 +1,5 @@
 
-<h2 id="javalin-roles">Javalin @Roles</h2>
+<h2 id="javalin-roles">Javalin @Roles</h2><hr/>
 <p>
   An application can define a <code>@Roles</code> annotation. If the annotation matches
   the name <code>"Roles"</code> then it is deemed to define application security roles and

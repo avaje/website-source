@@ -1,5 +1,5 @@
 
-<h2 id="controllers">Controllers</h2>
+<h2 id="controllers">Controllers</h2><hr/>
 <pre content="java">
 @Controller
 @Path("/contacts")

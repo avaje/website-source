@@ -96,7 +96,6 @@
 
   <!--
   add for optional TOML support
-
   <dependency>
     <groupId>io.avaje</groupId>
     <artifactId>avaje-config-toml</artifactId>

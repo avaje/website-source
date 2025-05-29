@@ -1,4 +1,4 @@
-<h2 id="produces">@Produces</h2>
+<h2 id="produces">@Produces</h2><hr/>
 <p>
   Use <code>@Produces</code> to modify the response content type, default status code and generated OpenAPI definition.
   When not specified, it defaults to <code>application/json</code>.
@@ -48,7 +48,7 @@ class RootController {
 }
 </pre>
 
-<h2 id="header">@Header</h2>
+<h2 id="header">@Header</h2><hr/>
 <p>
   Use <code>@Header</code> for a header parameter.
   It the header parameter name is not explicitly specified then
@@ -80,7 +80,7 @@ Bazz find(@Header String lastModified) { // Last-Modified
 
 </pre>
 
-<h2 id="cookie">@Cookie</h2>
+<h2 id="cookie">@Cookie</h2><hr/>
 <p>
   Use <code>@Cookie</code> for a Cookie parameter.
 </p>

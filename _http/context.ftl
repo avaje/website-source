@@ -1,4 +1,4 @@
-<h2 id="context">Context</h2>
+<h2 id="context">Context</h2><hr/>
 
 <h3 id="javalin-context">Javalin/Jex Context</h3>
 <p>

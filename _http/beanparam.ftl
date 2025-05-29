@@ -1,4 +1,4 @@
-<h2 id="bean-param">@BeanParam</h2>
+<h2 id="bean-param">@BeanParam</h2><hr/>
 <p>
   Annotate a bean parameter in a controller method with <code>@BeanParam</code> to map various request values into a class.
   The properties on the bean default to being <code>query parameters</code>.

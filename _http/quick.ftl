@@ -1,5 +1,5 @@
 
-<h2 id="quick-start">Quick Start</h2>
+<h2 id="quick-start">Quick Start</h2><hr/>
 <p>
   1. Add <em>avaje-http-api</em> dependency.
 </p>
@@ -67,7 +67,7 @@ public class WidgetController {
 }
 </pre>
 
-<h2 id="jpms">Java Module Setup</h2>
+<h2 id="jpms">Java Module Setup</h2><hr/>
 <p>
   In the <code>module-info.java</code> we need to define the avaje modules:
 </p>
@@ -82,7 +82,7 @@ module org.example {
 }
 </pre>
 
-<h2 id="generated">Generated Adapter</h2>
+<h2 id="generated">Generated Adapter</h2><hr/>
 <p>Given the above controller and the corresponding framework generator, the below class will be generated</p>
 
 <details>
@@ -265,7 +265,7 @@ public class WidgetController$Route implements Plugin {
 </pre>
 </details>
 
-<h2 id=usage>Usage</h2>
+<h2 id=usage>Usage</h2><hr/>
 <p>
   The natural way to use the generated adapters is to
   get a DI library to find and wire them.
@@ -299,7 +299,7 @@ public class WidgetController$Route implements Plugin {
   }
 </pre>
 
-<h4>Usage with Helidon SE (4.x)</h2>
+<h4>Usage with Helidon SE (4.x)</h2><hr/>
 <p>
 The annotation processor will generate controller classes implementing the Helidon <code>HttpFeature</code> interface, which we can register with the Helidon <code>HttpRouting</code>.
 </p>

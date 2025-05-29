@@ -1,4 +1,4 @@
-<h2 id="filter">@Filter</h2>
+<h2 id="filter">@Filter</h2><hr/>
 <p>
   Annotate methods with <code>@Filter</code> for HTTP filter web routes. Filter web routes behave similarly to void <code>@Get</code> methods (They can use header/query/cookie parameters with type conversion)
 </p>
@@ -24,7 +24,7 @@
   }
 </pre>
 
-<h2 id="exceptions">@ExceptionHandler</h2>
+<h2 id="exceptions">@ExceptionHandler</h2><hr/>
  As the name implies, this annotation marks a handler method for handling exceptions that are thrown by other handlers.
 
  <p>Exception handler methods may have parameters of the following types:
@@ -69,7 +69,7 @@
   }
 </pre>
 
-<h2 id="javalin-filter">(Javalin-only) @Before/@After</h2>
+<h2 id="javalin-filter">(Javalin-only) @Before/@After</h2><hr/>
 <p>
   For Javalin applications, use <code>@Before/@After</code> to mark a handler as a Javalin before/after handler.
 </p>
