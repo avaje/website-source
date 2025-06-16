@@ -70,32 +70,32 @@
     1. Add <em>avaje-jsonb</em> dependencies.
   </h4>
   <pre content="xml">
-<dependency>
-  <groupId>io.avaje</groupId>
-  <artifactId>avaje-jsonb</artifactId>
-  <version>${avaje.jsonb.version}</version>
-</dependency>
-<!-- if using spring web, add the below to use jsonb for http messaging -->
-<dependency>
-  <groupId>io.avaje</groupId>
-  <artifactId>avaje-jsonb-spring-starter</artifactId>
-  <version>${avaje.jsonb.version}</version>
-</dependency>
-</pre>
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-jsonb</artifactId>
+    <version>${avaje.jsonb.version}</version>
+  </dependency>
+  <!-- if using spring web, add the below to use jsonb for http messaging -->
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-jsonb-spring-starter</artifactId>
+    <version>${avaje.jsonb.version}</version>
+  </dependency>
+  </pre>
 
   <h4>
     2. Add the annotation processor to your pom.
   </h4>
   <pre content="xml">
-  <!-- Annotation processors -->
-  <dependency>
-    <groupId>io.avaje</groupId>
-    <artifactId>avaje-jsonb-generator</artifactId>
-    <version>${avaje.jsonb.version}</version>
-    <scope>provided</scope>
-    <optional>true</optional>
-  </dependency>
-</pre>
+    <!-- Annotation processors -->
+    <dependency>
+      <groupId>io.avaje</groupId>
+      <artifactId>avaje-jsonb-generator</artifactId>
+      <version>${avaje.jsonb.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+  </pre>
 
 <h4>2a. JDK 23+ </h4>
 
@@ -142,10 +142,10 @@
   // build using defaults
   Jsonb jsonb = Jsonb.builder().build();
 
-  JsonType<Customer> customerType = jsonb.type(Customer.class);
+  JsonType<|Customer> customerType = jsonb.type(Customer.class);
 
   // If the type is generic we can specify
-  // JsonType<Customer<T1,T2,...>> customerType = jsonb.type(Types.newParameterizedType(Customer.class, T1.class,T2.class, ...);
+  // JsonType<|Customer<|T1,T2,...>> customerType = jsonb.type(Types.newParameterizedType(Customer.class, T1.class,T2.class, ...);
 
   Customer customer = ...;
 
@@ -165,14 +165,14 @@
   <pre content="java">
   Jsonb jsonb = Jsonb.builder().build();
 
-  JsonType<Customer> customerType = jsonb.type(Customer.class);
+  JsonType<|Customer> customerType = jsonb.type(Customer.class);
 
   // only including the id and name
-  JsonView<Customer> idAndNameView = customerType.view("(id, name)");
+  JsonView<|Customer> idAndNameView = customerType.view("(id, name)");
 
   String asJson = idAndNameView.toJson(customer);
 
-  JsonView<Customer> myView =
+  JsonView<|Customer> myView =
     customerType.view("(id, name, billingAddress(*), contacts(lastName, email))");
 
   // serialize to json the above specified properties only
