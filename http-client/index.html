@@ -115,13 +115,13 @@
   }
 </pre>
 
-<h2 id="getting-started">Getting started</h2>
+<h2 id="getting-started">Getting started</h2><hr/>
 <ul>
   <li><a href="/http-client/start">Get started with the base client</a></li>
   <li><a href="/http-client/start#api-start">Get started with Client API generation</a></li>
 </ul>
 
-<h2 id="dependencies">Dependencies</h2>
+<h2 id="dependencies">Dependencies</h2><hr/>
 
 <h3 id="maven">Maven</h3>
 <p>
@@ -254,7 +254,7 @@ dependencies {
 </pre>
 
 
-<h2 id="sync-async">Sync and Async</h2>
+<h2 id="sync-async">Sync and Async</h2><hr/>
 <p>
   We can make requests in simple blocking manner or via <code>async()</code>
   which uses <code>CompletableFuture</code>.
@@ -272,17 +272,13 @@ dependencies {
   implementation.
 </p>
 
-<h3>Loom vs Async</h3>
-<p>
-  With Loom we will be able to use simple blocking requests and get a similar
-  performance as the <code>async()</code> requests. This is an important factor
-  to keep in mind. To use loom, simply add a virtual thread executor to the http client builder.
-</p>
-<p>
-  See <a href="#10k">10K requests - Loom vs Async</a>
+<h3>Loom Support</h3>
+<p>On JDK 21+, a virtual thread executor is added to the http client builder by default.
+  In this way we can use simple blocking requests and get a similar
+  performance as <code>async()</code> requests.
 </p>
 
-<h2 id="httpClientContext">HttpClient</h2>
+<h2 id="httpClientContext">HttpClient</h2><hr/>
 <p>
   HttpClient is effectively a wrapper of <code>java.net.http.HttpClient</code>
   with extra features for request interception, body adapters, retry, etc.
@@ -299,9 +295,6 @@ dependencies {
 <pre content="java">
   HttpClient client = HttpClient.builder()
     .baseUrl(baseUrl)
-    .bodyAdapter(new JsonbBodyAdapter())
-    // .bodyAdapter(new JacksonBodyAdapter())
-    // .bodyAdapter(new GsonBodyAdapter(new Gson()))
     .build();
 </pre>
 <p>
@@ -315,7 +308,7 @@ dependencies {
     .asString();
 </pre>
 
-<h2 id="json-bodyAdapter">Json - BodyAdapter</h2>
+<h2 id="json-bodyAdapter">Json - BodyAdapter</h2><hr/>
 <p>
   <em>avaje-http-client</em> provides a
   <a target="_blank" href="/apidocs/avaje-http-client/io.avaje.http.client/io/avaje/http/client/BodyAdapter.html">BodyAdapter</a> interface
@@ -407,7 +400,7 @@ dependencies {
     .build();
 </pre>
 
-<h2 id="request-body">Request body</h2>
+<h2 id="request-body">Request body</h2><hr/>
 <p>
   Instances of <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpRequest.BodyPublisher.html">java.net.http.HttpRequest.BodyPublisher</a>
   are used to send request body content.
@@ -518,7 +511,7 @@ dependencies {
   <tr><td>BodyPublishers.fromPublisher(...)</td><td>various options</td></tr>
 </table>
 
-<h2 id="response-body">Response body</h2>
+<h2 id="response-body">Response body</h2><hr/>
 <p>
   <a target="_blank" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpResponse.BodyHandler.html">java.net.http.HttpResponse.BodyHandler</a>
   is the interface used to handle response bodies. The JDK HttpClient provides a number of BodyHandlers including reactive Flow based subscribers.
@@ -662,7 +655,7 @@ dependencies {
 </table>
 
 
-<h2 id="httpException">HttpException</h2>
+<h2 id="httpException">HttpException</h2><hr/>
 <p>
   An <code>HttpException</code> is thrown when the status code is not in the 2XX range and the call is one of <a href="#bean">bean()</a>,
   <a href="#list">list()</a>, <a href="#stream">stream()</a>, <a href="#asVoid">asVoid()</a>.
@@ -686,7 +679,7 @@ dependencies {
   MyErrorBean errorResponse = httpException.bean(MyErrorBean.class);
 </pre>
 
-<h3 id="error-mapping">Exception Mapping</h2>
+<h3 id="error-mapping">Exception Mapping</h2><hr/>
 <p>
   To automatically map <code>HttpException</code> into a custom exception you can provide a mapper function globally or per request.
 </p>
@@ -758,7 +751,7 @@ dependencies {
     }
   </pre>
 
-<h2 id="async">Async</h2>
+<h2 id="async">Async</h2><hr/>
 <p>
   All requests can be made using <code>async</code> returning <code>CompletableFuture</code>.
   Commonly the <code>whenComplete()</code> callback will be used to process the async responses.
@@ -879,7 +872,7 @@ dependencies {
 <p></p>
 
 
-<h2 id="httpCall">HttpCall</h2>
+<h2 id="httpCall">HttpCall</h2><hr/>
 <p>
   If we are creating an API and want the client code to <em>choose</em> to execute
   the request asynchronously or synchronously then we can use <code>call()</code>.
@@ -910,7 +903,7 @@ dependencies {
     });
 </pre>
 
-<h2 id="retry">Retry</h2>
+<h2 id="retry">Retry</h2><hr/>
 <p>
   To add Retry funtionality, use <code>.retryHandler(yourhandler)</code> on the builder to provide your retry handler.
 </p>
@@ -950,7 +943,7 @@ dependencies {
     }
 </pre>
 
-<h2 id="intercept">Interceptors</h2>
+<h2 id="intercept">Interceptors</h2><hr/>
 <p>
   To support request interception, you can add one or more interceptors with the <code>.requestIntercept(yourinterceptors)</code> on the client builder.
 </p>
@@ -982,7 +975,7 @@ dependencies {
   }
 </pre>
 
-<h2 id="auth">Authorization</h2>
+<h2 id="auth">Authorization</h2><hr/>
 <p>
   <em>avaje-http-client</em> has built in support for <a href="#auth-basic">basic auth</a> and
   <a href="#auth-bearer">bearer token</a> based authorization.
@@ -1049,7 +1042,7 @@ dependencies {
   obtained for the initial request and then renewed when the token has expired.
 </p>
 
-<h2 id="aws-cognito">AWS Cognito</h2>
+<h2 id="aws-cognito">AWS Cognito</h2><hr/>
 <p>
   When using AWS Cognito for JWT Bearer tokens (OAuth2 client credentials flow) we can use
   the supplied <em>io.avaje.aws:avaje-cognito-client-token</em> component.
@@ -1097,7 +1090,7 @@ dependencies {
 </p>
 
 
-<h2 id="logging">Logging</h2>
+<h2 id="logging">Logging</h2><hr/>
 <p>
   By default request response logging is built in (via <code>RequestLogger</code>)
   and we enable it via setting the log level to <code>DEBUG</code> or <code>TRACE</code>
@@ -1128,7 +1121,7 @@ dependencies {
 
 
 
-<h2 id="client-api">Client API</h2>
+<h2 id="client-api">Client API</h2><hr/>
 <p>
   We can define an interface and have the implementation generated. Similar to
   JAX-RS Client, Retrofit, Feign.
@@ -1832,7 +1825,7 @@ void register(@FormParam String name, @FormParam String email, @FormParam String
   }
 </pre>
 
-<h2 id="formBeans">@Form "Form Beans"</h2>
+<h2 id="formBeans">@Form "Form Beans"</h2><hr/>
 <p>
   In the case where we are posting a form with a lot of parameters we can define a bean with
   properties for each of the form parameters rather than have a method with lots of arguments.
@@ -1903,7 +1896,7 @@ public record RegisterForm(
   }
 </pre>
 
-<h2 id="jpms">@Client Java Module Setup</h2>
+<h2 id="jpms">@Client Java Module Setup</h2><hr/>
 <p>
   When using java modules with generated Client Interfaces, in the <code>module-info.java</code> we need to:
 </p>

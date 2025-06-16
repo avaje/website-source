@@ -54,7 +54,7 @@ for Jex, Javalin and Helidon SE APIs via Annotation Processing.
   <li>Requires fewer annotations than typical JAX-RS - avoid annotation overload</li>
 </ul>
 
-<h2><a href="/http-client/">HTTP Client</a></h2>
+<h2><a href="/http-client/">HTTP Client</a></h2><hr/>
 <p>
   Avaje <a href="/http-client/">http client</a> is a lightweight wrapper over the JDK's own HttpClient
   that also supports client interfaces with annotation processing to generate source code that implements

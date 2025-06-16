@@ -1,4 +1,4 @@
-<h2 id="type-conversions">Type conversions</h2>
+<h2 id="type-conversions">Type conversions</h2><hr/>
 <p>
   There are built in type conversions for the following types:
 </p>

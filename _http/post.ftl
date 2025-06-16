@@ -1,4 +1,4 @@
-<h2 id="post">Request Body</h2>
+<h2 id="post">Request Body</h2><hr/>
 <p>
   Avaje auto detects that a parameter is a request body if the type is a <code>POJO</code>/<code>byte[]</code>/<code>InputStream</code> and not marked with a <code>@BeanParam</code> annotation. To mark a string parameter as a body, use the <code>@BodyString</code> annotation.
 </p>
@@ -22,7 +22,7 @@ ApiBuilder.post("/customers", ctx -> {
 
 </pre>
 
-<h2 id="form">@Form</h2>
+<h2 id="form">@Form</h2><hr/>
 <p>
   If a method has both <code>@Post</code> and <code>@Form</code> then the
   method parameters default to be form parameters.
@@ -37,7 +37,7 @@ ApiBuilder.post("/customers", ctx -> {
   }
 </pre>
 
-<h2 id="form-param">@FormParam</h2>
+<h2 id="form-param">@FormParam</h2><hr/>
 <p>
   For the example above we could alternatively use explicit <code>@FormParam</code>
   on each of the form parameters rather than <code>@Form</code>. We then get:
@@ -82,7 +82,7 @@ ApiBuilder.post("/customers/register", ctx -> {
   }
 </pre>
 
-<h2 id="form-beans">@Form "Form Beans"</h2>
+<h2 id="form-beans">@Form "Form Beans"</h2><hr/>
 <p>
   When posting a form with a lot of parameters, try defining a bean with
   properties for each of the form parameters rather than a controller method with lots of arguments.

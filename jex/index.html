@@ -46,7 +46,7 @@
     <li>Multi-Server with any implementation of jdk.httpserver (Jetty, Robaho, built-in, etc)</li>
   </ul>
 
-  <h2 id="quick-start">Quick Start</h2>
+  <h2 id="quick-start">Quick Start</h2><hr/>
   <h4>
     1. Add <em>avaje-jex</em> dependencies.
   </h4>
@@ -82,7 +82,7 @@
         .start();
 </pre>
 
-      <h2 id="avaje-http">Quick Start with <a href="https://avaje.io/http/">Avaje Http</a></h2>
+      <h2 id="avaje-http">Quick Start with <a href="https://avaje.io/http/">Avaje Http</a></h2><hr/>
       <p>If you find yourself pining for the JAX-RS style of controllers, you can have avaje-http generate jex adapters
         for your annotated classes.</p>
 
@@ -177,7 +177,7 @@
                 }
               }</pre>
 
-  <h2 id="handlers">Handling Requests</h2>
+  <h2 id="handlers">Handling Requests</h2><hr/>
   <p>
     With Jex, there are three main handler types: endpoint-handlers, filters, and exception-handlers.
 
@@ -481,7 +481,7 @@
     user.
   </p>
 
-  <h2 id="access">Access Management</h3>
+  <h2 id="access">Access Management</h3><hr/>
     <p>
       When registering a route, you can specify security roles that can be accessed from within a request.
     </p>
@@ -513,7 +513,7 @@
     }
   </pre>
 
-    <h2 id="json">Json Content</h2>
+    <h2 id="json">Json Content</h2><hr/>
     <p>
       Jex has a <a
         href="https://javadoc.io/doc/io.avaje/avaje-jex/latest/io.avaje.jex/io/avaje/jex/spi/JsonService.html"><code>JsonService</code></a>
@@ -542,7 +542,7 @@
             });
   </pre>
 
-    <h2 id="sse">Server Sent Events</h2>
+    <h2 id="sse">Server Sent Events</h2><hr/>
     <p>
       You can use <em>app.sse()</em> to create an SSE handler.
     </p>
@@ -568,7 +568,7 @@
             client.keepAlive(); // handler thread is blocked
       });
     </pre>
-    <h2 id="static">Static Resources</h2>
+    <h2 id="static">Static Resources</h2><hr/>
     <p>
       There is a separate module that allows you to serve static resources from the classpath or
       filesystem.
@@ -633,7 +633,7 @@
       </table>
     </details>
 
-    <h2 id="config">Server Configuration</h2>
+    <h2 id="config">Server Configuration</h2><hr/>
     <p>
       Below are the available configuration options for the Jex server:
     </p>
@@ -690,7 +690,7 @@
       </tr>
     </table>
 
-    <h2 id="ssl">Configuring Https</h2>
+    <h2 id="ssl">Configuring Https</h2><hr/>
     <p>
       The underlying HttpsServer can be configured using a <code>HttpsConfigurator</code> instance to provide SSL termination.
       The below example demonstrates how to configure a <code>HttpsConfigurator</code> with an <code>SSLContext</code>.
@@ -731,7 +731,7 @@
         }
       </pre>
 
-    <h2 id="alternate">Alternate HttpServer Implementations</h2>
+    <h2 id="alternate">Alternate HttpServer Implementations</h2><hr/>
 
     <p>The JDK provides an SPI to swap the underlying <code>HttpServer</code>, so you can easily use jex as a wrapper for
       alternate implementations by adding them as a dependency.</p>

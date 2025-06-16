@@ -1,4 +1,4 @@
-<h2 id="roles">Roles</h2>
+<h2 id="roles">Roles</h2><hr/>
 <p>
   We can optionally add declarative security role checking for Javalin and Jex.
 </p>
@@ -16,7 +16,7 @@ class CustomerController  {
   }
 </pre>
 
-<h2 id="roles-javalin">Javalin Roles</h2>
+<h2 id="roles-javalin">Javalin Roles</h2><hr/>
 <p>
   Example reference <a target="_blank" href="https://github.com/avaje/avaje-http/blob/master/tests/test-javalin/src/main/java/org/example/myapp/web/HelloController.java#L58">test-javalin - HelloController</a>
 </p>
@@ -98,7 +98,7 @@ Javalin app = Javalin.create(config -> {
 
 
 
-<h2 id="roles-jex">Jex Roles</h2>
+<h2 id="roles-jex">Jex Roles</h2><hr/>
 <p>
   Example reference <a target="_blank" href="https://github.com/avaje/avaje-http/blob/master/tests/test-jex/src/main/java/org/example/web/HelloController.java#L33">test-jex - HelloController</a>
 </p>

@@ -1,5 +1,5 @@
 
-<h2 id="bean-validation">Bean validation</h2>
+<h2 id="bean-validation">Bean validation</h2><hr/>
 <p>
   Bean validation is done through through the validator interface. It can validate a request body and/or Form Bean/BeanParam
 </p>

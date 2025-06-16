@@ -1,5 +1,5 @@
 
-<h2 id="spring">Spring DI</h2>
+<h2 id="spring">Spring DI</h2><hr/>
 
 <h4>@Factory + @Bean</h4>
 <p>
@@ -113,7 +113,7 @@
 </table>
 
 
-<h2 id=value>Why we don't have @Value/Refreshable Scopes</h2>
+<h2 id=value>Why we don't have @Value/Refreshable Scopes</h2><hr/>
 <p>
   Both Spring and Micronaut have a <code>@Value</code> and by implication, they have chosen to combine "external configuration" in with "dependency injection".
   With avaje-inject a design decision was made to keep these two ideas separate.

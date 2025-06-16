@@ -1,4 +1,4 @@
-<h2 id="path">@Path</h2>
+<h2 id="path">@Path</h2><hr/>
 <p>
   <code>@Path</code> is put on the controller class. The path is prepended to the paths
   specified by <code>@Get</code>, <code>@Post</code> etc.
@@ -92,7 +92,7 @@ class CustomerController {
 }
 </pre>
 
-<h2 id="path-parameters">Path parameters</h2>
+<h2 id="path-parameters">Path parameters</h2><hr/>
 <p>
   Path parameters start with <code>{</code> and end with <code>}</code>.
 </p>
@@ -134,7 +134,7 @@ List<|Bazz> findBazz(@PathParam("id") long id, @PathParam("startDate") LocalDate
 </pre>
 
 
-<h2 id="matrix-parameters">Matrix parameters</h2>
+<h2 id="matrix-parameters">Matrix parameters</h2><hr/>
 <p>
   Matrix parameters are optional sub-parameters that relate to a specific segment of the path.
   They are an alternative to using query parameters when you have optional parameters
@@ -196,7 +196,7 @@ List<|Product> products(@PathParam("type") String type, @MatrixParam("category")
 }
 </pre>
 
-<h2 id="query-parameters">@QueryParam</h2>
+<h2 id="query-parameters">@QueryParam</h2><hr/>
 <p>
   Explicitly specify query parameters using <code>@QueryParam</code>.
 </p>

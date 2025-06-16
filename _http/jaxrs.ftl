@@ -1,5 +1,5 @@
 
-<h2 id="jaxrs">JAX-RS</h2>
+<h2 id="jaxrs">JAX-RS</h2><hr/>
 <p>
   Why not use the standard JAX-RS annotations?
 </p>

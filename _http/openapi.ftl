@@ -1,5 +1,5 @@
 
-<h2 id="openapi">OpenAPI</h2>
+<h2 id="openapi">OpenAPI</h2><hr/>
 <p>
   An OpenAPI description of the API is always generated.
 </p>
