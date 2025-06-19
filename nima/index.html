@@ -1,7 +1,8 @@
 <html>
+
 <head>
   <meta name="layout" content="_layout/base-nima.html" />
-  <meta name="bread1" content="jsonb" href="/nima/" />
+  <meta name="bread1" content="nima" href="/nima/" />
   <#assign index="active">
 </head>
 
@@ -34,14 +35,13 @@
     A combination of Helidon SE Webserver and Avaje libraries, includes:
   </p>
   <ul>
-    <li>Helidon 4 SE WebServer (Uses Virtual Threads)</li>
-    <li>avaje-inject - Dependency injection using source code generation via annotation processing</li>
-    <li>avaje-http - Controllers generated as source code using annotation processing</li>
-    <li>avaje-jsonb - JSON adapters generated as source code using annotation processing</li>
-    <li>avaje-validator - JSR validation generated as source code using annotation processing</li>
-    <li>avaje-config - External configuration</li>
+    <li><a href="https://helidon.io/#se">Helidon SE</a> - High performance webserver</li>
+    <li><a href="/inject/">avaje-inject</a> - Dependency injection</li>
+    <li><a href="/http/">avaje-http</a> - JAX-RS style controller generation</li>
+    <li><a href="/jsonb/">avaje-jsonb</a> - JSON adapter generation</li>
+    <li><a href="/validator/">avaje-validator</a> - Bean validation</li>
+    <li><a href="/config/">avaje-config</a> - External configuration</li>
   </ul>
-
 
   <h2 id="maven">Maven dependencies</h2>
   <h4>1. Add <em>avaje-nima</em> dependencies</h4>
@@ -62,29 +62,8 @@
   </pre>
 
   <h4>2. Add the annotation processor</h4>
-  <pre content="xml">
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.14.0</version>
-          <configuration>
-            <!-- Annotation processors -->
-            <annotationProcessorPaths>
-              <path>
-                <groupId>io.avaje</groupId>
-                <artifactId>avaje-nima-generator</artifactId>
-                <version>${avaje-nima.version}</version>
-              </path>
-            </annotationProcessorPaths>
-          </configuration>
-        </plugin>
-      </plugins>
-    </build>
-  </pre>
   <p>
-    Note the <code>avaje-nima-generator</code> is actually a composite of:
+    <code>avaje-nima-generator</code> is a composite of:
   </p>
   <ul>
     <li>avaje-http-helidon-generator - for the route adapter</li>
@@ -96,12 +75,30 @@
     <li>jstachio-apt - for mustache template rendering</li>
     <li>avaje-http-client-generator - for test client generation</li>
   </ul>
+  <pre content="xml">
+  <!-- Annotation processors -->
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-nima-generator</artifactId>
+    <version>${avaje.nima.version}</version>
+    <scope>provided</scope>
+    <optional>true</optional>
+  </dependency>
+  </pre>
 
+  <h4>2a. JDK 23+</h4>
+
+  <p>In JDK 23+, annotation processors are disabled by default, so we need to add a compiler property to re-enable.</p>
+
+  <pre content="xml">
+  <properties>
+    <maven.compiler.proc>full</maven.compiler.proc>
+  </properties>
+  </pre>
 
   <h2 id="firstController">Controller</h2>
   <p>
-    Create a package (e.g. <code>org.example.web</code>) and create you first
-    controller in the package.
+    Create a controller and annotate it with http-api annotations.
   </p>
 
   <pre content="java">
@@ -127,78 +124,17 @@
 
       @Json
       public record HelloBean(int id, String name) {
-
       }
     }
   </pre>
 
-  <h4>Generated code</h4>
+
+  <h2 id="main"><em>Nima</em> Class</h2>
   <p>
-    After compiling HelloController we should see in <code>target/generated-sources/annotations</code>:
-  </p>
-  <ul>
-    <li><code>HelloController$DI</code> - which performs the dependency injection wiring of the controller</li>
-    <li><code>HelloController$Route</code> - which registers the controller routes with Helidon and adapts the
-      Helidon request and response to our controller code</li>
-    <li><code>HelloController$Route$DI</code> - the dependency injection for the routes</li>
-    <li><code>HelloController$HelloBeanJsonAdapter</code> - the JSON adapter for HelloBean</li>
-  </ul>
-
-  <h4>Generated test code</h4>
-  <p>
-    And for test purposes in <code>target/generated-test-sources/test-annotations</code>
-    a couple of things are generated for us:
-  </p>
-  <ul>
-    <li><code>HelloControllerTestAPI</code> - a test client we can use to test the controller</li>
-    <li><code>HelloControllerTestAPIHttpClient</code> - the test client implementation</li>
-  </ul>
-
-  <h4>Test client - HelloControllerTestAPI</h4>
-  <p>
-    We can use the generated test client to create a component test, and test our controller.
-    The name of the generated test clients is: <code>{controllerName}</code> + <code>TestAPI</code>.
-  </p>
-
-  <h2 id="firstControllerTest">Controller component test</h2>
-  <p>
-    Create a test class called <code>HelloControllerTest</code> to test the controller.
-  </p>
-
-  <pre content="java">
-    package org.example.web;
-
-    import io.avaje.inject.test.InjectTest;
-    import jakarta.inject.Inject;
-    import org.junit.jupiter.api.Test;
-
-    import java.net.http.HttpResponse;
-
-    import static org.assertj.core.api.Assertions.assertThat;
-
-    @InjectTest
-    class HelloControllerTest {
-
-      @Inject HelloControllerTestAPI client;
-
-      @Test
-      void hello() {
-
-        HttpResponse<|String> res = client.hello();
-        assertThat(res.statusCode()).isEqualTo(200);
-        assertThat(res.body()).isEqualTo("hello world");
-      }
-    }
-  </pre>
-  <ul>
-    <li>Use <code>@InjectTest</code> for a DI component test which can wire dependencies</li>
-    <li>Use <code>@Inject HelloControllerTestAPI client</code> to wire the test http client. The webserver will
-    start on a random port and be available for this test.</li>
-  </ul>
-
-  <h2 id="main">Main method</h2>
-  <p>
-    Create a main method to run the application.
+    The <em>Nima</em> class will start a <em>BeanScope</em>, register generated controller routes, and start the helidon webserver.
+    <br/><br/>
+    The <em>Nima</em> class will search your <em>BeanScope</em> for a <em>WebServerConfig.Builder</em>, if you provide one in your
+    </em>BeanScope</em> it will be used to configure the webserver.
   </p>
   <pre content="java">
     package org.example;
@@ -237,13 +173,72 @@
     {"id":97,"name":"Hello JSON"}
   </pre>
 
+  <h4>Generated code</h4>
+  <p>
+    After compiling, we should see in <code>target/generated-sources/annotations</code>:
+  </p>
+  <ul>
+    <li><code>HelloController$DI</code> - which performs the dependency injection wiring of the controller</li>
+    <li><code>HelloController$Route</code> - which registers the controller routes with Helidon and adapts the
+      Helidon request and response to the controller code</li>
+    <li><code>HelloController$Route$DI</code> - the dependency injection for the routes</li>
+    <li><code>HelloController$HelloBeanJsonAdapter</code> - the JSON adapter for HelloBean</li>
+  </ul>
+
+  <h4>Generated test code</h4>
+  <p>
+    In <code>target/generated-test-sources/test-annotations</code>
+    useful testing classes are generated for us:
+  </p>
+  <ul>
+    <li><code>HelloControllerTestAPI</code> - a test client inteface to test the controller</li>
+    <li><code>HelloControllerTestAPIHttpClient</code> - the test client implementation</li>
+  </ul>
+
+  <h2 id="firstControllerTest">Controller component test</h2>
+  <p>
+    Use the generated test client to create a component test that tests our controller.
+    The name of the generated test clients is: <code>{controllerName}</code> + <code>TestAPI</code>.
+  </p>
+
+  <pre content="java">
+    package org.example.web;
+
+    import io.avaje.inject.test.InjectTest;
+    import jakarta.inject.Inject;
+    import org.junit.jupiter.api.Test;
+
+    import java.net.http.HttpResponse;
+
+    import static org.assertj.core.api.Assertions.assertThat;
+
+    @InjectTest
+    class HelloControllerTest {
+
+      @Inject HelloControllerTestAPI client;
+
+      @Test
+      void hello() {
+
+        HttpResponse<|String> res = client.hello();
+        assertThat(res.statusCode()).isEqualTo(200);
+        assertThat(res.body()).isEqualTo("hello world");
+      }
+    }
+  </pre>
+  <ul>
+    <li>Use <code>@InjectTest</code> to allow the test which to wire dependencies</li>
+    <li>Use <code>@Inject HelloControllerTestAPI client</code> to wire the test http client. The webserver will
+      start on a random port and be available for this test.</li>
+  </ul>
+
   <h2 id="errorHandlers">Error handlers</h2>
   <p>
-    Commonly we want define all the global exception handling in a single exception handler.
-    We can do this by creating a controller than just has <code>@ExceptionHandler</code> methods.
+    Commonly exception handling is done in a dedicated exception handling class.
+    This can be done by creating a controller that has <code>@ExceptionHandler</code> methods.
   </p>
   <p>
-    An example ErrorHandlers controller is:
+    Example error controller:
   </p>
   <pre content="java">
     package org.example.web;
@@ -314,7 +309,6 @@
     @Json
     @RecordBuilder
     public record ErrorResponse(
-
       int statusCode,
       String path,
       UUID traceId,
@@ -379,7 +373,7 @@
     optionally a <code>RoutingResponse</code>.
   </p>
   <p>
-    An example filter that reads a "Caller-Id" request header and rejects the
+    Example filter that reads a "Caller-Id" request header and rejects the
     request if one isn't provided.
   </p>
   <pre content="java">
