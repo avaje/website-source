@@ -1,0 +1,431 @@
+<html>
+
+<head>
+  <meta name="layout" content="_layout/base-nima.html" />
+  <meta name="bread1" content="nima" href="/nima/" />
+  <#assign index="active">
+</head>
+
+<body>
+  <h1 id="overview">
+    <span class="logo">Avaje</span>&thinsp;Nima
+  </h1>
+
+  <table style="width: 100%;">
+    <tr>
+      <th>Discord</th>
+      <th>Source</th>
+      <th>API Docs</th>
+      <th>Issues</th>
+      <th>Releases</th>
+    </tr>
+    <tr>
+      <td><a href="https://discord.gg/Qcqf9R27BR">Discord</td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-nima">GitHub</a></td>
+      <td><a target="_blank"
+          href="https://javadoc.io/doc/io.avaje/avaje-nima/latest/io.avaje.nima/io/avaje/nima/package-summary.html">Javadoc</a>
+      </td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-nima/issues">GitHub</a></td>
+      <td><a href="https://github.com/avaje/avaje-nima/releases"><img
+            src="https://img.shields.io/maven-central/v/io.avaje/avaje-nima.svg?label=Maven%20Central"></a></td>
+    </tr>
+  </table>
+
+  <p><br><br>
+    A combination of Helidon SE Webserver and Avaje libraries, includes:
+  </p>
+  <ul>
+    <li><a href="https://helidon.io/#se">Helidon SE</a> - High performance webserver</li>
+    <li><a href="/inject/">avaje-inject</a> - Dependency injection</li>
+    <li><a href="/http/">avaje-http</a> - JAX-RS style controller generation</li>
+    <li><a href="/jsonb/">avaje-jsonb</a> - JSON adapter generation</li>
+    <li><a href="/validator/">avaje-validator</a> - Bean validation</li>
+    <li><a href="/config/">avaje-config</a> - External configuration</li>
+  </ul>
+
+  <h2 id="maven">Maven dependencies</h2>
+  <h4>1. Add <em>avaje-nima</em> dependencies</h4>
+  <pre content="xml">
+    <dependency>
+      <groupId>io.avaje</groupId>
+      <artifactId>avaje-nima</artifactId>
+      <version>${avaje.nima.version}</version>
+    </dependency>
+
+    <!-- test dependency -->
+    <dependency>
+      <groupId>io.avaje</groupId>
+      <artifactId>avaje-nima-test</artifactId>
+      <version>${avaje.nima.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </pre>
+
+  <h4>2. Add the annotation processor</h4>
+  <p>
+    <code>avaje-nima-generator</code> is a composite of:
+  </p>
+  <ul>
+    <li>avaje-http-helidon-generator - for the route adapter</li>
+    <li>avaje-inject-generator - for dependency injection</li>
+    <li>avaje-jsonb-generator - for json adapters</li>
+    <li>avaje-validator-generator - for bean validation</li>
+    <li>avaje-record-builder - for record builders</li>
+    <li>avaje-spi-service - for automatic service generation</li>
+    <li>jstachio-apt - for mustache template rendering</li>
+    <li>avaje-http-client-generator - for test client generation</li>
+  </ul>
+  <pre content="xml">
+  <!-- Annotation processors -->
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-nima-generator</artifactId>
+    <version>${avaje.nima.version}</version>
+    <scope>provided</scope>
+    <optional>true</optional>
+  </dependency>
+  </pre>
+
+  <h4>2a. JDK 23+</h4>
+
+  <p>In JDK 23+, annotation processors are disabled by default, so we need to add a compiler property to re-enable.</p>
+
+  <pre content="xml">
+  <properties>
+    <maven.compiler.proc>full</maven.compiler.proc>
+  </properties>
+  </pre>
+
+  <h2 id="firstController">Controller</h2>
+  <p>
+    Create a controller and annotate it with http-api annotations.
+  </p>
+
+  <pre content="java">
+    package org.example.web;
+
+    import io.avaje.http.api.*;
+    import io.avaje.inject.*;
+    import io.avaje.jsonb.Json;
+
+    @Controller
+    public class HelloController {
+
+      @Produces("text/plain")
+      @Get("/")
+      String hello() {
+        return "hello world";
+      }
+
+      @Get("/json")
+      HelloBean one() {
+        return new HelloBean(97, "Hello JSON");
+      }
+
+      @Json
+      public record HelloBean(int id, String name) {
+      }
+    }
+  </pre>
+
+
+  <h2 id="main"><em>Nima</em> Class</h2>
+  <p>
+    The <em>Nima</em> class will start a <em>BeanScope</em>, register generated controller routes, and start the helidon webserver.
+    <br/><br/>
+    The <em>Nima</em> class will search your <em>BeanScope</em> for a <em>WebServerConfig.Builder</em>, if you provide one in your
+    </em>BeanScope</em> it will be used to configure the webserver.
+  </p>
+  <pre content="java">
+    package org.example;
+
+    import io.avaje.nima.Nima;
+
+    public class Main {
+
+      public static void main(String[] args) {
+
+        var webServer = Nima.builder()
+          .port(8080)
+          .build();
+
+        webServer.start();
+      }
+    }
+  </pre>
+  <p>
+    Now you can run the application main method,
+  </p>
+  <pre content="sh">
+21:23:37.951 [main] INFO  io.avaje.inject - Wired beans in 77ms
+21:23:38.001 [features-thread] INFO  i.h.common.features.HelidonFeatures - Helidon SE 4.2.2 features: [Config, Encoding, Media, Metrics, Registry, WebServer]
+21:23:38.005 [start @default (/0.0.0.0:8080)] INFO  io.helidon.webserver.ServerListener - [0x2132b530] http://0.0.0.0:8080 bound for socket '@default'
+21:23:38.008 [main] INFO  io.helidon.webserver.LoomServer - Started all channels in 6 milliseconds. 369 milliseconds since JVM startup. Java 21.0.5+9-LTS-239
+  </pre>
+  <p>
+    ... and perform a quick test using curl.
+  </p>
+  <pre content="sh">
+    curl http://localhost:8080
+    hello world
+
+    curl http://localhost:8080/json
+    {"id":97,"name":"Hello JSON"}
+  </pre>
+
+  <h4>Generated code</h4>
+  <p>
+    After compiling, we should see in <code>target/generated-sources/annotations</code>:
+  </p>
+  <ul>
+    <li><code>HelloController$DI</code> - which performs the dependency injection wiring of the controller</li>
+    <li><code>HelloController$Route</code> - which registers the controller routes with Helidon and adapts the
+      Helidon request and response to the controller code</li>
+    <li><code>HelloController$Route$DI</code> - the dependency injection for the routes</li>
+    <li><code>HelloController$HelloBeanJsonAdapter</code> - the JSON adapter for HelloBean</li>
+  </ul>
+
+  <h4>Generated test code</h4>
+  <p>
+    In <code>target/generated-test-sources/test-annotations</code>
+    useful testing classes are generated for us:
+  </p>
+  <ul>
+    <li><code>HelloControllerTestAPI</code> - a test client inteface to test the controller</li>
+    <li><code>HelloControllerTestAPIHttpClient</code> - the test client implementation</li>
+  </ul>
+
+  <h2 id="firstControllerTest">Controller component test</h2>
+  <p>
+    Use the generated test client to create a component test that tests our controller.
+    The name of the generated test clients is: <code>{controllerName}</code> + <code>TestAPI</code>.
+  </p>
+
+  <pre content="java">
+    package org.example.web;
+
+    import io.avaje.inject.test.InjectTest;
+    import jakarta.inject.Inject;
+    import org.junit.jupiter.api.Test;
+
+    import java.net.http.HttpResponse;
+
+    import static org.assertj.core.api.Assertions.assertThat;
+
+    @InjectTest
+    class HelloControllerTest {
+
+      @Inject HelloControllerTestAPI client;
+
+      @Test
+      void hello() {
+
+        HttpResponse<|String> res = client.hello();
+        assertThat(res.statusCode()).isEqualTo(200);
+        assertThat(res.body()).isEqualTo("hello world");
+      }
+    }
+  </pre>
+  <ul>
+    <li>Use <code>@InjectTest</code> to allow the test which to wire dependencies</li>
+    <li>Use <code>@Inject HelloControllerTestAPI client</code> to wire the test http client. The webserver will
+      start on a random port and be available for this test.</li>
+  </ul>
+
+  <h2 id="errorHandlers">Error handlers</h2>
+  <p>
+    Commonly exception handling is done in a dedicated exception handling class.
+    This can be done by creating a controller that has <code>@ExceptionHandler</code> methods.
+  </p>
+  <p>
+    Example error controller:
+  </p>
+  <pre content="java">
+    package org.example.web;
+
+    import io.avaje.http.api.Controller;
+    import io.avaje.http.api.ExceptionHandler;
+    import io.avaje.http.api.Produces;
+    import io.helidon.http.BadRequestException;
+    import io.helidon.webserver.http.ServerRequest;
+    import org.slf4j.Logger;
+    import org.slf4j.LoggerFactory;
+
+    import java.util.UUID;
+
+    @Controller
+    final class ErrorHandlers {
+
+      private static final Logger log = LoggerFactory.getLogger(ErrorHandlers.class);
+
+      @Produces(statusCode = 500)
+      @ExceptionHandler
+      ErrorResponse defaultError(Exception ex, ServerRequest req) {
+        var path = path(req);
+        var traceId = log(ex, path);
+        return ErrorResponse.builder()
+          .statusCode(500)
+          .path(path)
+          .traceId(traceId)
+          .message("Unhandled server error")
+          .build();
+      }
+
+      @Produces(statusCode = 400)
+      @ExceptionHandler
+      ErrorResponse badRequest(BadRequestException ex, ServerRequest req) {
+        var path = path(req);
+        var traceId = log(ex, path);
+        return ErrorResponse.builder()
+          .statusCode(400)
+          .path(path)
+          .traceId(traceId)
+          .message("Unhandled server error")
+          .build();
+      }
+
+      private static String path(ServerRequest req) {
+        return req != null && req.path() != null ? req.path().path() : null;
+      }
+
+      private static UUID log(Throwable ex, String path) {
+        UUID traceId = UUID.randomUUID();
+        log.error("Unhandled server error path:{} trace:{}", path, traceId, ex);
+        return traceId;
+      }
+
+    }
+  </pre>
+  <p>
+    With the above example the error response has a JSON payload. The code for the
+    <code>ErrorResponse</code> is:
+  </p>
+  <pre content="java">
+    import io.avaje.jsonb.Json;
+    import io.avaje.recordbuilder.RecordBuilder;
+
+    import java.util.UUID;
+
+    @Json
+    @RecordBuilder
+    public record ErrorResponse(
+      int statusCode,
+      String path,
+      UUID traceId,
+      String message) {
+
+      public static ErrorResponseBuilder builder() {
+        return ErrorResponseBuilder.builder();
+      }
+    }
+  </pre>
+  <details>
+    <summary>Generated Code: (click to expand) </summary>
+    <pre content="java">
+      @Generated("avaje-helidon-generator")
+      @Component
+      public final class ErrorHandlers$Route implements HttpFeature {
+
+        private final ErrorHandlers controller;
+        private final JsonType<|ErrorResponse> errorResponseJsonType;
+
+        public ErrorHandlers$Route(ErrorHandlers controller, Jsonb jsonb) {
+          this.controller = controller;
+          this.errorResponseJsonType = jsonb.type(ErrorResponse.class);
+        }
+
+        @Override
+        public void setup(HttpRouting.Builder routing) {
+          routing.error(Exception.class, this::_defaultError);
+          routing.error(BadRequestException.class, this::_badRequest);
+        }
+
+        private void _defaultError(ServerRequest req, ServerResponse res, Exception ex) {
+          res.status(INTERNAL_SERVER_ERROR_500);
+          var result = controller.defaultError(ex, req);
+          if (result == null) {
+            res.status(NO_CONTENT_204).send();
+          } else {
+            res.headers().contentType(MediaTypes.APPLICATION_JSON);
+            errorResponseJsonType.toJson(result, JsonOutput.of(res));
+          }
+        }
+
+        private void _badRequest(ServerRequest req, ServerResponse res, BadRequestException ex) {
+          res.status(BAD_REQUEST_400);
+          var result = controller.badRequest(ex, req);
+          if (result == null) {
+            res.status(NO_CONTENT_204).send();
+          } else {
+            res.headers().contentType(MediaTypes.APPLICATION_JSON);
+            errorResponseJsonType.toJson(result, JsonOutput.of(res));
+          }
+        }
+
+      }
+    </pre>
+  </details>
+
+  <h2 id="filters">Filters</h2>
+  <p>
+    To add a Filter we can add a controller that has a <code>@Filter</code> method
+    that takes a <code>FilterChain</code>, <code>RoutingRequest</code> and
+    optionally a <code>RoutingResponse</code>.
+  </p>
+  <p>
+    Example filter that reads a "Caller-Id" request header and rejects the
+    request if one isn't provided.
+  </p>
+  <pre content="java">
+    import io.avaje.http.api.Controller;
+    import io.avaje.http.api.Filter;
+    import io.helidon.http.BadRequestException;
+    import io.helidon.http.HeaderName;
+    import io.helidon.http.HeaderNames;
+    import io.helidon.webserver.http.FilterChain;
+    import io.helidon.webserver.http.RoutingRequest;
+    import io.helidon.webserver.http.ServerRequest;
+
+    import java.util.Optional;
+    import java.util.Set;
+
+    @Controller
+    final class CallerIdFilter {
+
+      private static final HeaderName CALLER_ID = HeaderNames.create("Caller-Id");
+
+      private static final Set<String> BYPASS = Set.of("/ping");
+
+      @Filter
+      void filter(FilterChain chain, RoutingRequest req) {
+        var path = path(req);
+        if (BYPASS.contains(path)) {
+          chain.proceed();
+        } else {
+          String callerId = callerId(req).orElseThrow(() -> new BadRequestException("Caller-Id required"));
+          handleCallerMetrics(path, callerId);
+          chain.proceed();
+        }
+      }
+
+      private void handleCallerMetrics(String path, String callerId) {
+        // capture metrics
+      }
+
+      private Optional<String> callerId(RoutingRequest request) {
+        return request.headers().first(CALLER_ID);
+      }
+
+
+      private static String path(ServerRequest req) {
+        return req != null && req.path() != null ? req.path().path() : null;
+      }
+
+    }
+  </pre>
+
+
+  <p><br><br><br><br><br><br></p>
+</body>
+
+</html>
