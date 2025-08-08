@@ -653,6 +653,21 @@ public class PreferredEmailSender implements EmailServer {
   ...
 </pre>
 
+<h2 id="priority">@Priority</h2>
+<p>
+  A bean with <code>@Priority</code> allows you to define a custom priority and will only be injected
+  if there are no other higher priority bean candidates.
+</p>
+<h4>Example</h4>
+<pre content="java">
+// Lower priority EmailServer
+// Only used if no other higher priortiy EmailServer is available
+@Priority(5)
+@Singleton
+public class DefaultEmailSender implements EmailServer {
+  ...
+</pre>
+
 <h2 id="secondary">@Secondary</h2>
 <p>
   A bean with <code>@Secondary</code> is deemed to be lowest priority and will only be injected
@@ -712,7 +727,7 @@ class ProtoFactory {
 
 <h3 id="lazy">@Lazy</h3>
 <p>
-  We can use <code>@Lazy</code> on beans/factory methods to defer bean initialization until the annotated bean is requested. Once requested, the same singleton will be returned by all subsequent bean requests.
+  We can use <code>@Lazy</code> on beans/factory methods to defer bean initialization until the bean is requested and one of its method are called. Once requested, the same singleton will be returned by all subsequent bean requests.
 </p>
 
 <pre content="java">
@@ -725,6 +740,15 @@ public class Sloth {
   Sloth(Moss moss) {
     this.moss = moss;
   }
+
+  //no-arg constructor needed to create a generated proxy
+  Sloth() {
+    this.moss = null;
+  }
+
+  public void climb(){
+    //something
+  }
 }
 </pre>
 <p>
@@ -733,7 +757,8 @@ public class Sloth {
 <h4>1. Directly retrieve from the bean scope:</h4>
 <pre content="java">
       final var scope = BeanScope.builder().build();
-      scope.get(Sloth.class); //Sloth is initialized here
+      var sloth = scope.get(Sloth.class);
+      sloth.climb(); //Sloth is initialized here
 </pre>
 
 <h4>2. Use a <em>Provider</em></h4>
