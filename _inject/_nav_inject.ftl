@@ -36,6 +36,7 @@
     <li><a href="#bean">@Bean</a></li>
     <li><a href="#beantypes">Limiting Injectable Types</a></li>
     <li><a href="#primary">@Primary</a></li>
+    <li><a href="#priority">@Priority</a></li>
     <li><a href="#secondary">@Secondary</a></li>
     <li><a href="#prototype">@Prototype</a></li>
     <li><a href="#lazy">@Lazy</a></li>
