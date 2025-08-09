@@ -278,25 +278,22 @@ public class WidgetController$Route implements Plugin {
 
 <h4>Usage with Javalin</h4>
 
-<p>The annotation processor will generate controller classes implementing the javalin <code>Plugin</code> interface, which means we can register them using:
+<p>The annotation processor will generate controller classes implementing the <code>AvajeJavalinPlugin</code> interface (concrete subclass of Javalin <code>Plugin<Void></code>), which means we can register them using:
 </p>
 <pre content="java">
- List<Plugin> routes = ...; //retrieve using a DI framework
+ List<AvajeJavalinPlugin> routes = ...; // retrieve using a DI framework.
 
- Javalin.create(cfg -> routes.forEach(cfg.plugins::register)).start();
+ Javalin.create(cfg -> routes.forEach(cfg::registerPlugin)).start();
 </pre>
 
 <h4>Usage with Jex</h4>
 
-<p>The annotation processor will generate controller classes implementing the javalin <code>Routing.HttpService</code> interface, which means we can register them using:
+<p>The annotation processor will generate controller classes implementing the Jex <code>Routing.HttpService</code> interface, which means we can register them using:
 </p>
 <pre content="java">
-  public class Main {
-    public static void main(String[] args ) {
-      List<Routing.HttpService> services = // Retrieve HttpServices via DI;
-      Jex.create().routing(services).start();
-    }
-  }
+  List<Routing.HttpService> services = ...; // retrieve using a DI framework.
+  
+  Jex.create().routing(services).start();
 </pre>
 
 <h4>Usage with Helidon SE (4.x)</h2><hr/>
