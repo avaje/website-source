@@ -690,46 +690,107 @@
       </tr>
     </table>
 
-    <h2 id="ssl">Configuring Https</h2><hr/>
+    <h2 id="ssl">SSL/TLS Configuration</h2>
+    <hr/>
     <p>
-      The underlying HttpsServer can be configured using a <code>HttpsConfigurator</code> instance to provide SSL termination.
-      The below example demonstrates how to configure a <code>HttpsConfigurator</code> with an <code>SSLContext</code>.
+      Jex provides a streamlined SSL plugin for configuring HTTPS with support for key stores, PEM certificates, and
+      mutual TLS (mTLS).
+      The plugin offers a fluent API that simplifies SSL setup from various sources.
+    </p>
+    <pre content="xml">
+      <dependency>
+        <groupId>io.avaje</groupId>
+        <artifactId>avaje-jex-ssl</artifactId>
+        <version>${avaje.jex.version}</version>
+      </dependency>
+    </pre>
+
+    <h3 id="ssl-plugin">SSL Plugin</h3>
+    <p>
+      The <code>SslPlugin</code> can be configured using either an existing <code>SSLContext</code> or through the
+      fluent configuration API:
     </p>
 
     <pre content="java">
+// Using existing SSLContext
+var sslPlugin = SslPlugin.fromSslContext(existingSslContext);
 
-        char[] passphrase = "changeit".toCharArray();
+// Using fluent configuration
+var sslPlugin = SslPlugin.create(config ->
+    config.keystoreFromClasspath("keystore.p12", "password"));
 
-        try {
-          // Load the keystore
-          KeyStore ks = KeyStore.getInstance("JKS");
-          ks.load(new FileInputStream("keystore.jks"), passphrase);
+Jex.create()
+    .plugin(sslPlugin)
+    .get("/", ctx -> ctx.text("Hello Secure World"))
+    .port(8443)
+    .start();
+</pre>
 
-          // Set up the key manager factory
-          KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
-          kmf.init(ks, passphrase);
+    <h3 id="ssl-keystore">Key Store Configuration</h3>
+    <p>
+      The SSL configuration supports loading key stores from multiple sources with optional separate identity passwords:
+    </p>
 
-          // Set up the trust manager factory
-          TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
-          tmf.init(ks);
+    <pre content="java">
+var sslPlugin = SslPlugin.create(config -> {
+    // From file system
+    config.keystoreFromPath("/path/to/keystore.p12", "keystorePassword", "identityPassword");
 
-          // Set up the SSL context
-          SSLContext sslContext = SSLContext.getInstance("TLS");
-          sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+    // From classpath
+    config.keystoreFromClasspath("ssl/keystore.jks", "password");
 
-          // Create Server
-          var https = new HttpsConfigurator(sslContext);
+    // From input stream
+    config.keystoreFromInputStream(inputStream, "password");
+});
+</pre>
 
-          Jex.create()
-              .get("/", ctx -> ctx.text("Hello World"))
-              .config(c -> c.httpsConfig(https).port(8443))
-              .start();
+    <h3 id="ssl-pem">PEM Certificate Configuration</h3>
+    <p>
+      For PEM-formatted certificates and private keys, the plugin supports various sources and optional private key
+      passwords:
+    </p>
 
-        } catch (Exception e) {
+    <pre content="java">
+var sslPlugin = SslPlugin.create(config -> {
+    // From file system
+    config.pemFromPath("/path/to/cert.pem", "/path/to/private-key.pem", "keyPassword");
 
-          e.printStackTrace();
-        }
-      </pre>
+    // From classpath
+    config.pemFromClasspath("ssl/certificate.pem", "ssl/private-key.pem");
+
+    // From strings (useful for environment variables or external config)
+    config.pemFromString(certPemString, privateKeyPemString);
+
+    // From input streams
+    config.pemFromInputStream(certInputStream, keyInputStream, "password");
+});
+</pre>
+
+    <h3 id="ssl-mtls">Mutual TLS (mTLS) Configuration</h3>
+    <p>
+      For client certificate authentication, configure trust settings using the <code>TrustConfig</code> interface:
+    </p>
+
+    <pre content="java">
+var sslPlugin = SslPlugin.create(config -> {
+    // Configure server identity
+    config.keystoreFromClasspath("server-keystore.p12", "serverPassword");
+
+    // Configure client certificate trust
+    config.withTrustConfig(trust -> {
+        // Trust specific client certificates
+        trust.certificateFromClasspath("client-cert.pem")
+             .certificateFromPath("/path/to/another-client-cert.crt");
+
+        // Or use a trust store
+        trust.trustStoreFromClasspath("truststore.jks", "trustPassword");
+
+        // Mix different certificate formats
+        trust.certificateFromString(pemCertString)
+             .certificateFromInputStream(certInputStream);
+    });
+});
+</pre>
 
     <h2 id="alternate">Alternate HttpServer Implementations</h2><hr/>
 
