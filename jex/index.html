@@ -712,8 +712,7 @@
 
     <h3 id="ssl-plugin">SSL Plugin</h3>
     <p>
-      The <code>SslPlugin</code> can be configured using either an existing <code>SSLContext</code> or through the
-      fluent configuration API:
+      The <code>SslPlugin</code> can be configured using a fluent configuration API:
     </p>
 
     <pre content="java">
@@ -810,12 +809,6 @@ var sslPlugin = SslPlugin.create(config -> {
         <groupId>io.avaje</groupId>
         <artifactId>avaje-jex</artifactId>
         <version>${jex.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-server</artifactId>
-        <version>${jetty.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jetty</groupId>
