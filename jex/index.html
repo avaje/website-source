@@ -669,6 +669,12 @@
         </td>
       </tr>
       <tr>
+        <td><strong><code>httpsConfig(sslContext)</code></strong></td>
+        <td>Enables https with the provided
+          <code><a  href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/net/ssl/SSLContext.html">SSLContext</a></code>.
+        </td>
+      </tr>
+      <tr>
         <td><strong><code>ignoreTrailingSlashes(false)</code></strong></td>
         <td>Configures whether trailing slashes in request URIs should be ignored.</td>
       </tr>
@@ -693,9 +699,8 @@
     <h2 id="ssl">SSL/TLS Configuration</h2>
     <hr/>
     <p>
-      Jex provides a streamlined SSL plugin for configuring HTTPS with support for key stores, PEM certificates, and
+      Jex provides a streamlined SSL plugin for configuring HTTPS with support for loading key stores, PEM certificates, and
       mutual TLS (mTLS).
-      The plugin offers a fluent API that simplifies SSL setup from various sources.
     </p>
     <pre content="xml">
       <dependency>
@@ -712,10 +717,6 @@
     </p>
 
     <pre content="java">
-// Using existing SSLContext
-var sslPlugin = SslPlugin.fromSslContext(existingSslContext);
-
-// Using fluent configuration
 var sslPlugin = SslPlugin.create(config ->
     config.keystoreFromClasspath("keystore.p12", "password"));
 
