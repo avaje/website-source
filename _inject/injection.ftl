@@ -2,9 +2,8 @@
 
 <h3 id="singleton">@Singleton</h3>
 <p>
-  Put <code>@Singleton</code> on beans that we want dependency injection on.
-  These are beans that are created ("wired") by dependency injection and put into the scope.
-  They are then available to be injected into other beans.
+  Put <code>@Singleton</code> on beans that to include them in dependency injection.
+  These are beans that are created ("wired") by dependency injection and put into the scope, available to be injected into other beans.
 </p>
 <pre content="java">
 @Singleton
@@ -15,22 +14,17 @@ public class CoffeeMaker {
 <h3 id="component">@Component</h3>
 <p>
   <code>@Component</code> is similar to JSR-330 <code>@Singleton</code> except it is <em>avaje-inject</em>
-  specific. In general, we prefer to use the JSR-330 standard annotations but there are a couple of cases
-  where would choose to use the avaje-inject specific <code>@Component</code> instead.
+  specific. It's preferable to use the JSR-330 standard annotations, but there are a few cases
+  where <code>@Component</code> has an advantage.
 </p>
 <ul>
-  <li>A project is using another DI library (for example, Guice) to process the standard
+  <li>A project is using another DI library (for example, Guice) that processes the standard
     <code>@Singleton</code> and we want avaje-inject to co-exist but ignore anything annotated with
     <code>@Singleton</code>.
   </li>
   <li>
-    A project wants to work with <em>both</em> <code>javax.inject</code> and <code>jakarta.inject</code>
-  </li>
+    A project wants to work with <em>both</em> <code>javax.inject</code> and <code>jakarta.inject</code> for some reason.
 </ul>
-<p>
-  In these cases we may choose to use the <em>avaje-inject</em> specific <code>@Component</code> rather than
-  JSR-330 <code>@Singleton</code>.
-</p>
 <pre content="java">
 @Component
 public class CoffeeMaker {
@@ -45,15 +39,11 @@ public class CoffeeMaker {
 <pre content="java">
 @InjectModule(ignoreSingleton = true)
 </pre>
-<p>
-  With <code>ignoreSingleton = true</code> avaje-inject will ignore <code>@Singleton</code> with the
-  view that some other DI library is also being used and is handling those components.
-</p>
 
 <h3 id="import">@Component.Import</h3>
 <p>
   Put <code>@Component.Import</code> on a class/package-info to create dependency injection on external classes (e.g. mvn dependencies).
-  It has the same effect as if the bean was directly annotated by <code>@Component</code>.
+  It has the same effect as if the bean was directly annotated by <code>@Singleton</code> or <code>@Component</code>.
 </p>
 <pre content="java">
 @Component.Import(TeaMaker.class)
@@ -64,14 +54,15 @@ public class CoffeeMaker {
 
 <h3 id="inject">@Inject</h3>
 <p>
-  Put <code>@Inject</code> on the constructor that should be used for constructor dependency injection.
-</p>
-<p>
-  If we want to use field injection put the <code>@Inject</code> on the field. The field must not
-  be <code>private</code> and must not be <code>final</code> for field injection.
+  Put <code>@Inject</code> on the constructor/field used for constructor dependency injection.
 </p>
 
 <h3 id="constructor">Constructor Injection</h3>
+
+<p>
+  The below CoffeeMaker uses constructor injection. Both a Pump and Ginder will be injected into the
+  constructor when the bean scope creates the CoffeeMaker.
+</p>
 <pre content="java">
 @Singleton
 public class CoffeeMaker {
@@ -85,16 +76,16 @@ public class CoffeeMaker {
     this.pump = pump;
     this.grinder = grinder;
   }
+
+  public CoffeeMaker() {
+    //other constructor
+  }
   ...
 </pre>
-<p>
-  The above CoffeeMaker is using constructor injection. Both a Pump and Ginder will be injected into the
-  constructor when the DI creates (or "wires") the CoffeeMaker.
-</p>
 
 <h4>Single Constructors</h4>
 <p>
-  If there is only one constructor, <b>we don't need
+  If there is only one constructor, <b>you don't need
   to specify <code>@Inject</code></b>. This includes records and kotlin data classes.
 </p>
 
@@ -138,27 +129,26 @@ public class CoffeeMaker {
 </p>
 <h4>Constructor injection preferred</h4>
 <p>
-  Generally there is a preference to use constructor injection over field injection as constructor
-  injection:
+  Constructor injection has many advantages over field injection as it:
 </p>
 <ul>
-  <li>Promotes immutability / use of final fields / proper initialisation</li>
+  <li>Promotes immutability / use of final fields / proper initialization</li>
   <li>Communicates required dependencies at compile time. Helps when dependencies
     change to keep test code in line.</li>
   <li>Helps identify when there are too many dependencies. Too many constructor
     arguments is a more obvious code smell compared to field injection.
-    Promotes single responsibility principal.</li>
+    Promotes single responsibility principle.</li>
 </ul>
 
 <h4>Circular dependencies</h4>
 <p>
-  We use field injection or method injection to handle <a href="#circular">circular dependencies</a>.
+  Field/method injection is effective to solve <a href="#circular">circular dependencies</a>.
   See <a href="#circular">below</a> for more details.
 </p>
 
 <h4>Kotlin field injection</h4>
 <p>
-  For Kotlin we can consider using <em>lateinit</em> on the property with field injection.
+  For Kotlin, consider using <em>lateinit</em> on the property with field injection.
 </p>
 <pre content="kotlin">
 @Singleton
@@ -193,7 +183,7 @@ public class CoffeeMaker {
 
 <h3 id="mixed">Mixed constructor, field and method injection</h3>
 <p>
-  We are allowed to mix constructor, field and method injection. In the below example the Grinder
+  Classes can mix constructor, field and method injection. In the below example, the Grinder
   is injected into the constructor and the Pump is injected by field injection.
 </p>
 
@@ -213,11 +203,11 @@ public class CoffeeMaker {
 
 <h3 id="circular">Circular Dependencies</h3>
 <p>
-  When we have a circular dependency then we need to use either <a href="#field">field injection</a>
+  Resolving circular dependencies requires either <a href="#field">field injection</a>
   or <a href="#method">method injection</a> on one of the dependencies.
 </p>
 <p>
-  For example, lets say we have A and B where A depends on B and B depends on A. In this case
+  Say we have A and B where A depends on B and B depends on A. In this case
   we can't use constructor injection for both A and B like:
 </p>
 <pre content="java">
@@ -244,10 +234,6 @@ class B {
   cannot determine the order in which to construct the beans. <em>avaje-inject</em> will
   detect this and product a compilation error outlining the beans involved and ask us
   to change to use field injection for one of the dependencies.
-</p>
-<p>
-  We cannot use constructor injection for both A and B, instead we must use
-  either field/method injection on either A or B like:
 </p>
 <pre content="java">
 @Singleton
@@ -325,7 +311,7 @@ class Pump {
 
 <h3 id="nullable">@Nullable</h3>
 <p>
-  As an alternative to Optional we can use <code>@Nullable</code> to indicate that a dependency
+  As an alternative to Optional, <code>@Nullable</code> is used to indicate that a dependency
   is optional / can be null. Any <code>@Nullable</code> annotation can be used, it does not
   matter which package the annotation is in.
 </p>
@@ -351,6 +337,13 @@ class Pump {
   }
 }
 </pre>
+
+<h5>Spring DI Note</h5>
+<p>
+  Spring users will be familiar with the use of <code>@Autowired(required=false)</code>
+  for wiring optional dependencies. With <em>avaje-inject</em>, the equivalent is to use <code>Optional</code>
+  or <code>@Nullable</code> to inject optional dependencies.
+</p>
 
 <h3 id="external">@External</h3>
 <p>
@@ -430,9 +423,11 @@ class FooProvider implements Provider<|Foo> {
   }
 }
 </pre>
+
 <p>
-  We can then have another bean that has <code>Provider&lt;T&gt;</code> injected into it.
-  It calls <code>get()</code> to get an instance to then use.
+  When using <code>Provider&lt;T&gt;</code> <code>get()</code> a new instance is returned each time we
+  call <code>get()</code>. This is effectively the
+  same as <em>Prototype scope</em>.
 </p>
 
 <pre content="java">
@@ -455,26 +450,40 @@ class UseFoo  {
 </pre>
 
 <p>
-  When using <code>Provider&lt;T&gt;</code> <code>get()</code> we can get a new instance each time we
-  call <code>get()</code>. In the above example, the <code>FooProvider.get()</code> method
-  returns a new instance each time <code>get()</code> is called. This is effectively the
-  same as <em>Prototype scope</em>.
-</p>
-<p>
   An alternative to implementing the <code>Provider&lt;T&gt;</code> interface is
   to instead use <code><a href="#factory">@Factory</a></code> and <code><a href="#bean">@Bean</a></code>
-  as can be more flexible and convenient.
+  which can be more flexible and convenient.
 </p>
 
+<h3 id="beantypes">Limiting Injectable Types</h3>
+<p>
+  When you annotate a bean with <code>@Singleton</code> or create via a </code>@Factory</code> class, the bean class and all interfaces it implements and super classes it extends become injectable.
+<br>For cases where this is not desired, use <code>@BeanTypes</code> to limit the types available to inject a particular bean.
+</p>
+<pre content="java">
+@Singleton
+@BeanTypes(Appliance.class)
+public class CoffeeMaker implements Machine, Appliance {
+  ...
+</pre>
+
+<pre content="java">
+  var scope = BeanScope.builder().build();
+  //we can only retrieve the bean as an instance of Appliance
+  scope.get(Appliance.class);
+  //throws not found exception
+  scope.get(CoffeeMaker.class);
+</pre>
+
 <h2 id="factory">@Factory</h2>
+<hr/>
 <p>
   Factory beans allow us to programmatically creating a bean. Often the logic is based
   on external configuration, environment variables, system properties etc.
 </p>
 <p>
-  We annotate a class with <code>@Factory</code> to tell us that it contains methods
-  that create beans. The factory class can itself have dependencies and the methods
-  can also have dependencies.
+  Annotate a class with <code>@Factory</code> to tell the processor that it contains methods
+  that creates beans.
 </p>
 <p>
   <em>@Factory</em> <em>@Bean</em> are equivalent to Spring DI <em>@Configuration</em> <em>@Bean</em>
@@ -484,7 +493,7 @@ class UseFoo  {
 
 <h3 id="bean">@Bean</h3>
 <p>
-  We annotate methods on the factory class that create a bean with <code>@Bean</code>.
+  Annotate methods on the factory class that creates a bean with <code>@Bean</code>.
   These methods can have dependencies and will execute in the appropriate order
   depending on the dependencies they require.
 </p>
@@ -522,8 +531,8 @@ class Configuration {
 </pre>
 <h3 id="beanclose">@Bean autocloseable</h3>
 <p>
-  The avaje annotation processor reads the bean method return types to detect if the bean is an instance of <code>Closeable</code> or <code>AutoCloseable</code>.
-  In the case where you are wiring an interface that doesn't implement these types, but the concrete class implements, we can specify <code>autocloseable</code> to inform the processor.
+  The avaje annotation processor reads the return types to detect if the bean is an instance of <code>Closeable</code> or <code>AutoCloseable</code>.
+  In the case where you are wiring an interface that doesn't implement these types, but the concrete class implements, specify <code>autocloseable</code> to inform the processor.
  </p>
 
 <pre content="java">
@@ -538,9 +547,9 @@ class Configuration {
 </pre>
 <h3 id="initMethod">@Bean initMethod & destroyMethod</h3>
 <p>
-  With <code>@Bean</code> we can specify an <code>initMethod</code>
-  which will be executed on startup like <code>@PostConstruct</code>.
-  Similarly a <code>destroyMethod</code> which execute on shutdown like <code>@PreDestroy</code>.
+  With <code>@Bean</code>, <code>initMethod</code> is used to register a method on the type
+  which will be executed on startup similar to <code>@PostConstruct</code>.
+  Similarly a <code>destroyMethod</code> can be specified to execute on shutdown like <code>@PreDestroy</code>.
 </p>
 
 <h4>Example</h4>
@@ -570,14 +579,12 @@ class CoffeeMaker {
 </pre>
 <h3 id="optionalBean">Optional @Bean</h3>
 <p>
-  We can use <code>Optional&lt;T&gt;</code> to indicate that the method produces
+  Use <code>Optional&lt;T&gt;</code> to indicate that the method produces
   an optional dependency.
 </p>
 <p>
-  Often the dependency is only provided based on external configuration
-  a bit like a feature toggle / config toggle. For example, we might do
-  this in a CI/CD environment until such time that the dependency is
-  always "ON" in all environments and then we change to make the dependency
+  Often, a dependency is only provided based on external configuration.
+  For example, in a CI/CD environment a bean may not be needed, while in a different environment must be wired.
   not optional.
 </p>
 
@@ -600,109 +607,9 @@ class Configuration {
 
 }
 </pre>
-<h3 id="useOfFactory">Use of @Factory @Bean</h3>
-<p>
-  It is good to use <code>@Factory</code> for all the dependencies we want to
-  create programmatically. Many teams will have a standard location/package they use to
-  put a "configuration factory bean" where all programmatically created dependencies are
-  defined as a general approach.
-</p>
-<p>
-  If we see logic in constructors then we typically would try to move that logic to a
-  factory bean method and keep the constructors simple. Logic in constructors typically
-  makes it harder from a testing perspective.
-</p>
 
-<h2 id="beantypes">Limiting Injectable Types</h2>
-<p>
-  When you annotate a bean with <code>@Singleton</code> or create via a </code>@Factory</code> class, the bean class and all interfaces it implements and super classes it extends become injectable.
-<br>For cases where this is not desired, we can use <code>@BeanTypes</code> to limit the types available to inject a particular bean.
-</p>
-<pre content="java">
-@Singleton
-@BeanTypes(Appliance.class)
-public class CoffeeMaker implements Machine, Appliance {
-  ...
-</pre>
-
-<pre content="java">
-  var scope = BeanScope.builder().build();
-  //we can only retrieve the bean as an instance of Appliance
-  scope.get(Appliance.class);
-  //throws not found exception
-  scope.get(CoffeeMaker.class);
-</pre>
-
-<h2 id="primary">@Primary</h2>
-<p>
-  A bean with <code>@Primary</code> is deemed to be highest priority and will be injected and used
-  when it is available. This is functionally the same as Spring and Micronaut <em>@Primary</em>.
-</p>
-<p>
-  There should only ever be <b>one</b> bean implementation marked as <em>@Primary</em> for
-  a given dependency.
-</p>
-
-<h4>Example</h4>
-<pre content="java">
-// Highest priority EmailServer
-// Used when available (e.g. module in the class path)
-@Primary
-@Singleton
-public class PreferredEmailSender implements EmailServer {
-  ...
-</pre>
-
-<h2 id="priority">@Priority</h2>
-<p>
-  A bean with <code>@Priority</code> allows you to define a custom priority and will only be injected
-  if there are no other higher priority bean candidates.
-</p>
-<h4>Example</h4>
-<pre content="java">
-// Lower priority EmailServer
-// Only used if no other higher priortiy EmailServer is available
-@Priority(5)
-@Singleton
-public class DefaultEmailSender implements EmailServer {
-  ...
-</pre>
-
-<h2 id="secondary">@Secondary</h2>
-<p>
-  A bean with <code>@Secondary</code> is deemed to be lowest priority and will only be injected
-  if there are no other candidates to inject. We use <code>@Secondary</code> to indicate a
-  "default" or "fallback" implementation that will be superseded by any other available implementation.
-</p>
-<p>
-  This is functionally the same as Spring and Micronaut <em>@Secondary</em>.
-</p>
-<h4>Example</h4>
-<pre content="java">
-// Lowest priority EmailServer
-// Only used if no other EmailServer is available
-@Secondary
-@Singleton
-public class DefaultEmailSender implements EmailServer {
-  ...
-</pre>
-
-<h3 id="primary-usage">Use of @Primary and @Secondary</h3>
-<p>
-  <code>@Primary</code> and <code>@Secondary</code> are used when there are
-  multiple candidates to inject. They provide a "priority" to determine which dependency to
-  inject and use when injecting a single implementation and multiple candidates are available
-  to inject.
-</p>
-<p>
-  We typically use <em>@Primary</em> and <em>@Secondary</em> when we are
-  building multi-module applications. We have multiple modules (jars) that provide implementations.
-  We use <em>@Secondary</em> to indicate a "default" or "fallback" implementation to use
-  and we use <em>@Primary</em> to indicate the best implementation to use when it is available.
-  <em>avaje-inject</em> DI will then wire depending on which modules (jars) are included in the classpath.
-</p>
-
-<h3 id="prototype">@Prototype</h3>
+<h2 id="prototype">@Prototype Scoped Beans</h2>
+<hr/>
 <p>When the <em>@Prototype</em> annotation is added to a class/factory bean method, a new instance of the bean will be created each time it is requested or wired.</p>
 
 <pre content="java">
@@ -725,9 +632,20 @@ class ProtoFactory {
 }
 </pre>
 
-<h3 id="lazy">@Lazy</h3>
+<pre content="java">
+@Factory
+void main() {
+  //every time this bean is requested, it is constructed anew.
+  var beans = BeanScope.builder().build();
+  // two separate instances
+  assert beans.get(Proto.class) != beans.get(Proto.class)
+}
+</pre>
+
+<h2 id="lazy">@Lazy Beans</h2>
+<hr/>
 <p>
-  We can use <code>@Lazy</code> on beans/factory methods to defer bean initialization until the bean is requested and one of its method are called. Once requested, the same singleton will be returned by all subsequent bean requests.
+  Place <code>@Lazy</code> on beans/factory methods to defer bean initialization until the bean is requested and one of its method are called. Once requested, the same singleton will be returned by all subsequent bean requests.
 </p>
 
 <pre content="java">
@@ -763,7 +681,7 @@ public class Sloth {
 
 <h4>2. Use a <em>Provider</em></h4>
 
-<p>Lazy providers have the<em>Singleton scope</em>. The same singleton instance will be returned on all requests to <em>Provider#get</em>.</p>
+<p>Lazy providers have the <em>Singleton scope</em>. The same singleton instance will be returned on all requests to <em>Provider#get</em>.</p>
 
 <pre content="java">
 @Singleton
@@ -779,7 +697,80 @@ class UseSloth  {
 
     // get the singleton Sloth instance
     Sloth sloth = slothProvider.get();
+    //same instance returned
+    assert sloth == slothProvider.get();
     ...
   }
 }
 </pre>
+
+<h2 id="priorities">Bean Priority</h2>
+<hr/>
+
+<p>
+  For cases where multiple beans have the same type and qualifier, the following annotations can control the wiring priority.
+</p>
+
+<h3 id="primary">@Primary</h3>
+<p>
+  A bean with <code>@Primary</code> is deemed to be highest priority and will be injected and used over all others.
+</p>
+<p>
+  There should only ever be <b>one</b> bean implementation marked as <em>@Primary</em> for
+  a given dependency.
+</p>
+
+<h4>Example</h4>
+<pre content="java">
+// Highest priority EmailServer
+// Used when available (e.g. module in the class path)
+@Primary
+@Singleton
+public class PreferredEmailSender implements EmailServer {
+  ...
+</pre>
+
+<h3 id="priority">@Priority</h3>
+<p>
+  A bean with <code>@Priority</code> allows you to define a custom priority and will only be injected
+  if there are no other higher priority bean candidates.
+</p>
+<h4>Example</h4>
+<pre content="java">
+// Lower priority EmailServer
+// Only used if no other higher priortiy EmailServer is available
+@Priority(5)
+@Singleton
+public class DefaultEmailSender implements EmailServer {
+  ...
+</pre>
+
+<h3 id="secondary">@Secondary</h3>
+<p>
+  A bean with <code>@Secondary</code> is deemed to be lowest priority and will only be injected
+  if there are no other candidates to inject. <code>@Secondary</code> can be used to indicate a
+  "default" or "fallback" implementation that will be superseded by any other available implementation.
+</p>
+<h4>Example</h4>
+<pre content="java">
+// Lowest priority EmailServer
+// Only used if no other EmailServer is available
+@Secondary
+@Singleton
+public class DefaultEmailSender implements EmailServer {
+  ...
+</pre>
+
+<h3 id="primary-usage">Use of @Primary and @Secondary</h3>
+<p>
+  <code>@Primary</code> and <code>@Secondary</code> are used when there are
+  multiple candidates to inject. They provide a "priority" to determine which dependency to
+  inject and use when injecting a single implementation and multiple candidates are available
+  to inject.
+</p>
+<p>
+  <em>@Primary</em> and <em>@Secondary</em> are typically used when building multi-module applications.
+  With have multiple modules (jars) that provide implementations, <em>@Secondary</em> can indicate a "default" or "fallback" implementation to use
+  and <em>@Primary</em> can indicate the best implementation to use when it is available.
+  <em>avaje-inject</em> DI will then wire depending on which modules (jars) are included in the classpath.
+</p>

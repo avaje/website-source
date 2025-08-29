@@ -2,9 +2,9 @@
 
 <h3 id="named">@Named</h3>
 <p>
-  When we have multiple beans that implement a common interface we can qualify
+  When multiple bean candidates exist, we can qualify
   which instance to use by specifying <code>@Named</code> on the beans and where
-  they are injected. This is a standard part of most Java DI frameworks.
+  they are injected.
 </p>
 <p>
   Qualifier names are case insensitive.
