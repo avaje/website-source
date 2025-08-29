@@ -2,12 +2,10 @@
 
 <h3 id="unit-testing">Unit Testing</h3>
 <p>
-  When we are <em>unit testing</em> we are focused on the
-  thing we want to test (object under test) and it's dependencies.
+  When <em>unit testing</em> we are focused on the object under testing and it's dependencies.
 </p>
 <p>
-  In the test setup, code will create the thing we are testing (object under test)
-  along with it's dependencies.
+  In the test setup, code will create the object under test along with it's dependencies.
 </p>
 
 <h5>Mockito programmatic style</h5>
@@ -57,8 +55,6 @@
   provides a JUnit extension similar to the Mockito one and that uses the Mockito annotations
   <code>@Mock, @Spy, @Captor</code> and also adds <code>@Inject</code>.
 </p>
-
-
 
 
 <h2 id="component-testing">Component Testing</h2><hr/>

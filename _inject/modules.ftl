@@ -12,19 +12,14 @@
 
 <h4>requires - external dependency</h4>
 <p>
-  We use <code>@InjectModule(requires = ...)</code> to specify an external dependency that will
-  be programmatically provided.
+  <code>@InjectModule(requires = ...)</code> can specify an external dependency that will
+  be programmatically provided. This prevents compilation errors when the processor cannot find the dependency at compile-time. See also <a href="#external">@External</a>.
 </p>
 <pre content="java">
 // at compile time, allow injection of MyExternalDependency
 // ... even though it doesn't exist in this module
 @InjectModule(requires = MyExternalDependency.class)
 </pre>
-<p>
-  When compiling the annotation processor checks that dependencies exist or are listed
-  in <code>requires</code> (or <code>requiresPackages)</code> meaning that they are
-  externally supplied dependencies.
-</p>
 <p>
   When creating the BeanScope we provide the externally created dependencies using
   <code>bean()</code>. These external dependencies are then injected where needed.
@@ -57,9 +52,8 @@
 
 <h3 id="multi-module">Multi-module Apps</h3>
 <p>
-  When we are wiring dependencies that span multiple jars/modules then we to provide more
-  control over the order in which the modules are wired. We provide this control
-  by using <code>@InjectModule</code> and the use of <code>provides</code>, and <code>requires</code>
+  When wiring dependencies that span multiple jars/modules, avaje provides control over the order in which the modules are wired.
+  The processor provides this control with <code>@InjectModule</code> and the use of <code>provides</code>, and <code>requires</code>
   or <code>requiresPackages</code>.
 </p>
 
@@ -93,12 +87,7 @@
 </p>
 <p>
   avaje-inject determines the order in which to wire the modules based on <code>provides, requires</code>. In this example
-  it needs to wire the modules in order of: <em>coffee-heater, coffee-pump and then coffee-main</em>.
-</p>
-<p>
-  That is, in a multi-module app avaje-inject creates one BeanScope per module and needs to
-  determine the order in which the modules are wired. It does this using the module <em>provides</em>
-  and <em>requires</em>. As the modules are wired, the beans from any previously wired modules are
+  it needs to wire the modules in order of: <em>coffee-heater, coffee-pump and then coffee-main</em>. As the modules are wired, the beans from any previously wired modules are
   available to the module being wired.
 </p>
 
@@ -176,10 +165,10 @@ These files contain all the metadata for all the modules and plugins provided by
 
 <h4 id="module-provides">provides</h4>
 <p>
-  List the classes that this module provides. Used to order modules.
+  List the classes that this module provides, this is usually determined automatically, but it can be manually overridden to change wiring order.
 </p>
 <pre content="java">
-@InjectModule(name = "feature-toggle", provides=FeatureToggle.class)
+@InjectModule(name = "feature-toggle", provides = FeatureToggle.class)
 </pre>
 
 <h4 id="module-requires">requires</h4>
@@ -187,7 +176,7 @@ These files contain all the metadata for all the modules and plugins provided by
   Defines dependencies that the modules depends on that are provided by another module or manually.
 </p>
 <pre content="java">
-@InjectModule(name = "job-system", requires=FeatureToggle.class)
+@InjectModule(name = "job-system", requires = FeatureToggle.class)
 </pre>
 <p>
   In effect this allows the job system components to depend on <code>FeatureToggle</code> with the expectation that
@@ -207,7 +196,7 @@ These files contain all the metadata for all the modules and plugins provided by
 
 <h4 id="strict-wiring">strictWiring</h4>
 <p>
-   Optimizes multi-module wiring by enforcing wiring checks at compile-time. Will cause the generator to throw a descriptive
+   Optimizes multi-module wiring by enforcing wiring checks at compile-time and generating a preset wiring plan. Will cause the generator to throw a descriptive
    compilation error if all inter-module <code>InjectModule#requires</code> dependencies are not satisfied at compile time.
 </p>
 
@@ -223,8 +212,8 @@ These files contain all the metadata for all the modules and plugins provided by
 </pre>
 
 <p>
-  <em>avaje-inject</em> uses provides, requires, requiresPackages to determine the order in which the modules are created
-  and wired. <em>avaje-inject</em> finds all the modules in the classpath (via Service loader) and then orders the modules
-  based on provides, requires, requiresPackages. In the example above the "feature-toggle" module must be wired first,
-  and then the beans it contains are available when wiring the "job-system".
+  <em>avaje-inject</em> uses provides, requires and requiresPackages to determine the order in which the modules should be created
+  and wired. <em>avaje-inject</em> finds all the modules in the classpath/modulepath (via Service loader) and then orders the modules
+  based on provides, requires, requiresPackages. In the example above the "feature-toggle" module are wired first,
+  and then the beans it contains are then available when wiring the "job-system".
 </p>

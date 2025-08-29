@@ -2,7 +2,8 @@
 
 <h3 id="observes">@Observes/@ObservesAsync</h3>
 <p>
-  Put <code>@Observes/@ObservesAsync</code> on the event parameter of an observer method. An observer method is a non-abstract method of a managed bean class. We can set the priority of the observer using the <em>priority</em> member of the annotation.
+  Put <code>@Observes/@ObservesAsync</code> on the event parameter of an observer method. An observer method is a non-abstract method of a managed bean class.
+  The <em>priority</em> member of the annotations controls the priority of the observer.
 </p>
 
 <pre content="java">

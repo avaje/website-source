@@ -1,4 +1,6 @@
-<h2 id="default-scope">Default Scope</h2>
+<h2 id="scope">Scopes</h2>
+<hr/>
+<h3 id="default-scope">Default Scope</h3>
 <p>
   All beans are instantiated within a <i>scope</i>. Beans annotated with <code>@Singleton</code>
   are in the "default scope".
@@ -20,7 +22,12 @@ public class App {
   in the classpath (i.e. wire all the "default scope" modules in the classpath together into the BeanScope).
 </p>
 
-<h2 id="scope-test-scope">Test scope</h2>
+<h3 id="prototype-scope">Prototype Scope</h3>
+<p>
+  Beans annotated with <code>@Prototype</code> are created on demand when requested. See also: <a href="#prototype">@Prototype</a>.
+</p>
+
+<h3 id="scope-test-scope">Test scope</h3>
 <p>
   Test scope is a special scope used for testing. It effectively provides <em>default dependencies to
   use for all tests</em>.
@@ -29,31 +36,29 @@ public class App {
   Refer to <a href="#test-scope">Testing - Test Scope</a> for more details.
 </p>
 
-
-<h2 id="request-scope">Request Scope - @Controller</h2>
+<h3 id="request-scope">Request Scope - @Controller</h3>
 <p>
   When using <a href="/http">avaje-http</a> we annotate controllers with <code>@Controller</code>.
   <em>avaje-inject</em> will detect when controllers have a request scope dependency and automatically
   make them request scoped.
 </p>
 <p>
-  For the following example, the ContactController has a dependency on Javalin Context. This means this
+  For the following example, the ContactController has a dependency on Jex Context. This means this
   controller must use request scope.
 </p>
 <pre content="java">
 // Automatically becomes request scoped
-//  ... because Javalin Context is a dependency
+//  ... because Jex Context is a dependency
 //  ... controller instantiated per request
 
-@Controller
-@Path("/contacts")
+@Controller("/contacts")
 class ContactController {
 
   private final ContactService contactService;
 
-  private final Context context; // Javalin Context
+  private final Context context; // Jex Context
 
-  // Inject Javalin context via constructor
+  // Inject Jex context via constructor
   @Inject
   ContactController(Context context, ContactService contactService) {
     this.context = context;
@@ -62,14 +67,14 @@ class ContactController {
 
   @Get("/{id}")
   Contact getById(long id) {
-    // use the javalin context ...
+    // use the Jex context ...
     var fooCookie = context.cookieStore("foo");
     ...
   }
 }
 </pre>
 
-<h2 id="custom-scope">@Scope - custom scopes</h2>
+<h3 id="custom-scope">@Scope - custom scopes</h3>
 <p>
   We can define our own custom scopes. To do this we create an annotation that is meta-annotated with <code>@Scope</code>.
   We use this custom scope annotation rather than <code>@Singleton</code>.
@@ -87,7 +92,7 @@ class ContactController {
   use the default scope.
 </p>
 
-<h3>Example: Custom Scope</h3>
+<h4>Example: Custom Scope</h4>
 
 <h5>Step 1: Define the custom scope annotation</h5>
 <pre content="java">

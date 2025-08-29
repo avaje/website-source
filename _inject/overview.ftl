@@ -29,8 +29,8 @@
 </p>
 <p>
   The dependency injection classes are generated source code.
-  This allows us to seamlessly incorporate debug breakpoints into the DI code, enabling us to step through the code as if it were manually written.
-  We can use existing IDE tools to search where code is called (e.g. Constructors and lifecycle
+  This allows a seamless debugging experience where breakpoints can be set into the DI code. You can step through the code as if it were manually written
+  and use existing IDE tools to search where code is called (e.g. Constructors and lifecycle
   methods.)
 </p>
 <p>
@@ -44,7 +44,7 @@
   <tr>
     <td>
       <p>
-        Do we care about the size of a DI library? Why is dagger and avaje-inject so much
+        Do we care about the size of a DI library? Why is avaje-inject so much
         smaller?
       </p>
       <p>

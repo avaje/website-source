@@ -29,8 +29,8 @@
 </pre>
 
 <h3 id="profile">@Profile</h3>
- <p>When the property <code>avaje.profiles</code> is set, we can use <code>@Profile</code> on a <code>@Factory</code> class, <code>@Factory</code> method,
-  or <code>@Singleton</code> class so that a bean will only be registered when the given wiring profiles are present/absent.</p>
+ <p>When the property <code>avaje.profiles</code> is set, use <code>@Profile</code> on a <code>@Factory</code> class, <code>@Factory</code> method,
+  or <code>@Singleton</code> class to ensure that a bean will only be registered when the given wiring profiles are present/absent.</p>
 <p>
 
 </p>
