@@ -32,14 +32,23 @@
     <li><a href="#external">@External</a></li>
     <li><a href="#list">List and Set</a></li>
     <li><a href="#provider">Provider</a></li>
-    <li><a href="#factory">@Factory</a></li>
-    <li><a href="#bean">@Bean</a></li>
     <li><a href="#beantypes">Limiting Injectable Types</a></li>
+  </ul>
+</@nav>
+<@nav url="#factory" title="@Factory">
+  <ul>
+    <li><a href="#bean">@Bean</a></li>
+  </ul>
+</@nav>
+<@nav url="#prototype" title="Prototype Scope">
+</@nav>
+<@nav url="#lazy" title="Lazy Beans">
+</@nav>
+<@nav url="#priorities" title="Bean Priority">
+  <ul>
     <li><a href="#primary">@Primary</a></li>
     <li><a href="#priority">@Priority</a></li>
     <li><a href="#secondary">@Secondary</a></li>
-    <li><a href="#prototype">@Prototype</a></li>
-    <li><a href="#lazy">@Lazy</a></li>
   </ul>
 </@nav>
 <@nav url="#qualifiers" title="Qualifiers">
@@ -78,10 +87,10 @@
 <@nav url="#scope" title="Scope">
   <ul>
     <li><a href="#default-scope">Default Scope</a></li>
+    <li><a href="#prototype-scope">Prototype Scope</a></li>
     <li><a href="#scope-test-scope">Test Scope</a></li>
     <li><a href="#request-scope">Request Scope</a></li>
     <li><a href="#custom-scope">Custom Scope</a></li>
-    <li><a href="#bean-scope">BeanScope</a></li>
   </ul>
 </@nav>
 <@nav url="#events" title="Events">

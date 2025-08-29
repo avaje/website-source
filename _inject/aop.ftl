@@ -4,11 +4,11 @@ This library has several contructs that support Aspect Oriented Programmming
 <h3 id="aspect">@Aspect</h3>
 <p>
   Create an annotation class and annotate it with <code>@Aspect</code> to define an aspect annotation.
-  To control the execution order of multiple aspects, we can use the ordering property of the <code>@Aspect</code>.
+  To control the execution order of multiple aspects, use the ordering property of the <code>@Aspect</code>.
   To import an existing annotation, use <code>@Aspect.Import</code>.
 </p>
 <pre content="java">
-@Aspect(ordering=1) // Determines priority among other aspects
+@Aspect(ordering = 1) // Determines priority among other aspects
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MyAround {
@@ -48,7 +48,7 @@ public class MyAroundAspect implements AspectProvider<MyAround> {
 </pre>
 
 <p>
-With the provider set, we can use our newly created aspect annotation on a class/method to intercept calls.
+With the provider set, use the created aspect annotation on a class/method to intercept calls.
 </p>
 
 <pre content="java">
@@ -104,7 +104,7 @@ public class ExampleService$Proxy extends ExampleService {
 
 <h3 id="fallback">@AOPFallback</h3>
 <p>
-  We can use <code>@AOPFallback</code> to register a fallback method for an aspect method invocation.
+  <code>@AOPFallback</code> registers a recovery method for an aspect method invocation.
   Recovery methods must return the same type as the target method and may have 4 options for arguments:
 
  <ul>
@@ -132,7 +132,7 @@ class ExampleService {
 </pre>
 
 <p>
- Inside our method interceptor, we can use <code>Invocation#invokeRecoveryMethod</code> to recover from an exception.
+ Inside our method interceptor, use <code>Invocation#invokeRecoveryMethod</code> to recover from an exception.
 </p>
 
 <pre content="java">

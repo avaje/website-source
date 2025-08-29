@@ -39,7 +39,7 @@ dependencies {
   See example at: https://github.com/dinject/examples/blob/master/basic-di-kotlin-maven/pom.xml
 </p>
 <p>
-  For use with Kotlin we register <em>avaje-inject-generator</em> as a <code>kapt</code> processor
+  For use with Kotlin, register <em>avaje-inject-generator</em> as a <code>kapt</code> processor
   to the Kotlin compiler rather than <em>annotationProcessor</em>.
 </p>
 <pre content="groovy">
@@ -55,7 +55,7 @@ dependencies {
 
 <h2 id="jpms">Java Module Setup</h2><hr/>
 <p>
-  If using java modules, in the <code>module-info.java</code> we need to:
+  If using java modules, in the <code>module-info.java</code>:
 </p>
 <ol>
   <li>Add a <em>requires</em> clause for <em>io.avaje.inject</em></li>
