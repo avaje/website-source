@@ -32,21 +32,27 @@
   </table>
 
   <p><br><br>
-    This is a light (~200kb + generated code), fast, and reflection free Json binding library
+    This is a light (~200kb + generated code), fast, and reflection-free JSON binding library.
   </p>
 
   <ul>
-    <li>Use Java annotation processing to generate java source for adapting JSON to/from java objects</li>
-    <li>No need to manually register generated adapters. (Uses service loading to auto-register)</li>
+    <li>Use Java annotation processing to generate Java source for adapting JSON to/from java objects.</li>
+    <li>No need to manually register generated adapters (uses service loading to auto-register).</li>
     <li>Has no fallback to reflection - avaje is code generation or bust.</li>
     <li>Constructors and accessors/getters/setters of any style should all "just work" (record type, constructors,
       'fluid setters' all just work)</li>
     <li>Jackson-like annotations</li>
-    <li>Provide support for dynamic json views</li>
+    <li>Provide support for dynamic JSON views</li>
     <li>Supports importing and generating adapters for library types</li>
     <li>Supports Jackson-like mixins</li>
     <li>Supports generic types</li>
   </ul>
+
+  <h4 id="jsr">JSR 353/374 & 367</h4>
+
+  <p>
+    While similarly named, avaje-json & avaje-jsonb have no connection to javax/jakarta JSON-P & JSON-B, and do not implement / are incompatible with those APIs.
+  </p>
 
   <h4 id="default-types">Default Supported Types</h4>
 
