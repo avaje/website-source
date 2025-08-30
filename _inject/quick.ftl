@@ -28,7 +28,7 @@
 </pre>
 
 <h4>2a. JDK 23+ </h4>
-<p>In JDK 23+, annotation processors are disabled by default, so we need to add a compiler property to re-enable.</p>
+<p>In JDK 23+, annotation processors are disabled by default, so on maven we add a compiler property to re-enable.</p>
 <pre content="xml">
 <properties>
   <maven.compiler.proc>full</maven.compiler.proc>

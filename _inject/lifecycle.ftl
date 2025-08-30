@@ -2,7 +2,7 @@
 
 <h3 id="post-construct">@PostConstruct</h3>
 <p>
-  Put <code>@PostConstruct</code> on a method that we want to run on startup just after all the
+  Put <code>@PostConstruct</code> on a method to run it on startup just after all the
   beans have been wired.
 </p>
 <p>
@@ -22,7 +22,7 @@ public class CoffeeMaker {
 
 <h4>@PostConstruct with BeanScope</h3>
 <p>
-  Since post construct methods execute after all the beans have been wired, we can also add the completed BeanScope as a parameter.
+  Since post construct methods execute after all the beans have been wired, the completed BeanScope can be a parameter.
 </p>
 
 <pre content="java">
@@ -39,10 +39,7 @@ public class CoffeeMaker {
 
 <h3 id="pre-destroy">@PreDestroy</h3>
 <p>
-  Put <code>@PreDestroy</code> on a method that we want to run on shutdown.
-</p>
-<p>
-  Typically we want this method to close resources.
+  Put <code>@PreDestroy</code> on a method to run on shutdown. (Typically to close resources)
 </p>
 <pre content="java">
 @Singleton
@@ -86,8 +83,8 @@ public class CoffeeQueue implements AutoCloseable {
 
 <h3 id="shutdownHook">Shutdown hook</h3>
 <p>
-  When <code>BeanScope</code> is created, we can specify if it should register a JVM shutdown hook.
-  This is fired when the JVM is shutdown and this in turn invokes the PreDestroy methods. Otherwise,
+  When <code>BeanScope</code> is created, you can specify if it should register a JVM shutdown hook.
+  This is fired when the JVM is shutdown to invoke the PreDestroy methods. Otherwise,
   <code>PreDestroy</code> methods are closed when the BeanScope is closed.
 </p>
 <pre content="java">
