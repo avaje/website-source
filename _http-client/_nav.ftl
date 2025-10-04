@@ -89,11 +89,5 @@
     </ul>
   </@nav>
   <@nav url="#jpms" title="Java Modules"/>
-  <@nav url="#10k" title="10k requests & Loom">
-    <ul>
-      <li><a href="#10k-async">async</a></li>
-      <li><a href="#10k-loom">loom</a></li>
-    </ul
-  </@nav>
 </ul>
 <p>&nbsp;</p>

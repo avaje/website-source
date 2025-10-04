@@ -92,7 +92,7 @@ public class OrderProcessor {
   private final Store store;
 
   public OrderProcessor(Store red) {
-    this.store = store;
+    this.store = red;
   }
   ...
 </pre>
