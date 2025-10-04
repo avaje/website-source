@@ -11,7 +11,7 @@
 <p>&nbsp;</p>
 
 <table class="table table-striped">
-  <thead>
+  <thead class="heading">
     <tr>
       <th><h4>avaje http</h4></th>
       <th><h4>JAX-RS</h4></th>
