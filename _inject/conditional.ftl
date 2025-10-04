@@ -100,7 +100,8 @@ Additionally, meta annotation can be placed on other meta annotation to easily c
 <h4>Configuration Requirements</h4>
 
 <p>The conditional annotations are pretty flexible and can be used for a variety of use cases. The following table summarizes some common uses:</p>
-<table class="table">
+<table class="table table-striped">
+  <thead class="heading">
   <tr>
     <th >Requirement</th>
     <th >Example</th>

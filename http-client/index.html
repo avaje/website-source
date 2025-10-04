@@ -502,7 +502,9 @@ dependencies {
 </pre>
 
 <h4>Summary of default BodyPublishers</h4>
-<table style="width:75%;">
+<table style="width:75%;" class="table table-striped">
+  <thead class="heading">
+    <tr><th>BodyPublisher</th><th>Description</th></tr>
   <tr><td>BodyPublishers.noBody()</td><td>Sends no request body.</td></tr>
   <tr><td>BodyPublishers.ofByteArray()</td><td>byte[]</td></tr>
   <tr><td>BodyPublishers.ofString()</td><td>String, additional charset option</td></tr>
@@ -642,7 +644,9 @@ dependencies {
 </pre>
 
 <h4>Summary of default BodyHandlers</h4>
-<table style="width:75%;">
+<table style="width:75%;" class="table table-striped">
+  <thead class="heading">
+  <tr><th>BodyHandler</th><th>Description</th></tr>
   <tr><td>BodyHandlers.discarding()</td><td>Discards the response body</td></tr>
   <tr><td>BodyHandlers.ofByteArray()</td><td>byte[]</td></tr>
   <tr><td>BodyHandlers.ofString()</td><td>String, additional charset options</td></tr>
@@ -1245,7 +1249,8 @@ public class Github$HttpClient implements Github {
 <p>
   Below is a table of the API response types can be used and the resulting generated code.
 </p>
-<table style="width: 100%;">
+<table style="width: 100%;" class="table table-striped">
+  <thead class="heading">
   <tr>
     <th style="width: 50%;">Method response type</th>
     <th>Generated code</th>
@@ -1265,10 +1270,6 @@ public class Github$HttpClient implements Github {
   <tr><td>HttpResponse&lt;Stream&lt;String&gt;&gt;</td><td>asLines()</td></tr>
   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 
-
-  <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-<!--  <tr><td><b>CompletableFuture</b></td><td>&nbsp;</td></tr>-->
-
   <tr><td>CompletableFuture&lt;T&gt;</T></td><td>async().bean(T.class)</td></tr>
   <tr><td>CompletableFuture&lt;List&lt;T&gt;&gt;</td><td>async().list(T.class)</td></tr>
   <tr><td>CompletableFuture&lt;Stream&lt;T&gt;&gt;</td><td>async().stream(T.class)</td></tr>
@@ -1281,7 +1282,6 @@ public class Github$HttpClient implements Github {
   <tr><td>CompletableFuture&lt;HttpResponse&lt;Stream&lt;String&gt;&gt;&gt;</td><td>async().asLines()</td></tr>
 
   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-<!--  <tr><td><b>HttpCall</b></td><td>&nbsp;</td></tr>-->
 
   <tr><td>HttpCall&lt;T&gt;</T></td><td>call().bean(T.class)</td></tr>
   <tr><td>HttpCall&lt;List&lt;T&gt;&gt;</td><td>call().list(T.class)</td></tr>

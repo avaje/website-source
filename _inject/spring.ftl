@@ -20,7 +20,8 @@
 
 <p>&nbsp;</p>
 <h4 id="spring-translation">Spring DI translation</h4>
-<table class="table">
+<table class="table table-striped">
+  <thead class="heading">
   <tr>
     <th width="45%">Spring</th>
     <th width="45%">avaje-inject</th>
@@ -89,7 +90,8 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <h4>Spring DI translation <em>NOT</em> part of avaje-inject</h4>
-<table class="table">
+<table class="table table-striped">
+  <thead class="heading">
   <tr>
     <th width="45%">Spring</th>
     <th width="45%">Other</th>
