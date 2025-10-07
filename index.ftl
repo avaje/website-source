@@ -70,6 +70,14 @@
         </td>
       </tr>
       <tr>
+        <th><a href="/jex">Jex</a></th>
+        <td>
+          <p>
+            Lightweight wrapper over the JDK's own <a href="https://docs.oracle.com/en/java/javase/21/docs/api/jdk.httpserver/com/sun/net/httpserver/package-summary.html">built-in HTTP server</a>, adding various capabilities. (virtual threads, JSON, compression, etc.).
+          </p><hr/>
+        </td>
+      </tr>
+      <tr>
         <th><a href="/http">HTTP Generator</a></th>
         <td>
           <p>
@@ -79,14 +87,6 @@
           <p>
             Uses Java annotation processing to generate source code for adapting and registering JAX-RS style classes
             to servers.
-          </p><hr/>
-        </td>
-      </tr>
-      <tr>
-        <th><a href="/jex">Jex</a></th>
-        <td>
-          <p>
-            Lightweight wrapper over the JDK's own <a href="https://docs.oracle.com/en/java/javase/21/docs/api/jdk.httpserver/com/sun/net/httpserver/package-summary.html">built-in HTTP server</a>, adding various capabilities. (virtual threads, JSON, compression, etc.).
           </p><hr/>
         </td>
       </tr>
