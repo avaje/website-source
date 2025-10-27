@@ -12,6 +12,7 @@
   </@nav>
   <@nav url="#access" title="Access Management"/>
   <@nav url="#json" title="Json Content"/>
+  <@nav url="#file" title="File Uploads"/>
   <@nav url="#static" title="Static Resources"/>
   <@nav url="#sse" title="Server Sent Events"/>
   <@nav url="#config" title="Server Configuration"/>

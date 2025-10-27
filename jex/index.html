@@ -44,6 +44,8 @@
     <li>Automatic Compression</li>
     <li>Context abstraction over HttpExchange to easily retrieve and send request/response data.</li>
     <li>Multi-Server with any implementation of jdk.httpserver (Jetty, Robaho, built-in, etc)</li>
+    <li>SSL/mTLS plugins</li>
+    <li>File Uploads</li>
   </ul>
 
   <h2 id="quick-start">Quick Start</h2><hr/>
@@ -569,6 +571,87 @@
             client.keepAlive(); // handler thread is blocked
       });
     </pre>
+
+    <h2 id="file">File Uploads</h2><hr/><p>
+      There is a separate module that allows you to handle file uploads via multipart form data.
+    </p>
+    <p>
+      It provides a <code>FileUploadPlugin</code> to configure file upload behavior and a
+      <code>FileUploadService</code> to access uploaded files in your route handlers.
+    </p>
+    <pre content="xml">
+      <dependency>
+        <groupId>io.avaje</groupId>
+        <artifactId>avaje-jex-file-upload</artifactId>
+        <version>${avaje.jex.version}</version>
+      </dependency>
+    </pre>
+    <pre content="java">
+    // With default configuration
+    Jex app = Jex.create().plugin(FileUploadPlugin.create());
+
+    // With custom configuration
+    FileUploadPlugin uploadPlugin =
+        FileUploadPlugin.create(
+            config ->
+                config
+                    .cacheDirectory("/tmp/uploads")
+                    .maxFileSize(10, MB)
+                    .maxRequestSize(50, MB)
+                    .maxInMemoryFileSize(1, MB));
+
+    Jex app = Jex.create().plugin(uploadPlugin);
+
+    // Access uploaded files in routes
+    app.post(
+        "/upload",
+        ctx -> {
+          var uploadService = ctx.attribute(FileUploadService.class);
+
+          // Get a single file
+          MultiPart file = uploadService.uploadedFile("avatar");
+
+          // Get multiple files with the same field name
+          List<MultiPart> files = uploadService.uploadedFiles("documents");
+
+          // Get all uploaded files
+          List<MultiPart> allFiles = uploadService.uploadedFiles();
+
+          // Get files grouped by field name
+          Map<String, List<MultiPart>> fileMap = uploadService.uploadedFileMap();
+        });
+    </pre>
+    <details>
+      <summary>Available Configuration: (click to expand) </summary>
+      <table style="width:100%;" class="table table-striped">
+        <thead class="heading">
+          <tr>
+            <th style="width: 50%;">Method</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><strong><code>cacheDirectory("/path/to/dir")</code></strong></td>
+            <td>Sets the directory where uploaded files exceeding the in-memory size limit will be cached. Defaults to the
+              system's temporary directory.</td>
+          </tr>
+          <tr>
+            <td><strong><code>maxFileSize(size, unit)</code></strong></td>
+            <td>Sets the maximum allowed size for a single uploaded file. Use -1 for no limit.</td>
+          </tr>
+          <tr>
+            <td><strong><code>maxRequestSize(size, unit)</code></strong></td>
+            <td>Sets the maximum total size for a multipart request, including all files and form data. Use -1 for no limit.
+            </td>
+          </tr>
+          <tr>
+            <td><strong><code>maxInMemoryFileSize(size, unit)</code></strong></td>
+            <td>Sets the maximum size a file can be before it is written to disk. Files smaller than this are kept in
+              memory. Use 0 to write all files to disk.</td>
+          </tr>
+      </table>
+      <p><strong>File Size Units:</strong> <code>BYTES</code>, <code>KB</code>, <code>MB</code>, <code>GB</code></p>
+    </details>
+
     <h2 id="static">Static Resources</h2><hr/>
     <p>
       There is a separate module that allows you to serve static resources from the classpath or
