@@ -76,34 +76,7 @@
     <li>jstachio-apt - for mustache template rendering</li>
     <li>avaje-http-client-generator - for test client generation</li>
   </ul>
-  <p>
-    Configure the maven compiler plugin to use the annotation processor:
-  </p>
-  <pre content="xml">
-    <build>
-      <plugins>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.14.1</version>
-          <configuration>
-            <annotationProcessorPaths>
-              <path>
-                <groupId>io.avaje</groupId>
-                <artifactId>avaje-nima-generator</artifactId>
-                <version>${avaje-nima.version}</version>
-              </path>
-            </annotationProcessorPaths>
-          </configuration>
-        </plugin>
-
-      </plugins>
-    </build>
-  </pre>
-  <p>
-    Alternatively, you can add the annotation processor as a provided dependency:
-  </p>
   <pre content="xml">
     <!-- Annotation processors -->
     <dependency>
