@@ -43,7 +43,7 @@
     <li><a href="/config/">avaje-config</a> - External configuration</li>
   </ul>
 
-  <h2 id="maven">Maven dependencies</h2>
+  <h2 id="dependencies">Dependencies</h2>
   <h4>1. Add <em>avaje-nima</em> dependencies</h4>
   <pre content="xml">
     <dependency>
@@ -61,6 +61,7 @@
     </dependency>
   </pre>
 
+  <h2 id="annotation-processor">Annotation processor</h2>
   <h4>2. Add the annotation processor</h4>
   <p>
     <code>avaje-nima-generator</code> is a composite of:
@@ -75,25 +76,27 @@
     <li>jstachio-apt - for mustache template rendering</li>
     <li>avaje-http-client-generator - for test client generation</li>
   </ul>
+
   <pre content="xml">
-  <!-- Annotation processors -->
-  <dependency>
-    <groupId>io.avaje</groupId>
-    <artifactId>avaje-nima-generator</artifactId>
-    <version>${avaje.nima.version}</version>
-    <scope>provided</scope>
-    <optional>true</optional>
-  </dependency>
+    <!-- Annotation processors -->
+    <dependency>
+      <groupId>io.avaje</groupId>
+      <artifactId>avaje-nima-generator</artifactId>
+      <version>${avaje.nima.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
   </pre>
 
   <h4>2a. JDK 23+</h4>
-
-  <p>In JDK 23+, annotation processors are disabled by default, so we need to add a compiler property to re-enable.</p>
-
+  <p>
+    In JDK 23+, annotation processors added as a provided dependency are disabled by default,
+    so we need to add a compiler property to re-enable via:
+  </p>
   <pre content="xml">
-  <properties>
-    <maven.compiler.proc>full</maven.compiler.proc>
-  </properties>
+    <properties>
+      <maven.compiler.proc>full</maven.compiler.proc>
+    </properties>
   </pre>
 
   <h2 id="firstController">Controller</h2>
@@ -134,7 +137,7 @@
     The <em>Nima</em> class will start a <em>BeanScope</em>, register generated controller routes, and start the helidon webserver.
     <br/><br/>
     The <em>Nima</em> class will search your <em>BeanScope</em> for a <em>WebServerConfig.Builder</em>, if you provide one in your
-    </em>BeanScope</em> it will be used to configure the webserver.
+    <em>BeanScope</em> it will be used to configure the webserver.
   </p>
   <pre content="java">
     package org.example;
@@ -394,7 +397,7 @@
 
       private static final HeaderName CALLER_ID = HeaderNames.create("Caller-Id");
 
-      private static final Set<String> BYPASS = Set.of("/ping");
+      private static final Set<!String> BYPASS = Set.of("/ping");
 
       @Filter
       void filter(FilterChain chain, RoutingRequest req) {
@@ -412,7 +415,7 @@
         // capture metrics
       }
 
-      private Optional<String> callerId(RoutingRequest request) {
+      private Optional<!String> callerId(RoutingRequest request) {
         return request.headers().first(CALLER_ID);
       }
 
