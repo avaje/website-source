@@ -37,10 +37,11 @@
     It is designed to be used by applications that will be run in <b>K8s</b> or <b>Lambda</b>.
   </p>
 
-  <h2 id="quick">Quick Start</h2><hr/>
-  <h4>
-    1. Add <em>avaje-simple-logger</em> dependency.
-  </h4>
+  <hr>
+  <h2 id="dependency">Dependency</h2>
+  <p>
+    Add <em>avaje-simple-logger</em> as a dependency.
+  </p>
   <pre content="xml">
     <dependency>
       <groupId>io.avaje</groupId>
@@ -55,10 +56,10 @@
     Add a <code>src/main/resources/avaje-logger.properties</code> to configure the logger.
   </p>
   <pre content="properties">
-  ## specify the default log level to use for testing
+  ## specify the default log level
   logger.defaultLogLevel=warn
 
-  ## specify some default log levels
+  ## specify some log levels
   log.level.com.foo.bar=DEBUG
   log.level.io.avaje=INFO
   </pre>
@@ -123,9 +124,9 @@
   ## - short - use the class name / suffix part of the logger name after the last `.`
   ## - (some integer e.g. 100) - abbreviate the logger name to the target length (shorten the package names)
 
-  logger.nameTargetLength=full
-  logger.nameTargetLength=short
-  logger.nameTargetLength=100
+  #logger.nameTargetLength=full
+  #logger.nameTargetLength=short
+  #logger.nameTargetLength=100
 
   logger.nameTargetLength=100
 
@@ -174,11 +175,10 @@
     logger.component=my-application
 
     ## uses system property SERVICE_NAME or environment variable SERVICE_NAME
-    logger.component={SERVICE_NAME}
+    logger.component=${SERVICE_NAME}
 
     ## uses system property service.name or environment variable SERVICE_NAME
-    logger.component={service.name}
-
+    logger.component=${service.name}
   </pre>
   <h4>env</h4>
   <p>
@@ -221,7 +221,7 @@
     <dependency>
       <groupId>io.avaje</groupId>
       <artifactId>avaje-simple-json-logger</artifactId>
-      <version>0.2</version>
+      <version>1.0/version>
     </dependency>
   </pre>
   <p>

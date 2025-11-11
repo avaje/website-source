@@ -1,6 +1,6 @@
 <ul>
   <@nav url="#what" title="Overview"></@nav>
-  <@nav url="#quick" title="Quick Start"></@nav>
+  <@nav url="#dependency" title="Dependency"></@nav>
   <@nav url="#properties" title="avaje-logger.properties"></@nav>
   <@nav url="#test-properties" title="avaje-logger-test.properties"></@nav>
   <@nav url="#debugging" title="Debugging"></@nav>
