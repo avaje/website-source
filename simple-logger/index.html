@@ -1,0 +1,243 @@
+<html>
+
+<head>
+  <meta name="layout" content="_layout/base-logger.html" />
+  <meta name="bread1" content="simple logger" href="/simple-logger/" />
+  <#assign index="active">
+</head>
+
+<body>
+  <h1 id="overview">
+    <span class="logo">Avaje</span>&thinsp;Simple Logger
+  </h1>
+
+  <table style="width: 100%;">
+    <tr>
+      <th>Discord</th>
+      <th>Source</th>
+      <th>API Docs</th>
+      <th>Issues</th>
+      <th>Releases</th>
+    </tr>
+    <tr>
+      <td><a href="https://discord.gg/Qcqf9R27BR">Discord</td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-simple-logger">GitHub</a></td>
+      <td><a target="_blank" href="https://javadoc.io/doc/io.avaje/avaje-simple-logger/latest/io.avaje.prism/io/avaje/prism/package-summary.html">Javadoc</a></td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-simple-logger/issues">GitHub</a></td>
+      <td><a href="https://github.com/avaje/avaje-simple-logger/releases"><img
+            src="https://img.shields.io/maven-central/v/io.avaje/avaje-simple-logger.svg?label=Maven%20Central"></a></td>
+    </tr>
+  </table>
+
+  <p><br><br>
+    This is a SLF4J logger that logs to <b>System out</b> JSON structured log messages.
+    It can also log plan text messages typically for development use when running tests.
+  </p>
+  <p>
+    It is designed to be used by applications that will be run in <b>K8s</b> or <b>Lambda</b>.
+  </p>
+
+  <h2 id="quick">Quick Start</h2><hr/>
+  <h4>
+    1. Add <em>avaje-simple-logger</em> dependency.
+  </h4>
+  <pre content="xml">
+    <dependency>
+      <groupId>io.avaje</groupId>
+      <artifactId>avaje-simple-logger</artifactId>
+      <version>{simple-logger.version}</version>
+    </dependency>
+  </pre>
+
+
+  <h2 id="properties">avaje-logger.properties</h2>
+  <p>
+    Add a <code>src/main/resources/avaje-logger.properties</code> to configure the logger.
+  </p>
+  <pre content="properties">
+  ## specify the default log level to use for testing
+  logger.defaultLogLevel=warn
+
+  ## specify some default log levels
+  log.level.com.foo.bar=DEBUG
+  log.level.io.avaje=INFO
+  </pre>
+
+
+  <h2 id="test-properties">avaje-logger-test.properties</h2>
+  <p>
+    For testing, we might desire to log in a plain format rather than JSON format. We also might want to define some test specific log levels.
+  </p>
+  <p>
+    Add a <code>src/test/resources/avaje-logger-test.properties</code> to configure the logger
+    when running tests.
+  </p>
+
+  <pre content="properties">
+  ## for testing we desire plain format than json format
+  logger.format=plain
+
+  ## default log level to use when running tests
+  logger.defaultLogLevel=INFO
+
+  ## some test specific log levels
+  log.level.io.ebean.test.containers=TRACE
+  log.level.io.ebean.DDL=TRACE
+  #log.level.io.ebean.SQL=DEBUG
+  #log.level.io.ebean.TXN=DEBUG
+  </pre>
+
+
+  <h2 id="debugging">Debugging</h2>
+  <p>
+    To debug avaje-simple-logger set the log level for <code>io.avaje.simplelogger</code> to <code>DEBUG</code>.
+  </p>
+  <pre content="properties">
+  log.level.io.avaje.simplelogger=DEBUG
+  </pre>
+
+  <p>
+    If you are also using <code>io.avaje:avaje-aws-appconfig</code>, then you can additionally set
+    <code>io.avaje.config</code> to <code>TRACE</code>.
+  </p>
+  <pre content="properties">
+  log.level.io.avaje.config=TRACE
+  </pre>
+
+
+  <h2 id="configure">Configure</h2>
+  <p>
+    Configure the logger via main resource avaje-logger.properties and test resource avaje-logger-test.properties
+  </p>
+
+  <pre content="properties">
+  ## specify the default log level to use
+  logger.defaultLogLevel=warn
+
+  ## specify to log as `json` or `plain` format (defaults to json)
+  #logger.format=json
+  logger.format=plain
+
+  ## specify if the logger name is abbreviated. Values:
+  ## - full - use the full logger name
+  ## - short - use the class name / suffix part of the logger name after the last `.`
+  ## - (some integer e.g. 100) - abbreviate the logger name to the target length (shorten the package names)
+
+  logger.nameTargetLength=full
+  logger.nameTargetLength=short
+  logger.nameTargetLength=100
+
+  logger.nameTargetLength=100
+
+  ## specify an explicit timezone to use, defaults to using default timezone
+  logger.timezone=UTC
+
+  ## specify an explicit timestamp format to use, defaults to ISO_OFFSET_DATE_TIME
+  ## valid values: ISO_OFFSET_DATE_TIME, ISO_ZONED_DATE_TIME, ISO_LOCAL_DATE_TIME, ISO_DATE_TIME, ISO_INSTANT
+  logger.timestampPattern=ISO_OFFSET_DATE_TIME
+  </pre>
+
+
+  <h2 id="json">Structured JSON</h2>
+  <p>
+    By default, the log format is JSON. Example:
+  </p>
+  <pre content="json">
+  {
+    "component":"my-application",
+    "env":"dev",
+    "timestamp":"2025-07-14T13:44:44.230959+12:00",
+    "level":"TRACE",
+    "logger":"io.avaje.config",
+    "message":"load from [resource:application-test.properties]",
+    "thread":"main"
+  }
+  </pre>
+
+
+  <h4>component</h4>
+  <p>
+    A component key value is added if:
+  </p>
+  <ul>
+    <li>There is a logger.component property set in avaje-logger.properties</li>
+    <li>There is a COMPONENT environment variable set</li>
+    <li>K8s is detected, it will be derived from the HOSTNAME environment variable</li>
+    <li>This key value is expected to represent the application component that is the source of the logs.</li>
+  </ul>
+
+  <p>
+  Examples:
+  </p>
+  <pre content="properties">
+    ## a literal value
+    logger.component=my-application
+
+    ## uses system property SERVICE_NAME or environment variable SERVICE_NAME
+    logger.component={SERVICE_NAME}
+
+    ## uses system property service.name or environment variable SERVICE_NAME
+    logger.component={service.name}
+
+  </pre>
+  <h4>env</h4>
+  <p>
+    An env key value is added to represent the environment the application is running in.
+  </p>
+  <p>
+    An env key value is added automatically if:
+  </p>
+  <ul>
+    <li>There is a logger.env variable set in avaje-logger.properties</li>
+    <li>There is an ENV variable set</li>
+  </ul>
+
+  <p>
+    Examples:
+  </p>
+  <pre content="properties">
+    ## uses system property `app.env` or environment variable `APP_ENV`, defaults to `localdev`
+    logger.environment=${app.env:localdev}
+
+    ## literal value
+    logger.environment=DEV
+  </pre>
+
+  <h2 id="dynamic-level">Dynamic log levels</h2>
+  <p>
+    avaje-simple-logger automatically registers with avaje-config such that any configuration changes that start with log.level. are logging level configuration changes, and these are applied.
+  </p>
+  <p>
+    avaje-config supports plugins like AWS AppConfig, where configuration changes can be dynamically made to the application. For example, log.level. changes can be dynamically made this way.
+  </p>
+
+
+  <h2>Don't need dynamic configuration?</h2>
+  <p>
+    If an application does not need dynamic configuration, then we can just use avaje-simple-json-logger. This excludes the avaje-config dependency.
+  </p>
+
+  <pre content="xml">
+    <dependency>
+      <groupId>io.avaje</groupId>
+      <artifactId>avaje-simple-json-logger</artifactId>
+      <version>0.2</version>
+    </dependency>
+  </pre>
+  <p>
+    Note that log levels can still be modified programmatically via:
+  </p>
+  <pre content="java">
+    Map<!String>, String> nameLevels = new HashMap<>();
+    nameLevels.put("com.foo", "debug");
+    nameLevels.put("com.foo.bar", "info");
+
+    LoggerContext.get().putAll(nameLevels);
+  </pre>
+
+
+  <p><br><br><br><br><br><br></p>
+
+</body>
+
+</html>
