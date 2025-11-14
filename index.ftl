@@ -23,6 +23,15 @@
   <div class="c-narrow">
     <table class="index-toc">
       <tr>
+        <th width="25%"><a href="/graalvm">GraalVM</a></th>
+        <td>
+          <p>
+            GraalVM native image compatible libraries for reflection-free runtime.
+            Review <a href="/graalvm">Why GraalVM</a> for details.
+          </p><hr/>
+        </td>
+      </tr>
+      <tr>
         <th width="25%"><a href="/config">Configuration</a></th>
         <td>
           <p>

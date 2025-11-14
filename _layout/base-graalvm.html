@@ -1,0 +1,30 @@
+<html>
+<head>
+  <meta name="layout" content="_layout/b2.html"/>
+  <meta name="bread0" content="avaje" href="/"/>
+  <meta name="bread1" content="graalvm" href="/graalvm"/>
+  <template id="menuNav"><#include "/_nav/_graalvm.ftl"></template>
+</head>
+<body data-theme="light">
+<div class="container">
+  <aside id="sidenav">
+    <nav class="side scroll">
+      $menuNav
+    </nav>
+  </aside>
+  <article id="main-content">
+    <header>
+      <nav id="top">
+        <div class="breadcrumb">$breadcrumb</div>
+        <ul>
+          <li><a href="/" title="home"><i class="fas fa-home"></i></a></li>
+          <li><a href="https://discord.gg/Qcqf9R27BR" title="discord server"><i class="fab fa-discord"></i></a></li>
+          <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+        </ul>
+      </nav>
+    </header>
+    <div id="layout-body"></div>
+  </article>
+</div>
+</body>
+</html>
