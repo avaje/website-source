@@ -1,0 +1,99 @@
+<html>
+
+<head>
+  <meta name="layout" content="_layout/base-graalvm.html" />
+  <meta name="bread1" content="graalvm" href="/graalvm/" />
+  <#assign index="active">
+</head>
+
+<body>
+  <h1 id="overview">
+    <span class="logo">Avaje</span>&thinsp;GraalVM
+  </h1>
+
+  <hr>
+  <h2 id="why">Why GraalVM native image?</h2>
+  <p>
+    In short, using GraalVM native image to compile Java applications into native
+    executables has the potential to save CPU and Memory resources and this can
+    translate into saving <em>$Money</em> in cloud hosting costs.
+  </p>
+  <p>
+    GraalVM native image achieves this by ahead-of-time compiling the Java
+    application into a native executable. This results in faster startup times
+    and lower memory consumption compared to traditional JVM-based applications.
+  </p>
+  <p>
+    <img src="/images/graalvm-vs-jvm.png" alt="GraalVM vs JVM" style="max-width:100%;height:auto;">
+  </p>
+  <p>
+    The chart above compares the cpu and memory usage of a Java application that has been built
+    using GraalVM native image versus running on a traditional JVM. As you can see, the GraalVM
+    native image uses significantly less CPU and memory resources. This can lead to cost savings,
+    especially when running applications in cloud environments where resource usage directly
+    translates to costs.
+  </p>
+  <p>
+    The application above uses Helidon 4, Avaje libraries including avaje-nima, Postgres JDBC and Ebean ORM.
+  </p>
+
+
+  <h2 id="avaje-and-graalvm">How do Avaje Libraries help?</h2>
+  <p>
+    Avaje libraries avoid using Reflection, Dynamic proxies and Classpath scanning so they
+    are well suited to be used in GraalVM native image applications.
+  </p>
+  <p>
+    Avaje libraries also provide specific support for GraalVM native image where needed.
+    For example, avaje-config specifies resource loading for <code>application.properties</code> and
+    <code>application.yaml</code> etc.
+  </p>
+
+  <h2 id="avaje-config">avaje-config</h2>
+  <p>
+    avaje-config is a configuration library that supports GraalVM native image.
+    It supports loading configuration from properties and yaml files as well as environment variables,
+    system properties and plugins (like <a href="/config#aws-appconfig">AWS AppConfig</a>).
+  </p>
+
+  <h2 id="avaje-simple-logger">avaje-simple-logger</h2>
+  <p>
+    avaje-simple-logger is a simple structured JSON logger that is well suited
+    to GraalVM native image applications.
+  </p>
+
+  <h2 id="avaje-http">avaje-http</h2>
+  <p>
+    avaje-http generates adapter code for <code>@Controller</code> and also HTTP clients.
+    This code generation avoids the need for reflection and dynamic proxies, making it
+    perfect for use with GraalVM native image.
+  </p>
+
+  <h2 id="avaje-jsonb">avaje-jsonb</h2>
+  <p>
+    avaje-jsonb is a JSON binding library that uses code generation to create
+    serializers and deserializers for Java objects. This approach avoids the need
+    for reflection, making it ideal for GraalVM native image.
+  </p>
+
+  <h2 id="considerations">GraalVM Considerations</h2>
+  <p>
+    While GraalVM native image offers significant benefits, there are some
+    considerations to keep in mind:
+  </p>
+  <ul>
+    <li>Not all Java libraries are compatible with GraalVM native image. It's important
+      to verify that the libraries you plan to use are supported.</li>
+    <li>GraalVM native image may not support all Java features, such as dynamic class loading.
+      Ensure that your application does not rely on unsupported features.</li>
+    <li>Building a GraalVM native image can be more complex and time-consuming than
+      building a traditional Java application. Be prepared for a potentially longer
+      build process.</li>
+  </ul>
+
+
+  <p><br><br><br><br><br><br></p>
+
+</body>
+
+</html>
