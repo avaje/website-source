@@ -427,6 +427,132 @@
     }
   </pre>
 
+  <h2 id="graalvm">GraalVM</h2>
+  <p>
+    We can build GraalVM native images with Avaje Nima and the associated dependencies
+    including Helidon SE webserver.
+  </p>
+
+  <h4>Native profile build plugin</h4>
+  <pre content="xml">
+
+      <profile>
+        <id>native</id>
+        <build>
+          <plugins>
+            <plugin> <!-- build native executable -->
+              <groupId>org.graalvm.buildtools</groupId>
+              <artifactId>native-maven-plugin</artifactId>
+              <version>0.11.3</version>
+              <extensions>true</extensions>
+              <executions>
+                <execution>
+                  <id>build-native</id>
+                  <goals>
+                    <goal>compile-no-fork</goal>
+                  </goals>
+                  <phase>package</phase>
+                  <configuration>
+                    <mainClass>nz.co.eroad.central.access.Main</mainClass>
+                  </configuration>
+                </execution>
+              </executions>
+              <configuration>
+                <buildArgs>
+                  <buildArg>--gc=G1</buildArg>
+                  <buildArg>-R:MaxGCPauseMillis=50</buildArg>
+                  <buildArg>-R:MaxHeapSize=400m</buildArg>
+                  <buildArg>--emit build-report</buildArg>
+                  <buildArg>--no-fallback</buildArg>
+                  <buildArg>-march=compatibility</buildArg>
+                  <buildArg>--allow-incomplete-classpath</buildArg>
+                  <buildArg>--static-nolibc</buildArg>
+                </buildArgs>
+              </configuration>
+            </plugin>
+
+            <plugin> <!-- build docker image for native executable -->
+              <groupId>com.google.cloud.tools</groupId>
+              <artifactId>jib-maven-plugin</artifactId>
+              <version>3.4.6</version>
+              <executions>
+                <execution>
+                  <goals>
+                    <goal>dockerBuild</goal>
+                  </goals>
+                  <phase>package</phase>
+                </execution>
+              </executions>
+              <dependencies>
+                <dependency>
+                  <groupId>com.google.cloud.tools</groupId>
+                  <artifactId>jib-native-image-extension-maven</artifactId>
+                  <version>0.1.0</version>
+                </dependency>
+              </dependencies>
+
+              <configuration>
+                <pluginExtensions>
+                  <pluginExtension>
+                    <implementation>
+                      com.google.cloud.tools.jib.maven.extension.nativeimage.JibNativeImageExtension
+                    </implementation>
+                    <properties> <!-- name of executable produced -->
+                      <imageName>central-access-service</imageName>
+                    </properties>
+                  </pluginExtension>
+                </pluginExtensions>
+                <container>
+                  <mainClass>nz.co.eroad.central.access.Main</mainClass>
+                  <ports>8080</ports>
+                </container>
+                <from> <!-- UBI micro base image with glibc -->
+                  <image>redhat/ubi10-micro:10.1-1762215812</image>
+                </from>
+                <to>
+                  <image>${project.artifactId}-native:${project.version}</image>
+                </to>
+              </configuration>
+            </plugin>
+          </plugins>
+        </build>
+      </profile>
+
+  </pre>
+
+  <h4>MacOS specific profile</h4>
+  <p>
+    MacOS does not support G1 garbage collector in native images, so we need to
+    create a specific profile for MacOS builds that omits the G1 related build args.
+  </p>
+  <pre content="xml">
+      <profile>
+        <id>mac</id>
+        <activation>
+          <os>
+            <family>mac</family>
+          </os>
+        </activation>
+        <build>
+          <plugins>
+            <plugin> <!-- native build on MacOS -->
+              <groupId>org.graalvm.buildtools</groupId>
+              <artifactId>native-maven-plugin</artifactId>
+              <configuration>
+                <buildArgs> <!-- No G1 on MacOS native image -->
+                  <buildArg>-R:MaxHeapSize=400m</buildArg>
+                  <buildArg>--emit build-report</buildArg>
+                  <buildArg>--no-fallback</buildArg>
+                  <buildArg>-march=compatibility</buildArg>
+                  <buildArg>--static-nolibc</buildArg>
+                </buildArgs>
+              </configuration>
+            </plugin>
+          </plugins>
+        </build>
+      </profile>
+  </pre>
+
 
   <p><br><br><br><br><br><br></p>
 </body>
