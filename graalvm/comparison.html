@@ -1,0 +1,207 @@
+<html>
+
+<head>
+  <meta name="layout" content="_layout/base-graalvm.html" />
+  <meta name="bread1" content="graalvm" href="/graalvm/" />
+  <meta name="bread2" content="comparison" href="/graalvm/comparison" />
+  <#assign index="active">
+  <#assign graalvm_comparison="active">
+</head>
+
+<body>
+  <h2 id="start">
+    Comparing GraalVM native image with JVM
+  </h2>
+  <p>
+    The following charts look at some applications that are built with both a
+    traditional JVM and GraalVM native image. As part of the build process they
+    build a traditional jvm application as a docker image using a base of
+    <code>amazoncorretto:25-al2023-headless</code> and a second docker image
+    that uses GraalVM native image with a base of <code>redhat/ubi10-micro:10.0</code>.
+  </p>
+  <p>
+    The applications are deployed into Kubernetes. To perform the comparison
+    the k8s deployment switches between the two docker images. In this way
+    we are looking to get a reasonable comparison between the two approaches.
+  </p>
+
+  <hr>
+  <h2 id="tiny">Case: Tiny application, tiny load</h2>
+  <p>
+    This first comparison is a tiny Helidon 4 application that uses avaje-nima
+    to provide a single HTTP endpoint that returns a JSON response. The load
+    applied is very light, just 10 requests per second.
+  </p>
+  <p>
+    We swap the k8s deployment between the two docker images to get the comparison
+    between GraalVM native image and traditional JVM.
+  </p>
+
+  <p>
+    <img src="/images/graalvm-tiny-app.png" alt="Tiny app : GraalVM vs JVM" style="max-width:100%;height:auto;">
+  </p>
+  <h4>Notes:</h4>
+  <ul>
+    <li><b>RSS Memory:</b> We see a reduction in RSS memory from around ~250Mb to ~100Mb.</li>
+    <li><b>Heap User Memory:</b> Both are using G1 with <code>MaxHeapSize=400m</code>. With GraalVM
+      we are seeing a <a href="#heap-flatter">flatter Heap Used line</a></li>
+    <li><b>CPU Startup:</b> We see CPU spikes at JVM startup. Note the scale which is ~0.3 so
+    this isn't actually that much CPU here, but is looks really significant because (A)
+    there is very little load on this application and (B) Virtual Threads rock </li>
+    <li><b>CPU load</b>: Low for both, <a href="#vt-rock">Virtual threads rock!</a></li>
+    <li><b>Mean Latency:</b> ~1ms and pretty even (tiny adv to graalvm)</li>
+    <li><b>Max Latency:</b> Not shown but pretty even</li>
+  </ul>
+
+
+  <h2 id="decent-load">Case: Decent load on heavier endpoint</h2>
+  <p>
+    For this comparison decent load is applied to an application with a more complex endpoint
+    that has a mean latency around 19ms. A notable difference is that the JVM version is using ZGC
+    rather than G1.  The GraalVM version is still using G1.
+  </p>
+
+  <p>
+    <img src="/images/graalvm-vs-jvm.png" alt="Decent load : GraalVM vs JVM" style="max-width:100%;height:auto;">
+  </p>
+  <h4>Notes:</h4>
+  <ul>
+    <li><b>RSS Memory:</b> Reduction in RSS memory from around ~450Mb to ~100Mb.</li>
+    <li><b>Heap User Memory:</b> GraalVM showing a <a href="#heap-flatter">flatter Heap Used line</a></li>
+    <li><b>CPU load</b>: GraalVM showing less CPU consumption</li>
+    <li><b>Mean Latency:</b> Not shown but around 19ms for both</li>
+    <li><b>Max Latency:</b> Not shown but pretty even at around 190ms</li>
+  </ul>
+
+  <h2 id="optimized">Case: Interesting optimization for JSON streaming</h2>
+  <p>
+    For this comparison below there is no synthetically generated even load, and instead
+    the application is being used in a more real world manner with varying load. The JVM
+    version is using ZGC rather than G1. The GraalVM version is still using G1.
+  </p>
+
+  <p>
+    <img src="/images/graalvm-crossover.png" alt="Optimization : GraalVM vs JVM" style="max-width:100%;height:auto;">
+  </p>
+  <p>
+    You can't see this without some other metrics, but the GraalVM version has a better optimization
+    for one of the endpoints that is being used (the medium blue on the first chart). Its mean
+    latency went from ~150ms on the JVM version down to ~45ms on the GraalVM version. Perhaps C2
+    wasn't quite given even time or profiling data to optimize this endpoint as well as GraalVM
+    did with its AOT optimizations.
+  </p>
+  <p>
+    This endpoint is a <a href="#streaming-json">streaming endpoint</a> that
+    returns New Line Delimited JSON (NDJSON) from a Postgres database using Ebean ORM's findStream().
+    The GraalVM version is significantly outperforming the JVM version for this endpoint.
+  </p>
+  <p>
+    In general, GraalVM is optimizing well <a href="#no-pgo">without needing PGO</a>.
+  </p>
+  <h4>Notes:</h4>
+  <ul>
+    <li><b>RSS Memory:</b> Reduction in RSS memory from around ~250Mb to ~100Mb.</li>
+    <li><b>Heap User Memory:</b> GraalVM showing a <a href="#heap-flatter">flatter Heap Used line</a></li>
+    <li><b>CPU load</b>: GraalVM showing less CPU consumption</li>
+    <li><b>Mean Latency:</b> A notable drop in latency for a JSON streaming endpoint</li>
+  </ul>
+
+
+  <hr/>
+  <h2 id="general-notes">General notes</h2>
+
+  <h4 id="heap-flatter">Heap used is flatter?</h4>
+  <p>
+    Not really sure why yet. What we do know is that GraalVM native image includes an optimization for
+    <a href="https://www.graalvm.org/latest/reference-manual/native-image/optimizations-and-performance/ObjectHeaderSize/">object headers</a>
+    that reduces the memory footprint of objects. This option is also available for
+    the JVM, but it is not enabled for this comparison. GraalVM is also doing some other build time
+    initialization for G1 but I don't know the details.
+  </p>
+  <p>
+    So not sure why we see the difference there in Heap used yet.
+  </p>
+
+
+  <h4 id="vt-rock">Virtual Threads ROCK!!</h4>
+  <p>
+    Ignoring the application startup, the CPU usage with both the JVM and GraalVM is impressively low.
+    These applications are use Virtual Threads for handling requests and are IO bound (REST services
+    doing mostly Postgres database interaction).
+  </p>
+  <p>
+    These applications are using Helidon 4 and we can't easily swap back to Platform threads for a
+    more direct comparison, but we can observe the CPU stay impressively low as request load increases.
+  </p>
+
+  <h4 id="no-pgo">GraalVM optimizing well (without needing PGO)</h4>
+  <p>
+    JVM with C2 JIT compiler does a good job of optimizing code at runtime based on actual usage patterns.
+    GraalVM native image does AOT (ahead of time) compilation and so doesn't have the same runtime information
+    to optimize code. However GraalVM native image does
+    <a href="https://www.graalvm.org/latest/reference-manual/native-image/optimizations-and-performance/">perform a number of optimizations</a>
+    at build time to produce efficient native code and thus far for these applications it's actually produced
+    code that is just slightly better than C2 (which for me was unexpected).
+  </p>
+  <p>
+    How is this possible? GraalVM native image does do some static analysis
+    during the build process to identify hot spots in the code and optimize those.
+    This static analysis is based on heuristics rather than actual runtime data,
+    but it seems to be doing a very good job so far.
+  </p>
+  <p>
+    GraalVM also introduced <a href="https://www.graalvm.org/latest/reference-manual/native-image/optimizations-and-performance/#ml-powered-profile-inference-for-enhanced-performance">Machine Learning</a>
+    into its optimization. There is even a "Graal Neural Network" option (which wasn't used
+    for these comparisons) that can be enabled to further improve optimization.
+  </p>
+
+  <h4 id="streaming-json">GraalVM optimizing streaming JSON endpoint</h4>
+  <p>
+    There is one interesting observation with a streaming endpoint that returns a stream
+    of data as "New Line Delimited JSON" (NDJSON). In this case the GraalVM native image
+    is performing significantly better than the JVM version.
+  </p>
+  <p>
+    This endpoint is using Ebean ORM findStream() to return a stream of data from
+    Postgres and using avaje-jsonb to serialize each object to JSON as it is read
+    from the database. It is not clear yet why GraalVM is performing better here,
+    but it may be related to escape analysis and stack allocation optimizations
+    that GraalVM is performing.
+  </p>
+
+  <hr/>
+  <h2 id="libraries">The libraries used</h2>
+  <p>
+    The applications used in these comparisons are built with:
+  </p>
+  <ul>
+    <li>Helidon 4</li>
+    <li>avaje-nima</li>
+    <li>avaje-inject</li>
+    <li>avaje-jsonb</li>
+    <li>avaje-config</li>
+    <li>avaje-simple-logger</li>
+    <li>Postgres JDBC driver</li>
+    <li>Ebean ORM</li>
+  </ul>
+  <p>
+    All of these libraries are well suited to GraalVM native image as they avoid
+    using Reflection, Dynamic Proxies and Classpath scanning.
+  </p>
+  <p>
+    With the http routing and JSON serialization being handled by generated code it is
+    perhaps not that surprising that GraalVM is able to optimize these well.
+  </p>
+  <p>
+    Ebean ORM uses build time enhancement for entity classes. It also generates the necessary
+    metadata needed for GraalVM native image so that Ebean ORM works well in
+    GraalVM native image applications. Ebean ORM users will be happy to see that GraalVM
+    does a good job of optimizing Ebean ORM usage even without PGO (Profile Guided Optimization).
+  </p>
+
+
+  <p><br><br><br><br><br><br></p>
+
+</body>
+
+</html>
