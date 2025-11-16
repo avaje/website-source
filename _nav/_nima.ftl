@@ -1,6 +1,6 @@
 <ul>
   <@nav url="#overview" title="Overview"/>
-  <@nav url="#overview" title="Overview">
+  <@nav url="#start" title="Getting started">
   <ul>
     <li><a href="#dependencies">Dependencies</a></li>
     <li><a href="#annotation-processor">Annotation processor</a></li>

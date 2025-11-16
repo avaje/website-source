@@ -32,7 +32,7 @@
   </table>
 
   <p><br><br>
-    A combination of Helidon SE Webserver and Avaje libraries, includes:
+    avaje-nima is a combination of Helidon SE Webserver and Avaje libraries, including:
   </p>
   <ul>
     <li><a href="https://helidon.io/#se">Helidon SE</a> - High performance webserver</li>
@@ -42,6 +42,14 @@
     <li><a href="/validator/">avaje-validator</a> - Bean validation</li>
     <li><a href="/config/">avaje-config</a> - External configuration</li>
   </ul>
+  <p>
+    Avaje Nima uses annotation processors to generate the necessary code at compile time
+    to wire up controllers, dependency injection, JSON adapters and validation.
+    This results in a very lightweight runtime with minimal dependencies and no reflection,
+    making it well suited for GraalVM native image applications.
+  </p>
+
+  <span id="start"></span>
 
   <h2 id="dependencies">Dependencies</h2>
   <h4>1. Add <em>avaje-nima</em> dependencies</h4>
@@ -434,6 +442,10 @@
   </p>
 
   <h4>Native profile build plugin</h4>
+  <p>
+    The profile below builds a native executable and then builds a docker image
+    for that native executable using a UBI micro base image with glibc.
+  </p>
   <pre content="xml">
 
       <profile>
@@ -453,7 +465,7 @@
                   </goals>
                   <phase>package</phase>
                   <configuration>
-                    <mainClass>nz.co.eroad.central.access.Main</mainClass>
+                    <mainClass>org.example.Main</mainClass>
                   </configuration>
                 </execution>
               </executions>
@@ -498,12 +510,12 @@
                       com.google.cloud.tools.jib.maven.extension.nativeimage.JibNativeImageExtension
                     </implementation>
                     <properties> <!-- name of executable produced -->
-                      <imageName>central-access-service</imageName>
+                      <imageName>my-service</imageName>
                     </properties>
                   </pluginExtension>
                 </pluginExtensions>
                 <container>
-                  <mainClass>nz.co.eroad.central.access.Main</mainClass>
+                  <mainClass>org.example.Main</mainClass>
                   <ports>8080</ports>
                 </container>
                 <from> <!-- UBI micro base image with glibc -->
