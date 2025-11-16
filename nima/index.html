@@ -206,10 +206,19 @@
     <li><code>HelloControllerTestAPIHttpClient</code> - the test client implementation</li>
   </ul>
 
-  <h2 id="firstControllerTest">Controller component test</h2>
+  <h2 id="firstControllerTest">Testing Controllers</h2>
   <p>
-    Use the generated test client to create a component test that tests our controller.
-    The name of the generated test clients is: <code>{controllerName}</code> + <code>TestAPI</code>.
+    <code>avaje-nima-test</code> will generate test client API's for each controller.
+    These test clients can be used to create component tests that test the controller.
+  </p>
+  <p>
+    The generated test client for a controller is: <code>{controllerName}</code> + <code>TestAPI</code>.
+    So for <code>HelloController</code> the test client is <code>HelloControllerTestAPI</code>.
+    Below is a simple test that uses the generated test client to test the <code>/</code> endpoint.
+  </p>
+  <p>
+    As the test below includes a HTTP Client (HelloControllerTestAPI), avaje-nima-test will start
+    a helidon webserver on a random port for the test to use.
   </p>
 
   <pre content="java">
@@ -435,17 +444,21 @@
     }
   </pre>
 
-  <h2 id="graalvm">GraalVM</h2>
+  <h2 id="graalvm">GraalVM native image</h2>
   <p>
     We can build GraalVM native images with Avaje Nima and the associated dependencies
     including Helidon SE webserver.
   </p>
-
-  <h4>Native profile build plugin</h4>
   <p>
-    The profile below builds a native executable and then builds a docker image
+    The maven profile below builds a native executable and then builds a docker image
     for that native executable using a UBI micro base image with glibc.
   </p>
+  <ul>
+    <li><code>native-maven-plugin</code>: builds the native executable</li>
+    <li><code>jib-maven-plugin</code>: builds a docker image including the native executable</li>
+  </ul>
+
+  <h4>maven profile - native image build</h4>
   <pre content="xml">
 
       <profile>

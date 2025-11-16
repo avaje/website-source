@@ -11,6 +11,6 @@
   <@nav url="#firstControllerTest" title="Controller test"/>
   <@nav url="#errorHandlers" title="Error handlers"/>
   <@nav url="#filters" title="Filters"/>
-  <@nav url="#graalvm" title="GraalVM native image"/>
+  <@nav url="#graalvm" title="GraalVM"/>
 </ul>
 <p>&nbsp;</p>

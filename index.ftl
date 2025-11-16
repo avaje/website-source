@@ -87,6 +87,14 @@
         </td>
       </tr>
       <tr>
+        <th><a href="/nima">Nima</a></th>
+        <td>
+          <p>
+            Combines avaje libraries with <a href="https://helidon.io">Helidon SE</a> webserver to provide a lightweight, fast, and GraalVM native image compatible framework.
+          </p><hr/>
+        </td>
+      </tr>
+      <tr>
         <th><a href="/http">HTTP Generator</a></th>
         <td>
           <p>
@@ -95,7 +103,7 @@
           </p>
           <p>
             Uses Java annotation processing to generate source code for adapting and registering JAX-RS style classes
-            to servers.
+            to servers. These annotation processors are included in Jex and Nima.
           </p><hr/>
         </td>
       </tr>
@@ -105,35 +113,6 @@
           <p>
             A SLF4J compatible simple logger that logs to <em>System out</em> with structured JSON.
             Lightweight and GraalVM native image compatible.
-          </p><hr/>
-        </td>
-      </tr>
-      <tr>
-        <th><a href="/http">HTTP Generator</a></th>
-        <td>
-          <p>
-            Lightweight JAX-RS style HTTP servers using <a href="https://helidon.io">Helidon SE</a>, <a href="https://javalin.io">Javalin</a>, or <a href="/jex">Jex</a>. Use annotations
-            like <code>@Controller</code>, <code>@Get</code> etc to define a REST API.
-          </p>
-          <p>
-            Uses Java annotation processing to generate source code for adapting and registering JAX-RS style classes
-            to servers.
-          </p><hr/>
-        </td>
-      </tr>
-      <tr>
-        <th><a href="/prisms">Prisms</a></th>
-        <td>
-          <p>
-            Zero-dependency utility library for building annotation processors.
-          </p><hr/>
-        </td>
-      </tr>
-      <tr>
-        <th><a href="/spi">SPI Service</a></th>
-        <td>
-          <p>
-            Zero-dependency library that adds SPI <em>META-INF/services</em> entries for classes and validates modular <em>provides</em> clauses.
           </p><hr/>
         </td>
       </tr>
