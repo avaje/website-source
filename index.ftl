@@ -23,24 +23,6 @@
   <div class="c-narrow">
     <table class="index-toc">
       <tr>
-        <th width="25%"><a href="/graalvm">GraalVM</a></th>
-        <td>
-          <p>
-            GraalVM native image compatible libraries for reflection-free runtime.
-            Review <a href="/graalvm">Why GraalVM</a> for details.
-          </p><hr/>
-        </td>
-      </tr>
-      <tr>
-        <th width="25%"><a href="/config">Configuration</a></th>
-        <td>
-          <p>
-            Provides external configuration. Loads <em>YAML</em>, <em>TOML</em>
-            &amp; <em>properties</em> files, supports dynamic configuration and plugins.
-          </p><hr/>
-        </td>
-      </tr>
-      <tr>
         <th><a href="/inject">Dependency Injection</a></th>
         <td>
           <p>
@@ -75,6 +57,15 @@
             A wrapper on JDK 11's HttpClient. Includes support for defining client API's
             similar to JAX-RS, Retrofit and Feign. Uses Java annotation processing to generate
             client API implementations.
+          </p><hr/>
+        </td>
+      </tr>
+      <tr>
+        <th width="25%"><a href="/config">Configuration</a></th>
+        <td>
+          <p>
+            Provides external configuration. Loads <em>YAML</em>, <em>TOML</em>
+            &amp; <em>properties</em> files, supports dynamic configuration and plugins.
           </p><hr/>
         </td>
       </tr>
@@ -129,6 +120,15 @@
         <td>
           <p>
             Zero-dependency library that adds SPI <em>META-INF/services</em> entries for classes and validates modular <em>provides</em> clauses.
+          </p><hr/>
+        </td>
+      </tr>
+      <tr>
+        <th width="25%"><a href="/graalvm">GraalVM</a></th>
+        <td>
+          <p>
+            GraalVM native image compatible libraries for reflection-free runtime.
+            Review <a href="/graalvm">Why GraalVM</a> for details.
           </p><hr/>
         </td>
       </tr>
