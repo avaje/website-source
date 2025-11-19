@@ -4,6 +4,7 @@
   <meta name="layout" content="_layout/base-nima.html" />
   <meta name="bread1" content="nima" href="/nima/" />
   <#assign index="active">
+  <#assign includeNimaCode="true">
 </head>
 
 <body>
@@ -216,6 +217,72 @@
   <#include "/_http/beanparam.ftl">
   <#include "/_http/post.ftl">
   <#include "/_http/header.ftl">
+
+  <h2 id="req-res">ServerRequest ServerResponse</h2>
+  <p>
+    Helidon <code>ServerRequest</code> and <code>ServerResponse</code> can be used
+    in controller methods to access request details and manipulate the response.
+  </p>
+  <p>
+    They can either be method parameters or injected.
+  </p>
+
+  <h3 id="req-res-method">Method parameters</h3>
+  <pre content="java">
+    @Get
+    Response save(HelloDto dto, ServerRequest request, ServerResponse response) {
+      // use Helidon server request or response as desired
+      ...
+      return new Response();
+    }
+    @Post
+    void save(HelloDto dto, ServerRequest request, ServerResponse response) {
+      // use Helidon server request or response as desired
+      ...
+    }
+  </pre>
+
+  <h3 id="request-scope">Injecting ServerRequest and ServerResponse</h3>
+  <p>
+    When ServerRequest and/or ServerRequest are injected into the controller, we say that
+    this controller is <em>request scoped</em>, meaning a new instance of the controller
+    is created for each request.
+  </p>
+  <p>
+    In this example ProductController has the Helidon ServerRequest and ServerResponse
+    injected using field injection rather than constructor injection.
+    Note that when using field injection they can <em>not</em> be final and can <em>not</em> be private.
+  </p>
+  <pre content="java">
+
+    @Controller
+    @Path("/products")
+    class ProductController {
+
+      private final MyService myService;
+
+      @Inject
+      ServerRequest request; // Helidon request field injected
+
+      @Inject
+      ServerRequest response; // Helidon response field injected
+
+      @Inject
+      ProductController(MyService myService) {
+        this.myService = myService;
+      }
+
+      @Get("/{id}")
+      Contact getById(long id) {
+        // use the helidon request ...
+        var fooCookie = request.headers().cookies().first("foo");
+        ...
+      }
+    }
+  </pre>
+
+
+
 
   <h2 id="testing">Testing Controllers</h2>
   <p>
@@ -720,8 +787,117 @@
     <li><code>jib-maven-plugin</code>: builds a docker image including the native executable</li>
   </ul>
 
-  <h4>maven profile - native image build</h4>
+  <h4 id="native-maven-plugin">native-maven-plugin</h4>
+  <p>
+    The <code>native-maven-plugin</code> is used to build the native executable.
+    It is added to the maven <code>build / plugins</code>.
+  </p>
+  <p>
+    The configuration below uses G1 garbage collector with max pause of 50ms
+    and max heap size of 400mb. It also emits a build report and uses
+    static nolibc linking.
+  </p>
   <pre content="xml">
+
+    <plugin> <!-- build native executable -->
+      <groupId>org.graalvm.buildtools</groupId>
+      <artifactId>native-maven-plugin</artifactId>
+      <version>0.11.3</version>
+      <extensions>true</extensions>
+      <executions>
+        <execution>
+          <id>build-native</id>
+          <goals>
+            <goal>compile-no-fork</goal>
+          </goals>
+          <phase>package</phase>
+          <configuration>
+            <mainClass>org.example.Main</mainClass>
+          </configuration>
+        </execution>
+      </executions>
+      <configuration>
+        <buildArgs>
+          <buildArg>--gc=G1</buildArg>
+          <buildArg>-R:MaxGCPauseMillis=50</buildArg>
+          <buildArg>-R:MaxHeapSize=400m</buildArg>
+          <buildArg>--emit build-report</buildArg>
+          <buildArg>--no-fallback</buildArg>
+          <buildArg>-march=compatibility</buildArg>
+          <buildArg>--allow-incomplete-classpath</buildArg>
+          <buildArg>--static-nolibc</buildArg>
+        </buildArgs>
+      </configuration>
+    </plugin>
+
+  </pre>
+
+
+  <h4 id="jib-maven-plugin">jib-maven-plugin</h4>
+  <p>
+    We can use the <code>jib-maven-plugin</code> to build a docker image
+    that includes the native executable built by the <code>native-maven-plugin</code>.
+  </p>
+  <p>
+    The configuration below uses the UBI micro base image with glibc
+    (<code>redhat/ubi10-micro:10.1-1762215812</code>) and exposes port 8080.
+  </p>
+
+  <pre content="xml">
+
+    <plugin> <!-- build docker image for native executable -->
+      <groupId>com.google.cloud.tools</groupId>
+      <artifactId>jib-maven-plugin</artifactId>
+      <version>3.5.0</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>dockerBuild</goal>
+          </goals>
+          <phase>package</phase>
+        </execution>
+      </executions>
+      <dependencies>
+        <dependency>
+          <groupId>com.google.cloud.tools</groupId>
+          <artifactId>jib-native-image-extension-maven</artifactId>
+          <version>0.1.0</version>
+        </dependency>
+      </dependencies>
+
+      <configuration>
+        <pluginExtensions>
+          <pluginExtension>
+            <implementation>
+              com.google.cloud.tools.jib.maven.extension.nativeimage.JibNativeImageExtension
+            </implementation>
+            <properties> <!-- name of executable produced -->
+              <imageName>my-service</imageName>
+            </properties>
+          </pluginExtension>
+        </pluginExtensions>
+        <container>
+          <mainClass>org.example.Main</mainClass>
+          <ports>8080</ports>
+        </container>
+        <from> <!-- UBI micro base image with glibc -->
+          <image>redhat/ubi10-micro:10.1-1762215812</image>
+        </from>
+        <to>
+          <image>${project.artifactId}-native:${project.version}</image>
+        </to>
+      </configuration>
+    </plugin>
+
+  </pre>
+
+
+  <details id="graal-maven-combined">
+    <summary>example: native-maven-plugin and jib-maven-plugin</summary>
+    <p>
+      A complete maven profile that includes both plugins is as follows:
+    </p>
+    <pre content="xml">
 
       <profile>
         <id>native</id>
@@ -807,12 +983,16 @@
 
   </pre>
 
-  <h4>MacOS specific profile</h4>
+  </details>
+
+  <h4 id="graal-platform-profile">Platform specific maven profile</h4>
   <p>
-    MacOS does not support G1 garbage collector in native images, so we need to
-    create a specific profile for MacOS builds that omits the G1 related build args.
+    MacOS does not support G1 garbage collector in native images, so often we need to
+    create a platform specific profile for MacOS builds that omits the G1 related build args.
   </p>
-  <pre content="xml">
+  <details>
+    <summary>example: platform specific maven profile</summary>
+    <pre content="xml">
       <profile>
         <id>mac</id>
         <activation>
@@ -838,8 +1018,8 @@
           </plugins>
         </build>
       </profile>
-  </pre>
-
+    </pre>
+  </details>
 
   <p><br><br><br><br><br><br></p>
 </body>

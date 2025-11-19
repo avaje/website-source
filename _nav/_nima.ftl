@@ -26,6 +26,12 @@
       <li><a href="#default">@Default</a></li>
     </ul>
   </@nav>
+  <@nav url="#req-res" title="ServerRequest ServerResponse">
+    <ul>
+      <li><a href="#req-res-method">Method parameters</a></li>
+      <li>- <a href="#request-scope">Injected</a></li>
+    </ul>
+  </@nav>
   <@nav url="#testing" title="Testing Controllers">
     <ul>
       <li><a href="#testing">Injecting:</a></li>
@@ -46,6 +52,15 @@
       <li><a href="#filter-example">Example</a></li>
     </ul>
   </@nav>
-  <@nav url="#graalvm" title="GraalVM"/>
+  <@nav url="#graalvm" title="GraalVM">
+  <ul>
+    <li><a href="#native-maven-plugin">native-maven-plugin</a></li>
+    <li><a href="#jib-maven-plugin">jib-maven-plugin</a></li>
+    <li><a href="#graal-maven-combined">combined maven profile</a></li>
+    <li><a href="#graal-platform-profile">Platform specific</a></li>
+  </ul>
+  </@nav>
+
+
 </ul>
 <p>&nbsp;</p>

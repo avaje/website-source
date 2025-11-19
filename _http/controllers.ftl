@@ -101,9 +101,17 @@ class ContactController {
 </p>
 
 <h3 id="controller-singleton">Controllers are singleton scoped by default</h3>
+<#if includeJavalinCode?has_content>
 <p>
   By default controllers are singleton scoped. If the controllers have a dependency
   on Javalin context, Helidon ServerRequest or ServerResponse then they automatically
   become <a href="#request-scoped">request scoped</a>.
 </p>
-
+</#if>
+<#if includeNimaCode?has_content>
+  <p>
+    By default controllers are singleton scoped. If the controllers have a dependency
+    on Helidon ServerRequest or ServerResponse then they automatically
+    become <a href="#request-scoped">request scoped</a>.
+  </p>
+</#if>
