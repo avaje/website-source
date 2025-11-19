@@ -53,6 +53,10 @@
 
   <h2 id="dependencies">Dependencies</h2>
   <h4>1. Add <em>avaje-nima</em> dependencies</h4>
+  <a href="https://github.com/avaje/avaje-nima/releases">
+    <img src="https://img.shields.io/maven-central/v/io.avaje/avaje-nima.svg?label=avaje.nima.version"></a>
+  <br/>
+
   <pre content="xml">
     <dependency>
       <groupId>io.avaje</groupId>
@@ -107,7 +111,7 @@
     </properties>
   </pre>
 
-  <h2 id="firstController">Controller</h2>
+  <h2 id="first-controller">Controller</h2>
   <p>
     Create a controller and annotate it with http-api annotations.
   </p>
@@ -129,7 +133,7 @@
       }
 
       @Get("/json")
-      HelloBean one() {
+      HelloBean helloJson() {
         return new HelloBean(97, "Hello JSON");
       }
 
@@ -206,60 +210,250 @@
     <li><code>HelloControllerTestAPIHttpClient</code> - the test client implementation</li>
   </ul>
 
-  <h2 id="firstControllerTest">Testing Controllers</h2>
+  <h2 id="testing">Testing Controllers</h2>
   <p>
-    <code>avaje-nima-test</code> will generate test client API's for each controller.
-    These test clients can be used to create component tests that test the controller.
+    <code>avaje-nima-test</code> provides support for testing controllers which includes:
   </p>
-  <p>
-    The generated test client for a controller is: <code>{controllerName}</code> + <code>TestAPI</code>.
-    So for <code>HelloController</code> the test client is <code>HelloControllerTestAPI</code>.
-    Below is a simple test that uses the generated test client to test the <code>/</code> endpoint.
-  </p>
-  <p>
-    As the test below includes a HTTP Client (HelloControllerTestAPI), avaje-nima-test will start
-    a helidon webserver on a random port for the test to use.
-  </p>
-
-  <pre content="java">
-    package org.example.web;
-
-    import io.avaje.inject.test.InjectTest;
-    import jakarta.inject.Inject;
-    import org.junit.jupiter.api.Test;
-
-    import java.net.http.HttpResponse;
-
-    import static org.assertj.core.api.Assertions.assertThat;
-
-    @InjectTest
-    class HelloControllerTest {
-
-      @Inject HelloControllerTestAPI client;
-
-      @Test
-      void hello() {
-
-        HttpResponse<|String> res = client.hello();
-        assertThat(res.statusCode()).isEqualTo(200);
-        assertThat(res.body()).isEqualTo("hello world");
-      }
-    }
-  </pre>
   <ul>
-    <li>Use <code>@InjectTest</code> to allow the test which to wire dependencies</li>
-    <li>Use <code>@Inject HelloControllerTestAPI client</code> to wire the test http client. The webserver will
-      start on a random port and be available for this test.</li>
+    <li>Generating test clients for each controller</li>
+    <li>Injecting Http Clients and Webserver into tests</li>
+    <li>Starting webserver on a random port for any test with an injected Http Client</li>
   </ul>
 
-  <h2 id="errorHandlers">Error handlers</h2>
+  <h3>Test Injection</h3>
+  <p>
+    <code>avaje-nima-test</code> can inject dependencies into a test including
+    Http Clients and the Helidon Webserver.
+  </p>
+  <ul>
+    <li><code>io.avaje.http.client.HttpClient</code></li>
+    <li><code>io.avaje.http.client.HttpClient.Builder</code></li>
+    <li>A type annotated with <code>io.avaje.http.api.@Client</code> or <code>io.avaje.http.api.@Path</code></li>
+  </ul>
+  <p>
+    When a test includes any of the above Http Client types to be injected,
+    <code>avaje-nima-test</code> will automatically start a Helidon webserver
+    on a random port for the test to use, and inject the Http Client(s) configured
+    into the test (with the correct port to connect to the started webserver).
+  </p>
+
+  <h3 id="inject-webserver"><span>@Inject WebServer</span></h3>
+  <p>
+    We typically don't need to inject the <code>WebServer</code> unless we want to
+    check the port or stop/start the server manually.
+  </p>
+
+  <details>
+    <summary><code>example: @Inject WebServer</code></summary>
+    <pre content="java">
+      package org.example.web;
+
+      import io.avaje.http.client.HttpClient;
+      import io.avaje.inject.test.InjectTest;
+      import io.helidon.webserver.WebServer;
+      import jakarta.inject.Inject;
+      import org.junit.jupiter.api.Test;
+      import static org.assertj.core.api.Assertions.assertThat;
+
+      @InjectTest
+      class MyControllerTest {
+
+        @Inject WebServer webServer;
+        @Inject HttpClient httpClient;
+
+        @Test
+        void testSomething() {
+
+          // webserver started on random port
+          assertThat(webServer.port()).isNotEqualTo(0);
+
+          // perform test using httpClient
+          HttpResponse<|String> res = httpClient.request().GET().asString();
+          assertThat(res.statusCode()).isEqualTo(200);
+          assertThat(res.body()).isEqualTo("hello world");
+        }
+      }
+    </pre>
+  </details>
+
+  <h3 id="inject-httpclient"><span>@Inject HttpClient</span></h3>
+  <p>
+    We can inject the <code>HttpClient</code> to perform requests against the started webserver.
+  </p>
+  <details>
+    <summary><code>example: @Inject HttpClient</code></summary>
+    <pre content="java">
+      package org.example.web;
+
+      import io.avaje.http.client.HttpClient;
+      import io.avaje.inject.test.InjectTest;
+      import io.helidon.webserver.WebServer;
+      import jakarta.inject.Inject;
+      import org.junit.jupiter.api.Test;
+      import static org.assertj.core.api.Assertions.assertThat;
+
+      @InjectTest
+      class MyControllerTest {
+
+        @Inject HttpClient httpClient;
+
+        @Test
+        void testSomething() {
+
+          // perform test using httpClient
+          HttpResponse<|String> res = httpClient.request().GET().asString();
+          assertThat(res.statusCode()).isEqualTo(200);
+          assertThat(res.body()).isEqualTo("hello world");
+        }
+      }
+    </pre>
+  </details>
+
+  <h3 id="inject-httpclient-builder"><span>@Inject HttpClient.Builder</span></h3>
+  <p>
+    We can inject the <code>HttpClient.Builder</code> to perform requests against the started webserver.
+    With the Builder we can customise the HttpClient as needed including things like setting the
+    interceptors (that might automatically set http headers etc).
+  </p>
+
+  <details>
+    <summary><code>example: @Inject HttpClient</code></summary>
+    <p>
+      For example lets say that we have a filter that requires a "Caller-Id" header to be set on each request,
+      and we have a test configuration that sets a default Caller-Id for tests like:
+    </p>
+    <pre content="java">
+      @TestScope
+      @Factory
+      class TestConfiguration {
+
+          /** Test clients by default will use this interceptor. */
+          @Bean
+          HttpClient.Builder httpClientBuilder() {
+              return HttpClient.builder()
+                  .requestIntercept(new RequestIntercept() {
+                      @Override
+                      public void beforeRequest(HttpClientRequest request) {
+                          request.header("eroad-callerid", "local-test");
+                      }
+                  });
+          }
+      }
+    </pre>
+    <p>
+      We can inject the HttpClient.Builder so that we can change the interceptor for a specific test.
+    </p>
+    <pre content="java">
+      package org.example.web;
+
+      import io.avaje.http.client.HttpClient;
+      import io.avaje.inject.test.InjectTest;
+      import io.helidon.webserver.WebServer;
+      import jakarta.inject.Inject;
+      import org.junit.jupiter.api.Test;
+      import static org.assertj.core.api.Assertions.assertThat;
+
+      @InjectTest
+      class MyControllerTest {
+
+        @Inject HttpClient.Builder httpClientBuilder;
+
+        @Test
+        void testSomething() {
+
+          // create a custom http client for this test
+          HttpClient httpClient = httpClientBuilder
+            .requestIntercept(request -> request.header("eroad-callerid", "special-test"))
+            .build();
+
+          // perform test using httpClient
+          HttpResponse<|String> res = httpClient.request().GET().asString();
+          assertThat(res.statusCode()).isEqualTo(200);
+          assertThat(res.body()).isEqualTo("hello world");
+        }
+      }
+    </pre>
+  </details>
+
+  <h3 id="inject-generated-client"><span>@Inject generated client</span></h3>
+  <p>
+    Given we have a <code>@Controller</code> called <code>HelloController</code> then there will
+    automatically be a generated test client called <code>HelloControllerTestAPI</code> and we
+    can inject that into our test. This allows us to use a type safe client to perform requests.
+  </p>
+  <details>
+    <summary><code>example: @Inject generated client</code></summary>
+    <pre content="java">
+      package org.example.web;
+
+      import io.avaje.http.client.HttpClient;
+      import io.avaje.inject.test.InjectTest;
+      import io.helidon.webserver.WebServer;
+      import jakarta.inject.Inject;
+      import org.junit.jupiter.api.Test;
+      import static org.assertj.core.api.Assertions.assertThat;
+
+      @InjectTest
+      class MyControllerTest {
+
+        @Inject HelloControllerTestAPI myClient;
+
+        @Test
+        void testUsingGeneratedClient() {
+
+          // perform test using generated client API
+          HttpResponse<|String> response = myClient.hello();
+          assertThat(response.statusCode()).isEqualTo(200);
+          assertThat(response.body()).isEqualTo("hello world");
+
+          HttpResponse<|HelloBean> response = myClient.helloJson();
+          assertThat(response.statusCode()).isEqualTo(200);
+
+          HelloBean body = response.body();
+          assertThat(body.id()).isEqualTo(97);
+          assertThat(body.name()).isEqualTo("Hello JSON");
+        }
+      }
+    </pre>
+  </details>
+
+
+  <h2 id="error-handlers">Error handlers</h2>
   <p>
     Commonly exception handling is done in a dedicated exception handling class.
     This can be done by creating a controller that has <code>@ExceptionHandler</code> methods.
   </p>
   <p>
-    Example error controller:
+    The handler method:
   </p>
+  <ul>
+    <li>Takes an Exception type</li>
+    <li>Optionally take a <code>ServerRequest</code></li>
+    <li>Optionally take a <code>ServerResponse</code></li>
+  </ul>
+  <p>
+    In terms of return type / error response body, the handler method can either:
+  </p>
+  <ul>
+    <li>Return void, meaning the response should be explicitly set to the ServerResponse</li>
+    <li>Return String, where the response is a <code>text/plain</code></li>
+    <li>Return another type which is deemed a <code>@Json</code> Bean</li>
+  </ul>
+
+  <pre content="java">
+    @Controller
+    final class ErrorHandlers {
+
+      @Produces(statusCode = ...)
+      @ExceptionHandler
+      SomeErrorResponse handler(SomeException ex, ServerRequest req, ServerResponse res) {
+        ...
+      }
+
+    }
+  </pre>
+
+  <h3 id="error-example">Example error controller</h3>
   <pre content="java">
     package org.example.web;
 
@@ -386,14 +580,75 @@
     </pre>
   </details>
 
+  <h3 id="error-testing">Testing error handlers</h3>
+  <p>
+    We can test error handlers by injecting a test double that will invoke the error.
+  </p>
+  <p>
+    With the test below, we use a test double for the <code>HelloController</code>
+    that simulates a failure when the <code>hello()</code> method is called.
+    This will cause the <code>defaultError(Exception, ServerRequest)</code> method
+    in the <code>ErrorHandlers</code> controller to be invoked.
+  </p>
+
+  <pre content="java">
+
+    @InjectTest
+    class HelloControllerErrorTest {
+
+        @Inject HelloControllerTestAPI api;
+
+        // use test double in place of the real HelloController used by the server
+        @Mock HelloController failingController = Mockito.mock(HelloController.class);
+
+
+        @Test
+        void testHelloError_expect500() {
+            // simulate failure in the service method
+            when(failingController.hello()).thenThrow(new RuntimeException("Simulated failure"));
+            try {
+                api.hiMaybeError();
+                fail("Should have thrown HttpException...");
+
+            } catch (HttpException e) {
+                // error response status code 500
+                assertThat(e.statusCode()).isEqualTo(500);
+
+                // if we know the error response body type we can convert to that
+                ErrorResponse errorResponse = e.bean(ErrorResponse.class);
+                assertThat(errorResponse.path()).isEqualTo("/hello");
+
+                // or just get the error body contents
+                String errorBodyContent = e.bodyAsString();
+                assertThat(errorBodyContent).contains("...");
+            }
+        }
+    }
+  </pre>
+
+
   <h2 id="filters">Filters</h2>
   <p>
     To add a Filter we can add a controller that has a <code>@Filter</code> method
     that takes a <code>FilterChain</code>, <code>RoutingRequest</code> and
     optionally a <code>RoutingResponse</code>.
   </p>
+  <pre content="java">
+
+    @Controller
+    final class MyFilter {
+
+      @Filter
+      void filter(FilterChain chain, RoutingRequest req) {
+        ...
+      }
+
+    }
+  </pre>
+
+  <h3 id="filter-example">Example filter</h3>
   <p>
-    Example filter that reads a "Caller-Id" request header and rejects the
+    The following is an example filter that reads a "Caller-Id" request header and rejects the
     request if one isn't provided.
   </p>
   <pre content="java">
@@ -414,7 +669,7 @@
 
       private static final HeaderName CALLER_ID = HeaderNames.create("Caller-Id");
 
-      private static final Set<!String> BYPASS = Set.of("/ping");
+      private static final Set<|String> BYPASS = Set.of("/ping");
 
       @Filter
       void filter(FilterChain chain, RoutingRequest req) {
@@ -432,7 +687,7 @@
         // capture metrics
       }
 
-      private Optional<!String> callerId(RoutingRequest request) {
+      private Optional<|String> callerId(RoutingRequest request) {
         return request.headers().first(CALLER_ID);
       }
 
