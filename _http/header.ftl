@@ -37,14 +37,6 @@ class RootController {
     return service.getPNG();
   }
 
-  // use Javalin Context for our response
-  // in this case Produces is only needed for the OpenAPI generation
-  @Get("ctx")
-  @Produces(MediaType.IMAGE_PNG)
-  void helloCTX(Context ctx) {
-    service.writeResponseDirectly(ctx.outputStream());
-  }
-
 }
 </pre>
 

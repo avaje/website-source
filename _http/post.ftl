@@ -9,6 +9,7 @@ void save(Customer customer) {
 }
 </pre>
 
+<#if includeJavalinCode?has_content>
 <h4>Generated for Javalin</h4>
 <p>
   The code generated code for Javalin for save() above is:
@@ -21,6 +22,7 @@ ApiBuilder.post("/customers", ctx -> {
 });
 
 </pre>
+</#if>
 
 <h2 id="form">@Form</h2><hr/>
 <p>
@@ -55,7 +57,7 @@ void register(@FormParam String name, @FormParam String email, @FormParam String
   are not valid Java/Kotlin identifiers.
 </p>
 
-
+<#if includeJavalinCode?has_content>
 <h4>Generated for Javalin</h4>
 <p>
   The generated Javalin code for both cases above is the same:
@@ -70,6 +72,7 @@ ApiBuilder.post("/customers/register", ctx -> {
 });
 
 </pre>
+</#if>
 
 <h3>@Default</h3>
 <p>
@@ -111,7 +114,10 @@ void register(MyForm myForm) {
 }
 
 </pre>
-The generated Javalin code for the above is.
+<#if includeJavalinCode?has_content>
+<p>
+  The generated Javalin code for the above is.
+</p>
 <pre content="java">
 ApiBuilder.post("/contacts/register", ctx -> {
   ctx.status(201);
@@ -119,6 +125,7 @@ ApiBuilder.post("/contacts/register", ctx -> {
   controller.register(myForm);
 });
 </pre>
+</#if>
 <p>
   "Form beans" are nice with forms with lots of properties because they de-clutter our code
   and the generated code takes care of putting the values into our bean properties so that

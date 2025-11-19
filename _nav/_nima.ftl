@@ -8,6 +8,24 @@
     <li><a href="#main">Nima main()</a></li>
   </ul>
   </@nav>
+  <@nav url="#controllers" title="Controllers">
+    <ul>
+      <li><a href="#controller">@Controller</a></li>
+      <li><a href="#path">@Path</a></li>
+      <li><a href="#path-parameters">Path parameters</a></li>
+      <li><a href="#matrix-parameters">Matrix parameters</a></li>
+      <li><a href="#query-parameters">@QueryParam</a></li>
+      <li><a href="#bean-param">@BeanParam</a></li>
+      <li><a href="#post">Request Body</a></li>
+      <li><a href="#form">@Form</a></li>
+      <li><a href="#form-param">@FormParam</a></li>
+      <li><a href="#form-beans">Form beans</a></li>
+      <li><a href="#produces">@Produces</a></li>
+      <li><a href="#header">@Header</a></li>
+      <li><a href="#cookie">@Cookie</a></li>
+      <li><a href="#default">@Default</a></li>
+    </ul>
+  </@nav>
   <@nav url="#testing" title="Testing Controllers">
     <ul>
       <li><a href="#testing">Injecting:</a></li>

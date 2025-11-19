@@ -13,7 +13,7 @@ public class CommonParams {
   private Long firstRow;
   private Long maxRows;
   private String sortBy;
-  private Set<String> filter;
+  private Set<|String> filter;
   //you can use ignore to mark a field as not a request parameter
   @Ignore
   private String ignored;
@@ -31,6 +31,8 @@ List<|Cat> findCats(String type, @BeanParam CommonParams params) {
   ...
 }
 </pre>
+<#if includeJavalinCode?has_content>
+
 <p>
   The generated Javalin code for the above is:
 </p>
@@ -48,6 +50,8 @@ ApiBuilder.get("/cats/search/{type}", ctx -> {
 });
 
 </pre>
+</#if>
+
 <h4>@Form</h4>
 <p>
   <em>@BeanParam</em> and <em>@Form</em> are similar except with <em>@Form</em> beans the

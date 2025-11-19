@@ -53,9 +53,10 @@
 
   <h2 id="dependencies">Dependencies</h2>
   <h4>1. Add <em>avaje-nima</em> dependencies</h4>
-  <a href="https://github.com/avaje/avaje-nima/releases">
-    <img src="https://img.shields.io/maven-central/v/io.avaje/avaje-nima.svg?label=avaje.nima.version"></a>
-  <br/>
+  <p>
+    <a href="https://github.com/avaje/avaje-nima/releases">
+      <img src="https://img.shields.io/maven-central/v/io.avaje/avaje-nima.svg?label=avaje.nima.version"></a>
+  </p>
 
   <pre content="xml">
     <dependency>
@@ -209,6 +210,12 @@
     <li><code>HelloControllerTestAPI</code> - a test client inteface to test the controller</li>
     <li><code>HelloControllerTestAPIHttpClient</code> - the test client implementation</li>
   </ul>
+
+  <#include "/_http/controllers.ftl">
+  <#include "/_http/path.ftl">
+  <#include "/_http/beanparam.ftl">
+  <#include "/_http/post.ftl">
+  <#include "/_http/header.ftl">
 
   <h2 id="testing">Testing Controllers</h2>
   <p>

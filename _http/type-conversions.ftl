@@ -28,6 +28,7 @@ Hello hello(int id,
   ...
 }
 </pre>
+<#if includeJavalinCode?has_content>
 <p>
   For example, the Javalin generated code below includes the type conversion
   with <code>toLocalDate()</code> and <code>toBoolean()</code>.
@@ -43,6 +44,7 @@ ApiBuilder.get("/hello/{id}/{name}", ctx -> {
   ctx.json(controller.hello(id, name, startDate, active, longs));
 });
 </pre>
+</#if>
 
 <h3>Conversion Exception Handling</h3>
 <p>
