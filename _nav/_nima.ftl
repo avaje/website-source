@@ -26,10 +26,10 @@
       <li><a href="#default">@Default</a></li>
     </ul>
   </@nav>
-  <@nav url="#req-res" title="ServerRequest ServerResponse">
+  <@nav url="#req-res" title="Request Response">
     <ul>
       <li><a href="#req-res-method">Method parameters</a></li>
-      <li>- <a href="#request-scope">Injected</a></li>
+      <li><a href="#request-scope">Injected</a></li>
     </ul>
   </@nav>
   <@nav url="#testing" title="Testing Controllers">
