@@ -11,10 +11,10 @@
   <@nav url="#testing" title="Testing Controllers">
     <ul>
       <li><a href="#testing">Injecting:</a></li>
-      <li>- <a href="#inject-webserver">WebServer</a></li>
+      <li>- <a href="#inject-generated-client">Generated client</a></li>
       <li>- <a href="#inject-httpclient">HttpClient</a></li>
       <li>- <a href="#inject-httpclient-builder">HttpClient.Builder</a></li>
-      <li>- <a href="#inject-generated-client">Generated client</a></li>
+      <li>- <a href="#inject-webserver">WebServer</a></li>
     </ul>
   </@nav>
   <@nav url="#error-handlers" title="Error handlers">
@@ -44,12 +44,12 @@
       <li><a href="#header">@Header</a></li>
       <li><a href="#cookie">@Cookie</a></li>
       <li><a href="#default">@Default</a></li>
+      <li><a href="#req-res">ServerRequest</a></li>
+      <li><a href="#req-res">ServerResponse</a></li>
     </ul>
   </@nav>
   <@nav url="#req-res" title="Request Response">
     <ul>
-      <li><a href="#req-res-method">Method parameters</a></li>
-      <li><a href="#request-scope">Injected</a></li>
     </ul>
   </@nav>
   <@nav url="#graalvm" title="GraalVM">

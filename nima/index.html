@@ -240,14 +240,24 @@
     into the test (with the correct port to connect to the started webserver).
   </p>
 
-  <h3 id="inject-webserver"><span>@Inject WebServer</span></h3>
-  <p>
-    We typically don't need to inject the <code>WebServer</code> unless we want to
-    check the port or stop/start the server manually.
-  </p>
 
+  <h3 id="inject-generated-client"><span>@Inject generated client</span></h3>
+  <p>
+    Given we have a <code>@Controller</code> called <code>HelloController</code> then there will
+    automatically be a generated test client called <code>HelloControllerTestAPI</code> and we
+    can inject that into our test. This allows us to use a type safe client to perform requests.
+  </p>
+  <p>
+    The generated test client uses the same method names and parameters as the controller
+    but it returns <code>HttpResponse&lt;T&gt;</code> where T is the response body type.
+    This allows us to easily check the response status code, headers and body in our test code.
+  </p>
+  <p>
+    The generated test client can be found in <code>target/generated-test-sources/test-annotations</code>
+    and is only available in test scope.
+  </p>
   <details>
-    <summary><code>example: @Inject WebServer</code></summary>
+    <summary><code>example: @Inject generated client</code></summary>
     <pre content="java">
       package org.example.web;
 
@@ -261,19 +271,22 @@
       @InjectTest
       class MyControllerTest {
 
-        @Inject WebServer webServer;
-        @Inject HttpClient httpClient;
+        @Inject HelloControllerTestAPI myClient;
 
         @Test
-        void testSomething() {
+        void testUsingGeneratedClient() {
 
-          // webserver started on random port
-          assertThat(webServer.port()).isNotEqualTo(0);
+          // perform test using generated client API
+          HttpResponse<|String> response = myClient.hello();
+          assertThat(response.statusCode()).isEqualTo(200);
+          assertThat(response.body()).isEqualTo("hello world");
 
-          // perform test using httpClient
-          HttpResponse<|String> res = httpClient.request().GET().asString();
-          assertThat(res.statusCode()).isEqualTo(200);
-          assertThat(res.body()).isEqualTo("hello world");
+          HttpResponse<|HelloBean> response = myClient.helloJson();
+          assertThat(response.statusCode()).isEqualTo(200);
+
+          HelloBean body = response.body();
+          assertThat(body.id()).isEqualTo(97);
+          assertThat(body.name()).isEqualTo("Hello JSON");
         }
       }
     </pre>
@@ -378,14 +391,14 @@
     </pre>
   </details>
 
-  <h3 id="inject-generated-client"><span>@Inject generated client</span></h3>
+  <h3 id="inject-webserver"><span>@Inject WebServer</span></h3>
   <p>
-    Given we have a <code>@Controller</code> called <code>HelloController</code> then there will
-    automatically be a generated test client called <code>HelloControllerTestAPI</code> and we
-    can inject that into our test. This allows us to use a type safe client to perform requests.
+    We typically don't need to inject the <code>WebServer</code> unless we want to
+    check the port or stop/start the server manually.
   </p>
+
   <details>
-    <summary><code>example: @Inject generated client</code></summary>
+    <summary><code>example: @Inject WebServer</code></summary>
     <pre content="java">
       package org.example.web;
 
@@ -399,22 +412,19 @@
       @InjectTest
       class MyControllerTest {
 
-        @Inject HelloControllerTestAPI myClient;
+        @Inject WebServer webServer;
+        @Inject HttpClient httpClient;
 
         @Test
-        void testUsingGeneratedClient() {
+        void testSomething() {
 
-          // perform test using generated client API
-          HttpResponse<|String> response = myClient.hello();
-          assertThat(response.statusCode()).isEqualTo(200);
-          assertThat(response.body()).isEqualTo("hello world");
+          // webserver started on random port
+          assertThat(webServer.port()).isNotEqualTo(0);
 
-          HttpResponse<|HelloBean> response = myClient.helloJson();
-          assertThat(response.statusCode()).isEqualTo(200);
-
-          HelloBean body = response.body();
-          assertThat(body.id()).isEqualTo(97);
-          assertThat(body.name()).isEqualTo("Hello JSON");
+          // perform test using httpClient
+          HttpResponse<|String> res = httpClient.request().GET().asString();
+          assertThat(res.statusCode()).isEqualTo(200);
+          assertThat(res.body()).isEqualTo("hello world");
         }
       }
     </pre>
@@ -778,7 +788,8 @@
     including Helidon SE webserver.
   </p>
   <p>
-    Have a look at <a href="/graalvm">Why GraalVM native image</a>
+    Have a look at <a href="/graalvm">Why GraalVM native image</a> and
+    <a href="/graalvm/comparison">Comparing GraalVM with JVM</a>.
   </p>
 
   <h3 id="native-maven-plugin">native-maven-plugin</h3>
@@ -887,9 +898,12 @@
 
 
   <details id="graal-maven-combined">
-    <summary>example: native-maven-plugin and jib-maven-plugin</summary>
+    <summary>example: combined native maven profile</summary>
     <p>
       A complete maven profile that includes both plugins is as follows:
+    </p>
+    <p>
+      With <code>mvn package -Pnative</code>, the native executable and docker image will be built.
     </p>
     <pre content="xml">
 

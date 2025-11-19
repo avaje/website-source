@@ -152,6 +152,7 @@ fun saveIt(form: SaveForm) {
 }
 
 </pre>
+<#if includeJavalinCode?has_content>
 <p>
   The generated code for the above controller method is:
 </p>
@@ -167,6 +168,7 @@ ApiBuilder.post("/", ctx -> {
   controller.saveIt(form);
 });
 </pre>
+</#if>
 
 <p>
   If the form bean has Kotlin non-nullable types (id and name above) then the
@@ -204,6 +206,7 @@ public class MyForm {
 }
 
 </pre>
+<#if includeJavalinCode?has_content>
 <p>
   The generated code populates <em></em> from query params, headers and cookies. The generated code is:
 </p>
@@ -221,3 +224,4 @@ ApiBuilder.post("/contacts/register", ctx -> {
   controller.register(myForm);
 });
 </pre>
+</#if>
