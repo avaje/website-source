@@ -350,7 +350,7 @@
                   .requestIntercept(new RequestIntercept() {
                       @Override
                       public void beforeRequest(HttpClientRequest request) {
-                          request.header("eroad-callerid", "local-test");
+                          request.header("my-callerid", "local-test");
                       }
                   });
           }
@@ -379,7 +379,7 @@
 
           // create a custom http client for this test
           HttpClient httpClient = httpClientBuilder
-            .requestIntercept(request -> request.header("eroad-callerid", "special-test"))
+            .requestIntercept(request -> request.header("my-callerid", "special-test"))
             .build();
 
           // perform test using httpClient
