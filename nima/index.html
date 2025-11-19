@@ -212,77 +212,6 @@
     <li><code>HelloControllerTestAPIHttpClient</code> - the test client implementation</li>
   </ul>
 
-  <#include "/_http/controllers.ftl">
-  <#include "/_http/path.ftl">
-  <#include "/_http/beanparam.ftl">
-  <#include "/_http/post.ftl">
-  <#include "/_http/header.ftl">
-
-  <h2 id="req-res">ServerRequest ServerResponse</h2>
-  <p>
-    Helidon <code>ServerRequest</code> and <code>ServerResponse</code> can be used
-    in controller methods to access request details and manipulate the response.
-  </p>
-  <p>
-    They can either be method parameters or injected.
-  </p>
-
-  <h3 id="req-res-method">Method parameters</h3>
-  <pre content="java">
-    @Get
-    Response save(HelloDto dto, ServerRequest request, ServerResponse response) {
-      // use Helidon server request or response as desired
-      ...
-      return new Response();
-    }
-    @Post
-    void save(HelloDto dto, ServerRequest request, ServerResponse response) {
-      // use Helidon server request or response as desired
-      ...
-    }
-  </pre>
-
-  <h3 id="request-scope">Injecting ServerRequest and ServerResponse</h3>
-  <p>
-    When ServerRequest and/or ServerRequest are injected into the controller, we say that
-    this controller is <em>request scoped</em>, meaning a new instance of the controller
-    is created for each request.
-  </p>
-  <p>
-    In this example ProductController has the Helidon ServerRequest and ServerResponse
-    injected using field injection rather than constructor injection.
-    Note that when using field injection they can <em>not</em> be final and can <em>not</em> be private.
-  </p>
-  <pre content="java">
-
-    @Controller
-    @Path("/products")
-    class ProductController {
-
-      private final MyService myService;
-
-      @Inject
-      ServerRequest request; // Helidon request field injected
-
-      @Inject
-      ServerRequest response; // Helidon response field injected
-
-      @Inject
-      ProductController(MyService myService) {
-        this.myService = myService;
-      }
-
-      @Get("/{id}")
-      Contact getById(long id) {
-        // use the helidon request ...
-        var fooCookie = request.headers().cookies().first("foo");
-        ...
-      }
-    }
-  </pre>
-
-
-
 
   <h2 id="testing">Testing Controllers</h2>
   <p>
@@ -770,6 +699,76 @@
         return req != null && req.path() != null ? req.path().path() : null;
       }
 
+    }
+  </pre>
+
+
+  <#include "/_http/controllers.ftl">
+  <#include "/_http/path.ftl">
+  <#include "/_http/beanparam.ftl">
+  <#include "/_http/post.ftl">
+  <#include "/_http/header.ftl">
+
+  <h2 id="req-res">ServerRequest ServerResponse</h2>
+  <p>
+    Helidon <code>ServerRequest</code> and <code>ServerResponse</code> can be used
+    in controller methods to access request details and manipulate the response.
+  </p>
+  <p>
+    They can either be method parameters or injected.
+  </p>
+
+  <h3 id="req-res-method">Method parameters</h3>
+  <pre content="java">
+    @Get
+    Response save(HelloDto dto, ServerRequest request, ServerResponse response) {
+      // use Helidon server request or response as desired
+      ...
+      return new Response();
+    }
+    @Post
+    void save(HelloDto dto, ServerRequest request, ServerResponse response) {
+      // use Helidon server request or response as desired
+      ...
+    }
+  </pre>
+
+  <h3 id="request-scope">Injecting ServerRequest and ServerResponse</h3>
+  <p>
+    When ServerRequest and/or ServerRequest are injected into the controller, we say that
+    this controller is <em>request scoped</em>, meaning a new instance of the controller
+    is created for each request.
+  </p>
+  <p>
+    In this example ProductController has the Helidon ServerRequest and ServerResponse
+    injected using field injection rather than constructor injection.
+    Note that when using field injection they can <em>not</em> be final and can <em>not</em> be private.
+  </p>
+  <pre content="java">
+
+    @Controller
+    @Path("/products")
+    class ProductController {
+
+      private final MyService myService;
+
+      @Inject
+      ServerRequest request; // Helidon request field injected
+
+      @Inject
+      ServerRequest response; // Helidon response field injected
+
+      @Inject
+      ProductController(MyService myService) {
+        this.myService = myService;
+      }
+
+      @Get("/{id}")
+      Contact getById(long id) {
+        // use the helidon request ...
+        var fooCookie = request.headers().cookies().first("foo");
+        ...
+      }
     }
   </pre>
 
