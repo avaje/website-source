@@ -61,27 +61,10 @@
         </td>
       </tr>
       <tr>
-        <th width="25%"><a href="/config">Configuration</a></th>
-        <td>
-          <p>
-            Provides external configuration. Loads <em>YAML</em>, <em>TOML</em>
-            &amp; <em>properties</em> files, supports dynamic configuration and plugins.
-          </p><hr/>
-        </td>
-      </tr>
-      <tr>
         <th><a href="/jex">Jex</a></th>
         <td>
           <p>
             Lightweight wrapper over the JDK's own <a href="https://docs.oracle.com/en/java/javase/21/docs/api/jdk.httpserver/com/sun/net/httpserver/package-summary.html">built-in HTTP server</a>, adding various capabilities. (virtual threads, JSON, compression, etc.).
-          </p><hr/>
-        </td>
-      </tr>
-      <tr>
-        <th><a href="/nima">Nima</a></th>
-        <td>
-          <p>
-            Combines avaje libraries with <a href="https://helidon.io">Helidon SE</a> webserver to provide a lightweight, fast, and GraalVM native image compatible framework.
           </p><hr/>
         </td>
       </tr>
@@ -95,6 +78,23 @@
           <p>
             Uses Java annotation processing to generate source code for adapting and registering JAX-RS style classes
             to servers. These annotation processors are included in Jex and Nima.
+          </p><hr/>
+        </td>
+      </tr>
+      <tr>
+        <th width="25%"><a href="/config">Configuration</a></th>
+        <td>
+          <p>
+            Provides external configuration. Loads <em>YAML</em>, <em>TOML</em>
+            &amp; <em>properties</em> files, supports dynamic configuration and plugins.
+          </p><hr/>
+        </td>
+      </tr>
+      <tr>
+        <th><a href="/nima">Nima</a></th>
+        <td>
+          <p>
+            Combines avaje libraries with <a href="https://helidon.io">Helidon SE</a> webserver to provide a lightweight, fast, and GraalVM native image compatible framework.
           </p><hr/>
         </td>
       </tr>
@@ -124,7 +124,7 @@
         </td>
       </tr>
       <tr>
-        <th width="25%"><a href="/graalvm">GraalVM</a></th>
+        <th width="25%"><a href="/graalvm">GraalVM Analysis</a></th>
         <td>
           <p>
             GraalVM native image compatible libraries for reflection-free runtime.
