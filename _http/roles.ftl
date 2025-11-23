@@ -162,9 +162,9 @@ public @interface Roles {
   Customer find(int id) { ...
 </pre>
 
-<h4>Step 4: Jex AccessManager</h4>
+<h4>Step 4: Example AccessManager</h4>
 <p>
-  Ensure that Jex is setup with an AccessManager to implement the role check.
+  In the following example we use the roles for access management to implement the role check.
 </p>
 
 <h5>Example</h5>

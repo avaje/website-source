@@ -2,6 +2,16 @@
 <p>
   Annotate methods with <code>@Filter</code> for HTTP filter web routes. Filter web routes behave similarly to void <code>@Get</code> methods (They can use header/query/cookie parameters with type conversion)
 </p>
+<h4>Jex</h4>
+<p>
+  Jex filters must have a <code>FilterChain</code> parameter, and optionally can add <code>Context</code>.
+</p>
+<pre content="java">
+  @Filter
+  void filter(FilterChain chain, Context ctx) {
+   //... filter logic
+  }
+</pre>
 <h4>Helidon</h4>
 <p>
   Helidon filters must have a <code>FilterChain</code> parameter, and optionally can add <code>RoutingRequest</code> and <code>RoutingResponse</code>.
@@ -55,7 +65,7 @@
   }
 </pre>
 
-<h4>Javalin</h4>
+<h4>Jex/Javalin</h4>
 <pre content="java">
   @ExceptionHandler
   @Produces(statusCode = 501)
