@@ -1,6 +1,6 @@
 <h2 id="filter">@Filter</h2><hr/>
 <p>
-  Annotate methods with <code>@Filter</code> for HTTP filter web routes. Filter web routes behave similarly to void <code>@Get</code> methods (They can use header/query/cookie parameters with type conversion)
+  Annotate methods with <code>@Filter</code> for HTTP filter web routes. Filters allow you to intercept a request before it hits a handler endpoint.
 </p>
 <h4>Jex</h4>
 <p>
@@ -9,7 +9,12 @@
 <pre content="java">
   @Filter
   void filter(FilterChain chain, Context ctx) {
-   //... filter logic
+    System.out.println("before request");
+    // proceed to the next filter in the chain, or the endpoint handler if  at the end of
+    // the chain
+    chain.proceed();
+    // do something after the request executes
+    System.out.println("after request");
   }
 </pre>
 <h4>Helidon</h4>
@@ -19,18 +24,24 @@
 <pre content="java">
   @Filter
   void filter(FilterChain chain, RoutingRequest req, RoutingResponse res) {
-   //... filter logic
+    System.out.println("before request");
+    // proceed to the next filter in the chain, or the endpoint handler if  at the end of
+    // the chain
+    chain.proceed();
+    // do something after the request executes
+    System.out.println("after request");
   }
 </pre>
 
 <h4>Javalin</h4>
 <p>
-   Javalin filters correspond to <code>before</code> handlers, and can have a <code>Context</code> parameter.
+  <code>@Filter</code> correspond to Javalin <code>before</code> handlers, and can have a <code>Context</code> parameter.
 </p>
 <pre content="java">
   @Filter
   void filter(Context ctx) {
-   //... filter logic
+    System.out.println("before request");
+    //calling ctx.skipRemainingHandlers() allows you to avoid further processing
   }
 </pre>
 
