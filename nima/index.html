@@ -112,6 +112,40 @@
       <maven.compiler.proc>full</maven.compiler.proc>
     </properties>
   </pre>
+  <details>
+    <summary><code>Alternative: maven-compiler-plugin</code></summary>
+    <p>
+      Alternatively we can explicitly configure the <code>maven-compiler-plugin</code>
+      to specify the annotation processor paths:
+    </p>
+    <pre content="xml">
+      <build>
+        <plugins>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.14.1</version>
+            <configuration>
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>io.avaje</groupId>
+                  <artifactId>avaje-nima-generator</artifactId>
+                  <version>${avaje-nima.version}</version>
+                </path>
+                <path>
+                  <groupId>io.ebean</groupId>
+                  <artifactId>querybean-generator</artifactId>
+                  <version>${ebean.version}</version>
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
+          </plugin>
+
+        </plugins>
+      </build>
+    </pre>
+  </details>
 
   <h2 id="first-controller">Controller</h2>
   <p>
