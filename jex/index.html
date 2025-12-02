@@ -43,7 +43,7 @@
     <li>Json (de)serialization SPI</li>
     <li>Automatic Compression</li>
     <li>Context abstraction over HttpExchange to easily retrieve and send request/response data.</li>
-    <li>Multi-Server with any implementation of jdk.httpserver (Jetty, Robaho, built-in, etc)</li>
+    <li>Multi-Server with any implementation of jdk.httpserver (Jetty, Robaho, Flupke, built-in, etc)</li>
     <li>SSL/mTLS plugins</li>
     <li>File Uploads</li>
   </ul>
@@ -923,6 +923,71 @@ var sslPlugin = SslPlugin.create(config -> {
           <version>${robaho.version}</version>
         </dependency>
       </pre>
+
+    <h3 id="flupke">Flupke (HTTP/3, WebTransport)</h3>
+    <p><a href="https://github.com/ptrd/flupke">Flupke</a> is the first and (at the time of writing) <i>only</i> HTTP/3 implementation written in pure java.</p>
+    <a href="https://github.com/avaje/avaje-jex/releases"><img
+            src="https://img.shields.io/maven-central/v/io.avaje/avaje-jex-http3-flupke.svg?label=Maven%20Central"></a>
+    <br></br>
+    <pre content="xml">
+        <dependency>
+          <groupId>io.avaje</groupId>
+          <artifactId>avaje-jex-http3-flupke</artifactId>
+          <version>${jex.version}</version>
+        </dependency>
+      </pre>
+    <pre content="java">
+    var ssl = //HTTP/3 requires https
+        SslPlugin.create(s -> s.keystoreFromClasspath("/keystore.p12", "password"));
+
+    var jex =
+        Jex.create()
+            .plugin(ssl)
+            .plugin(FlupkeJexPlugin.create())
+            .get("/", ctx -> ctx.text("hello (http3)"))
+            .start();
+    </pre>
+    <h4>WebTransport Example</h4>
+    <pre content="java">
+    var ssl = //HTTP/3 requires https
+        SslPlugin.create(s -> s.keystoreFromClasspath("/keystore.p12", "password"));
+
+    var webTransport =
+        FlupkeJexPlugin.create()
+            .webTransport(
+                "/webtransport",
+                session -> {
+                  session.onBiDirectionalStream(
+                      stream -> {
+                        try (stream) {
+                          // Echo back the data
+                          stream.requestStream().transferTo(stream.responseStream());
+                        } catch (IOException e) {
+                          System.err.println(
+                              "IO error while processing request: " + e.getMessage());
+                        }
+                      });
+
+                  session.onUniDirectionalStream(
+                      stream -> {
+                        try (stream) {
+                          ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                          stream.requestStream().transferTo(baos);
+                          System.out.println(
+                              "Received unidirectional stream: "
+                                  + baos.toString(StandardCharsets.UTF_8));
+                        } catch (IOException e) {
+                          fail("Failed to read unidirectional stream: " + e.getMessage());
+                        }
+                      });
+                });
+    var jex =
+        Jex.create()
+            .plugin(ssl)
+            .plugin(webTransport)
+            .get("/", ctx -> ctx.text("hello (http3)"))
+            .start();
+    </pre>
     <p><br><br><br><br><br><br></p>
 </body>
 
