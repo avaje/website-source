@@ -578,40 +578,17 @@ public interface NotNullPrism {
        public static ModuleElement getProjectModuleElement() {
          return CTX.get().module;
        }
-
-       /**
-        * Gets a {@link BufferedReader} for the project's {@code module-info.java} source file.
-        *
-        * <p>Calling {@link ModuleElement}'s {@code getDirectives()} method has a chance of making
-        * compilation fail in certain situations. Therefore, manually parsing {@code module-info.java}
-        * seems to be the safest way to get module information.
-        *
-        * @return
-        * @throws IOException if unable to read the module-info
-        */
-       public static BufferedReader getModuleInfoReader() throws IOException {
-         var inputStream =
-             filer()
-                 .getResource(StandardLocation.SOURCE_PATH, "", "module-info.java")
-                 .toUri()
-                 .toURL()
-                 .openStream();
-         return new BufferedReader(new InputStreamReader(inputStream));
-       }
      }
     </pre>
   </details>
 
-  <h2 id="modules">@GenerateModuleInfoReader</h2><hr/>
+  <h3 id="modules">ModuleInfoReader</h3><hr/>
   <p>
-    There is currently a bug in javac where in certain situations calling <em>ModuleElement#getDirectives</em> on
-    the application's root module crashes compilation. Using <em>@GenerateModuleInfoReader</em> in combination with
     <em>APContext</em> generates classes that allow you to read a
     module's directives by parsing the <em>module-info.java</em> source file.
   </p>
   <pre content="java">
     @GenerateAPContext
-    @GenerateModuleInfoReader
     public final class MyProcessor extends AbstractProcessor {
 
       @Override
@@ -628,14 +605,14 @@ public interface NotNullPrism {
         }
 
         APContext.setProjectModuleElement(tes, renv);
-
-        try (var reader = APContext.getModuleInfoReader()) {
-
-          var moduleInfo = new ModuleInfoReader(APContext.getProjectModuleElement(), reader);
-          boolean contains = moduleInfo.containsOnModulePath("some.module");
-          var provides = moduleInfo.provides();
-          var requires = moduleInfo.requires();
-          //and so on...
+        var moduleInfo = APContext.moduleInfoReader().orElseThrow();
+        //searches for a non static requires on the module path
+        boolean contains = moduleInfo.containsOnModulePath("some.module");
+        //checks that the module provides the given service with the given implementation and logs errors if not
+        moduleInfo.validateServices("io.avaje.inject.spi.InjectExtension", List.of("io.avaje.inject.aop.AopExtension"));
+        var provides = moduleInfo.provides();
+        var requires = moduleInfo.requires();
+        //and so on...
         }
       }
     }
