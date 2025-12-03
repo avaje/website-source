@@ -24,6 +24,17 @@
     the k8s deployment switches between the two docker images. In this way
     we are looking to get a reasonable comparison between the two approaches.
   </p>
+  <p>
+    For these comparisons:
+  </p>
+  <ul>
+    <li>Java version 25.0.1 and GraalVM version 25.0.1 used</li>
+    <li>PGO was not used</li>
+    <li>JVM applications used ZGC (or G1), GraalVM using G1</li>
+    <li>Memory comparisons focused on RSS and Heap Used</li>
+    <li>Applications using Helidon 4, avaje-nima, ebean orm, postgres</li>
+    <li>Native image build time 2m 6s on 8 core github worker</li>
+  </ul>
 
   <hr>
   <h2 id="rollout">Case: Medium sized application, swapping to Native</h2>

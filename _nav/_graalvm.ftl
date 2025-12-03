@@ -9,7 +9,8 @@
 
 <@smallnav activeCheck="${graalvm_comparison!''}" url="/graalvm/comparison" title="Comparison">
   <ul class="nav nav-scroll">
-    <li><a href="#tiny">Tiny application</a></li>
+    <li><a href="#rollout">Medium app</a></li>
+    <li><a href="#tiny">Tiny app</a></li>
     <li><a href="#decent-load">Decent load</a></li>
     <li><a href="#optimized">Interesting optimization</a></li>
     <li><a href="#general-notes">General notes</a></li>

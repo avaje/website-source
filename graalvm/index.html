@@ -25,17 +25,13 @@
     and lower memory consumption compared to traditional JVM-based applications.
   </p>
   <p>
-    <img src="/images/graalvm-vs-jvm.png" alt="GraalVM vs JVM" style="max-width:100%;height:auto;">
+    This means we can see charts like this one below ...
   </p>
   <p>
-    The chart above compares the cpu and memory usage of a Java application that has been built
-    using GraalVM native image versus running on a traditional JVM. As you can see, the GraalVM
-    native image uses significantly less CPU and memory resources. This can lead to cost savings,
-    especially when running applications in cloud environments where resource usage directly
-    translates to costs.
+    <a href="/graalvm/comparison"><img src="/images/graalvm-rollout-memory.png" alt="GraalVM Deployment memory" style="max-width:100%;height:auto;"></a>
   </p>
   <p>
-    The application above uses Helidon 4, Avaje libraries including avaje-nima, Postgres JDBC and Ebean ORM.
+    Have a closer look at <b><a href="/graalvm/comparison">JVM vs GraalVM native image comparison</a></b>.
   </p>
 
 
@@ -50,32 +46,51 @@
     <code>application.yaml</code> etc.
   </p>
 
-  <h2 id="avaje-config">avaje-config</h2>
-  <p>
-    avaje-config is a configuration library that supports GraalVM native image.
-    It supports loading configuration from properties and yaml files as well as environment variables,
-    system properties and plugins (like <a href="/config#aws-appconfig">AWS AppConfig</a>).
-  </p>
-
-  <h2 id="avaje-simple-logger">avaje-simple-logger</h2>
-  <p>
-    avaje-simple-logger is a simple structured JSON logger that is well suited
-    to GraalVM native image applications.
-  </p>
-
-  <h2 id="avaje-http">avaje-http</h2>
-  <p>
-    avaje-http generates adapter code for <code>@Controller</code> and also HTTP clients.
-    This code generation avoids the need for reflection and dynamic proxies, making it
-    perfect for use with GraalVM native image.
-  </p>
-
-  <h2 id="avaje-jsonb">avaje-jsonb</h2>
-  <p>
-    avaje-jsonb is a JSON binding library that uses code generation to create
-    serializers and deserializers for Java objects. This approach avoids the need
-    for reflection, making it ideal for GraalVM native image.
-  </p>
+  <table class="table">
+    <tbody>
+    <tr>
+      <th>avaje-config</th>
+      <td>
+        <p>
+          avaje-config is a configuration library that supports GraalVM native image.
+          It supports loading configuration from properties and yaml files as well as environment variables,
+          system properties and plugins (like <a href="/config#aws-appconfig">AWS AppConfig</a>).
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>avaje-http</th>
+      <td>
+        <p>
+          avaje-http generates adapter code for <code>@Controller</code> and also HTTP clients.
+          This code generation avoids the need for reflection and dynamic proxies, making it
+          perfect for use with GraalVM native image.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>avaje-jsonb</th>
+      <td>
+        <p>
+          avaje-jsonb is a JSON binding library that uses code generation to create
+          serializers and deserializers for Java objects. This approach avoids the need
+          for reflection, making it ideal for GraalVM native image.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>avaje-simple-logger</th>
+      <td>
+        <p>
+          avaje-simple-logger is a simple structured JSON logger that is well suited
+          to GraalVM native image applications. No reflection, lightweight, uses
+          avaje-jsonb for optimised json serialisation and uses build time initialisation
+          with GraalVM native image.
+        </p>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
   <h2 id="considerations">GraalVM Considerations</h2>
   <p>
