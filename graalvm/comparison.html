@@ -26,11 +26,46 @@
   </p>
 
   <hr>
+  <h2 id="rollout">Case: Medium sized application, swapping to Native</h2>
+  <p>
+    At around 12:45 via a K8s deployment the application swapped from a JVM version
+    to GraalVM native image version. This is production load (not synthetic) and there
+    is variation in the load. We note that just around this deployment time the application
+    saw an increase in requests (from ~12:50 to ~14:25).
+  </p>
+  <p>
+    <img src="/images/graalvm-rollout-a.png" alt="GraalVM Deployment" style="max-width:100%;height:auto;">
+  </p>
+  <h4>Notes:</h4>
+  <ul>
+    <li><b>RSS Memory:</b> We see a reduction in RSS memory from around ~500Mb to ~180Mb.</li>
+    <li><b>Load spike:</b> From ~12:50 to ~14:25 there was an observable increase in requests/load</li>
+    <li><b>Heap User Memory:</b> JVM using ZGC, GraalVM using G1. With GraalVM
+      we are seeing a <a href="#heap-flatter">flatter Heap Used line</a></li>
+    <li><b>CPU load</b>: Pretty similar, slightly less CPU consumed with GraalVM</li>
+    <li><b>Mean Latency:</b> Pretty similar, slight adv to JVM</li>
+    <li><b>Max Latency:</b> Not shown but pretty even</li>
+    <li><b>Memory Spikes:</b> This application has some endpoints that not ideal and produce
+      memory spikes that both the JVM and Native versions have to deal with. These spikes
+      are more noticable on the JVM version, it appears that GraalVM/G1 deals with those
+      spikes differently [more aggressive memory allocation and deallocation].</li>
+  </ul>
+
+  <p>
+    For a closer look at memory, the chart below is showing RSS memory and Heap Used, with 4 pods
+    running in K8s.
+  </p>
+  <p>
+    <img src="/images/graalvm-rollout-memory.png" alt="GraalVM Deployment memory" style="max-width:100%;height:auto;">
+  </p>
+
+
+  <hr>
   <h2 id="tiny">Case: Tiny application, tiny load</h2>
   <p>
-    This first comparison is a tiny Helidon 4 application that uses avaje-nima
+    This comparison is a tiny Helidon 4 application that uses avaje-nima
     to provide a single HTTP endpoint that returns a JSON response. The load
-    applied is very light, just 10 requests per second.
+    applied is very light synthetic load, just 10 requests per second.
   </p>
   <p>
     We swap the k8s deployment between the two docker images to get the comparison
@@ -56,7 +91,7 @@
 
   <h2 id="decent-load">Case: Decent load on heavier endpoint</h2>
   <p>
-    For this comparison decent load is applied to an application with a more complex endpoint
+    For this comparison decent synthetic load is applied to an application with a more complex endpoint
     that has a mean latency around 19ms. A notable difference is that the JVM version is using ZGC
     rather than G1.  The GraalVM version is still using G1.
   </p>
