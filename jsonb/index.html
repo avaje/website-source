@@ -1179,7 +1179,7 @@ public enum MyEnum {
   <h4>Generic Adapters</h4>
 
   <pre content="java">
-  @CustomAdapter(isGeneric = true)
+  @CustomAdapter
   public class CustomGenericClassJsonAdapter<T> implements JsonAdapter<GenericClass<T>> {
 
     private final JsonAdapter<T> TAdapter;
