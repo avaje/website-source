@@ -155,6 +155,23 @@
   }
   </pre>
 
+  <h4>JSON property names</h4>
+  <p>
+    We can customize the property names via setting <code>logger.propertyNames</code> in <em>avaje-logger.properties</em> like:
+  </p>
+  <p>
+    Example: set a custom name for the logger property to loggerName, env to environment and timestamp to @timestamp.
+  </p>
+  ```properties
+  ## delimited by comma and equals
+  logger.propertyNames=logger=loggerName,env=environment,timestamp=@timestamp
+  ```
+  <p>
+    Example: set a single property name:
+  </p>
+  ```properties
+  logger.propertyNames=logger=loggerName
+  ```
 
   <h4>component</h4>
   <p>
