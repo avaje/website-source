@@ -943,7 +943,6 @@ var sslPlugin = SslPlugin.create(config -> {
     var jex =
         Jex.create()
             .plugin(ssl)
-            .plugin(FlupkeJexPlugin.create())
             .get("/", ctx -> ctx.text("hello (http3)"))
             .start();
     </pre>
