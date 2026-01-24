@@ -28,8 +28,10 @@
     <ul>
       <li><a href="#jetty">Jetty</a></li>
       <li><a href="#robaho">Robaho</a></li>
+      <li><a href="#grizzly">Grizzly</a></li>
       <li><a href="#flupke">Flupke (HTTP/3)</a></li>
     </ul>
   </@nav>
+  <@nav url="#websocket" title="WebSockets"/>
 </ul>
 <p>&nbsp;</p>

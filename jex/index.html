@@ -924,6 +924,25 @@ var sslPlugin = SslPlugin.create(config -> {
         </dependency>
       </pre>
 
+      <h3 id="grizzly">Grizzly</h3>
+
+    <p><a href="https://github.com/eclipse-ee4j/glassfish-grizzly">Grizzly</a> is the webserver that powers jakarta EE's opensource Glassfish.</p>
+    <a href="https://mvnrepository.com/artifact/io.avaje/avaje-jex-grizzly-spi"><img
+        src="https://img.shields.io/maven-central/v/io.avaje/avaje-jex-grizzly-spi.svg?label=Maven%20Central"></a>
+    <br></br>
+    <pre content="xml">
+        <dependency>
+          <groupId>io.avaje</groupId>
+          <artifactId>avaje-jex</artifactId>
+          <version>${jex.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>io.avaje</groupId>
+          <artifactId>avaje-jex-grizzly-spi</artifactId>
+          <version>${plugin.version}</version>
+        </dependency>
+      </pre>
+
     <h3 id="flupke">Flupke (HTTP/3, WebTransport)</h3>
     <p><a href="https://github.com/ptrd/flupke">Flupke</a> is the first and (at the time of writing) <i>only</i> HTTP/3 implementation written in pure java.</p>
     <a href="https://github.com/avaje/avaje-jex/releases"><img
@@ -932,8 +951,13 @@ var sslPlugin = SslPlugin.create(config -> {
     <pre content="xml">
         <dependency>
           <groupId>io.avaje</groupId>
-          <artifactId>avaje-jex-http3-flupke</artifactId>
+          <artifactId>avaje-jex</artifactId>
           <version>${jex.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>io.avaje</groupId>
+          <artifactId>avaje-jex-http3-flupke</artifactId>
+          <version>${plugin.version}</version>
         </dependency>
       </pre>
     <pre content="java">
@@ -987,6 +1011,163 @@ var sslPlugin = SslPlugin.create(config -> {
             .get("/", ctx -> ctx.text("hello (http3)"))
             .start();
     </pre>
+
+  <h2 id="websocket">WebSockets</h2>
+  <hr/>
+  
+  <p>
+    Jex provides WebSocket support through a separate module that enables real-time bidirectional communication between clients and servers.
+  </p>
+
+  <div class="alert alert-warning" role="alert">
+    <strong>Note on Server Compatibility:</strong> The default JDK server does not currently support WebSocket. Use alternative providers like Robaho or Grizzly.
+  </div>
+
+  <h3>Add WebSocket Dependency</h3>
+  <pre content="xml">
+    
+        <dependency>
+          <groupId>io.avaje</groupId>
+          <artifactId>avaje-jex-websocket</artifactId>
+          <version>${avaje.jex.version}</version>
+        </dependency>
+    </pre>
+
+  <h3>Basic WebSocket Handler</h3>
+  <p>
+    Create a WebSocket endpoint using the <code>WebSocketPlugin</code>:
+  </p>
+
+  <pre content="java">
+var wsPlugin = WebSocketPlugin.create()
+    .ws("/chat", ws -> ws
+        .onOpen(ctx -> {
+            System.out.println("Client connected");
+            ctx.send("Welcome to the chat!");
+        })
+        .onMessage(ctx -> {
+            String message = ctx.message();
+            System.out.println("Received: " + message);
+            ctx.send("Echo: " + message);
+        })
+        .onClose(ctx -> {
+            System.out.println("Client disconnected: " + ctx.reason());
+        })
+        .onError(ctx -> {
+            System.err.println("WebSocket error: " + ctx.error());
+        })
+    );
+
+Jex.create()
+    .plugin(wsPlugin)
+    .start();</pre>
+
+  <h3>WebSocket Event Handlers</h3>
+  <p>
+    The <code>WebSocketListener</code> provides handlers for different WebSocket events:
+  </p>
+
+  <table class="table table-striped">
+    <thead class="heading">
+      <tr>
+        <th>Handler</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>onOpen(WsOpen)</code></td>
+        <td>Called when a new WebSocket connection is established</td>
+      </tr>
+      <tr>
+        <td><code>onMessage(WsMessage)</code></td>
+        <td>Called when a text message is received from the client</td>
+      </tr>
+      <tr>
+        <td><code>onBinaryMessage(WsBinaryMessage)</code></td>
+        <td>Called when a binary message is received</td>
+      </tr>
+      <tr>
+        <td><code>onPong(WsPong)</code></td>
+        <td>Called when a pong control frame is received</td>
+      </tr>
+      <tr>
+        <td><code>onClose(WsClose)</code></td>
+        <td>Called when the connection is closed</td>
+      </tr>
+      <tr>
+        <td><code>onError(WsError)</code></td>
+        <td>Called when an error occurs</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Sending Messages</h3>
+  <p>
+    The <code>WsContext</code> provides several methods for sending data to clients:
+  </p>
+
+  <pre content="java">
+// Send text message
+ctx.send("Hello, client!");
+
+// Send JSON object (automatically serialized)
+ctx.send(new ChatMessage("user", "Hello"));
+
+// Send binary data
+ctx.send(new byte[]{0x01, 0x02, 0x03});
+
+// Send ping frame
+ctx.sendPing();
+ctx.sendPing(new byte[]{0x00});
+</pre>
+
+  <h3>Receiving Messages</h3>
+  <p>
+    Text and binary messages can be accessed and deserialized:
+  </p>
+
+  <pre content="java">
+// Text message
+.onMessage(ctx -> {
+    String text = ctx.message();
+    
+    // Deserialize JSON to object
+    ChatMessage msg = ctx.messageAsClass(ChatMessage.class);
+    
+    // Access underlying frame
+    WebSocketFrame frame = ctx.wsFrame();
+    boolean isFinal = ctx.isFin();
+})
+
+// Binary message
+.onBinaryMessage(ctx -> {
+    byte[] data = ctx.data();
+    // Process binary data
+})</pre>
+
+  <h3>Closing Connections</h3>
+  <p>
+    Close WebSocket connections with optional status codes and reasons:
+  </p>
+
+  <pre content="java">
+// Normal closure
+ctx.closeSession();
+
+// Close with specific code
+ctx.closeSession(CloseCode.GOING_AWAY);
+
+// Close with code and reason
+ctx.closeSession(CloseCode.PROTOCOL_ERROR, "Invalid message format");
+
+// In close handler, check who initiated
+.onClose(ctx -> {
+    CloseCode code = ctx.closeCode();
+    String reason = ctx.reason();
+    boolean remote = ctx.initiatedByRemote();
+})</pre>
+
     <p><br><br><br><br><br><br></p>
 </body>
 
