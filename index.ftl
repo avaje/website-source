@@ -124,6 +124,17 @@
         </td>
       </tr>
       <tr>
+        <th><a href="https://avaje-metrics.github.io">Metrics</a></th>
+        <td>
+          <p>
+            Metrics for the JVM, with `@Timed` classes and methods, gauges, counters, etc.
+          </p>
+          <p>
+            Supports integration with other avaje libraries, ebean, JAX-RS, Spring, Graphite, ElasticSearch, among others.
+          </p><hr/>
+        </td>
+      </tr>
+      <tr>
         <th width="25%"><a href="/graalvm">GraalVM Analysis</a></th>
         <td>
           <p>
