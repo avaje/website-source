@@ -127,7 +127,7 @@
         <th><a href="https://avaje-metrics.github.io">Metrics</a></th>
         <td>
           <p>
-            Metrics for the JVM, with `@Timed` classes and methods, gauges, counters, etc.
+            Metrics for the JVM, with <code>@Timed</code> classes and methods, gauges, counters, etc.
           </p>
           <p>
             Supports integration with other avaje libraries, ebean, JAX-RS, Spring, Graphite, ElasticSearch, among others.
