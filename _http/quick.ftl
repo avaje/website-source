@@ -91,7 +91,7 @@ module org.example {
 <pre content="java">
 @Generated("avaje-helidon-generator")
 @Singleton
-public class WidgetController$Route implements HttpFeature {
+public final class WidgetController$Route implements HttpFeature {
 
   private final WidgetController controller;
 
@@ -108,15 +108,23 @@ public class WidgetController$Route implements HttpFeature {
   private void _getById(ServerRequest req, ServerResponse res) throws Exception {
     res.status(OK_200);
     var pathParams = req.path().pathParameters();
-    var id = asInt(pathParams.first("id").get());
+    var id = asInt(pathParams.contains("id") ? pathParams.get("id") : null);
     var result = controller.getById(id);
-    res.send(result);
+    if (result == null) {
+      res.status(NO_CONTENT_204).send();
+    } else {
+      res.send(result);
+    }
   }
 
   private void _getAll(ServerRequest req, ServerResponse res) throws Exception {
     res.status(OK_200);
     var result = controller.getAll();
-    res.send(result);
+    if (result == null) {
+      res.status(NO_CONTENT_204).send();
+    } else {
+      res.send(result);
+    }
   }
 }
 </pre>
@@ -128,7 +136,7 @@ public class WidgetController$Route implements HttpFeature {
 <pre content="java">
 @Generated("avaje-javalin-generator")
 @Singleton
-public class WidgetController$Route implements Plugin {
+public final class WidgetController$Route extends AvajeJavalinPlugin {
 
   private final WidgetController controller;
 
@@ -137,7 +145,11 @@ public class WidgetController$Route implements Plugin {
   }
 
   @Override
-  public void apply(Javalin app) {
+  public void onStart(JavalinState state) {
+    routes(state.routes);
+  }
+
+  private void routes(RoutesConfig app) {
 
     app.get("/widgets/{id}", ctx -> {
       ctx.status(200);
@@ -151,6 +163,67 @@ public class WidgetController$Route implements Plugin {
       var result = controller.getAll();
       ctx.json(result);
     });
+  }
+}
+</pre>
+</details>
+
+<details>
+  <summary>Vert.x</summary>
+
+<pre content="java">
+@Generated("avaje-vertx-generator")
+@Singleton
+public final class WidgetController$Route implements VertxRouteSet {
+
+  private final WidgetController controller;
+
+  public WidgetController$Route(WidgetController controller) {
+    this.controller = controller;
+  }
+
+  @Override
+  public void register(Router router) {
+
+    var routes = router;
+
+    {
+      var route = routes.get("/widgets/:id");
+      route.handler(ctx -> {
+      try {
+        ctx.response().setStatusCode(200);
+        var id = asInt(ctx.pathParam("id"));
+        var result = controller.getById(id);
+          if (result == null || ctx.response().ended()) {
+            return;
+          }
+        ctx.response().putHeader("content-type", "application/json");
+        ctx.response().end(Json.encode(result));
+      } catch (Exception e) {
+        ctx.fail(e);
+      }
+      });
+
+    }
+
+    {
+      var route = routes.get("/widgets");
+      route.handler(ctx -> {
+      try {
+        ctx.response().setStatusCode(200);
+        var result = controller.getAll();
+          if (result == null || ctx.response().ended()) {
+            return;
+          }
+        ctx.response().putHeader("content-type", "application/json");
+        ctx.response().end(Json.encode(result));
+      } catch (Exception e) {
+        ctx.fail(e);
+      }
+      });
+
+    }
+
   }
 }
 </pre>
@@ -189,7 +262,7 @@ public class WidgetController$Route implements Plugin {
 <pre content="java">
 @Generated("avaje-helidon-generator")
 @Singleton
-public class WidgetController$Route implements HttpFeature {
+public final class WidgetController$Route implements HttpFeature {
 
   private final WidgetController controller;
   private final JsonType<WidgetController.Widget> widgetController$WidgetJsonType;
@@ -198,7 +271,7 @@ public class WidgetController$Route implements HttpFeature {
   public WidgetController$Route(WidgetController controller, Jsonb jsonb) {
     this.controller = controller;
     this.widgetController$WidgetJsonType = jsonb.type(WidgetController.Widget.class);
-    this.listWidgetController$WidgetJsonType = jsonb.type(WidgetController.Widget.class).list();
+    this.listWidgetController$WidgetJsonType = jsonb.type(Types.newParameterizedType(List.class, WidgetController.Widget.class));
   }
 
   @Override
@@ -210,18 +283,26 @@ public class WidgetController$Route implements HttpFeature {
   private void _getById(ServerRequest req, ServerResponse res) throws Exception {
     res.status(OK_200);
     var pathParams = req.path().pathParameters();
-    var id = asInt(pathParams.first("id").get());
+    var id = asInt(pathParams.contains("id") ? pathParams.get("id") : null);
     var result = controller.getById(id);
-    res.headers().contentType(MediaTypes.APPLICATION_JSON);
-    //jsonb has a special accommodation for helidon to improve performance
-    widgetController$WidgetJsonType.toJson(result, JsonOutput.of(res));
+    if (result == null) {
+      res.status(NO_CONTENT_204).send();
+    } else {
+      res.headers().contentType(MediaTypes.APPLICATION_JSON);
+      //jsonb has a special accommodation for helidon to improve performance
+      widgetController$WidgetJsonType.toJson(result, JsonOutput.of(res));
+    }
   }
 
   private void _getAll(ServerRequest req, ServerResponse res) throws Exception {
     res.status(OK_200);
     var result = controller.getAll();
-    res.headers().contentType(MediaTypes.APPLICATION_JSON);
-    listWidgetController$WidgetJsonType.toJson(result, JsonOutput.of(res));
+    if (result == null) {
+      res.status(NO_CONTENT_204).send();
+    } else {
+      res.headers().contentType(MediaTypes.APPLICATION_JSON);
+      listWidgetController$WidgetJsonType.toJson(result, JsonOutput.of(res));
+    }
   }
 }
 </pre>
@@ -233,33 +314,102 @@ public class WidgetController$Route implements HttpFeature {
 <pre content="java">
 @Generated("avaje-javalin-generator")
 @Singleton
-public class WidgetController$Route implements Plugin {
+public final class WidgetController$Route extends AvajeJavalinPlugin {
 
   private final WidgetController controller;
   private final JsonType<List<Widget>> listWidgetJsonType;
   private final JsonType<Widget> widgetJsonType;
 
-  public WidgetController$Route(WidgetController controller, Jsonb jsonB) {
+  public WidgetController$Route(WidgetController controller, Jsonb jsonb) {
     this.controller = controller;
-    this.listWidgetJsonType = jsonB.type(Widget.class).list();
-    this.widgetJsonType = jsonB.type(Widget.class);
+    this.listWidgetJsonType = jsonb.type(Types.newParameterizedType(List.class, Widget.class));
+    this.widgetJsonType = jsonb.type(Widget.class);
   }
 
   @Override
-  public void apply(Javalin app) {
+  public void onStart(JavalinState state) {
+    routes(state.routes);
+  }
+
+  private void routes(RoutesConfig app) {
 
     app.get("/widgets/{id}", ctx -> {
       ctx.status(200);
       var id = asInt(ctx.pathParam("id"));
       var result = controller.getById(id);
-      widgetJsonType.toJson(result, ctx.contentType("application/json").outputStream());
+      widgetJsonType.toJson(result, ctx.contentType("application/json").res().getOutputStream());
     });
 
     app.get("/widgets", ctx -> {
       ctx.status(200);
       var result = controller.getAll();
-      listWidgetJsonType.toJson(result, ctx.contentType("application/json").outputStream());
+      listWidgetJsonType.toJson(result, ctx.contentType("application/json").res().getOutputStream());
     });
+  }
+}
+</pre>
+</details>
+
+<details>
+  <summary>Vert.x (Avaje-Jsonb on classpath)</summary>
+
+<pre content="java">
+@Generated("avaje-vertx-generator")
+@Singleton
+public final class WidgetController$Route implements VertxRouteSet {
+
+  private final WidgetController controller;
+  private final JsonType<List<Widget>> listWidgetJsonType;
+  private final JsonType<Widget> widgetJsonType;
+
+  public WidgetController$Route(WidgetController controller, Jsonb jsonb) {
+    this.controller = controller;
+    this.listWidgetJsonType = jsonb.type(Types.newParameterizedType(List.class, Widget.class));
+    this.widgetJsonType = jsonb.type(Widget.class);
+  }
+
+  @Override
+  public void register(Router router) {
+
+    var routes = router;
+
+    {
+      var route = routes.get("/widgets/:id");
+      route.handler(ctx -> {
+      try {
+        ctx.response().setStatusCode(200);
+        var id = asInt(ctx.pathParam("id"));
+        var result = controller.getById(id);
+          if (result == null || ctx.response().ended()) {
+            return;
+          }
+        ctx.response().putHeader("content-type", "application/json");
+        ctx.response().end(Buffer.buffer(widgetJsonType.toJsonBytes(result)));
+      } catch (Exception e) {
+        ctx.fail(e);
+      }
+      });
+
+    }
+
+    {
+      var route = routes.get("/widgets");
+      route.handler(ctx -> {
+      try {
+        ctx.response().setStatusCode(200);
+        var result = controller.getAll();
+          if (result == null || ctx.response().ended()) {
+            return;
+          }
+        ctx.response().putHeader("content-type", "application/json");
+        ctx.response().end(Buffer.buffer(listWidgetJsonType.toJsonBytes(result)));
+      } catch (Exception e) {
+        ctx.fail(e);
+      }
+      });
+
+    }
+
   }
 }
 </pre>
@@ -278,7 +428,7 @@ public class WidgetController$Route implements Plugin {
 
 <h4>Usage with Javalin</h4>
 
-<p>The annotation processor will generate controller classes implementing the <code>AvajeJavalinPlugin</code> interface (concrete subclass of Javalin <code>Plugin<Void></code>), which means we can register them using:
+<p>The annotation processor will generate controller classes extending <code>AvajeJavalinPlugin</code>, which means we can register them using:
 </p>
 <pre content="java">
  List<AvajeJavalinPlugin> routes = ...; // retrieve using a DI framework.
@@ -296,7 +446,7 @@ public class WidgetController$Route implements Plugin {
   Jex.create().routing(services).start();
 </pre>
 
-<h4>Usage with Helidon SE (4.x)</h2><hr/>
+<h4>Usage with Helidon SE (4.x)</h4>
 <p>
 The annotation processor will generate controller classes implementing the Helidon <code>HttpFeature</code> interface, which we can register with the Helidon <code>HttpRouting</code>.
 </p>
@@ -311,4 +461,26 @@ WebServer.builder()
          .addRouting(builder)
          .build()
          .start();
+</pre>
+
+<h4>Usage with Vert.x</h4>
+<p>
+Add the Vert.x runtime API dependency:
+</p>
+<pre content="xml">
+<dependency>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje-http-api-vertx</artifactId>
+  <version>${avaje-http.version}</version>
+</dependency>
+</pre>
+<p>
+The annotation processor will generate controller classes implementing <code>VertxRouteSet</code>, which can be registered with <code>io.vertx.ext.web.Router</code>.
+</p>
+
+<pre content="java">
+List<VertxRouteSet> routes = ... //retrieve using a DI framework
+Router router = ...;
+
+routes.forEach(route -> route.register(router));
 </pre>
