@@ -146,7 +146,7 @@ public class EngineImpl$Proxy extends EngineImpl {
  </p>
 
  <p>
-  If we don't use <code>@Value</code> and use <code>Config.getInt()</code> directly on the field, the behavior is completly unambiguous.
+  If we don't use <code>@Value</code> and use <code>Config.getInt()</code> directly on the field, the behavior is completely unambiguous.
   The values are initialized like any normal field.
 </p>
 
@@ -155,7 +155,7 @@ public class EngineImpl$Proxy extends EngineImpl {
  With avaje-inject we create an effectively immutable BeanScope because we expect "external dynamic configuration" to be done independently from Dependency Injection (for example, by using avaje-config).
 
  If we go from needing the configuration read and set <i>once at startup</i> to being read each time and potentially changing (aka dynamic configuration).
- Then we'd need to change away from using <code>@Value</code> or add a complex "Refreshable Scope" concept to this llibrary.
+ Then we'd need to change away from using <code>@Value</code> or add a complex "Refreshable Scope" concept to this library.
 </p>
 
 <p>
@@ -167,7 +167,7 @@ There isn't a big shift between static configuration and dynamic configuration.
 
 <p>
   We have an excellent configuration library in <a href="https://avaje.io/config/">avaje-config</a>.
-  It's simple, extendable, and mature as it was originally part of Ebean ORM and was extracted into it's own project.
+  It's simple, extendable, and mature as it was originally part of Ebean ORM and was extracted into its own project.
 </p>
 
 <p>

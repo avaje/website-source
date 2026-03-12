@@ -12,7 +12,7 @@ void save(Customer customer) {
 <#if includeJavalinCode?has_content>
 <h4>Generated for Javalin</h4>
 <p>
-  The code generated code for Javalin for save() above is:
+  The generated code for Javalin for save() above is:
 </p>
 <pre content="java">
 ApiBuilder.post("/customers", ctx -> {
@@ -208,7 +208,7 @@ public class MyForm {
 </pre>
 <#if includeJavalinCode?has_content>
 <p>
-  The generated code populates <em></em> from query params, headers and cookies. The generated code is:
+  The generated code populates <em>MyForm</em> from query params, headers and cookies. The generated code is:
 </p>
 <pre content="java">
 ApiBuilder.post("/contacts/register", ctx -> {

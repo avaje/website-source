@@ -1,5 +1,5 @@
-<h2 id="assistInject">Assisted Injection</h3><hr/>
-Assisted injection is a dependency injection pattern used to construct an object where some parameters may be provided by the DI framework and others must be passed in at creation time (“assisted” if you will) by the user.
+<h2 id=”assistInject”>Assisted Injection</h2><hr/>
+Assisted injection is a dependency injection pattern used to construct an object where some parameters are provided by the DI framework and others must be passed in at creation time by the user.
 
 <br><br>Avaje Inject will generate a factory implementation responsible for combining all of the parameters and creating the object.
 
@@ -23,7 +23,7 @@ public class Car {
   //  ...
   }
 
-  //will be triggered after contruction
+  //will be triggered after construction
   @Inject
   void injectMethod(@Assisted int size, Steel steel) {
   //  ...

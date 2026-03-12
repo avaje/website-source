@@ -5,7 +5,7 @@
 </p>
 <p>
   The annotation processor that generates the web route adapters
-  also generates a OpenAPI (swagger) definition of all the endpoints
+  also generates an OpenAPI (swagger) definition of all the endpoints
   that the controllers define.
 </p>
 <p>
@@ -38,7 +38,7 @@
   }
 </pre>
 
-<p>In Addition, the generator can read the request/response class javadoc to generate openAPI component description.</p>
+<p>In addition, the generator can read the request/response class javadoc to generate openAPI component description.</p>
 <pre content="java">
   class ResponseModel {
     /** field one */
@@ -48,20 +48,20 @@
  }
 </pre>
 
-<h4>@Consumes</h3>
+<h4>@Consumes</h4>
 <p>
   Adding the <code>@Consumes</code> annotation to a controller method let's you control what media type should be generated for the request body in the openAPI definition. This is useful when you are dealing with non-standard request content types.
 </p>
 
-<h4>@Deprecated</h3>
+<h4>@Deprecated</h4>
 <p>
-  Adding Javas's <code>@Deprecated</code> annotation to a controller method marks it as deprecated in the openAPI definition.
+  Adding Java's <code>@Deprecated</code> annotation to a controller method marks it as deprecated in the openAPI definition.
 </p>
 
 <h3 id=response>@OpenApiResponse</h3>
 
 <p>
-  This annotation lets you specify alternate endpoint response status codes/descriptions/types. This is useful for defining error scenarios, and when using the underlying Javalin/Helidon contructs in void methods.
+  This annotation lets you specify alternate endpoint response status codes/descriptions/types. This is useful for defining error scenarios, and when using the underlying Javalin/Helidon constructs in void methods.
 </p>
 
 <pre content="java">

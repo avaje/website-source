@@ -2,10 +2,10 @@
 
 <h3 id="unit-testing">Unit Testing</h3>
 <p>
-  When <em>unit testing</em> we are focused on the object under testing and it's dependencies.
+  When <em>unit testing</em> we are focused on the object under testing and its dependencies.
 </p>
 <p>
-  In the test setup, code will create the object under test along with it's dependencies.
+  In the test setup, code will create the object under test along with its dependencies.
 </p>
 
 <h5>Mockito programmatic style</h5>
@@ -95,7 +95,7 @@
   test using <code>@Inject</code> as well as mockito's <code>@Mock, @Spy, @Captor</code>.
 </p>
 <p>
-  With <em>@InjectTest</em> avaje-inject will build a BeanScope will the appropriate mockito
+  With <em>@InjectTest</em> avaje-inject will build a BeanScope with the appropriate mockito
   mocks and spies and inject back into the test the appropriate objects out of the BeanScope.
 </p>
 <pre content="java">
@@ -459,7 +459,7 @@ class MyTestConfiguration {
 
 <h4>Step 2: @InjectTest</h4>
 <p>
-  Annotation the test class with <code>@InjectTest</code>.
+  Annotate the test class with <code>@InjectTest</code>.
 </p>
 <p>
   The component tests can inject AmazonDynamoDB directly, or typically inject a component that depends

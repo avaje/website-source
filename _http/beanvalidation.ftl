@@ -1,7 +1,7 @@
 
 <h2 id="bean-validation">Bean validation</h2><hr/>
 <p>
-  Bean validation is done through through the validator interface. It can validate a request body and/or Form Bean/BeanParam
+  Bean validation is done through the validator interface. It can validate a request body and/or Form Bean/BeanParam.
 </p>
 <p>
   Example: <a target="_blank" href="https://github.com/dinject/examples/blob/master/javalin-maven-java-basic/src/main/java/org/example/myapp/web/HelloController.java#L30">HelloController</a>

@@ -2,7 +2,7 @@
 
 <h3 id="singleton">@Singleton</h3>
 <p>
-  Put <code>@Singleton</code> on beans that to include them in dependency injection.
+  Put <code>@Singleton</code> on beans to include them in dependency injection.
   These are beans that are created ("wired") by dependency injection and put into the scope, available to be injected into other beans.
 </p>
 <pre content="java">
@@ -60,7 +60,7 @@ public class CoffeeMaker {
 <h3 id="constructor">Constructor Injection</h3>
 
 <p>
-  The below CoffeeMaker uses constructor injection. Both a Pump and Ginder will be injected into the
+  The below CoffeeMaker uses constructor injection. Both a Pump and Grinder will be injected into the
   constructor when the bean scope creates the CoffeeMaker.
 </p>
 <pre content="java">
@@ -232,7 +232,7 @@ class B {
 <p>
   With the above circular dependencies for A and B constructor injection, <em>avaje-inject</em>
   cannot determine the order in which to construct the beans. <em>avaje-inject</em> will
-  detect this and product a compilation error outlining the beans involved and ask us
+  detect this and produce a compilation error outlining the beans involved and ask us
   to change to use field injection for one of the dependencies.
 </p>
 <pre content="java">
@@ -261,7 +261,7 @@ class B {
 </ul>
 <p>
   Circular dependencies more commonly occur with more than 2 beans. For example,
-  lets say we have A, B and C where:
+  let's say we have A, B and C where:
 </p>
 <ul>
   <li>A depends on B</li>
@@ -457,7 +457,7 @@ class UseFoo  {
 
 <h3 id="beantypes">Limiting Injectable Types</h3>
 <p>
-  When you annotate a bean with <code>@Singleton</code> or create via a </code>@Factory</code> class, the bean class and all interfaces it implements and super classes it extends become injectable.
+  When you annotate a bean with <code>@Singleton</code> or create via a <code>@Factory</code> class, the bean class and all interfaces it implements and super classes it extends become injectable.
 <br>For cases where this is not desired, use <code>@BeanTypes</code> to limit the types available to inject a particular bean.
 </p>
 <pre content="java">
@@ -478,12 +478,12 @@ public class CoffeeMaker implements Machine, Appliance {
 <h2 id="factory">@Factory</h2>
 <hr/>
 <p>
-  Factory beans allow us to programmatically creating a bean. Often the logic is based
+  Factory beans allow us to programmatically create a bean. Often the logic is based
   on external configuration, environment variables, system properties etc.
 </p>
 <p>
   Annotate a class with <code>@Factory</code> to tell the processor that it contains methods
-  that creates beans.
+  that create beans.
 </p>
 <p>
   <em>@Factory</em> <em>@Bean</em> are equivalent to Spring DI <em>@Configuration</em> <em>@Bean</em>
@@ -493,7 +493,7 @@ public class CoffeeMaker implements Machine, Appliance {
 
 <h3 id="bean">@Bean</h3>
 <p>
-  Annotate methods on the factory class that creates a bean with <code>@Bean</code>.
+  Annotate methods on the factory class that create a bean with <code>@Bean</code>.
   These methods can have dependencies and will execute in the appropriate order
   depending on the dependencies they require.
 </p>
@@ -584,8 +584,7 @@ class CoffeeMaker {
 </p>
 <p>
   Often, a dependency is only provided based on external configuration.
-  For example, in a CI/CD environment a bean may not be needed, while in a different environment must be wired.
-  not optional.
+  For example, in a CI/CD environment a bean may not be needed, while in a different environment it must be wired.
 </p>
 
 <h4>Example - Optional dependency</h4>
@@ -645,7 +644,7 @@ void main() {
 <h2 id="lazy">@Lazy Beans</h2>
 <hr/>
 <p>
-  Place <code>@Lazy</code> on beans/factory methods to defer bean initialization until the bean is requested and one of its method are called. Once requested, the same singleton will be returned by all subsequent bean requests.
+  Place <code>@Lazy</code> on beans/factory methods to defer bean initialization until the bean is requested and one of its methods are called. Once requested, the same singleton will be returned by all subsequent bean requests.
 </p>
 
 <pre content="java">
@@ -738,7 +737,7 @@ public class PreferredEmailSender implements EmailServer {
 <h4>Example</h4>
 <pre content="java">
 // Lower priority EmailServer
-// Only used if no other higher priortiy EmailServer is available
+// Only used if no other higher priority EmailServer is available
 @Priority(5)
 @Singleton
 public class DefaultEmailSender implements EmailServer {
@@ -770,7 +769,7 @@ public class DefaultEmailSender implements EmailServer {
 </p>
 <p>
   <em>@Primary</em> and <em>@Secondary</em> are typically used when building multi-module applications.
-  With have multiple modules (jars) that provide implementations, <em>@Secondary</em> can indicate a "default" or "fallback" implementation to use
+  With multiple modules (jars) that provide implementations, <em>@Secondary</em> can indicate a "default" or "fallback" implementation to use
   and <em>@Primary</em> can indicate the best implementation to use when it is available.
   <em>avaje-inject</em> DI will then wire depending on which modules (jars) are included in the classpath.
 </p>

@@ -64,7 +64,7 @@ If multiple beans require the same combination of requirements, you can define a
 public @interface FirstFlame {}
 </pre>
 
-These annotation can be placed on beans to easily share conditions.
+These annotations can be placed on beans to easily share conditions.
 
 <pre content="java">
    @Singleton
@@ -75,7 +75,7 @@ These annotation can be placed on beans to easily share conditions.
    }
 </pre>
 
-Additionally, meta annotation can be placed on other meta annotation to easily compose multiple related conditions.
+Additionally, meta-annotations can be placed on other meta-annotations to easily compose multiple related conditions.
 
 <pre content="java">
    @FirstFlame

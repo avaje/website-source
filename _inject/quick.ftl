@@ -63,7 +63,7 @@ public class ExampleFactory {
 }
 </pre>
 
-<h4>4. Use BeanScope to wire and retrieve the beans and use however you wish..</h4>
+<h4>4. Use BeanScope to wire and retrieve the beans.</h4>
 <pre content="java">
  BeanScope beanScope = BeanScope.builder().build()
  Example ex = beanScope.get(Example.class);

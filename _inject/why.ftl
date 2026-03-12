@@ -18,7 +18,7 @@
   <li>2019 - Quarkus</li>
 </ul>
 <p>
-  Stefano Mazzocchi popularises the term Inversion of Control and the Apache
+  Stefano Mazzocchi popularized the term Inversion of Control and the Apache
   <a target="_blank" href="http://picocontainer.com/inversion-of-control-history.html#avalon">Avalon</a>
   project starts.
 </p>
@@ -41,7 +41,7 @@
 <p>
   <em>
   Using Java annotation processing to move dependency injection work from run time
-  to build time is common approach by Dagger, Micronaut, avaje-inject and Quarkus.
+  to build time is a common approach by Dagger, Micronaut, avaje-inject and Quarkus.
   </em>
 </p>
 <p>
@@ -71,7 +71,7 @@
 <h5>Why not use Quarkus?</h5>
 <p>
   Quarkus comes with a DI implementation based on CDI. If CDI is your thing you'd look
-  at Quarkus. Even so, avaje-Inject is a much smaller library that's focused entirely on DI.
+  at Quarkus. Even so, avaje-inject is a much smaller library that's focused entirely on DI.
 </p>
 <h5>Why not Micronaut?</h5>
 <p>

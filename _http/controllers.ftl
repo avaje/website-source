@@ -25,7 +25,7 @@ class ContactController {
 
 <h3 id="controller">@Controller</h3>
 <p>
-  Create controllers <code>@Controller</code>.
+  Annotate controllers with <code>@Controller</code>.
   You can provide a path segment that is prepended
   to any path segments defined by on methods using <code>@Get</code>,
   <code>@Post</code>, <code>@Put</code> etc. There are three ways to prepend a path.

@@ -12,7 +12,7 @@
 </pre>
 
 <p>
-2. Add the generator module for your desired microframework as a annotation processor.
+2. Add the generator module for your desired microframework as an annotation processor.
 </p>
 <pre content="xml">
   <!-- Annotation processors -->

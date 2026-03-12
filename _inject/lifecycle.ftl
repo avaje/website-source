@@ -20,7 +20,7 @@ public class CoffeeMaker {
   ...
 </pre>
 
-<h4>@PostConstruct with BeanScope</h3>
+<h4>@PostConstruct with BeanScope</h4>
 <p>
   Since post construct methods execute after all the beans have been wired, the completed BeanScope can be a parameter.
 </p>

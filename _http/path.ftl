@@ -67,7 +67,7 @@ class CustomerController {
 
 <h3>Module/Package Wide Root Paths</h3>
 <p>
-  When a <code>@Path</code> annotation is placed on a module-info or package-info file, that path wil be prepended to all controllers contained within the packages and sub-packages.
+  When a <code>@Path</code> annotation is placed on a module-info or package-info file, that path will be prepended to all controllers contained within the packages and sub-packages.
 </p>
 <pre content="java">
 @Path("/module")

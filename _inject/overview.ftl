@@ -109,7 +109,7 @@
   <li><code><a href="#scope">@Scope</a></code></li>
 </ul>
 <p>
-  JSR 250 - Common Annotations for the Java provides:
+  JSR 250 - Common Annotations for Java provides:
 </p>
 <ul>
   <li><code><a href="#post-construct">@PostConstruct</a></code></li>
@@ -120,7 +120,7 @@
   These were in JDK 8, but from JDK 9 onwards are part of JDK module <em>javax.annotation-api</em>.
 </p>
 <p>
-  Currently, neither Dagger2 or Guice support or plan to support <code>@PostConstruct</code>
+  Currently, neither Dagger2 nor Guice support or plan to support <code>@PostConstruct</code>
   and <code>@PreDestroy</code> lifecycle annotations.
 </p>
 

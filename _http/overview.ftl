@@ -35,12 +35,12 @@ for Jex, Javalin and Helidon SE APIs via Annotation Processing.
 </p>
 <p>
  The generated source code is very simple and readable, so developers can navigate to it and add breakpoints and debug as if they wrote it all
-  manually ourselves.
+  manually themselves.
 </p>
 <p>
   What is <b>lost</b> in doing this is automatic
   <a target="_blank" href="https://en.wikipedia.org/wiki/Content_negotiation">Content negotiation</a>.
-  For example, endpoints that serve response content as <i>either</i> JSON or XML content based on request headers need to handle manually.
+  For example, endpoints that serve response content as <i>either</i> JSON or XML content based on request headers need to be handled manually.
 </p>
 
 <h4>Summary</h4>

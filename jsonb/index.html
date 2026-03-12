@@ -129,7 +129,7 @@
     // object fields will automatically have adapters generated, no @Json required
     // (though you can add @Json anyway to modify the generated adapter how you wish)
     private OtherClass other;
-    //getters/setters ommited for brevity
+    //getters/setters omitted for brevity
   }
 </pre>
 
@@ -336,7 +336,7 @@ enum Naming {
     private String street;
     private City city;
     private Suburb suburb;
-    //getters/setters ommited for brevity
+    //getters/setters omitted for brevity
   }
 </pre>
   <p>The following JsonAdapter is generated:</p>
@@ -565,7 +565,7 @@ public class Customer {
   <h2 id="creator">@Json.Creator</h2><hr/>
   <p>
     With <code>@Json.Creator</code>, we can override deserialization using a constructor or static factory method.
-    Contructor/Method parameters can be annotated with <code>@Alias</code> to rename a deserialization field.
+    Constructor/Method parameters can be annotated with <code>@Alias</code> to rename a deserialization field.
   </p>
 
   <pre content="java">
@@ -641,7 +641,7 @@ public class Customer {
     @Json.Ignore(deserialize = true)
     private String mySecret3;
 
-    //ommited getters/setters
+    //omitted getters/setters
   }
 </pre>
 
@@ -1164,7 +1164,7 @@ public enum MyEnum {
     private final JsonAdapter<String> stringJsonAdapter;
     private final PropertyNames names;
 
-    //a public construtor accepting Jsonb is required
+    //a public constructor accepting Jsonb is required
     public CustomClassJsonAdapter(Jsonb jsonb) {
       //type adapters can be fetched using adapter
       this.stringJsonAdapter = jsonb.adapter(String.class);

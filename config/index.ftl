@@ -571,7 +571,7 @@
 
     <h2 id="logging">Event Logging</h2><hr/>
     <p>
-      By default, <code>avaje-config</code> will immediately log initialization events to it's own configured system logger. If you want to use your own configured logger, you can extend the <code>ConfigurationLog</code> interface and
+      By default, <code>avaje-config</code> will immediately log initialization events to its own configured system logger. If you want to use your own configured logger, you can extend the <code>ConfigurationLog</code> interface and
       register via <code>ServiceLoader</code>. This means you have a
       file at <code>src/main/resources/META-INF/services/io.avaje.config.ConfigExtension</code>
       which contains the class name of the implementation.

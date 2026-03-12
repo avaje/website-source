@@ -56,7 +56,7 @@ ApiBuilder.get("/hello/{id}/{name}", ctx -> {
   types are considered optional/nullable.
 </p>
 <p>
-  <code>InvalidTypeArgumentException</code> is throw for non-path parameter conversions that
+  <code>InvalidTypeArgumentException</code> is thrown for non-path parameter conversions that
   fail such as conversions in form beans, query parameters, headers and cookies.
 </p>
 <p>

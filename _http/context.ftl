@@ -27,7 +27,7 @@ void save(HelloDto dto, Context context) {
 <h3 id="helidon-request">Helidon request/response</h3>
 <p>
   Helidon has <code>ServerRequest</code> and <code>ServerResponse</code> and these can
-  be passed as a method argument of injected as a dependency of the controller.
+  be passed as a method argument or injected as a dependency of the controller.
 </p>
 <h4>ServerRequest/ServerResponse as method argument</h4>
 <pre content="java">
