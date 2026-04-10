@@ -1,12 +1,8 @@
 <ul>
   <@nav url="#overview" title="Overview"/>
-  <@nav url="/nima/archetypes" title="Archetypes">
-  <ul>
-    <li><a href="/nima/archetypes#minimal-rest">minimal-rest</a></li>
-  </ul>
-  </@nav>
   <@nav url="#start" title="Getting started">
   <ul>
+    <li><a href="#archetypes">Archetypes</a></li>
     <li><a href="#dependencies">Dependencies</a></li>
     <li><a href="#annotation-processor">Annotation processor</a></li>
     <li><a href="#first-controller">Controller</a></li>
