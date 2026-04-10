@@ -1,0 +1,67 @@
+# avaje
+
+> avaje is a collection of compile-time Java libraries that use annotation processing to generate source code — eliminating reflection, reducing startup time, and producing small, GraalVM-native-friendly JARs. Included is a web framework is **avaje-nima**, which combines Helidon SE, avaje-inject, avaje-http, and avaje-jsonb into a single cohesive stack. Another web framework is **avaje-jex** which provides a web routing library on top of the JDK http server.
+
+All avaje libraries target Java 11+ and use Maven or Gradle as the build tool. Annotation processors run at compile time; there is no runtime classpath scanning or reflection.
+
+## AI coding instructions
+
+- [Copilot / AI agent instructions for avaje-nima projects](https://raw.githubusercontent.com/avaje/avaje-nima/main/.github/copilot-instructions.md): Authoritative step-by-step instructions for common tasks in avaje-nima projects (add Docker/Jib build, add global exception handler, etc.). Read this before generating code for an avaje-nima project.
+
+## avaje-nima — Helidon SE web framework
+
+- [avaje-nima overview](https://avaje.io/nima/): Getting started — dependencies, first controller, the Nima bootstrap class, testing, GraalVM native image
+- [avaje-nima error handlers](https://avaje.io/nima/#error-handlers): How to add a global exception handler using @Controller + @ExceptionHandler
+- [avaje-nima filters](https://avaje.io/nima/#filters): Request/response filters with @Filter
+- [avaje-nima testing](https://avaje.io/nima/#testing): Integration testing controllers with avaje-nima-test and @InjectTest
+- [avaje-nima GraalVM native image](https://avaje.io/nima/#graalvm): native-maven-plugin and Jib configuration for native Docker images
+
+## avaje-inject — Dependency injection
+
+- [avaje-inject overview](https://avaje.io/inject/): Compile-time dependency injection — @Singleton, @Component, @Inject, constructor/field/method injection
+- [avaje-inject conditional beans](https://avaje.io/inject/#conditional): @RequiresBean, @RequiresProperty, @Profile
+- [avaje-inject AOP](https://avaje.io/inject/#aop): Aspect-oriented programming with @Aspect
+- [avaje-inject events](https://avaje.io/inject/#events): Event publishing/observing with @Observes
+- [avaje-inject testing](https://avaje.io/inject/#testing): Component testing with @InjectTest and @TestScope
+
+## avaje-http — JAX-RS style HTTP controller generation
+
+- [avaje-http overview](https://avaje.io/http/): Annotation-processor-driven controller generation for Helidon SE, Javalin, and Jex — @Controller, @Get, @Post, @Path, @Produces
+- [avaje-http exception handlers](https://avaje.io/http/#exceptions): @ExceptionHandler — mapping exceptions to HTTP responses
+- [avaje-http bean validation](https://avaje.io/http/#bean-validation): @Valid on controllers and request payloads
+- [avaje-http filters](https://avaje.io/http/#filter): @Filter for Helidon/Jex request filtering
+- [avaje-http OpenAPI](https://avaje.io/http/#openapi): Auto-generated OpenAPI/Swagger definitions from controllers
+- [avaje-http context](https://avaje.io/http/#context): Accessing raw ServerRequest/ServerResponse (Helidon) or Context (Javalin/Jex)
+
+## avaje-jsonb — JSON serialisation
+
+- [avaje-jsonb overview](https://avaje.io/jsonb/): Reflection-free JSON adapter generation with @Json — one of the fastest Java JSON libraries
+- [avaje-jsonb subtypes](https://avaje.io/jsonb/#subtype): Polymorphic JSON with @Json.SubTypes
+- [avaje-jsonb custom adapters](https://avaje.io/jsonb/#custom): Writing custom JsonAdapter implementations
+
+## avaje-validator — Bean validation
+
+- [avaje-validator overview](https://avaje.io/validator/): Compile-time bean validation — @Valid, @NotNull, @Size, constraint annotations
+- [avaje-validator custom constraints](https://avaje.io/validator/#custom): Defining custom validation constraints
+- [avaje-validator groups](https://avaje.io/validator/#groups): Validation groups for conditional validation
+
+## avaje-http-client — HTTP client
+
+- [avaje-http-client overview](https://avaje.io/http-client/): Lightweight fluent wrapper over JDK HttpClient — sync/async, JSON marshalling, auth, logging, interception
+
+## avaje-jex — Lightweight HTTP server
+
+- [avaje-jex overview](https://avaje.io/jex/): Javalin-inspired lightweight HTTP server that uses the JDK Http Server — handlers, JSON, SSE, WebSocket, static files, SSL
+- [avaje-jex with avaje-http](https://avaje.io/jex/#avaje-http): Using avaje-http annotation-generated controllers with Jex
+
+## avaje-config — External configuration
+
+- [avaje-config overview](https://avaje.io/config/): YAML/properties external configuration — Config.get(), onChange listeners, file watching, AWS AppConfig
+
+## avaje-simple-logger — SLF4J logger
+
+- [avaje-simple-logger overview](https://avaje.io/simple-logger/): Lightweight SLF4J implementation suitable for use with avaje-nima and GraalVM native image
+
+## GraalVM native image
+
+- [GraalVM native image guide](https://avaje.io/graalvm/): Guidance and comparisons for building GraalVM native executables with avaje libraries
