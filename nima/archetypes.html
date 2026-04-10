@@ -1,0 +1,261 @@
+<html>
+
+<head>
+  <meta name="layout" content="_layout/base-nima.html" />
+  <meta name="bread1" content="nima" href="/nima/" />
+  <meta name="bread2" content="archetypes" href="/nima/archetypes" />
+  <#assign archetypes="active">
+</head>
+
+<body>
+  <h1 id="overview">
+    <span class="logo">Avaje</span>&thinsp;Nima Archetypes
+  </h1>
+
+  <p>
+    Maven archetypes let you bootstrap a new avaje-nima project with a single command,
+    giving you a working REST service with dependency injection, JSON, and tests already
+    in place.
+  </p>
+
+  <table style="width: 100%;">
+    <tr>
+      <th>Archetype</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td><a href="#minimal-rest">minimal-rest</a></td>
+      <td>A minimal REST API with one controller, a JSON response record, and integration tests</td>
+    </tr>
+  </table>
+
+  <p>&nbsp;</p>
+
+  <h2 id="minimal-rest">minimal-rest</h2>
+
+  <p>
+    <a href="https://github.com/avaje/avaje-nima/releases">
+      <img src="https://img.shields.io/maven-central/v/io.avaje/avaje-nima-archetype-minimal-rest.svg?label=Maven%20Central">
+    </a>
+  </p>
+
+  <p>
+    The <code>avaje-nima-archetype-minimal-rest</code> archetype generates a minimal project with:
+  </p>
+  <ul>
+    <li>A <code>Main</code> entry point using the <code>Nima</code> class</li>
+    <li>A <code>HelloController</code> with two REST endpoints</li>
+    <li>A <code>GreetingResponse</code> JSON record</li>
+    <li>An <code>@InjectTest</code> integration test</li>
+    <li>Build profiles for GraalVM native image and fat JAR</li>
+  </ul>
+
+  <h3 id="generate">Generate a new project</h3>
+
+  <p>
+    Run the following command, replacing <code>com.example</code> and <code>my-app</code>
+    with your desired <code>groupId</code> and <code>artifactId</code>:
+  </p>
+
+  <pre content="sh">
+mvn archetype:generate \
+  -DarchetypeGroupId=io.avaje \
+  -DarchetypeArtifactId=avaje-nima-archetype-minimal-rest \
+  -DarchetypeVersion=${avaje.nima.version} \
+  -DgroupId=com.example \
+  -DartifactId=my-app \
+  -Dpackage=com.example \
+  -DinteractiveMode=false
+  </pre>
+
+  <p>
+    Omit <code>-DinteractiveMode=false</code> to be prompted for each property interactively.
+  </p>
+
+  <h3 id="project-structure">Generated project structure</h3>
+
+  <details>
+    <summary>Project structure (click to expand)</summary>
+  <pre>
+my-app/
+├── pom.xml
+├── README.md
+└── src/
+    ├── main/
+    │   ├── java/com/example/
+    │   │   ├── Main.java
+    │   │   ├── web/
+    │   │   │   └── HelloController.java
+    │   │   └── model/
+    │   │       └── GreetingResponse.java
+    │   └── resources/
+    │       ├── application.properties
+    │       └── avaje-logger.properties
+    └── test/
+        ├── java/com/example/
+        │   └── HelloControllerTest.java
+        └── resources/
+            └── avaje-logger-test.properties
+  </pre>
+  </details>
+
+  <h3 id="main-class">Main.java</h3>
+
+  <details>
+    <summary><code>Main.java</code></summary>
+  <pre content="java">
+package com.example;
+
+import io.avaje.nima.Nima;
+
+public class Main {
+  public static void main(String[] args) {
+    var webServer = Nima.builder()
+      .port(8080)
+      .build();
+    webServer.start();
+  }
+}
+  </pre>
+  </details>
+
+  <h3 id="controller">HelloController.java</h3>
+
+  <details>
+    <summary><code>HelloController.java</code></summary>
+  <pre content="java">
+package com.example.web;
+
+import io.avaje.http.api.Controller;
+import io.avaje.http.api.Get;
+import io.avaje.http.api.Path;
+import io.avaje.http.api.Produces;
+import com.example.model.GreetingResponse;
+
+@Controller
+@Path("/hi")
+public class HelloController {
+
+  @Produces("text/plain")
+  @Get
+  String hi() {
+    return "hi";
+  }
+
+  @Get("/data")
+  GreetingResponse data() {
+    return new GreetingResponse("hello from avaje-nima", System.currentTimeMillis());
+  }
+}
+  </pre>
+  </details>
+
+  <h3 id="model">GreetingResponse.java</h3>
+
+  <details>
+    <summary><code>GreetingResponse.java</code></summary>
+  <pre content="java">
+package com.example.model;
+
+import io.avaje.jsonb.Json;
+
+@Json
+public record GreetingResponse(String message, long timestamp) {
+}
+  </pre>
+  </details>
+
+  <h3 id="test">HelloControllerTest.java</h3>
+
+  <p>
+    The test uses <code>@InjectTest</code>, which automatically starts the web server on a
+    random port and injects an <code>HttpClient</code> configured to connect to it.
+  </p>
+
+  <details>
+    <summary><code>HelloControllerTest.java</code></summary>
+  <pre content="java">
+package com.example;
+
+import io.avaje.http.client.HttpClient;
+import io.avaje.inject.test.InjectTest;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
+import java.net.http.HttpResponse;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@InjectTest
+class HelloControllerTest {
+
+  @Inject
+  static HttpClient client;
+
+  @Test
+  void hi_returnsPlainText() {
+    HttpResponse&lt;String&gt; res = client.request()
+      .path("hi")
+      .GET().asString();
+    assertThat(res.statusCode()).isEqualTo(200);
+    assertThat(res.body()).isEqualTo("hi");
+  }
+
+  @Test
+  void data_returnsJson() {
+    HttpResponse&lt;String&gt; res = client.request()
+      .path("hi/data")
+      .GET().asString();
+    assertThat(res.statusCode()).isEqualTo(200);
+    assertThat(res.body()).contains("message");
+    assertThat(res.body()).contains("timestamp");
+  }
+}
+  </pre>
+  </details>
+
+  <h3 id="run">Run the application</h3>
+
+  <pre content="sh">
+cd my-app
+mvn compile exec:java -Dexec.mainClass=com.example.Main
+  </pre>
+
+  <p>Smoke-test with curl:</p>
+
+  <pre content="sh">
+curl http://localhost:8080/hi
+# hi
+
+curl http://localhost:8080/hi/data
+# {"message":"hello from avaje-nima","timestamp":1234567890123}
+  </pre>
+
+  <h3 id="build-profiles">Build profiles</h3>
+
+  <p>The generated <code>pom.xml</code> includes two build profiles:</p>
+
+  <h4 id="fat-jar">fat-jar &mdash; self-contained JAR</h4>
+
+  <p>Build and run a shaded JAR containing all dependencies:</p>
+
+  <pre content="sh">
+mvn package -Pfat-jar
+java -jar target/my-app.jar
+  </pre>
+
+  <h4 id="native">native &mdash; GraalVM native image</h4>
+
+  <p>
+    Build a native executable using GraalVM and Jib:
+  </p>
+
+  <pre content="sh">
+mvn package -Pnative
+  </pre>
+
+  <p>
+    See the <a target="_blank" href="https://github.com/avaje/avaje-nima/blob/main/docs/jib-native-docker.md">Jib native image guide</a>
+    for Docker build instructions.
+  </p>
+
+</body>
+</html>
