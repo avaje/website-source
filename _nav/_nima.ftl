@@ -1,8 +1,16 @@
 <ul>
   <@nav url="#overview" title="Overview"/>
+  <@nav url="/nima/archetypes" title="Archetypes"/>
+  <@nav url="/nima/guides" title="Guides">
+  <ul>
+    <li><a target="_blank" href="https://github.com/avaje/avaje-nima/blob/main/docs/global-exception-handler.md">Exception handler</a></li>
+    <li><a target="_blank" href="https://github.com/avaje/avaje-nima/blob/main/docs/controller-testing.md">Controller testing</a></li>
+    <li><a target="_blank" href="https://github.com/avaje/avaje-nima/blob/main/docs/jib-jvm-docker.md">JVM Docker / Jib</a></li>
+    <li><a target="_blank" href="https://github.com/avaje/avaje-nima/blob/main/docs/jib-native-docker.md">Native Docker / Jib</a></li>
+  </ul>
+  </@nav>
   <@nav url="#start" title="Getting started">
   <ul>
-    <li><a href="#archetypes">Archetypes</a></li>
     <li><a href="#dependencies">Dependencies</a></li>
     <li><a href="#annotation-processor">Annotation processor</a></li>
     <li><a href="#first-controller">Controller</a></li>

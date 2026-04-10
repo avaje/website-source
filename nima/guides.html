@@ -1,0 +1,57 @@
+<html>
+
+<head>
+  <meta name="layout" content="_layout/base-nima.html" />
+  <meta name="bread1" content="nima" href="/nima/" />
+  <meta name="bread2" content="guides" href="/nima/guides" />
+  <#assign guides="active">
+</head>
+
+<body>
+  <h1 id="overview">
+    <span class="logo">Avaje</span>&thinsp;Nima Guides
+  </h1>
+
+  <p>
+    Step-by-step guides for common tasks in avaje-nima projects.
+    Each guide is maintained as Markdown in the
+    <a target="_blank" href="https://github.com/avaje/avaje-nima/tree/main/docs">avaje-nima repository</a>
+    — follow the links below to read them on GitHub.
+  </p>
+
+  <table style="width: 100%;">
+    <tr>
+      <th>Guide</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-nima/blob/main/docs/global-exception-handler.md">Global exception handler</a></td>
+      <td>Add a centralised exception handler that catches exceptions from any controller and maps them to structured JSON error responses with correct HTTP status codes.</td>
+    </tr>
+    <tr>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-nima/blob/main/docs/controller-testing.md">Testing controllers</a></td>
+      <td>Write integration tests for controllers using <code>avaje-nima-test</code> and <code>@InjectTest</code>. Tests run against a real embedded Helidon server — no mocking framework needed.</td>
+    </tr>
+    <tr>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-nima/blob/main/docs/jib-jvm-docker.md">JVM Docker image with Jib</a></td>
+      <td>Add a Jib Maven plugin configuration so that <code>mvn package</code> automatically builds a JVM Docker image — without writing a <code>Dockerfile</code>.</td>
+    </tr>
+    <tr>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-nima/blob/main/docs/jib-native-docker.md">GraalVM native image with Jib</a></td>
+      <td>Add a <code>native</code> Maven profile that compiles the application to a GraalVM native executable and packages it into a Docker image using Jib. Activate with <code>mvn package -Pnative</code>.</td>
+    </tr>
+  </table>
+
+  <p>&nbsp;</p>
+
+  <h2 id="ai-agents">AI coding agents</h2>
+
+  <p>
+    AI agents (GitHub Copilot, Cursor, etc.) should refer to the
+    <a target="_blank" href="https://raw.githubusercontent.com/avaje/avaje-nima/main/.github/copilot-instructions.md">avaje-nima Copilot instructions</a>
+    for step-by-step guidance on these same tasks — the instructions are authored specifically
+    for AI consumption and include exact XML and Java snippets to insert.
+  </p>
+
+</body>
+</html>
