@@ -192,7 +192,7 @@ class HelloControllerTest {
 
   @Test
   void hi_returnsPlainText() {
-    HttpResponse&lt;String&gt; res = client.request()
+    HttpResponse<|String> res = client.request()
       .path("hi")
       .GET().asString();
     assertThat(res.statusCode()).isEqualTo(200);
@@ -201,7 +201,7 @@ class HelloControllerTest {
 
   @Test
   void data_returnsJson() {
-    HttpResponse&lt;String&gt; res = client.request()
+    HttpResponse<|String> res = client.request()
       .path("hi/data")
       .GET().asString();
     assertThat(res.statusCode()).isEqualTo(200);
