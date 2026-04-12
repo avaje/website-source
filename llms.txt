@@ -17,6 +17,7 @@ All avaje libraries target Java 11+ and use Maven or Gradle as the build tool. A
 - [avaje-nima filters](https://avaje.io/nima/#filters): Request/response filters with @Filter
 - [avaje-nima testing](https://avaje.io/nima/#testing): Integration testing controllers with avaje-nima-test and @InjectTest
 - [avaje-nima GraalVM native image](https://avaje.io/nima/#graalvm): native-maven-plugin and Jib configuration for native Docker images
+- [Guide: avaje-nima archetype scaffolding](https://raw.githubusercontent.com/avaje/avaje-nima/main/docs/guides/archetype-getting-started.md): Step-by-step — generate a new avaje-nima project with Maven archetype, understanding project structure, compilation, and customization patterns
 - [Guide: avaje-nima global exception handler](https://raw.githubusercontent.com/avaje/avaje-nima/main/docs/guides/add-global-exception-handler.md): Step-by-step — add a centralised @ExceptionHandler controller that maps exceptions to structured JSON error responses
 - [Guide: avaje-nima controller testing](https://raw.githubusercontent.com/avaje/avaje-nima/main/docs/guides/add-controller-test.md): Step-by-step — write integration tests with @InjectTest, generated typed test clients, and raw HttpClient
 - [Guide: avaje-nima JVM Docker image with Jib](https://raw.githubusercontent.com/avaje/avaje-nima/main/docs/guides/add-jvm-docker-jib.md): Step-by-step — add jib-maven-plugin to build a JVM Docker image without a Dockerfile
