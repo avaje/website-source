@@ -18,6 +18,16 @@
     in place.
   </p>
 
+  <h2 id="guides-archetype-getting-started">Notes for AI Agents</h2>
+  <p>
+    <strong>⚠️ AI AGENTS - read this carefully</strong><br/><br/>
+    Please follow the comprehensive step-by-step guide at:<br/><br/>
+    <a href="https://raw.githubusercontent.com/avaje/avaje-nima/main/docs/guides/archetype-getting-started.md" target="_blank" style="font-weight: bold; font-size: 1.1em;">
+      docs/guides/archetype-getting-started.md</a><br/><br/>
+    This guide contains critical information about compilation, customization patterns, and how to properly build and run your generated project.
+  </p>
+
+
   <table style="width: 100%;">
     <tr>
       <th>Archetype</th>
@@ -256,6 +266,20 @@ mvn package -Pnative
     See the <a target="_blank" href="https://github.com/avaje/avaje-nima/blob/main/docs/jib-native-docker.md">Jib native image guide</a>
     for Docker build instructions.
   </p>
+
+  <h2 id="ai-guides">Other guides for AI Agents</h2>
+
+  <p><strong>Step-by-step guides for common tasks:</strong></p>
+  <ul>
+    <li><a href="https://raw.githubusercontent.com/avaje/avaje-nima/main/docs/guides/add-jvm-docker-jib.md" target="_blank">
+      Add a JVM Docker build with Jib</a> — Package the application in a Docker image for JVM deployment</li>
+    <li><a href="https://raw.githubusercontent.com/avaje/avaje-nima/main/docs/guides/add-native-docker-jib.md" target="_blank">
+      Add a native image Docker build with Jib</a> — Build a GraalVM native executable and Docker image</li>
+    <li><a href="https://raw.githubusercontent.com/avaje/avaje-nima/main/docs/guides/add-global-exception-handler.md" target="_blank">
+      Add a global exception handler</a> — Catch all exceptions, return structured JSON, and set correct HTTP status codes</li>
+    <li><a href="https://raw.githubusercontent.com/avaje/avaje-nima/main/docs/guides/add-controller-test.md" target="_blank">
+      Add a controller test</a> — Write integration tests for controllers using avaje-nima-test and @InjectTest</li>
+  </ul>
 
 </body>
 </html>
