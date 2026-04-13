@@ -3,6 +3,93 @@
   <meta name="layout" content="_layout/base-inject.html"/>
   <meta name="bread1" content="Inject" href="/inject/"/>
   <#assign index="active">
+  
+  <!-- JSON-LD: Machine-readable metadata for AI agents -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareLibrary",
+    "name": "Avaje Inject",
+    "description": "Compile-time dependency injection for Java with zero reflection, ideal for GraalVM native images and microservices",
+    "url": "https://avaje.io/inject/",
+    "repositoryUrl": "https://github.com/avaje/avaje-inject",
+    "issuesUrl": "https://github.com/avaje/avaje-inject/issues",
+    "releasesUrl": "https://github.com/avaje/avaje-inject/releases",
+    "discordUrl": "https://discord.gg/Qcqf9R27BR",
+    "applicationCategory": "DependencyInjection",
+    "programLanguage": "Java",
+    "minimumJavaVersion": "11",
+    "latestVersion": "9.5.0",
+    "useCases": [
+      "Compile-time dependency injection",
+      "Building microservices",
+      "GraalVM native images",
+      "Frameworks requiring zero-reflection"
+    ],
+    "notSuitableFor": [
+      "Runtime bean discovery",
+      "Reflection-heavy workloads"
+    ],
+    "features": [
+      {
+        "name": "Compile-time DI code generation",
+        "description": "@Singleton and @Component annotations for zero-reflection DI",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "Conditional beans",
+        "description": "@RequiresBean, @RequiresProperty, @Profile for conditional component inclusion",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "Aspect-oriented programming",
+        "description": "@Aspect annotation for cross-cutting concerns",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "Event publishing/observing",
+        "description": "@Observes annotation for event-driven architectures",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      }
+    ],
+    "commonTasks": [
+      {
+        "title": "Create a singleton bean",
+        "description": "Define a singleton with @Singleton",
+        "guideUrl": "https://avaje.io/inject/",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Use conditional beans",
+        "description": "Control bean registration with @RequiresBean and @RequiresProperty",
+        "guideUrl": "https://avaje.io/inject/#conditional",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Write AOP with @Aspect",
+        "description": "Implement cross-cutting concerns",
+        "guideUrl": "https://avaje.io/inject/#aop",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Publish/observe events",
+        "description": "Use @Observes for event-driven patterns",
+        "guideUrl": "https://avaje.io/inject/#events",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Test with @InjectTest",
+        "description": "Component testing with dependency injection",
+        "guideUrl": "https://avaje.io/inject/#testing",
+        "difficulty": "beginner"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 <#include "/_inject/header.ftl">
