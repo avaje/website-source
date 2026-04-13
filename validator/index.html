@@ -4,6 +4,95 @@
   <meta name="layout" content="_layout/base-validator.html" />
   <meta name="bread1" content="validator" href="/validator/" />
   <#assign index="active">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Avaje Validator",
+    "description": "Reflection-free POJO validation via compile-time code generation. A lightweight alternative to Hibernate Validation with zero runtime reflection.",
+    "url": "https://avaje.io/validator/",
+    "author": {
+      "@type": "Organization",
+      "name": "Avaje",
+      "url": "https://avaje.io"
+    },
+    "downloadUrl": "https://mvnrepository.com/artifact/io.avaje/avaje-validator",
+    "applicationCategory": "DeveloperApplication",
+    "softwareRequirements": "Java 17+",
+    "programmingLanguage": "Java",
+    "keywords": ["validation", "pojo", "constraints", "code-generation", "reflection-free", "bean-validation", "jakarta"],
+    "useCases": [
+      "Request payload validation",
+      "POJO validation",
+      "Constraint checking",
+      "Bean validation",
+      "GraalVM native images"
+    ],
+    "notSuitableFor": [
+      "Complex constraint custom logic",
+      "Runtime constraint modification"
+    ],
+    "features": [
+      {
+        "name": "Reflection-free validation",
+        "description": "Compile-time code generation instead of runtime reflection",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Constraint annotation support",
+        "description": "Supports Avaje, Jakarta, and Javax constraint annotations",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Validation groups",
+        "description": "Group constraints for selective validation",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Cascaded validation",
+        "description": "Validate nested objects",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Composable constraints",
+        "description": "Compose constraints from other constraints",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "GraalVM support",
+        "description": "Full native image support with zero reflection configuration",
+        "sinceVersion": "1.0"
+      }
+    ],
+    "commonTasks": [
+      {
+        "title": "Validate POJO",
+        "guideUrl": "https://avaje.io/validator/",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Define constraints",
+        "guideUrl": "https://avaje.io/validator/",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Use validation groups",
+        "guideUrl": "https://avaje.io/validator/",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Build native image",
+        "guideUrl": "https://avaje.io/validator/",
+        "difficulty": "advanced"
+      }
+    ],
+    "dependencies": {
+      "required": [],
+      "optional": ["avaje-validator-constraints", "avaje-validator-spring-starter"]
+    }
+  }
+  </script>
 </head>
 
 <body>

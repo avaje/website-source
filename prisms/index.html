@@ -4,6 +4,85 @@
   <meta name="layout" content="_layout/base-prisms.html" />
   <meta name="bread1" content="prisms" href="/prisms/" />
   <#assign index="active">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Avaje Prisms",
+    "description": "Upgraded fork of hickory library that generates annotation 'Prisms' for building annotation processors with combined advantages of reflective and mirror-based APIs.",
+    "url": "https://avaje.io/prisms/",
+    "author": {
+      "@type": "Organization",
+      "name": "Avaje",
+      "url": "https://avaje.io"
+    },
+    "downloadUrl": "https://mvnrepository.com/artifact/io.avaje/avaje-prisms",
+    "applicationCategory": "DeveloperApplication",
+    "softwareRequirements": "Java 11+",
+    "programmingLanguage": "Java",
+    "keywords": ["annotation-processor", "prisms", "annotation-mirror", "compile-time", "meta-programming"],
+    "useCases": [
+      "Building annotation processors",
+      "Meta-programming",
+      "Code generation",
+      "Compile-time reflection",
+      "Plugin development"
+    ],
+    "notSuitableFor": [
+      "Runtime reflection only projects",
+      "Non-annotation-processor use cases"
+    ],
+    "features": [
+      {
+        "name": "Prism generation",
+        "description": "Generates Prism classes combining reflective and mirror-based access patterns",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Type-safe annotation access",
+        "description": "Type-safe methods for accessing annotation members",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Exception-safe operations",
+        "description": "No exceptions for incorrect annotations",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "TypeMirror support",
+        "description": "Direct TypeMirror access for Class members",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Nested Prism support",
+        "description": "Handle nested annotations as Prisms",
+        "sinceVersion": "1.0"
+      }
+    ],
+    "commonTasks": [
+      {
+        "title": "Generate Prisms",
+        "guideUrl": "https://avaje.io/prisms/",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Access annotation members",
+        "guideUrl": "https://avaje.io/prisms/",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Build custom annotation processor",
+        "guideUrl": "https://avaje.io/prisms/",
+        "difficulty": "advanced"
+      }
+    ],
+    "dependencies": {
+      "required": [],
+      "optional": []
+    }
+  }
+  </script>
 </head>
 
 <body>

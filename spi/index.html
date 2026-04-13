@@ -4,6 +4,80 @@
   <meta name="layout" content="_layout/base-spi.html" />
   <meta name="bread1" content="spi-service" href="/spi-service/" />
   <#assign index="active">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Avaje SPI",
+    "description": "Annotation processor for automatically generating Java Service Provider Interface (SPI) META-INF/services entries with compile-time verification.",
+    "url": "https://avaje.io/spi-service/",
+    "author": {
+      "@type": "Organization",
+      "name": "Avaje",
+      "url": "https://avaje.io"
+    },
+    "downloadUrl": "https://mvnrepository.com/artifact/io.avaje/avaje-spi-service",
+    "applicationCategory": "DeveloperApplication",
+    "softwareRequirements": "Java 11+",
+    "programmingLanguage": "Java",
+    "keywords": ["spi", "service-provider", "annotation-processor", "meta-inf", "compile-time", "module-system"],
+    "useCases": [
+      "SPI service registration",
+      "Plugin systems",
+      "Modular applications",
+      "Compile-time validation",
+      "META-INF/services generation"
+    ],
+    "notSuitableFor": [
+      "Non-SPI projects",
+      "Runtime service discovery"
+    ],
+    "features": [
+      {
+        "name": "Automatic SPI registration",
+        "description": "Generates META-INF/services entries at compile time",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Compile-time verification",
+        "description": "Validates service provider implementations during compilation",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Module-info validation",
+        "description": "Checks module-info provides clauses",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Zero runtime dependencies",
+        "description": "Compile-only dependency, no runtime overhead",
+        "sinceVersion": "1.0"
+      }
+    ],
+    "commonTasks": [
+      {
+        "title": "Register service provider",
+        "guideUrl": "https://avaje.io/spi-service/",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Validate service configuration",
+        "guideUrl": "https://avaje.io/spi-service/",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Configure module-info",
+        "guideUrl": "https://avaje.io/spi-service/",
+        "difficulty": "intermediate"
+      }
+    ],
+    "dependencies": {
+      "required": [],
+      "optional": []
+    }
+  }
+  </script>
 </head>
 
 <body>

@@ -5,6 +5,91 @@
   <meta name="bread1" content="graalvm" href="/graalvm/" />
   <#assign index="active">
   <#assign graalvm="active">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "GraalVM Native Image Guide",
+    "description": "Guide to building GraalVM native images with Avaje libraries for fast startup, low memory, and cloud-native deployments.",
+    "url": "https://avaje.io/graalvm/",
+    "author": {
+      "@type": "Organization",
+      "name": "Avaje",
+      "url": "https://avaje.io"
+    },
+    "applicationCategory": "Documentation",
+    "softwareRequirements": "GraalVM 22+, Java 17+",
+    "programmingLanguage": "Java",
+    "keywords": ["graalvm", "native-image", "cloud-native", "startup-time", "memory-efficiency", "performance"],
+    "useCases": [
+      "Fast application startup",
+      "Reduced memory footprint",
+      "Cloud-native deployments",
+      "AWS Lambda and serverless",
+      "Kubernetes with resource constraints",
+      "Cost optimization in cloud hosting"
+    ],
+    "notSuitableFor": [
+      "Applications requiring runtime code generation",
+      "Heavy reflection without configuration",
+      "Dynamic classloading scenarios"
+    ],
+    "features": [
+      {
+        "name": "Instant startup",
+        "description": "5-50ms startup time for compiled native images",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Low memory footprint",
+        "description": "10-50MB resident set size vs 100-500MB for JVM",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Ahead-of-time compilation",
+        "description": "Compile Java to native machine code",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Zero-reflection design support",
+        "description": "Avaje libraries designed for native image compatibility",
+        "sinceVersion": "1.0"
+      }
+    ],
+    "commonTasks": [
+      {
+        "title": "Build native image with Maven",
+        "guideUrl": "https://avaje.io/graalvm/",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Build native image with Gradle",
+        "guideUrl": "https://avaje.io/graalvm/",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Containerize native image",
+        "guideUrl": "https://avaje.io/graalvm/",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Deploy to AWS Lambda",
+        "guideUrl": "https://avaje.io/graalvm/",
+        "difficulty": "advanced"
+      },
+      {
+        "title": "Optimize binary size",
+        "guideUrl": "https://avaje.io/graalvm/",
+        "difficulty": "advanced"
+      }
+    ],
+    "dependencies": {
+      "required": ["GraalVM native-image"],
+      "optional": ["Maven native image plugin", "Gradle native build tools"]
+    }
+  }
+  </script>
 </head>
 
 <body>

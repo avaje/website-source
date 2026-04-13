@@ -4,6 +4,116 @@
   <meta name="layout" content="_layout/base-jex.html" />
   <meta name="bread1" content="jex" href="/jex/" />
   <#assign index="active">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Avaje Jex",
+    "description": "Lightweight wrapper over Java's built-in HTTP server with fluent API, virtual threads, path/query parsing, and compression support.",
+    "url": "https://avaje.io/jex/",
+    "author": {
+      "@type": "Organization",
+      "name": "Avaje",
+      "url": "https://avaje.io"
+    },
+    "downloadUrl": "https://mvnrepository.com/artifact/io.avaje/avaje-jex",
+    "applicationCategory": "DeveloperApplication",
+    "softwareRequirements": "Java 11+",
+    "programmingLanguage": "Java",
+    "keywords": ["http-server", "lightweight", "jdk-httpserver", "rest-api", "virtual-threads", "fluent-api"],
+    "useCases": [
+      "Lightweight HTTP servers",
+      "REST APIs",
+      "WebSocket applications",
+      "Microservices",
+      "Quick prototyping"
+    ],
+    "notSuitableFor": [
+      "Spring Boot applications",
+      "Heavy framework requirements",
+      "Complex routing patterns"
+    ],
+    "features": [
+      {
+        "name": "Built on JDK HTTP server",
+        "description": "Lightweight wrapper around java.com.sun.net.httpserver",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Fluent API",
+        "description": "Builder pattern for clean request/response handling",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Path and query parameter parsing",
+        "description": "Automatic parameter extraction from URLs",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Virtual threads",
+        "description": "Enabled by default for high concurrency",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Automatic compression",
+        "description": "Built-in gzip/deflate compression",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "SSL/mTLS support",
+        "description": "Plugins for secure connections",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "File uploads",
+        "description": "Multipart form data support",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Context abstraction",
+        "description": "Unified access to request/response data",
+        "sinceVersion": "1.0"
+      }
+    ],
+    "commonTasks": [
+      {
+        "title": "Create basic server",
+        "guideUrl": "https://avaje.io/jex/",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Add routes and handlers",
+        "guideUrl": "https://avaje.io/jex/",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Handle path parameters",
+        "guideUrl": "https://avaje.io/jex/",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Add filters and middleware",
+        "guideUrl": "https://avaje.io/jex/",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Enable SSL/mTLS",
+        "guideUrl": "https://avaje.io/jex/",
+        "difficulty": "advanced"
+      },
+      {
+        "title": "Handle WebSockets",
+        "guideUrl": "https://avaje.io/jex/",
+        "difficulty": "advanced"
+      }
+    ],
+    "dependencies": {
+      "required": [],
+      "optional": ["avaje-jsonb", "jackson-databind"]
+    }
+  }
+  </script>
 </head>
 
 <body>
