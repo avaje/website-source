@@ -4,6 +4,75 @@
   <meta name="layout" content="_layout/base-logger.html" />
   <meta name="bread1" content="simple logger" href="/simple-logger/" />
   <#assign index="active">
+  
+  <!-- JSON-LD: Machine-readable metadata for AI agents -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareLibrary",
+    "name": "Avaje Simple Logger",
+    "description": "Lightweight SLF4J implementation suitable for use with avaje-nima and GraalVM native images",
+    "url": "https://avaje.io/simple-logger/",
+    "repositoryUrl": "https://github.com/avaje/simple-logger",
+    "issuesUrl": "https://github.com/avaje/simple-logger/issues",
+    "releasesUrl": "https://github.com/avaje/simple-logger/releases",
+    "discordUrl": "https://discord.gg/Qcqf9R27BR",
+    "applicationCategory": "Logging",
+    "programLanguage": "Java",
+    "minimumJavaVersion": "11",
+    "latestVersion": "1.5.0",
+    "useCases": [
+      "Lightweight logging for microservices",
+      "GraalVM native image applications",
+      "Minimal memory footprint",
+      "SLF4J logging interface"
+    ],
+    "notSuitableFor": [
+      "Complex logging scenarios requiring multiple appenders",
+      "Enterprise logging infrastructure"
+    ],
+    "features": [
+      {
+        "name": "SLF4J compliance",
+        "description": "Implements SLF4J Logger interface",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "Lightweight implementation",
+        "description": "Minimal memory and startup time overhead",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "GraalVM native image compatible",
+        "description": "Works with GraalVM native compilation with zero configuration",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "Console and file output",
+        "description": "Route logs to console and/or files",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      }
+    ],
+    "commonTasks": [
+      {
+        "title": "Add simple-logger to project",
+        "description": "Set up SLF4J with avaje-simple-logger",
+        "guideUrl": "https://avaje.io/simple-logger/",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Configure logging levels",
+        "description": "Set DEBUG, INFO, WARN, ERROR levels",
+        "guideUrl": "https://avaje.io/simple-logger/",
+        "difficulty": "beginner"
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>

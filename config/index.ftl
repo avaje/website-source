@@ -5,6 +5,94 @@
   <meta name="bread1" content="config" href="/config/"/>
   <var id="gitsource">https://github.com/avaje/config</var>
   <#assign config = "active">
+  
+  <!-- JSON-LD: Machine-readable metadata for AI agents -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareLibrary",
+    "name": "Avaje Config",
+    "description": "External application configuration framework supporting YAML/properties files, file watching, onChange listeners, and AWS AppConfig integration",
+    "url": "https://avaje.io/config/",
+    "repositoryUrl": "https://github.com/avaje/config",
+    "issuesUrl": "https://github.com/avaje/config/issues",
+    "releasesUrl": "https://github.com/avaje/config/releases",
+    "discordUrl": "https://discord.gg/Qcqf9R27BR",
+    "copilotInstructionsUrl": "https://raw.githubusercontent.com/avaje/avaje-config/main/llms.txt",
+    "applicationCategory": "Configuration",
+    "programLanguage": "Java",
+    "minimumJavaVersion": "11",
+    "latestVersion": "2.9.0",
+    "useCases": [
+      "Externalized application configuration",
+      "Environment-specific settings",
+      "Runtime configuration management",
+      "AWS AppConfig integration",
+      "Cloud-native applications"
+    ],
+    "notSuitableFor": [
+      "Complex nested configurations without flattening"
+    ],
+    "features": [
+      {
+        "name": "YAML and properties file support",
+        "description": "Load configuration from application.yaml or application.properties",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "File watching and reloading",
+        "description": "Automatically reload configuration when files change",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "onChange listeners",
+        "description": "Listen for configuration changes and react",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "AWS AppConfig integration",
+        "description": "Fetch and update configuration from AWS AppConfig",
+        "sinceVersion": "2.0",
+        "status": "stable"
+      },
+      {
+        "name": "Dynamic feature flags",
+        "description": "Implement feature toggles via configuration",
+        "sinceVersion": "2.0",
+        "status": "stable"
+      }
+    ],
+    "commonTasks": [
+      {
+        "title": "Add avaje-config to project",
+        "description": "Set up YAML/properties configuration files",
+        "guideUrl": "https://raw.githubusercontent.com/avaje/avaje-config/main/docs/guides/adding-avaje-config.md",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Read configuration values",
+        "description": "Use Config.get() API to access configuration",
+        "guideUrl": "https://avaje.io/config/",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Listen for configuration changes",
+        "description": "Register onChange listeners",
+        "guideUrl": "https://avaje.io/config/",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Set up AWS AppConfig",
+        "description": "Enable AWS AppConfig plugin and polling",
+        "guideUrl": "https://raw.githubusercontent.com/avaje/avaje-config/main/docs/guides/aws-appconfig-setup.md",
+        "difficulty": "advanced"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 <div class="container">

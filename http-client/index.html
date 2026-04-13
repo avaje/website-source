@@ -3,6 +3,93 @@
   <meta name="layout" content="_layout/base-http-client.html"/>
   <meta name="bread2" content="client" href="/http-client/"/>
   <#assign index="active">
+  
+  <!-- JSON-LD: Machine-readable metadata for AI agents -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareLibrary",
+    "name": "Avaje Http Client",
+    "description": "Lightweight fluent wrapper over JDK HttpClient with sync/async, JSON marshalling, auth, logging, and interception support",
+    "url": "https://avaje.io/http-client/",
+    "repositoryUrl": "https://github.com/avaje/avaje-http-client",
+    "issuesUrl": "https://github.com/avaje/avaje-http-client/issues",
+    "releasesUrl": "https://github.com/avaje/avaje-http-client/releases",
+    "discordUrl": "https://discord.gg/Qcqf9R27BR",
+    "applicationCategory": "HTTPClient",
+    "programLanguage": "Java",
+    "minimumJavaVersion": "11",
+    "latestVersion": "3.2.0",
+    "useCases": [
+      "Making HTTP requests from microservices",
+      "Integrating with REST APIs",
+      "Service-to-service communication",
+      "Fluent API for HTTP operations"
+    ],
+    "notSuitableFor": [
+      "Async frameworks (though async support included)",
+      "Websocket clients (use dedicated libraries)"
+    ],
+    "features": [
+      {
+        "name": "Lightweight fluent API",
+        "description": "Simple, readable HTTP request builder over JDK HttpClient",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "Synchronous and asynchronous requests",
+        "description": "Both sync and async request execution",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "JSON marshalling",
+        "description": "Built-in JSON serialization/deserialization with avaje-jsonb",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "Authentication support",
+        "description": "Auth interceptors and bearer token support",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "Request/response interceptors",
+        "description": "Middleware for logging, metrics, modification",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      }
+    ],
+    "commonTasks": [
+      {
+        "title": "Make HTTP requests",
+        "description": "GET, POST, PUT, DELETE with fluent API",
+        "guideUrl": "https://avaje.io/http-client/",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "JSON request/response handling",
+        "description": "Automatic JSON marshalling with avaje-jsonb",
+        "guideUrl": "https://avaje.io/http-client/",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Add authentication",
+        "description": "Bearer token and auth interceptors",
+        "guideUrl": "https://avaje.io/http-client/",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Implement interceptors",
+        "description": "Custom request/response interceptors for logging and metrics",
+        "guideUrl": "https://avaje.io/http-client/",
+        "difficulty": "intermediate"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 

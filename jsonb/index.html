@@ -4,6 +4,82 @@
   <meta name="layout" content="_layout/base-jsonb.html" />
   <meta name="bread1" content="jsonb" href="/jsonb/" />
   <#assign index="active">
+  
+  <!-- JSON-LD: Machine-readable metadata for AI agents -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareLibrary",
+    "name": "Avaje Jsonb",
+    "description": "Reflection-free JSON adapter generation for Java - one of the fastest Java JSON libraries with compile-time code generation",
+    "url": "https://avaje.io/jsonb/",
+    "repositoryUrl": "https://github.com/avaje/avaje-jsonb",
+    "issuesUrl": "https://github.com/avaje/avaje-jsonb/issues",
+    "releasesUrl": "https://github.com/avaje/avaje-jsonb/releases",
+    "discordUrl": "https://discord.gg/Qcqf9R27BR",
+    "applicationCategory": "DataFormatting",
+    "programLanguage": "Java",
+    "minimumJavaVersion": "11",
+    "latestVersion": "3.4.0",
+    "useCases": [
+      "JSON serialization/deserialization",
+      "REST API payload handling",
+      "Microservices data transformation",
+      "GraalVM native images (zero reflection)",
+      "High-performance JSON processing"
+    ],
+    "notSuitableFor": [
+      "Complex dynamic JSON schemas",
+      "GraphQL (use graphql-java)"
+    ],
+    "features": [
+      {
+        "name": "Reflection-free JSON adapter generation",
+        "description": "@Json annotation for compile-time adapter generation",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "Polymorphic JSON support",
+        "description": "@Json.SubTypes for discriminator-based polymorphism",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "Custom adapters",
+        "description": "Write custom JsonAdapter implementations for special handling",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "High performance",
+        "description": "Comparable to jackson and gson with zero-reflection design",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      }
+    ],
+    "commonTasks": [
+      {
+        "title": "Generate JSON adapters",
+        "description": "Use @Json annotation for compile-time adapter generation",
+        "guideUrl": "https://avaje.io/jsonb/",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Handle polymorphic JSON",
+        "description": "Use @Json.SubTypes for discriminator-based type mapping",
+        "guideUrl": "https://avaje.io/jsonb/#subtype",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Write custom adapters",
+        "description": "Extend JsonAdapter for custom serialization logic",
+        "guideUrl": "https://avaje.io/jsonb/#custom",
+        "difficulty": "intermediate"
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
