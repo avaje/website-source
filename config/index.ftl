@@ -14,6 +14,7 @@
       <ul>
         <li><a href="#about">Avaje Config</a>
         <li><a href="#quick">Quick Start</a></li>
+        <li><a href="#ai-guides">For AI Agents: Guides</a></li>
         <li><a href="#eval">Expression evaluation</a></li>
         <li><a href="#startup">Startup</a></li>
         <li><a href="#loading">Loading configuration</a>
@@ -116,6 +117,16 @@
       String username = Config.get("database.example.username");
       String password = Config.get("database.example.password");
     </pre>
+
+    <p>&nbsp;</p>
+    <h3 id="ai-guides">For AI Agents: Step-by-Step Guides</h3><hr/>
+    <p>Comprehensive, AI-optimized guides for common avaje-config scenarios:</p>
+    <ul>
+      <li><strong><a target="_blank" href="https://raw.githubusercontent.com/avaje/avaje-config/main/docs/guides/README.md">Guides Index</a></strong> - Quick reference table and links to all available guides</li>
+      <li><strong><a target="_blank" href="https://raw.githubusercontent.com/avaje/avaje-config/main/docs/guides/adding-avaje-config.md">Adding avaje-config to Your Project</a></strong> - Basic setup with Maven, configuration files, and Config API usage</li>
+      <li><strong><a target="_blank" href="https://raw.githubusercontent.com/avaje/avaje-config/main/docs/guides/aws-appconfig-setup.md">Adding AWS AppConfig Support</a></strong> - Enable dynamic configuration management with AWS AppConfig</li>
+    </ul>
+    <p>See <a target="_blank" href="https://raw.githubusercontent.com/avaje/avaje-config/main/llms.txt">avaje-config llms.txt</a> for comprehensive AI coding instructions.</p>
 
     <h2 id="eval">Expression evaluation</h2><hr/>
     <p>

@@ -63,7 +63,11 @@ All avaje libraries target Java 11+ and use Maven or Gradle as the build tool. A
 
 ## avaje-config — External configuration
 
+- [avaje-config AI instructions](https://raw.githubusercontent.com/avaje/avaje-config/main/llms.txt): Dedicated AI guidance with core concepts, common patterns, and troubleshooting for avaje-config projects
+- [Step-by-step guides index for avaje-config projects](https://raw.githubusercontent.com/avaje/avaje-config/main/docs/guides/README.md): Guide index with quick reference table and links to all step-by-step guides for common configuration tasks
 - [avaje-config overview](https://avaje.io/config/): YAML/properties external configuration — Config.get(), onChange listeners, file watching, AWS AppConfig
+- [Guide: Adding avaje-config to Your Project](https://raw.githubusercontent.com/avaje/avaje-config/main/docs/guides/adding-avaje-config.md): Step-by-step — create application.yaml/properties, use Config API, access Configuration object, implement change listeners
+- [Guide: Adding AWS AppConfig Support](https://raw.githubusercontent.com/avaje/avaje-config/main/docs/guides/aws-appconfig-setup.md): Step-by-step — enable AWS AppConfig plugin, configure polling/refresh, implement dynamic feature flags, build native images
 
 ## avaje-simple-logger — SLF4J logger
 
