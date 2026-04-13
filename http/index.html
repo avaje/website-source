@@ -4,6 +4,91 @@
   <meta name="bread1" content="http" href="/http/"/>
   <#assign index="active">
   <#assign includeJavalinCode="true">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Avaje Http",
+    "description": "Annotation processor that generates HTTP controller adapter code for Jex, Javalin, and Helidon SE APIs with compile-time routing generation.",
+    "url": "https://avaje.io/http/",
+    "author": {
+      "@type": "Organization",
+      "name": "Avaje",
+      "url": "https://avaje.io"
+    },
+    "downloadUrl": "https://mvnrepository.com/artifact/io.avaje/avaje-http",
+    "applicationCategory": "DeveloperApplication",
+    "softwareRequirements": "Java 11+",
+    "programmingLanguage": "Java",
+    "keywords": ["http", "rest", "annotation-processor", "code-generation", "routing", "controller", "javalin", "helidon", "jex"],
+    "useCases": [
+      "REST API controller generation",
+      "Request routing",
+      "Compile-time controller mapping",
+      "Javalin applications",
+      "Helidon SE applications",
+      "Jex applications"
+    ],
+    "notSuitableFor": [
+      "Dynamic routing at runtime",
+      "Non-annotation-based frameworks"
+    ],
+    "features": [
+      {
+        "name": "Controller code generation",
+        "description": "Generates adapter code from @Controller annotations",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Multiple framework support",
+        "description": "Works with Jex, Javalin, and Helidon SE",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Request routing",
+        "description": "Automatic route mapping from annotations",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Parameter binding",
+        "description": "Path, query, header, and body parameter binding",
+        "sinceVersion": "1.0"
+      },
+      {
+        "name": "Compile-time validation",
+        "description": "Catch routing errors at compile time",
+        "sinceVersion": "1.0"
+      }
+    ],
+    "commonTasks": [
+      {
+        "title": "Generate REST controller",
+        "guideUrl": "https://avaje.io/http/",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Define request routes",
+        "guideUrl": "https://avaje.io/http/",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Bind request parameters",
+        "guideUrl": "https://avaje.io/http/",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Handle responses",
+        "guideUrl": "https://avaje.io/http/",
+        "difficulty": "intermediate"
+      }
+    ],
+    "dependencies": {
+      "required": ["avaje-http-api"],
+      "optional": ["avaje-jex", "javalin", "helidon-se"]
+    }
+  }
+  </script>
 </head>
 <body>
 <#include "/_http/_header.ftl">
