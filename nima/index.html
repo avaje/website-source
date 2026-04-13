@@ -5,6 +5,117 @@
   <meta name="bread1" content="nima" href="/nima/" />
   <#assign index="active">
   <#assign includeNimaCode="true">
+  
+  <!-- JSON-LD: Machine-readable metadata for AI agents -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Avaje Nima",
+    "description": "Helidon SE web framework combining Helidon SE, avaje-inject, avaje-http, and avaje-jsonb into a cohesive stack for REST APIs and microservices",
+    "url": "https://avaje.io/nima/",
+    "repositoryUrl": "https://github.com/avaje/avaje-nima",
+    "issuesUrl": "https://github.com/avaje/avaje-nima/issues",
+    "releasesUrl": "https://github.com/avaje/avaje-nima/releases",
+    "copilotInstructionsUrl": "https://raw.githubusercontent.com/avaje/avaje-nima/main/docs/guides/README.md",
+    "discordUrl": "https://discord.gg/Qcqf9R27BR",
+    "applicationCategory": "WebFramework",
+    "programLanguage": "Java",
+    "minimumJavaVersion": "11",
+    "latestVersion": "2.2.2",
+    "releaseDate": "2024-04-12",
+    "dependencies": [
+      {"name": "Helidon SE", "url": "https://helidon.io/#se", "type": "required"},
+      {"name": "avaje-inject", "url": "https://avaje.io/inject/", "type": "required"},
+      {"name": "avaje-http", "url": "https://avaje.io/http/", "type": "required"},
+      {"name": "avaje-jsonb", "url": "https://avaje.io/jsonb/", "type": "required"},
+      {"name": "avaje-validator", "url": "https://avaje.io/validator/", "type": "optional"},
+      {"name": "avaje-config", "url": "https://avaje.io/config/", "type": "optional"}
+    ],
+    "useCases": [
+      "REST APIs",
+      "Microservices",
+      "Cloud-native applications",
+      "GraalVM native images",
+      "High-performance web services"
+    ],
+    "notSuitableFor": [
+      "GraphQL APIs",
+      "Heavy ORM workloads",
+      "Traditional Servlet applications",
+      "WebSocket-heavy applications"
+    ],
+    "features": [
+      {
+        "name": "Annotation-driven controller generation",
+        "description": "Compile-time code generation for HTTP controllers using @Controller",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "Compile-time dependency injection",
+        "description": "Built-in DI with avaje-inject; no reflection, ideal for native images",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "Global exception handlers",
+        "description": "Centralized error mapping with @ExceptionHandler",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "Request/response filters",
+        "description": "Middleware-style request processing with @Filter",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "GraalVM native image support",
+        "description": "Zero-config native compilation; 5-20ms startup on native",
+        "sinceVersion": "1.0",
+        "status": "stable"
+      }
+    ],
+    "commonTasks": [
+      {
+        "title": "Create a REST controller",
+        "description": "Build your first HTTP endpoint with @Controller",
+        "guideUrl": "https://avaje.io/nima/#first-controller",
+        "difficulty": "beginner",
+        "tags": ["rest", "controllers", "getting-started"]
+      },
+      {
+        "title": "Add global exception handler",
+        "description": "Centralize error handling with @ExceptionHandler",
+        "guideUrl": "https://raw.githubusercontent.com/avaje/avaje-nima/main/docs/guides/add-global-exception-handler.md",
+        "difficulty": "beginner",
+        "tags": ["error-handling", "@ExceptionHandler"]
+      },
+      {
+        "title": "Build GraalVM native image",
+        "description": "Compile to standalone native executable with Jib",
+        "guideUrl": "https://raw.githubusercontent.com/avaje/avaje-nima/main/docs/guides/add-native-docker-jib.md",
+        "difficulty": "advanced",
+        "tags": ["graalvm", "native-image", "docker", "performance"]
+      },
+      {
+        "title": "Write integration tests with @InjectTest",
+        "description": "Test controllers with dependency injection active",
+        "guideUrl": "https://avaje.io/nima/#testing",
+        "difficulty": "intermediate",
+        "tags": ["testing", "junit5", "@InjectTest"]
+      },
+      {
+        "title": "Add request/response filters",
+        "description": "Implement middleware with @Filter",
+        "guideUrl": "https://avaje.io/nima/#filters",
+        "difficulty": "intermediate",
+        "tags": ["filters", "middleware", "@Filter"]
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
