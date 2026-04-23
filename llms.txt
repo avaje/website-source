@@ -1,12 +1,48 @@
-# avaje
+# avaje-nima — AI Agent & LLM Instructions
 
-> avaje is a collection of compile-time Java libraries that use annotation processing to generate source code — eliminating reflection, reducing startup time, and producing small, GraalVM-native-friendly JARs. Included is a web framework is **avaje-nima**, which combines Helidon SE, avaje-inject, avaje-http, and avaje-jsonb into a single cohesive stack. Another web framework is **avaje-jex** which provides a web routing library on top of the JDK http server.
+> avaje-nima is a Helidon SE + avaje-inject web framework for Java. All guides and onboarding templates are designed for both humans and AI agents.
 
-All avaje libraries target Java 11+ and use Maven or Gradle as the build tool. Annotation processors run at compile time; there is no runtime classpath scanning or reflection.
+## Key onboarding files
+- [AGENTS.md template](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/AGENTS.md): Minimal template for agent onboarding and automation in avaje-nima projects
+- [Step-by-step guides index](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/README.md): Guide index with project context and links to all guides
 
-## AI coding instructions
+## Step-by-step guides (fetch and follow as needed)
+- [Archetype scaffolding](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/archetype-getting-started.md)
+- [Multi-module architecture](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/multi-module-architecture.md)
+- [JVM Docker build (Jib)](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/add-jvm-docker-jib.md)
+- [Native image Docker build (Jib)](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/add-native-docker-jib.md)
+- [Global exception handler](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/add-global-exception-handler.md)
+- [Controller testing](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/add-controller-test.md)
+- [Exception handling](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/exception-handling.md)
+- [Dependency injection](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/dependency-injection.md)
+- [Filters](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/filters.md)
+- [Controller basics](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/controller-basics.md)
+- [Validation](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/validation.md)
+- [Deployment](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/deployment.md)
+- [Testing](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/testing.md)
+- [Native image](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/native-image.md)
+- [Troubleshooting](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/troubleshooting.md)
 
-- [Step-by-step guides index for avaje-nima projects](https://raw.githubusercontent.com/avaje/avaje-nima/main/docs/guides/README.md): Guide index with project context (tech stack, port) and links to all step-by-step guides for common tasks (Docker/Jib builds, global exception handler, controller testing). Read this before generating code for an avaje-nima project.
+## Always check AGENTS.md and the guide index before automating or generating code for avaje-nima projects.
+
+## Full Guide Index
+
+- [Guide index](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/README.md): Full index of avaje-nima guides, including setup, controllers, testing, Docker, native image, and troubleshooting.
+- [Archetype scaffolding](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/archetype-getting-started.md)
+- [Multi-module architecture](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/multi-module-architecture.md)
+- [JVM Docker build (Jib)](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/add-jvm-docker-jib.md)
+- [Native image Docker build (Jib)](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/add-native-docker-jib.md)
+- [Global exception handler](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/add-global-exception-handler.md)
+- [Controller testing](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/add-controller-test.md)
+- [Exception handling](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/exception-handling.md)
+- [Dependency injection](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/dependency-injection.md)
+- [Filters](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/filters.md)
+- [Controller basics](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/controller-basics.md)
+- [Validation](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/validation.md)
+- [Deployment](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/deployment.md)
+- [Testing](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/testing.md)
+- [Native image](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/native-image.md)
+- [Troubleshooting](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/troubleshooting.md)
 
 ---
 
