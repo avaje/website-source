@@ -1,13 +1,27 @@
-# avaje-nima — AI Agent & LLM Instructions
+# Avaje — AI Agent & LLM Instructions
 
-> avaje-nima is a Helidon SE + avaje-inject web framework for Java. All guides and onboarding templates are designed for both humans and AI agents.
+> Avaje is a suite of compile-time Java libraries: avaje-nima (web framework), avaje-inject (DI), avaje-config (configuration), avaje-jsonb (JSON), and avaje-simple-logger (logging).
 
-## Key onboarding files
-- [AGENTS.md template](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/AGENTS.md): Minimal template for agent onboarding and automation in avaje-nima projects
-- [Step-by-step guides index](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/README.md): Guide index with project context and links to all guides
+## Agent Skills (recommended)
 
-## Step-by-step guides (fetch and follow as needed)
-- [Archetype scaffolding](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/archetype-getting-started.md)
+Pre-packaged skills for AI coding agents are available at:
+**https://github.com/avaje/skills**
+
+Install with:
+```bash
+git clone git@github.com:avaje/skills.git ~/.agents/avaje-skills
+ln -sf ~/.agents/avaje-skills/avaje-nima ~/.agents/skills/avaje-nima
+ln -sf ~/.agents/avaje-skills/avaje-inject ~/.agents/skills/avaje-inject
+ln -sf ~/.agents/avaje-skills/avaje-config ~/.agents/skills/avaje-config
+ln -sf ~/.agents/avaje-skills/avaje-jsonb ~/.agents/skills/avaje-jsonb
+ln -sf ~/.agents/avaje-skills/avaje-simple-logger ~/.agents/skills/avaje-simple-logger
+```
+
+Works with [pi](https://github.com/mariozechner/pi-coding-agent), [Claude Code](https://docs.anthropic.com/en/docs/claude-code), and any [Agent Skills](https://agentskills.io) compatible harness.
+
+---
+
+## avaje-nima — Helidon SE web framework
 - [Multi-module architecture](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/multi-module-architecture.md)
 - [JVM Docker build (Jib)](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/add-jvm-docker-jib.md)
 - [Native image Docker build (Jib)](https://raw.githubusercontent.com/avaje/avaje-nima/HEAD/docs/guides/add-native-docker-jib.md)
