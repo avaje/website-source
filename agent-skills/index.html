@@ -1,0 +1,160 @@
+<html>
+<head>
+  <title>Avaje Agent Skills</title>
+  <meta name="layout" content="_layout/base-agent-skills.html"/>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Avaje Agent Skills",
+    "description": "Structured knowledge packages for AI coding agents working with Avaje libraries.",
+    "url": "https://avaje.io/agent-skills/",
+    "author": {
+      "@type": "Organization",
+      "name": "Avaje",
+      "url": "https://avaje.io"
+    },
+    "about": [
+      "AI coding agents",
+      "Agent Skills",
+      "Avaje Nima",
+      "Avaje Inject",
+      "Avaje Config",
+      "Avaje Jsonb",
+      "Avaje Simple Logger"
+    ]
+  }
+  </script>
+</head>
+<body>
+
+<h1 id="overview">Agent Skills</h1>
+<p>
+  Avaje Agent Skills are structured knowledge packages that AI coding agents can load on-demand when
+  working with <a href="https://avaje.io">Avaje</a> libraries.
+</p>
+<p>
+  These skills follow the <a target="_blank" href="https://agentskills.io/specification">Agent Skills specification</a>
+  and work with compatible coding agent harnesses including
+  <a target="_blank" href="https://github.com/mariozechner/pi-coding-agent">pi</a> and
+  <a target="_blank" href="https://docs.anthropic.com/en/docs/claude-code">Claude Code</a>.
+</p>
+
+<h2 id="available-skills">Available skills</h2>
+<table style="width:100%;">
+  <tr>
+    <th>Skill</th>
+    <th>Description</th>
+    <th>Library docs</th>
+  </tr>
+  <tr>
+    <td><code>avaje-nima</code></td>
+    <td>Avaje Nima web framework guidance for controllers, DI, config, JSON, testing, Docker, and native image.</td>
+    <td><a href="/nima/">Nima</a></td>
+  </tr>
+  <tr>
+    <td><code>avaje-inject</code></td>
+    <td>Compile-time dependency injection guidance for standalone DI usage with avaje-config.</td>
+    <td><a href="/inject/">Inject</a></td>
+  </tr>
+  <tr>
+    <td><code>avaje-config</code></td>
+    <td>External configuration guidance for YAML/properties, profiles, environment variables, and AWS AppConfig.</td>
+    <td><a href="/config/">Config</a></td>
+  </tr>
+  <tr>
+    <td><code>avaje-jsonb</code></td>
+    <td>Compile-time JSON serialisation guidance for adapters, custom serializers, polymorphism, and streaming.</td>
+    <td><a href="/jsonb/">Jsonb</a></td>
+  </tr>
+  <tr>
+    <td><code>avaje-simple-logger</code></td>
+    <td>Lightweight SLF4J logging guidance for replacing Logback and using dynamic log levels with AppConfig.</td>
+    <td><a href="/simple-logger/">Simple Logger</a></td>
+  </tr>
+</table>
+
+<h2 id="which-skill">Which skill do I need?</h2>
+<ul>
+  <li><strong>Building an avaje-nima web service?</strong> Use <code>avaje-nima</code>. It covers the integrated stack including DI, config, and JSON.</li>
+  <li><strong>Using avaje-inject without a web framework?</strong> Use <code>avaje-inject</code>.</li>
+  <li><strong>Using avaje-config standalone?</strong> Use <code>avaje-config</code>.</li>
+  <li><strong>Using avaje-jsonb standalone?</strong> Use <code>avaje-jsonb</code>.</li>
+  <li><strong>Adding or configuring logging?</strong> Use <code>avaje-simple-logger</code>.</li>
+</ul>
+
+<h2 id="installation">Installation</h2>
+<p>
+  Install the skills that are relevant to the libraries your agent will work with.
+</p>
+
+<h3 id="clone-symlink">Option A - Clone and symlink (recommended)</h3>
+<pre content="bash">
+  git clone https://github.com/avaje/skills.git ~/.agents/avaje-skills
+
+  mkdir -p ~/.agents/skills
+  ln -sf ~/.agents/avaje-skills/avaje-nima ~/.agents/skills/avaje-nima
+  ln -sf ~/.agents/avaje-skills/avaje-inject ~/.agents/skills/avaje-inject
+  ln -sf ~/.agents/avaje-skills/avaje-config ~/.agents/skills/avaje-config
+  ln -sf ~/.agents/avaje-skills/avaje-jsonb ~/.agents/skills/avaje-jsonb
+  ln -sf ~/.agents/avaje-skills/avaje-simple-logger ~/.agents/skills/avaje-simple-logger
+</pre>
+<p>
+  Updating is then just:
+</p>
+<pre content="bash">
+  cd ~/.agents/avaje-skills && git pull
+</pre>
+
+<h3 id="copy-install">Option B - Copy into the skills directory</h3>
+<pre content="bash">
+  git clone https://github.com/avaje/skills.git /tmp/avaje-skills
+  mkdir -p ~/.agents/skills
+  cp -r /tmp/avaje-skills/avaje-nima ~/.agents/skills/avaje-nima
+  cp -r /tmp/avaje-skills/avaje-inject ~/.agents/skills/avaje-inject
+  cp -r /tmp/avaje-skills/avaje-config ~/.agents/skills/avaje-config
+  cp -r /tmp/avaje-skills/avaje-jsonb ~/.agents/skills/avaje-jsonb
+  cp -r /tmp/avaje-skills/avaje-simple-logger ~/.agents/skills/avaje-simple-logger
+  rm -rf /tmp/avaje-skills
+</pre>
+
+<h3 id="project-level">Option C - Project-level installation</h3>
+<p>
+  If you want skills checked into a specific project, copy them into a local <code>.agents/skills</code> directory.
+</p>
+<pre content="bash">
+  git clone https://github.com/avaje/skills.git /tmp/avaje-skills
+  mkdir -p .agents/skills
+  cp -r /tmp/avaje-skills/avaje-nima .agents/skills/avaje-nima
+  rm -rf /tmp/avaje-skills
+  git add .agents/skills/avaje-nima
+</pre>
+
+<h2 id="verification">Verification</h2>
+<p>
+  After installation, verify that your coding agent can see the skills.
+</p>
+<pre>
+/skills
+</pre>
+<p>
+  In pi you should then see the installed Avaje skills listed, such as <code>avaje-nima</code>,
+  <code>avaje-inject</code>, <code>avaje-config</code>, <code>avaje-jsonb</code>, and
+  <code>avaje-simple-logger</code>.
+</p>
+
+<h2 id="repository">Repository</h2>
+<p>
+  The source for these skills is maintained in
+  <a target="_blank" href="https://github.com/avaje/skills">github.com/avaje/skills</a>.
+</p>
+<p>
+  The skill content is designed to help agents apply Avaje conventions and library-specific guidance
+  more accurately when generating or modifying code.
+</p>
+
+<p><br><br><br><br></p>
+
+</body>
+</html>
