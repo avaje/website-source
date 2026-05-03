@@ -4,12 +4,15 @@
 
 ## Agent Skills (recommended)
 
-Pre-packaged skills for AI coding agents are available at:
+For installation, usage, and skill selection see:
+**https://avaje.io/agent-skills/**
+
+Source repository:
 **https://github.com/avaje/skills**
 
 Install with:
 ```bash
-git clone git@github.com:avaje/skills.git ~/.agents/avaje-skills
+git clone https://github.com/avaje/skills.git ~/.agents/avaje-skills
 mkdir -p ~/.agents/skills
 ln -sf ~/.agents/avaje-skills/avaje-nima ~/.agents/skills/avaje-nima
 ln -sf ~/.agents/avaje-skills/avaje-inject ~/.agents/skills/avaje-inject

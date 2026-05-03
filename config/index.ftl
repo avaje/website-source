@@ -208,6 +208,7 @@
 
     <p>&nbsp;</p>
     <h3 id="ai-guides">For AI Agents: Step-by-Step Guides</h3><hr/>
+    <p>If you are using a skill-aware coding agent, prefer installing the <a href="/agent-skills">Avaje Agent Skills</a>.</p>
     <p>Comprehensive, AI-optimized guides for common avaje-config scenarios:</p>
     <ul>
       <li><strong><a target="_blank" href="https://raw.githubusercontent.com/avaje/avaje-config/main/docs/guides/README.md">Guides Index</a></strong> - Quick reference table and links to all available guides</li>
