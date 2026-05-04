@@ -23,17 +23,6 @@
   <div class="c-narrow">
     <table class="index-toc">
       <tr>
-        <th><a href="/agent-skills">Agent Skills</a></th>
-        <td>
-          <p>
-            Structured knowledge packages for AI coding agents working with Avaje libraries.
-            Install skills for <a href="/nima">Nima</a>, <a href="/inject">Inject</a>,
-            <a href="/config">Config</a>, <a href="/jsonb">Jsonb</a>, and
-            <a href="/simple-logger">Simple Logger</a>.
-          </p><hr/>
-        </td>
-      </tr>
-      <tr>
         <th><a href="/inject">Dependency Injection</a></th>
         <td>
           <p>
@@ -151,6 +140,17 @@
           <p>
             GraalVM native image compatible libraries for reflection-free runtime.
             Review <a href="/graalvm">Why GraalVM</a> for details.
+          </p><hr/>
+        </td>
+      </tr>
+      <tr>
+        <th><a href="/agent-skills">Agent Skills</a></th>
+        <td>
+          <p>
+            Structured knowledge packages for AI coding agents working with Avaje libraries.
+            Install skills for <a href="/nima">Nima</a>, <a href="/inject">Inject</a>,
+            <a href="/config">Config</a>, <a href="/jsonb">Jsonb</a>, and
+            <a href="/simple-logger">Simple Logger</a>.
           </p><hr/>
         </td>
       </tr>
