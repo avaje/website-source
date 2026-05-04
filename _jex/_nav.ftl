@@ -24,6 +24,15 @@
       <li><a href="#ssl-mtls">Mutual TLS (mTLS)</a></li>
     </ul>
   </@nav>
+  <@nav url="#cors" title="CORS Plugin">
+    <ul>
+      <li><a href="#cors-basic">Basic Usage</a></li>
+      <li><a href="#cors-rules">Multiple Rules</a></li>
+      <li><a href="#cors-origins">Origin Configuration</a></li>
+      <li><a href="#cors-options">Rule Options</a></li>
+      <li><a href="#cors-preflight">Preflight Handling</a></li>
+    </ul>
+  </@nav>
   <@nav url="#alternate" title="Alternate Implementations">
     <ul>
       <li><a href="#jetty">Jetty</a></li>
