@@ -90,7 +90,7 @@
 </p>
 
 <h3 id="clone-symlink">Option A - Clone and symlink (recommended)</h3>
-<pre content="bash">
+<pre content="sh">
   git clone https://github.com/avaje/skills.git ~/.agents/avaje-skills
 
   mkdir -p ~/.agents/skills
@@ -103,12 +103,12 @@
 <p>
   Updating is then just:
 </p>
-<pre content="bash">
+<pre content="sh">
   cd ~/.agents/avaje-skills && git pull
 </pre>
 
 <h3 id="copy-install">Option B - Copy into the skills directory</h3>
-<pre content="bash">
+<pre content="sh">
   git clone https://github.com/avaje/skills.git /tmp/avaje-skills
   mkdir -p ~/.agents/skills
   cp -r /tmp/avaje-skills/avaje-nima ~/.agents/skills/avaje-nima
@@ -123,7 +123,7 @@
 <p>
   If you want skills checked into a specific project, copy them into a local <code>.agents/skills</code> directory.
 </p>
-<pre content="bash">
+<pre content="sh">
   git clone https://github.com/avaje/skills.git /tmp/avaje-skills
   mkdir -p .agents/skills
   cp -r /tmp/avaje-skills/avaje-nima .agents/skills/avaje-nima
