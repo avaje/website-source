@@ -1,0 +1,159 @@
+<html>
+<head>
+  <meta name="layout" content="_layout/base-openapi-generators.html"/>
+  <meta name="bread2" content="models" href="/openapi-generators/models"/>
+</head>
+<body>
+
+<h1 id="overview">DTO Models</h1>
+
+<p>
+  By default the plugin generates Java record DTOs (plus enums) for every component schema,
+  alongside the API interfaces.
+</p>
+
+<h2 id="records">Record DTOs</h2>
+<pre content="java">
+@Json
+public record Pet(
+  @NotNull @Min(1) Long id,
+  @NotNull @Size(min = 1, max = 100) String name,
+  Instant createdAt
+) {}
+</pre>
+<p>
+  <code>@Json</code> (Avaje Jsonb) is emitted when <code>generateJsonAnnotations</code> is
+  <code>true</code> (the default). Validation annotations are emitted when
+  <code>generateValidationAnnotations</code> is <code>true</code> (the default); see
+  <a href="/openapi-generators/validation">Validation</a>.
+</p>
+
+<h2 id="builders">Record builders</h2>
+<p>Enable builder generation:</p>
+<pre content="xml">
+<generateRecordBuilders>true</generateRecordBuilders>
+</pre>
+
+<p>
+  Each generated record then gains static <code>builder()</code> factory methods backed by
+  <a href="https://github.com/avaje/avaje-record-builder">Avaje Record Builder</a>:
+</p>
+<pre content="java">
+@RecordBuilder
+@Json
+public record Pet(@NotNull Long id, @NotNull String name, Instant createdAt) {
+
+  public static PetBuilder builder() {
+    return PetBuilder.builder();
+  }
+
+  public static PetBuilder builder(Pet from) {
+    return PetBuilder.builder(from);
+  }
+}
+</pre>
+
+<p>
+  Add Avaje Record Builder to the consuming project as a <code>provided</code> dependency and to
+  the annotation processor paths:
+</p>
+<pre content="xml">
+<dependency>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje-record-builder</artifactId>
+  <version>${avaje.record.builder.version}</version>
+  <scope>provided</scope>
+</dependency>
+</pre>
+<pre content="xml">
+<path>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje-record-builder</artifactId>
+  <version>${avaje.record.builder.version}</version>
+</path>
+</pre>
+
+<h2 id="read-write-only">readOnly and writeOnly fields</h2>
+<p>
+  Schema properties marked <code>readOnly: true</code> or <code>writeOnly: true</code> get a JSON
+  annotation so the serialisation library enforces the constraint (only when
+  <code>generateJsonAnnotations</code> is <code>true</code>):
+</p>
+
+<table style="width:100%;">
+  <tr>
+    <th>OpenAPI</th>
+    <th>Avaje Jsonb (<code>jsonStyle: AVAJE</code>, default)</th>
+    <th>Jackson (<code>jsonStyle: JACKSON</code>)</th>
+  </tr>
+  <tr>
+    <td><code>readOnly: true</code></td>
+    <td><code>@Json.Ignore(deserialize = true)</code></td>
+    <td><code>@JsonProperty(access = READ_ONLY)</code></td>
+  </tr>
+  <tr>
+    <td><code>writeOnly: true</code></td>
+    <td><code>@Json.Ignore(serialize = true)</code></td>
+    <td><code>@JsonProperty(access = WRITE_ONLY)</code></td>
+  </tr>
+</table>
+
+<pre content="java">
+@Json
+public record UserProfile(
+  @Json.Ignore(deserialize = true) Long id,        // readOnly — responses only
+  @NotNull String username,
+  @Json.Ignore(serialize = true) String password,  // writeOnly — requests only
+  @Nullable String email
+) {}
+</pre>
+
+<p>Set <code>jsonStyle</code> to <code>JACKSON</code> to target Jackson <code>@JsonProperty</code> instead.</p>
+
+<h2 id="composition">Composition and inline schemas</h2>
+<ul>
+  <li><code>allOf</code> members are flattened/merged into a single record.</li>
+  <li>Inline object/array/map schemas are extracted into named nested records.</li>
+</ul>
+<p>
+  <code>oneOf</code>/<code>anyOf</code>/discriminator polymorphism is not yet supported and
+  produces a diagnostic.
+</p>
+
+<h2 id="api-only">API-only generation (reuse existing models)</h2>
+<p>
+  Set <code>generateModels=false</code> to generate <strong>only</strong> the API interfaces. The
+  generated interfaces still reference <code>modelPackage</code> types, which must be provided by
+  an existing (hand-written) module on the classpath:
+</p>
+<pre content="xml">
+<configuration>
+  <inputSpec>${project.basedir}/src/main/openapi/openapi.yaml</inputSpec>
+  <apiPackage>org.example.api</apiPackage>
+  <modelPackage>org.example.model</modelPackage>
+  <generateModels>false</generateModels>
+</configuration>
+</pre>
+
+<p>
+  This suits adopting contract-first on an existing API where the model records are already
+  hand-maintained (with their own Javadoc, field types and conventions) and remain the single
+  source of truth — the OpenAPI spec then defines only the operations, and the DTO schemas exist
+  purely so the generated interface signatures resolve to those existing types.
+</p>
+
+<h3 id="exact-match">Matching hand-written records exactly</h3>
+<p>
+  When the generated models must be byte-for-byte identical to existing hand-written records, the
+  relevant knobs are:
+</p>
+<ul>
+  <li><code>generateValidationAnnotations=false</code> — drop <code>@NotNull</code>/<code>@Valid</code> if the hand-written records do not use them.</li>
+  <li><code>dateTimeType</code> / per-property <code>x-java-type</code> / <code>format</code> overrides — match the exact <code>java.time</code> types. See <a href="/openapi-generators/type-mapping">Type Mapping</a>.</li>
+  <li><code>required: true</code> on scalar properties yields Java primitives (<code>long</code>, <code>int</code>, <code>boolean</code>), matching hand-written records that use primitives for mandatory fields. See <a href="/openapi-generators/type-mapping#primitive-mapping">Primitive mapping</a>.</li>
+</ul>
+
+<p><br><br><br><br></p>
+
+</body>
+</html>

@@ -82,6 +82,16 @@
         </td>
       </tr>
       <tr>
+        <th><a href="/openapi-generators">OpenAPI Generators</a></th>
+        <td>
+          <p>
+            Contract-first code generation from an OpenAPI 3 document. Generates <code>avaje-http-api</code>
+            interfaces and DTO records that drive both a typed HTTP client and a server controller
+            from a single OpenAPI YAML/JSON contract.
+          </p><hr/>
+        </td>
+      </tr>
+      <tr>
         <th width="25%"><a href="/config">Configuration</a></th>
         <td>
           <p>

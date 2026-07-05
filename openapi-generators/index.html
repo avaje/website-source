@@ -1,0 +1,182 @@
+<html>
+<head>
+  <meta name="layout" content="_layout/base-openapi-generators.html"/>
+</head>
+<body>
+
+<h1 id="overview">
+  <span class="logo">Avaje</span>&thinsp;OpenAPI Generators
+</h1>
+
+<p>
+  <a href="https://github.com/avaje/avaje-openapi-generators/releases">
+    <img src="https://img.shields.io/maven-central/v/io.avaje/avaje-openapi-maven-plugin.svg?label=avaje.openapi.version"></a>
+</p>
+
+<p>
+  <code>avaje-openapi-maven-plugin</code> reads an OpenAPI 3 YAML/JSON document and generates
+  Java source using Avaje annotations:
+</p>
+<ul>
+  <li>API interfaces using <code>io.avaje.http.api</code> annotations (<code>@Path</code>, <code>@Get</code>, <code>@Post</code>, <code>@QueryParam</code>, <code>@Header</code>, ...)</li>
+  <li>DTO records and enums</li>
+  <li>optional Avaje Jsonb annotations</li>
+  <li>optional Jakarta or Avaje validation annotations</li>
+  <li>optional <a href="https://github.com/avaje/avaje-record-builder">Avaje Record Builder</a> support for DTO records</li>
+</ul>
+
+<p>
+  The generated interfaces are then consumed by the existing Avaje annotation processors:
+</p>
+<ul>
+  <li><code>avaje-http-client-generator</code> generates typed HTTP clients</li>
+  <li>server generators (<a href="/nima">Nima/Helidon</a>, <a href="/jex">Jex</a>, Javalin) consume the same <code>avaje-http-api</code> contract</li>
+  <li><code>avaje-jsonb-generator</code> generates JSON adapters for generated DTO records</li>
+  <li><code>avaje-record-builder</code> generates builders for generated DTO records when enabled</li>
+</ul>
+
+<p>
+  This is the <em>contract-first</em> workflow: the OpenAPI document is the single source of
+  truth, and the same generated interface drives both the HTTP client and the server controller.
+  See <a href="/openapi-generators/contract-first">Contract-first client &amp; server</a>.
+</p>
+
+<h2 id="start">Getting started</h2>
+
+<h3 id="plugin-setup">Plugin setup</h3>
+<pre content="xml">
+<plugin>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje-openapi-maven-plugin</artifactId>
+  <version>${avaje.openapi.version}</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>generate</goal>
+      </goals>
+      <configuration>
+        <inputSpec>${project.basedir}/src/main/openapi/openapi.yaml</inputSpec>
+        <apiPackage>org.example.api</apiPackage>
+        <modelPackage>org.example.api.model</modelPackage>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+</pre>
+
+<p>Generated contract source defaults to:</p>
+<pre content="text">
+target/generated-sources/avaje-openapi
+</pre>
+<p>
+  The plugin adds that directory to the Maven compile source roots automatically. See the
+  <a href="/openapi-generators/configuration">full configuration reference</a> for every option.
+</p>
+
+<h3 id="interface-path">Interface path (@Path)</h3>
+<p>
+  The class-level <code>@Path</code> on each generated interface is derived from two sources,
+  concatenated:
+</p>
+<ol>
+  <li>the path component of the first <code>servers</code> URL, then</li>
+  <li>the longest literal path prefix shared by every operation in that interface (the leading
+    path segments common to all operations, stopping at the first path variable)</li>
+</ol>
+
+<pre content="text">
+servers:
+  - url: https://api.example.com/v1   # absolute URL, or a relative "/v1"
+paths:
+  /pets/{id}: { get: { tags: [store], ... } }
+  /owners/{id}: { get: { tags: [store], ... } }
+</pre>
+
+<p>generates:</p>
+<pre content="java">
+@Path("/v1")
+public interface StoreApi {
+  @Get("/pets/{id}")
+  Pet getPet(Long id);
+
+  @Get("/owners/{id}")
+  Owner getOwner(Long id);
+}
+</pre>
+
+<p>
+  The <code>servers</code> URL may be absolute (<code>https://host/v1</code>) or root-relative
+  (<code>/v1</code>); only its path component is used, a trailing <code>/</code> is trimmed, and a
+  bare <code>/</code> contributes nothing. Server URLs containing template variables
+  (<code>https://{host}/v1</code>) cannot form a static prefix and are ignored with a warning.
+  Equivalently you can omit <code>servers</code> and put the version directly in the paths
+  (<code>/v1/pets/{id}</code>); the shared <code>/v1</code> segment is then picked up by the
+  common-prefix step.
+</p>
+<p>
+  Operations are grouped into interfaces by their first <code>tag</code>.
+</p>
+
+<h3 id="java-versions">Java versions</h3>
+<p>
+  The generator itself runs on Java 11+ (<code>avaje-openapi-generator-core</code>,
+  <code>avaje-openapi-maven-plugin</code>). Generated DTO models use Java records, so a project
+  that compiles the generated model source needs Java 17+ as a practical baseline.
+</p>
+<p>
+  A common arrangement is to publish the generated API + model module at Java 17 so that Java 17
+  consumers can use the generated HTTP client, while the server module that implements the
+  contract runs on Java 21.
+</p>
+
+<h3 id="scope">Current scope</h3>
+<p>
+  Supported: OpenAPI 3 YAML/JSON; REST paths and common HTTP methods; JSON request/response
+  bodies; path/query/header/cookie parameters; component object schemas, enums, arrays, maps,
+  date/time/UUID formats; validation constraints; <code>readOnly</code>/<code>writeOnly</code>
+  fields; response headers as <code>@apiNote</code>; <code>allOf</code> composition; inline
+  schemas extracted into named nested records; <code>description</code>/<code>summary</code> as
+  Javadoc and <code>deprecated</code> as <code>@Deprecated</code>; <code>@Nullable</code> on
+  optional members; global <code>dateTimeType</code>, extended formats, <code>x-java-type</code>,
+  and <code>typeMappings</code>; convenience <code>default</code> method overloads.
+</p>
+<p>
+  Unsupported features currently produce diagnostics: <code>oneOf</code>/<code>anyOf</code>/discriminator
+  polymorphism; multipart upload; callbacks, links, webhooks; multiple request body content types
+  per operation.
+</p>
+
+<h2 id="modules">Modules</h2>
+<table style="width:100%;">
+  <tr>
+    <th>Module</th>
+    <th>Purpose</th>
+  </tr>
+  <tr>
+    <td><code>avaje-openapi-generator-core</code></td>
+    <td>Reusable OpenAPI parser and Java source generator</td>
+  </tr>
+  <tr>
+    <td><code>avaje-openapi-maven-plugin</code></td>
+    <td>Maven plugin exposing the <code>avaje-openapi:generate</code> goal</td>
+  </tr>
+  <tr>
+    <td><code>avaje-openapi-sample</code></td>
+    <td>Example project generating a contract, HTTP client, Nima/Helidon route, JSON adapters, and record builders</td>
+  </tr>
+</table>
+
+<h2 id="next">Where to next</h2>
+<ul>
+  <li><a href="/openapi-generators/contract-first">Contract-first client &amp; server</a> — generating and wiring the client and server from the same interface</li>
+  <li><a href="/openapi-generators/models">DTO Models</a> — record DTOs, builders, JSON, API-only generation</li>
+  <li><a href="/openapi-generators/parameters">Parameters</a> — query/header/cookie params, defaults, nullable, overloads</li>
+  <li><a href="/openapi-generators/type-mapping">Type Mapping</a> — date-time, primitives, <code>x-java-type</code>, <code>typeMappings</code></li>
+  <li><a href="/openapi-generators/validation">Validation</a> — constraint styles and <code>@Valid</code> cascade</li>
+  <li><a href="/openapi-generators/configuration">Configuration Reference</a> — every plugin option</li>
+</ul>
+
+<p><br><br><br><br></p>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<html>
+<head>
+  <meta name="layout" content="_layout/base-openapi-generators.html"/>
+  <meta name="bread2" content="validation" href="/openapi-generators/validation"/>
+</head>
+<body>
+
+<h1 id="overview">Validation</h1>
+
+<p>
+  Validation annotations are emitted on generated record components and method parameters by
+  default. Disable them with <code>generateValidationAnnotations=false</code>.
+</p>
+
+<h2 id="style">Validation style</h2>
+<p>The default style is Jakarta Bean Validation:</p>
+<pre content="xml">
+<validationStyle>JAKARTA</validationStyle>
+</pre>
+<pre content="java">
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+</pre>
+
+<p>To use Avaje Validator constraint annotations instead:</p>
+<pre content="xml">
+<validationStyle>AVAJE</validationStyle>
+</pre>
+<pre content="java">
+import io.avaje.validation.constraints.NotNull;
+import io.avaje.validation.constraints.Size;
+</pre>
+
+<p>Add the Avaje Validator constraints dependency to the consuming project:</p>
+<pre content="xml">
+<dependency>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje-validator-constraints</artifactId>
+  <version>${avaje.validator.version}</version>
+</dependency>
+</pre>
+
+<h2 id="constraints">Supported constraints</h2>
+<p>Schema keywords map to constraint annotations on the generated record components:</p>
+<table style="width:100%;">
+  <tr>
+    <th>Schema keyword</th>
+    <th>Annotation</th>
+  </tr>
+  <tr><td><code>required</code></td><td><code>@NotNull</code></td></tr>
+  <tr><td><code>minLength</code> / <code>maxLength</code></td><td><code>@Size(min, max)</code></td></tr>
+  <tr><td><code>minItems</code> / <code>maxItems</code> (arrays)</td><td><code>@Size(min, max)</code></td></tr>
+  <tr><td><code>minimum</code> / <code>maximum</code> (whole, inclusive)</td><td><code>@Min</code> / <code>@Max</code></td></tr>
+  <tr><td><code>minimum</code> / <code>maximum</code> (decimal)</td><td><code>@DecimalMin</code> / <code>@DecimalMax</code></td></tr>
+  <tr><td><code>exclusiveMinimum</code> / <code>exclusiveMaximum</code></td><td><code>@DecimalMin</code> / <code>@DecimalMax</code> with <code>inclusive = false</code></td></tr>
+  <tr><td><code>pattern</code></td><td><code>@Pattern(regexp = ...)</code></td></tr>
+  <tr><td><code>format: email</code></td><td><code>@Email</code></td></tr>
+  <tr><td>object / array-of / map-of a generated model</td><td><code>@Valid</code></td></tr>
+</table>
+
+<p>
+  Both OpenAPI 3.0 (<code>exclusiveMinimum: true</code>) and 3.1
+  (<code>exclusiveMinimum: &lt;number&gt;</code>) exclusive-bound forms are honoured.
+  <code>multipleOf</code> has no Bean Validation equivalent and is not mapped.
+</p>
+<p>
+  <code>@NotNull</code> is <strong>not</strong> emitted for a component that is generated as a
+  primitive (a <code>required</code>, non-nullable scalar — see
+  <a href="/openapi-generators/type-mapping#primitive-mapping">Primitive mapping</a>), since a
+  primitive is intrinsically non-null. A field that is both <code>required</code> and
+  <code>nullable: true</code> is annotated <code>@Nullable</code> (not <code>@NotNull</code>).
+</p>
+
+<h2 id="nested">Nested validation</h2>
+<p>
+  Record components whose type is a generated model — directly, or as the element of a
+  <code>List</code>/<code>Map</code> — are annotated <code>@Valid</code> so Bean Validation
+  cascades into them:
+</p>
+<pre content="java">
+public record Order(
+  @NotNull @Valid Customer customer,
+  @Valid List<|Item> items,
+  @Valid Map<|String,Item> attachments,
+  List<|String> labels,
+  OrderStatus status
+) {}
+</pre>
+<p>
+  References to enums and scalar types are not cascaded. Jakarta places <code>@Valid</code> in the
+  root <code>jakarta.validation</code> package; the Avaje style uses
+  <code>io.avaje.validation.constraints.Valid</code>.
+</p>
+
+<h2 id="disabling">Disabling validation</h2>
+<pre content="xml">
+<generateValidationAnnotations>false</generateValidationAnnotations>
+</pre>
+<p>
+  Use this when the generated DTOs must match hand-written records that do not carry validation
+  annotations, or when validation is enforced elsewhere. See
+  <a href="/openapi-generators/models">DTO Models</a>.
+</p>
+
+<p><br><br><br><br></p>
+
+</body>
+</html>
