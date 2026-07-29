@@ -19,7 +19,7 @@
     },
     "downloadUrl": "https://mvnrepository.com/artifact/io.avaje/avaje-jex",
     "applicationCategory": "DeveloperApplication",
-    "softwareRequirements": "Java 11+",
+    "softwareRequirements": "Java 21+",
     "programmingLanguage": "Java",
     "keywords": ["http-server", "lightweight", "jdk-httpserver", "rest-api", "virtual-threads", "fluent-api"],
     "useCases": [
@@ -304,7 +304,7 @@
     Endpoint handlers are the main handler type that define your API.
     You can add a GET handler to serve data to a client, or a POST handler to receive some data.
     Handlers. Common methods are supported directly on the <code>Routing</code> class (GET, POST, PUT, PATCH, DELETE,
-    HEAD, OPTIONS, TRACE)
+    HEAD, OPTIONS, TRACE, QUERY)
   </p>
 
   <p>Endpoint-handlers are matched in the order they are defined.</p>
@@ -529,8 +529,9 @@
         <td>Sets content type to json, then serializes the object to the response outputstream.</td>
       </tr>
       <tr>
-        <td><strong><code>jsonStream(obj)</code></strong></td>
-        <td>Sets content type to x-json-stream, then serializes the object to the response outputstream.</td>
+        <td><strong><code>jsonStream(stream)</code></strong></td>
+        <td>Sets content type to x-json-stream, then serializes each element of the Stream/Iterator to the response
+          outputstream.</td>
       </tr>
       <tr>
         <td><strong><code>html("html")</code></strong></td>
@@ -539,6 +540,10 @@
       <tr>
         <td><strong><code>render("/template.tmpl", model)</code></strong></td>
         <td>Calls html(renderedTemplate).</td>
+      </tr>
+      <tr>
+        <td><strong><code>rangedWrite(inputStream, totalBytes)</code></strong></td>
+        <td>Writes the input stream honouring the request <code>Range</code> header for partial/resumable responses.</td>
       </tr>
     </table>
   </details>
@@ -568,6 +573,17 @@
   <p>The Filter may decide to terminate the chain, by not calling the method. In this case, the filter <i>must</i> send
     the
     response to the request, as the application's exchange handler will <i>not</i> be invoked.</p>
+
+  <p>
+    For the common case of only needing pre- or post-processing, there are <code>before(Consumer&lt;Context&gt;)</code>
+    and <code>after(Consumer&lt;Context&gt;)</code> convenience methods that wrap a plain <code>Context</code> consumer as
+    a filter:
+  </p>
+  <pre content="java">
+    Jex.create()
+        .before(ctx -> System.out.println("before request"))
+        .after(ctx -> System.out.println("after request"));
+  </pre>
 
   <h3 id="exception">Exceptions</h3>
   <p>
@@ -781,9 +797,9 @@
   </pre>
     <pre content="java">
     StaticContent singleFile =
-        StaticContent.ofFile("src/main/resources/example.txt").httpPath("/single").build();
+        StaticContent.ofFile("src/main/resources/example.txt").route("/single").build();
     StaticContent directoryCP =
-        StaticContent.ofClassPath("/public/").httpPath("/").directoryIndex("index.html").build();
+        StaticContent.ofClassPath("/public/").route("/").directoryIndex("index.html").build();
     Jex app =
         Jex.create()
             .plugin(singleFile) // will serve the src/main/resources/example.txt
@@ -802,8 +818,13 @@
           <td>The index file to be served when a directory is requested.</td>
         </tr>
         <tr>
-          <td><strong><code>route("/public")</code></strong></td>
-          <td>Sets the HTTP path and security role for the static resource handler.</td>
+          <td><strong><code>route("/public", roles...)</code></strong></td>
+          <td>Sets the HTTP path and security roles for the static resource handler.</td>
+        </tr>
+        <tr>
+          <td><strong><code>spaRoot("index.html")</code></strong></td>
+          <td>Redirects to the given index file when a static file cannot be found, so a client-side router can handle
+            routing (single-page application support).</td>
         </tr>
         <tr>
           <td><strong><code>preCompress()</code></strong></td>
@@ -889,6 +910,27 @@
       <tr>
         <td><strong><code>socketBacklog(int backlog)</code></strong></td>
         <td>Sets the underlying HttpServer socket backlog.</td>
+      </tr>
+      <tr>
+        <td><strong><code>serverProvider(provider)</code></strong></td>
+        <td>Sets the <code>HttpServerProvider</code> used to create the underlying server (defaults to the one found via
+          the JDK SPI).</td>
+      </tr>
+      <tr>
+        <td><strong><code>maxRequestSize(bytes)</code></strong></td>
+        <td>Sets the maximum allowed request body size in bytes.</td>
+      </tr>
+      <tr>
+        <td><strong><code>rangeChunkSize(bytes)</code></strong></td>
+        <td>Sets the chunk size used when writing ranged (partial content) responses.</td>
+      </tr>
+      <tr>
+        <td><strong><code>initialStreamBufferSize(bytes)</code></strong></td>
+        <td>Sets the initial buffer size used when writing streamed responses.</td>
+      </tr>
+      <tr>
+        <td><strong><code>maxStreamBufferSize(bytes)</code></strong></td>
+        <td>Sets the max buffer size before a streamed response switches to chunked encoding.</td>
       </tr>
     </table>
 
