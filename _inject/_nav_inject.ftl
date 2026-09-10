@@ -106,6 +106,8 @@
     <li><a href="#multi-module">Multi-module</a></li>
     <li><a href="#shading">Shading Note</a></li>
     <li><a href="#inject-module">@InjectModule</a></li>
+    <li><a href="#interweave">interweave</a></li>
+    <li><a href="#main-class">@MainClass</a></li>
   </ul>
 </@nav>
 <@nav url="#plugins" title="Plugins"></@nav>

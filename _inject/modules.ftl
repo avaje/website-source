@@ -217,3 +217,53 @@ These files contain all the metadata for all the modules and plugins provided by
   based on provides, requires, requiresPackages. In the example above the "feature-toggle" module are wired first,
   and then the beans it contains are then available when wiring the "job-system".
 </p>
+
+<h4 id="interweave">interweave</h4>
+<p>
+  An advanced form of <code>strictWiring</code> that interweaves all beans from external modules
+  directly into this module's generated wiring class, allowing faster wiring and bidirectional
+  cross-module dependency resolution.
+</p>
+<pre content="java">
+@InjectModule(strictWiring = true, interweave = true)
+</pre>
+<p>
+  Because external bean wiring is inlined at compile time, any change to the bean makeup of an
+  external module (adding or removing beans) requires a recompile of this module to pick up the
+  updated wiring.
+</p>
+
+<h3 id="main-class">@MainClass</h3>
+<p>
+  Marks a class as the application's main class and entrypoint. When present, the annotation
+  processor will:
+</p>
+<ul>
+  <li>Enable <a href="#strict-wiring">strict wiring</a>, ensuring all dependencies are satisfied at compile time</li>
+  <li>Write an <code>avaje-main-class.txt</code> resource file for the avaje-inject gradle plugin</li>
+  <li>Update the project's <code>pom.xml</code> to configure the <code>maven-jar-plugin</code> with this
+    class as the main class in the JAR manifest (if a <code>pom.xml</code> is present)</li>
+</ul>
+<p>
+  Only one class in a project should be annotated with <code>@MainClass</code>. A compile error is
+  raised if multiple classes are annotated.
+</p>
+<pre content="java">
+@MainClass
+public class MyApplication {
+
+  public static void main(String[] args) {
+    // start the application
+  }
+}
+</pre>
+<p>
+  <code>strictWiring</code> defaults to <code>true</code> and <code>interweave</code> defaults to
+  <code>false</code>. Both can be overridden on the annotation.
+</p>
+<pre content="java">
+@MainClass(strictWiring = true, interweave = false)
+public class MyApplication {
+  ...
+}
+</pre>
