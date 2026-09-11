@@ -13,12 +13,14 @@
   <@nav url="#controllers" title="Controllers">
     <ul>
       <li><a href="#controller">@Controller</a></li>
+      <li><a href="#query">@Query</a></li>
       <li><a href="#path">@Path</a></li>
       <li><a href="#path-parameters">Path parameters</a></li>
       <li><a href="#matrix-parameters">Matrix parameters</a></li>
       <li><a href="#query-parameters">@QueryParam</a></li>
       <li><a href="#bean-param">@BeanParam</a></li>
       <li><a href="#post">Request Body</a></li>
+      <li><a href="#body">@Body</a></li>
       <li><a href="#form">@Form</a></li>
       <li><a href="#form-param">@FormParam</a></li>
       <li><a href="#form-beans">Form beans</a></li>
@@ -55,6 +57,7 @@
   <@nav url="#openapi" title="OpenAPI">
     <ul>
       <li><a href="#doc">Javadoc</a></li>
+      <li><a href="#schema">@Schema</a></li>
       <li><a href="#response">@OpenApiResponse</a></li>
       <li><a href="#validation">Validation Annotations</a></li>
       <li><a href="#swag">Swagger Annotations</a></li>

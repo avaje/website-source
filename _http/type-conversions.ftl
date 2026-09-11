@@ -3,7 +3,7 @@
   There are built in type conversions for the following types:
 </p>
 <ul>
-  <li>int, long, boolean, Integer, Long, Boolean</li>
+  <li>int, long, short, boolean, Integer, Long, Short, Boolean</li>
   <li>BigDecimal, UUID, LocalDate, LocalTime, LocalDateTime</li>
   <li>Enum Types via <em>valueOf</em> (will use toUpperCase on the query parameter)</li>
 </ul>

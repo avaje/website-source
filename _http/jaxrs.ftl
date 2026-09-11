@@ -51,6 +51,10 @@
       <td>@Patch</td>
       <td>@PATCH + @Path</td>
     </tr>
+    <tr>
+      <td>@Query</td>
+      <td>-</td>
+    </tr>
 
     <tr>
       <th colspan="2" class="heading"><h4>Bean parameters</h4></th>

@@ -28,7 +28,7 @@ class ContactController {
   Annotate controllers with <code>@Controller</code>.
   You can provide a path segment that is prepended
   to any path segments defined by on methods using <code>@Get</code>,
-  <code>@Post</code>, <code>@Put</code> etc. There are three ways to prepend a path.
+  <code>@Post</code>, <code>@Put</code>, <code>@Query</code> etc. There are three ways to prepend a path.
 </p>
 
 <h4>1. Directly put the path in the controller annotation.</h4>
@@ -63,7 +63,7 @@ class CustomerControllerImpl implements CustomerController {
 
 <p>
  Web Methods on a controller are annotated with HTTP annotations like <code>@Get</code>,
-  <code>@Post</code>, <code>@Put</code>, <code>@Delete</code>.
+  <code>@Post</code>, <code>@Put</code>, <code>@Delete</code>, <code>@Patch</code>, <code>@Query</code>.
 </p>
 
 <pre content="java">
@@ -115,3 +115,15 @@ class ContactController {
     become <a href="#request-scoped">request scoped</a>.
   </p>
 </#if>
+
+<h3 id="query">@Query</h3>
+<p>
+  <code>@Query</code> marks a method that handles the HTTP <code>QUERY</code> method. This is a separate
+  thing from <code>@QueryParam</code>, which marks a query string parameter.
+</p>
+<pre content="java">
+@Query
+List<|Customer> search(SearchCriteria criteria) {
+  ...
+}
+</pre>

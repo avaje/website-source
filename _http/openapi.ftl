@@ -48,6 +48,22 @@
  }
 </pre>
 
+<h4 id="schema">@Schema</h4>
+<p>
+  Add Swagger's <code>@Schema</code> annotation to a request/response class or field to override or add to what
+  the javadoc would otherwise generate. This is useful for types in another compilation unit where javadoc is not
+  available, or where the description in javadoc should not be used in the OpenAPI definition.
+</p>
+<p>
+  The <code>description</code>, <code>name</code>, <code>title</code>, <code>pattern</code>, <code>example</code>
+  and <code>defaultValue</code> attributes are read. When both javadoc and <code>@Schema(description = ...)</code>
+  are present, the <code>@Schema</code> description takes precedence.
+</p>
+<pre content="java">
+@Schema(description = "A customer record", example = "{\"id\":1,\"name\":\"Sample\"}")
+record Customer(long id, String name) {}
+</pre>
+
 <h4>@Consumes</h4>
 <p>
   Adding the <code>@Consumes</code> annotation to a controller method let's you control what media type should be generated for the request body in the openAPI definition. This is useful when you are dealing with non-standard request content types.

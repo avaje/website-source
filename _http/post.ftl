@@ -1,6 +1,6 @@
 <h2 id="post">Request Body</h2><hr/>
 <p>
-  Avaje auto detects that a parameter is a request body if the type is a <code>POJO</code>/<code>byte[]</code>/<code>InputStream</code> and not marked with a <code>@BeanParam</code> annotation. To mark a string parameter as a body, use the <code>@BodyString</code> annotation.
+  Avaje auto detects that a parameter is a request body if the type is a <code>POJO</code>/<code>byte[]</code>/<code>InputStream</code> and not marked with a <code>@BeanParam</code> annotation.
 </p>
 <pre content="java">
 @Post
@@ -9,6 +9,18 @@ void save(Customer customer) {
 }
 </pre>
 
+<h3 id="body">@Body</h3>
+<p>
+  A scalar type or a collection of a scalar type, such as <code>String</code> or <code>List&ltLong&gt</code>, is otherwise inferred as a query
+  parameter (or a form parameter on a method marked <code>@Form</code>). Put <code>@Body</code> on the parameter
+  to force it to instead be read from the request body.
+</p>
+<pre content="java">
+@Post("/products/filter")
+String filter(@Body List<|String> codes) {
+  ...
+}
+</pre>
 <#if includeJavalinCode?has_content>
 <h4>Generated for Javalin</h4>
 <p>

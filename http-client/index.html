@@ -1243,6 +1243,11 @@ dependencies {
 
   }
 </pre>
+<p>
+  Methods can be annotated with <code>@Get</code>, <code>@Post</code>, <code>@Put</code>, <code>@Delete</code>,
+  <code>@Patch</code> or <code>@Query</code> (for the HTTP <code>QUERY</code> method), and the generated
+  implementation calls the matching <code>HttpClientRequest</code> method, such as <code>.QUERY()</code>.
+</p>
 
 <h3 id="at-client-import">@Client.Import</h3>
 <p>
@@ -1743,12 +1748,15 @@ List<|Cat> findCats(LocalDate bornAfter, String orderBy);  // orderBy implied as
   }
 </pre>
 
-<h3 id="bodystring">@BodyString</h3>
-  We can specify that a string parameter is a body using <code>@BodyString</code>.
+<h3 id="body">@Body</h3>
+<p>
+  We can specify that a scalar parameter, such as <code>String</code> or a collection like <code>List&lt;Long&gt;</code>,
+  is a body using <code>@Body</code>. Without it, such a parameter would otherwise be inferred as a query
+  (or form) parameter.
 </p>
 <pre content="java">
 @Post("/stringbody")
-List<|Cat> addCats(@BodyString String body);
+List<|Cat> addCats(@Body String body);
 </pre>
 <p>The generated code will be:</p>
 <pre content="java">

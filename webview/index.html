@@ -11,7 +11,7 @@
     "@context": "https://schema.org",
     "@type": "SoftwareLibrary",
     "name": "Avaje Webview",
-    "description": "Wraps native platform webview engines (WebKitGTK, WKWebView, WebView2) to build modern cross-platform GUIs using Java 25 FFM, no native library embedding required",
+    "description": "Wraps native platform webview engines (WebKitGTK, WKWebView, WebView2) to build modern cross-platform GUIs using Java 25 FFM",
     "url": "https://avaje.io/webview/",
     "repositoryUrl": "https://github.com/avaje/avaje-webview",
     "issuesUrl": "https://github.com/avaje/avaje-webview/issues",
@@ -34,7 +34,7 @@
     "features": [
       {
         "name": "Native FFM bindings",
-        "description": "Calls native webview libraries directly via Java 25 Foreign Function & Memory, no JNA or embedded natives",
+        "description": "Calls native webview libraries directly via Java 25 Foreign Function & Memory",
         "sinceVersion": "0.1",
         "status": "stable"
       },
@@ -107,7 +107,7 @@
   <p><br><br>
     Avaje Webview wraps native platform webview engines to provide a clean interface for building
     modern cross-platform GUIs. It uses <strong>Java 25 FFM</strong> (Foreign Function &amp; Memory)
-    to call native libraries directly, with no embedded native binaries and no JNA.
+    to call native libraries directly.
   </p>
 
   <h2 id="platform">Platform requirements</h2><hr/>
@@ -153,7 +153,7 @@
   </p>
   <pre content="sh">
 java -XstartOnFirstThread --enable-native-access=ALL-UNNAMED -jar myapp.jar
-  </pre>
+</pre>
 
   <h4>3. Build a Webview</h4>
   <pre content="java">
