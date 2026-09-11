@@ -20,7 +20,7 @@
     "applicationCategory": "DataFormatting",
     "programLanguage": "Java",
     "minimumJavaVersion": "11",
-    "latestVersion": "3.4.0",
+    "latestVersion": "3.15",
     "useCases": [
       "JSON serialization/deserialization",
       "REST API payload handling",
@@ -55,6 +55,30 @@
         "name": "High performance",
         "description": "Comparable to jackson and gson with zero-reflection design",
         "sinceVersion": "1.0",
+        "status": "stable"
+      },
+      {
+        "name": "Jackson/GSON/Jakarta JSON-B annotation compatibility",
+        "description": "Recognise select third-party annotations on @Json.Import types",
+        "sinceVersion": "3.8",
+        "status": "stable"
+      },
+      {
+        "name": "avaje-json-core (JsonMapper)",
+        "description": "Standalone lightweight mapper for Map/List/scalar JSON with no annotation processing",
+        "sinceVersion": "3.0",
+        "status": "stable"
+      },
+      {
+        "name": "avaje-json-node (JsonNode)",
+        "description": "Mutable JSON tree model (JsonObject/JsonArray) for dynamic JSON",
+        "sinceVersion": "3.0",
+        "status": "stable"
+      },
+      {
+        "name": "JsonExtract",
+        "description": "Dot-notation path extraction of scalar values from a parsed JSON Map",
+        "sinceVersion": "3.0",
         "status": "stable"
       }
     ],
@@ -144,6 +168,7 @@
     <li>Strings</li>
     <li>Enums</li>
     <li>java.net classes (URL, URI, InetAddress...)</li>
+    <li>java.util.Calendar</li>
     <li>Other miscellaneous types (UUID...)</li>
   </ul>
 
@@ -507,6 +532,26 @@ enum Naming {
 @Json.Import({Customer.class, Address.class, Order.class})
 package org.example;
 </pre>
+
+  <h3 id="thirdparty">Jackson/GSON/Jakarta JSON-B Annotations</h3>
+  <p>
+    When a type imported via <code>@Json.Import</code> already carries annotations from Jackson,
+    GSON, or Jakarta JSON-B (for example a class from a third-party library that we can't add
+    <code>@Json</code> annotations to), avaje-jsonb-generator will recognise a select set of them and
+    apply the equivalent behaviour, so there is no need to write a mixin or custom adapter just to
+    rename or ignore a field.
+  </p>
+  <table class="table table-striped">
+    <tr><th>Library</th><th>Recognised Annotations</th></tr>
+    <tr><td>Jackson</td><td><code>@JsonProperty</code>, <code>@JsonAlias</code>, <code>@JsonIgnore</code>, <code>@JsonCreator</code></td></tr>
+    <tr><td>GSON</td><td><code>@SerializedName</code> (including <code>alternate</code>), <code>@Expose</code></td></tr>
+    <tr><td>Jakarta JSON-B</td><td><code>@JsonbProperty</code>, <code>@JsonbTransient</code></td></tr>
+  </table>
+  <p>
+    This support only applies to types brought in via <code>@Json.Import</code>. For types you
+    control directly, use <code>@Json.Property</code>, <code>@Json.Alias</code>, and
+    <code>@Json.Ignore</code> instead.
+  </p>
 
   <h2 id="raw">@Json.Raw</h2>
   <p>
@@ -1314,6 +1359,174 @@ public class Example {
   }
 </pre>
 
+  <h2 id="files">Files & Paths</h2><hr/>
+  <p>
+    <code>JsonType</code> and <code>JsonView</code> can read from and write directly to a
+    <code>java.nio.file.Path</code>, in addition to <code>String</code>, <code>byte[]</code>,
+    <code>Reader</code>/<code>Writer</code>, and <code>InputStream</code>/<code>OutputStream</code>.
+  </p>
+  <pre content="java">
+  JsonType<|Customer> customerType = jsonb.type(Customer.class);
+
+  // write straight to a file
+  customerType.toJson(customer, Path.of("customer.json"));
+
+  // read straight from a file
+  Customer customer = customerType.fromJson(Path.of("customer.json"));
+</pre>
+
+  <h2 id="config">Configuration & Tuning</h2><hr/>
+  <p>
+    Parser and generator buffer sizes and limits can be tuned at startup via system properties or
+    environment variables, without any code changes. Environment variables are particularly useful
+    for GraalVM native images, where <code>JAVA_TOOL_OPTIONS</code> is not supported.
+  </p>
+  <table class="table table-striped">
+    <tr><th>Setting</th><th>System Property</th><th>ENV Var</th><th>Default</th></tr>
+    <tr><td>Generator write buffer</td><td><code>jsonb.generatorBufferSize</code></td><td><code>JSONB_GENERATOR_BUFFER_SIZE</code></td><td>4096</td></tr>
+    <tr><td>Parser byte buffer</td><td><code>jsonb.parserBufferSize</code></td><td><code>JSONB_PARSER_BUFFER_SIZE</code></td><td>4096</td></tr>
+    <tr><td>Parser char buffer</td><td><code>jsonb.parserCharBufferSize</code></td><td><code>JSONB_PARSER_CHAR_BUFFER_SIZE</code></td><td>4096</td></tr>
+    <tr><td>Max number digits</td><td><code>jsonb.parserMaxNumberDigits</code></td><td><code>JSONB_PARSER_MAX_NUMBER_DIGITS</code></td><td>309</td></tr>
+    <tr><td>Max string buffer</td><td><code>jsonb.parserMaxStringBuffer</code></td><td><code>JSONB_PARSER_MAX_STRING_BUFFER</code></td><td>50000</td></tr>
+  </table>
+  <p>
+    A system property always takes priority over the equivalent ENV var. The most commonly tuned
+    setting is <code>parserMaxStringBuffer</code>. Raise it if a single JSON string value (e.g. a
+    large text field or base64 blob) is larger than the default 50,000 characters:
+  </p>
+
+  <h2 id="modules">Additional Modules</h2><hr/>
+  <p>
+    Alongside the main <code>avaje-jsonb</code> code-generating library, a few standalone modules
+    are available for cases where full compile-time adapter generation isn't needed, or a
+    dynamic/tree-style JSON API is more convenient.
+  </p>
+
+  <h3 id="json-core">avaje-json-core (JsonMapper)</h3>
+  <p>
+    <code>JsonMapper</code> (<code>io.avaje.json.mapper.JsonMapper</code>) is a lightweight mapper
+    for the basic JSON/Java types, namely <code>String</code>, <code>Boolean</code>,
+    <code>Integer</code>, <code>Long</code>, <code>Double</code>, and <code>Map</code>/<code>List</code>
+    of these, provided by the <code>avaje-json-core</code> module. It requires no annotation
+    processing, so it's useful for code that only needs to work with plain Maps/Lists or provide
+    its own <code>JsonAdapter</code> implementations without depending on <code>avaje-jsonb</code>.
+  </p>
+  <pre content="xml">
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-json-core</artifactId>
+    <version>${avaje.jsonb.version}</version>
+  </dependency>
+  </pre>
+  <pre content="java">
+  JsonMapper jsonMapper = JsonMapper.builder().build();
+
+  Map<|String, Long> map = new LinkedHashMap<|>();
+  map.put("one", 45L);
+  map.put("two", 93L);
+
+  String asJson = jsonMapper.toJson(map);
+  // {"one":45,"two":93}
+
+  Map<|String, Object> asMap = jsonMapper.fromJsonObject(asJson);
+  List<|Object> asList = jsonMapper.fromJsonArray("[1,2,3]");
+</pre>
+  <p>
+    If using avaje-jsonb already (with <code>@Json</code> generated adapters) you generally won't
+    need <code>JsonMapper</code> directly. Use <code>Jsonb</code> instead.
+  </p>
+
+  <h3 id="json-extract">JsonExtract</h3>
+  <p>
+    <code>JsonExtract</code> pulls individual scalar values out of loosely-typed JSON (a
+    <code>Map&lt;String, Object&gt;</code>) using a simple dot-notation path, without needing to
+    define a model class for the full payload. This is handy for webhook payloads, third-party API
+    responses, or config blobs where only a couple of fields are needed.
+  </p>
+  <pre content="java">
+  Map<|String, Object> map = jsonb.type(Types.mapOf(Object.class)).fromJson(json);
+  JsonExtract extract = JsonExtract.of(map);
+
+  String name = extract.extract("name");
+  String street = extract.extract("address.street");
+
+  // with a default value if the path is missing
+  int age = extract.extract("age", -1);
+</pre>
+  <p>
+    Only scalar leaf values can be extracted, and there's no array/index syntax in the path (e.g.
+    no <code>"items.0.name"</code>). Read the full <code>Map</code>/<code>List</code> for that instead.
+  </p>
+
+  <h3 id="json-node">avaje-json-node (JsonNode)</h3>
+  <p>
+    The <code>avaje-json-node</code> module provides a mutable JSON tree model, namely
+    <code>JsonNode</code>, <code>JsonObject</code>, and <code>JsonArray</code>, for cases where a
+    dynamic, schema-less representation of JSON is more convenient than a generated type, similar
+    to Jackson's <code>JsonNode</code> or Gson's <code>JsonElement</code>.
+  </p>
+  <pre content="xml">
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>avaje-json-node</artifactId>
+    <version>${avaje.jsonb.version}</version>
+  </dependency>
+  </pre>
+  <pre content="java">
+  JsonNodeMapper nodeMapper = JsonNodeMapper.builder().build();
+
+  JsonNode node = nodeMapper.fromJson(json);
+  if (node.isObject()) {
+    JsonObject obj = node.asObject();
+    String name = obj.extract("name");
+  }
+
+  // build content programmatically
+  JsonObject built = JsonObject.create()
+    .add("name", "Rob")
+    .add("score", 4.5);
+
+  String asJson = nodeMapper.toJson(built);
+</pre>
+
+  <h3 id="bom">avaje-jsonb-bom</h3>
+  <p>
+    <code>avaje-jsonb-bom</code> is a Bill of Materials POM that aligns the versions of
+    <code>avaje-jsonb</code>, <code>avaje-jsonb-generator</code>, <code>avaje-json-core</code>,
+    <code>avaje-json-node</code>, and related modules, so only one version needs to be managed.
+  </p>
+  <pre content="xml">
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.avaje</groupId>
+        <artifactId>avaje-jsonb-bom</artifactId>
+        <version>${avaje.jsonb.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  </pre>
+
+  <h3 id="javalin">Javalin Mapper</h3>
+  <p>
+    <code>jsonb-javalin-mapper</code> provides a <code>io.javalin.json.JsonMapper</code>
+    implementation backed by avaje-jsonb, for using avaje-jsonb as the JSON mapper in a
+    <a href="https://javalin.io" target="_blank">Javalin</a> application.
+  </p>
+  <pre content="xml">
+  <dependency>
+    <groupId>io.avaje</groupId>
+    <artifactId>jsonb-javalin-mapper</artifactId>
+    <version>${avaje.jsonb.version}</version>
+  </dependency>
+  </pre>
+  <pre content="java">
+  Javalin.create(config -> {
+    config.jsonMapper(new JavalinJsonb(Jsonb.instance()));
+  });
+</pre>
 
   <p><br><br><br><br><br><br></p>
 </body>

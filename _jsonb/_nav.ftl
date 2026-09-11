@@ -12,7 +12,11 @@
       <li><a href="#adapter">Generated JsonAdapter</a></li>
     </ul>
   </@nav>
-  <@nav url="#import" title="@Import"/>
+  <@nav url="#import" title="@Import">
+    <ul>
+      <li><a href="#thirdparty">Jackson/GSON/Jakarta Annotations</a></li>
+    </ul>
+  </@nav>
   <@nav url="#raw" title="@Raw"/>
   <@nav url="#property" title="@Property"/>
   <@nav url="#alias" title="@Alias"/>
@@ -29,5 +33,16 @@
   <@nav url="#subtype" title="@Subtype"/>
   <@nav url="#custom" title="@CustomAdapter"/>
   <@nav url="#serializer" title="@Serializer"/>
+  <@nav url="#files" title="Files & Paths"/>
+  <@nav url="#config" title="Configuration & Tuning"/>
+  <@nav url="#modules" title="Additional Modules">
+    <ul>
+      <li><a href="#json-core">avaje-json-core (JsonMapper)</a></li>
+      <li><a href="#json-extract">JsonExtract</a></li>
+      <li><a href="#json-node">avaje-json-node (JsonNode)</a></li>
+      <li><a href="#bom">avaje-jsonb-bom</a></li>
+      <li><a href="#javalin">Javalin Mapper</a></li>
+    </ul>
+  </@nav>
 </ul>
 <p>&nbsp;</p>
