@@ -101,6 +101,15 @@
         </td>
       </tr>
       <tr>
+        <th><a href="/webview">Webview</a></th>
+        <td>
+          <p>
+            Wraps native platform webview engines (WebKitGTK, WKWebView, WebView2) using Java 25 FFM
+            to build modern cross-platform GUIs, no embedded native libraries required.
+          </p><hr/>
+        </td>
+      </tr>
+      <tr>
         <th><a href="/nima">Nima</a></th>
         <td>
           <p>
@@ -114,15 +123,6 @@
           <p>
             A SLF4J compatible simple logger that logs to <em>System out</em> with structured JSON.
             Lightweight and GraalVM native image compatible.
-          </p><hr/>
-        </td>
-      </tr>
-      <tr>
-        <th><a href="/webview">Webview</a></th>
-        <td>
-          <p>
-            Wraps native platform webview engines (WebKitGTK, WKWebView, WebView2) using Java 25 FFM
-            to build modern cross-platform GUIs, no embedded native libraries required.
           </p><hr/>
         </td>
       </tr>
