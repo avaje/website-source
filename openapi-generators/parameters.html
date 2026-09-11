@@ -1,0 +1,167 @@
+<html>
+<head>
+  <meta name="layout" content="_layout/base-openapi-generators.html"/>
+  <meta name="bread2" content="parameters" href="/openapi-generators/parameters"/>
+</head>
+<body>
+
+<h1 id="overview">Parameters</h1>
+
+<p>
+  Path, query, header, and cookie parameters map to method parameters on the generated interface
+  with the matching <code>io.avaje.http.api</code> location annotation. Path parameters carry no
+  annotation; query/header/cookie carry <code>@QueryParam</code> / <code>@Header</code> /
+  <code>@Cookie</code>.
+</p>
+
+<h2 id="explicit-names">Explicit parameter names</h2>
+<p>Location annotations are always generated with an explicit wire-name value:</p>
+<pre content="java">
+List<|Pet> listPets(@QueryParam("status") PetStatus status);
+
+Pet getPet(Long id, @Header("X-Request-Id") String xRequestId);
+</pre>
+
+<p>
+  The explicit name keeps the generated interface robust as a contract-first artifact. avaje-http
+  can fall back to the Java parameter name when the annotation value is blank, but that fallback
+  only works when parameter names are present in the bytecode — which is <strong>not</strong> the
+  case for an interface consumed from a precompiled jar via <code>@Client.Import</code> unless
+  that jar was compiled with <code>-parameters</code>. Emitting the name explicitly removes that
+  requirement, so consumers need no special compiler configuration. See
+  <a href="/openapi-generators/contract-first">Contract-first client &amp; server</a>.
+</p>
+
+<h2 id="defaults">Parameter defaults</h2>
+<p>
+  When a parameter schema declares a <code>default</code>, the generator emits an
+  <code>@Default</code> annotation alongside the location annotation and uses the
+  <strong>primitive</strong> form of the type (a default guarantees a value):
+</p>
+<pre content="text">
+parameters:
+  - name: useMaster
+    in: query
+    schema:
+      type: boolean
+      default: false
+</pre>
+<pre content="java">
+Pet getPet(Long id, @QueryParam("useMaster") @Default("false") boolean useMaster);
+</pre>
+<p>
+  Wrapper types <code>Boolean</code>, <code>Integer</code>, <code>Long</code>, <code>Double</code>
+  and <code>Float</code> are unboxed to their primitive form when a default is present. Other types
+  keep their declared type and simply gain the <code>@Default("...")</code> annotation.
+</p>
+
+<h2 id="nullable">Nullable parameters</h2>
+<p>
+  Optional parameters (<code>required: false</code>, without a <code>default</code>) are annotated
+  <code>@Nullable</code>. The default annotation is JSpecify:
+</p>
+<pre content="java">
+import org.jspecify.annotations.Nullable;
+
+List<|Pet> listPets(@Nullable @QueryParam("status") PetStatus status);
+</pre>
+
+<p>
+  JSpecify is already a transitive dependency of <code>avaje-http-client</code>. If you only depend
+  on <code>avaje-http-api</code>, add <code>org.jspecify:jspecify</code> to the consuming project.
+  Point <code>nullableAnnotation</code> at a different annotation (e.g.
+  <code>jakarta.annotation.Nullable</code>), or set it to <code>NONE</code> to disable
+  <code>@Nullable</code> generation entirely:
+</p>
+<pre content="xml">
+<nullableAnnotation>NONE</nullableAnnotation>
+</pre>
+<p>
+  The <code>NONE</code> sentinel (case-insensitive) is used rather than an empty element because
+  Maven collapses an empty configuration element to <code>null</code> and applies the parameter
+  default, so a blank value cannot disable generation.
+</p>
+<p>
+  JSpecify <code>@Nullable</code> is a <code>TYPE_USE</code> annotation. For server controllers
+  this interacts with how avaje-http matches an <code>@Override</code> back to the interface
+  method — requires avaje-http 3.10+, or set <code>nullableAnnotation=NONE</code> to disable it.
+  See <a href="/openapi-generators/contract-first#nullable">@Nullable and avaje-http 3.10+</a>.
+</p>
+
+<h2 id="overloads">Overloads</h2>
+<p>
+  Set <code>generateOverloads=true</code> to emit convenience <code>default</code> method overloads
+  that omit a trailing run of <strong>omittable</strong> parameters and delegate to the full
+  method. The overloads carry no HTTP annotation, so the server and client generators ignore them
+  — they exist purely for caller ergonomics and are inherited by both the controller and the
+  generated client.
+</p>
+<pre content="xml">
+<generateOverloads>true</generateOverloads>
+<overloadPolicy>NULLABLE_ONLY</overloadPolicy>
+<!-- EXPLICIT | NULLABLE_ONLY (default) | ALL_OPTIONAL -->
+</pre>
+
+<p>
+  Only a contiguous run of omittable parameters at the <strong>end</strong> of the signature can be
+  dropped. Path parameters and request bodies are never omittable. The <code>overloadPolicy</code>
+  decides which parameters are omittable by default:
+</p>
+<table style="width:100%;">
+  <tr>
+    <th>Policy</th>
+    <th>Omittable parameters</th>
+    <th>Value passed when omitted</th>
+  </tr>
+  <tr>
+    <td><code>EXPLICIT</code></td>
+    <td>only those marked <code>x-overload: true</code></td>
+    <td>default, or <code>null</code></td>
+  </tr>
+  <tr>
+    <td><code>NULLABLE_ONLY</code></td>
+    <td>optional parameters <strong>without</strong> a default (default)</td>
+    <td><code>null</code></td>
+  </tr>
+  <tr>
+    <td><code>ALL_OPTIONAL</code></td>
+    <td>every optional parameter (including defaulted ones)</td>
+    <td>its <code>default</code> literal</td>
+  </tr>
+</table>
+
+<p>
+  A per-parameter <code>x-overload</code> vendor extension overrides the policy for that parameter
+  (<code>true</code> forces omittable, <code>false</code> forces required).
+</p>
+<pre content="java">
+FleetDetail findFleet(UUID fleetGid, @QueryParam("useMaster") @Default("false") boolean useMaster,
+    @QueryParam("withMachines") @Default("false") boolean withMachines,
+    @QueryParam("withDrivers") @Default("false") boolean withDrivers);
+
+default FleetDetail findFleet(UUID fleetGid, boolean useMaster, boolean withMachines) {
+  return findFleet(fleetGid, useMaster, withMachines, false);
+}
+
+default FleetDetail findFleet(UUID fleetGid, boolean useMaster) {
+  return findFleet(fleetGid, useMaster, false, false);
+}
+</pre>
+
+<h2 id="response-headers">Response header documentation</h2>
+<p>
+  avaje-http has no response-header annotation, so OpenAPI response headers are surfaced as an
+  <code>@apiNote</code> Javadoc tag on the generated method (2xx response only):
+</p>
+<pre content="java">
+/**
+ * @apiNote Response headers: X-Rate-Limit (integer — Request limit per hour), X-Rate-Limit-Reset (string)
+ */
+@Get
+List<|Item> listItems();
+</pre>
+
+<p><br><br><br><br></p>
+
+</body>
+</html>

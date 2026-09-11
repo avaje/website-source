@@ -1,0 +1,162 @@
+<html>
+<head>
+  <meta name="layout" content="_layout/base-openapi-generators.html"/>
+  <meta name="bread2" content="contract-first" href="/openapi-generators/contract-first"/>
+</head>
+<body>
+
+<h1 id="overview">Contract-First Client and Server</h1>
+
+<p>
+  The generated <code>avaje-http-api</code> interface is a single contract that drives
+  <strong>both</strong> the HTTP client and the server controller. The OpenAPI document is the
+  source of truth; the interface and DTOs are generated; the client is generated; the server
+  controller implements the interface.
+</p>
+
+<h2 id="shared-interface">The shared interface</h2>
+<p>
+  The plugin generates an interface annotated with <code>io.avaje.http.api</code> annotations:
+</p>
+<pre content="java">
+@Path("/v1")
+public interface CentralAccessApi {
+
+  @Get("/devices/{deviceGid}")
+  Device findDevice(UUID deviceGid, @QueryParam("useMaster") @Default("false") boolean useMaster);
+
+  @Get("/orgs/{orgGid}/devices/stream")
+  Stream<|Device> findAllDevices(UUID orgGid, @Nullable @QueryParam("modifiedSince") Instant modifiedSince);
+}
+</pre>
+
+<h2 id="client">Generating an HTTP client</h2>
+<p>
+  Import the generated interface into a module that has the avaje-http client generator. The
+  client generator produces a typed <code>HttpClient</code>-backed implementation:
+</p>
+<pre content="java">
+@Client.Import(CentralAccessApi.class)
+package org.example.client;
+</pre>
+
+<p>Add the client generator to the annotation processor path of the consuming module:</p>
+<pre content="xml">
+<path>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje-http-client-generator</artifactId>
+  <version>${avaje.http.version}</version>
+</path>
+</pre>
+
+<h3 id="param-names">Parameter names and @Client.Import (important)</h3>
+<p>
+  <code>@Client.Import</code> reads the <strong>precompiled</strong> interface from a jar on the
+  classpath. It needs the wire names of query/header/cookie parameters. The generator always emits
+  those names explicitly (<code>@QueryParam("modifiedSince")</code>), so the imported client
+  resolves them with no extra configuration.
+</p>
+<p>
+  If you ever hand-write an imported interface (or use an older generator that omitted the name
+  and relied on the avaje-http parameter-name fallback), the consuming jar must be compiled with
+  <code>-parameters</code> so the names survive in bytecode. With the explicit-name generation
+  this is <strong>not</strong> required.
+</p>
+
+<h2 id="server">Implementing the server</h2>
+<p>
+  The same interface is implemented by a <code>@Controller</code>. The avaje-http server generator
+  (Nima/Helidon, Jex, or Javalin) reads the controller, matches each <code>@Override</code> back to
+  the interface method to recover its <code>@Get</code>/<code>@Post</code> mapping, and registers
+  the route:
+</p>
+<pre content="java">
+@Controller
+public class CentralAccessController implements CentralAccessApi {
+
+  @Override
+  public Device findDevice(UUID deviceGid, boolean useMaster) {
+    ...
+  }
+
+  @Override
+  public Stream<|Device> findAllDevices(UUID orgGid, Instant modifiedSince) {
+    ...
+  }
+}
+</pre>
+
+<table style="width:100%;">
+  <tr>
+    <th>Server target</th>
+    <th>Consuming processor</th>
+  </tr>
+  <tr>
+    <td>Avaje Nima / Helidon</td>
+    <td><code>avaje-http-helidon-generator</code></td>
+  </tr>
+  <tr>
+    <td>Avaje Jex</td>
+    <td><code>avaje-http-jex-generator</code></td>
+  </tr>
+  <tr>
+    <td>Javalin</td>
+    <td><code>avaje-http-javalin-generator</code></td>
+  </tr>
+</table>
+
+<p>
+  Switching server targets is purely a dependency / annotation-processor choice; the generated
+  interface and DTOs are unchanged.
+</p>
+
+<h3 id="nullable">@Nullable on parameters needs avaje-http 3.10+</h3>
+<p>
+  Optional parameters are generated with a JSpecify <code>@Nullable</code>
+  (<code>@Nullable @QueryParam("modifiedSince") Instant modifiedSince</code>). JSpecify
+  <code>@Nullable</code> is a <code>TYPE_USE</code> annotation with <code>RUNTIME</code> retention,
+  so it becomes part of the interface method's parameter-type signature, while the controller
+  <code>@Override</code> (which usually omits it) does not carry it.
+</p>
+<p>
+  avaje-http server generators <strong>before 3.10</strong> matched the controller override to the
+  interface method using a raw signature-string comparison, so the mismatch caused the
+  <code>@Get</code>/<code>@Post</code> mapping to be silently dropped and the route to 404.
+  avaje-http 3.10+ matches per-parameter by type (ignoring <code>TYPE_USE</code> annotations),
+  which fixes this.
+</p>
+<p>
+  If <code>/stream</code>-style optional-parameter routes 404 under a server target, confirm the
+  server generator is 3.10 or newer. (The <code>avaje-nima</code> parent may pin an older
+  <code>avaje.http.version</code>; add an explicit <code>avaje-http-helidon-generator</code>
+  processor path at the desired version to override it.)
+</p>
+
+<h4>Alternative: disable @Nullable to stay on a released server generator</h4>
+<p>
+  If you cannot move the server generator to 3.10+ yet, disable <code>@Nullable</code> generation
+  so the interface and controller signatures match under the older matching logic:
+</p>
+<pre content="xml">
+<nullableAnnotation>NONE</nullableAnnotation>
+</pre>
+<p>
+  The generated parameters then have no <code>@Nullable</code> (just
+  <code>@QueryParam("modifiedSince") Instant modifiedSince</code>), so a released avaje-http server
+  generator registers every route. The trade-off is that the generated interface no longer
+  documents parameter nullability. <code>NONE</code> is used instead of an empty element because
+  Maven collapses an empty configuration element to the parameter default.
+</p>
+
+<h2 id="api-only">API-only generation (reuse hand-written models)</h2>
+<p>
+  When adopting contract-first on an existing API whose DTO records are already hand-maintained,
+  set <code>generateModels=false</code>. The plugin then generates <strong>only</strong> the API
+  interfaces, which reference the existing <code>modelPackage</code> types on the classpath. See
+  <a href="/openapi-generators/models#api-only">DTO Models</a>.
+</p>
+
+<p><br><br><br><br></p>
+
+</body>
+</html>

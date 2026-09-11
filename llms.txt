@@ -190,6 +190,33 @@ Works with [pi](https://github.com/mariozechner/pi-coding-agent), [Claude Code](
 **Reference:**
 - [avaje-http-client overview](https://avaje.io/http-client/): Lightweight fluent wrapper over JDK HttpClient — sync/async, JSON marshalling, auth, logging, interception
 
+## avaje-openapi-generators — Contract-first OpenAPI code generation
+
+**AI Agent Guide:**
+- **Best for**: Generating avaje-http-api interfaces and DTO records from an existing OpenAPI 3 YAML/JSON contract, so the same interface drives both a typed HTTP client (avaje-http-client-generator) and a server controller (Nima/Helidon, Jex, or Javalin)
+- **Not for**: Generating an OpenAPI document from annotated controllers (see avaje-http's own OpenAPI generation instead)
+- **Minimum Java**: 11+ for the generator itself; 17+ to compile generated record DTOs
+- **Key artifact**: `avaje-openapi-maven-plugin` (`avaje-openapi:generate` goal)
+- **See also**: [avaje-openapi skill](https://raw.githubusercontent.com/avaje/skills/main/avaje-openapi/SKILL.md)
+
+**Common AI Tasks:**
+- Generate an API + DTOs from an OpenAPI spec: [getting started](https://avaje.io/openapi-generators/#start)
+- Wire the generated interface to a client and server: [contract-first](https://avaje.io/openapi-generators/contract-first)
+- Configure DTO records, builders, JSON: [models](https://avaje.io/openapi-generators/models)
+- Configure query/header/cookie parameters and overloads: [parameters](https://avaje.io/openapi-generators/parameters)
+- Map date-time/UUID/custom types: [type-mapping](https://avaje.io/openapi-generators/type-mapping)
+- Choose Jakarta or Avaje validation constraints: [validation](https://avaje.io/openapi-generators/validation)
+- Full list of plugin options: [configuration reference](https://avaje.io/openapi-generators/configuration)
+
+**Reference:**
+- [avaje-openapi-generators overview](https://avaje.io/openapi-generators/): Plugin setup, generated @Path derivation, Java version requirements, current feature scope
+- [avaje-openapi-generators contract-first](https://avaje.io/openapi-generators/contract-first): The shared generated interface, @Client.Import client generation, server controller implementation, @Nullable/avaje-http 3.10+ note
+- [avaje-openapi-generators models](https://avaje.io/openapi-generators/models): Generated record DTOs, Avaje Record Builder support, readOnly/writeOnly JSON handling, API-only generation
+- [avaje-openapi-generators parameters](https://avaje.io/openapi-generators/parameters): Explicit parameter names, @Default, @Nullable, generated overloads
+- [avaje-openapi-generators type-mapping](https://avaje.io/openapi-generators/type-mapping): Primitive mapping, date-time types, x-java-type, global typeMappings
+- [avaje-openapi-generators validation](https://avaje.io/openapi-generators/validation): Jakarta vs Avaje validation styles, supported constraints, nested @Valid cascade
+- [avaje-openapi-generators configuration](https://avaje.io/openapi-generators/configuration): Full avaje-openapi-maven-plugin option reference
+
 ## avaje-jex — Lightweight HTTP server
 
 **AI Agent Guide:**

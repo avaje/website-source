@@ -1,0 +1,159 @@
+<html>
+<head>
+  <meta name="layout" content="_layout/base-openapi-generators.html"/>
+  <meta name="bread2" content="configuration" href="/openapi-generators/configuration"/>
+</head>
+<body>
+
+<h1 id="overview">Configuration Reference</h1>
+
+<p>All <code>avaje-openapi-maven-plugin</code> configuration options, with defaults.</p>
+
+<pre content="xml">
+<plugin>
+  <groupId>io.avaje</groupId>
+  <artifactId>avaje-openapi-maven-plugin</artifactId>
+  <version>${avaje.openapi.version}</version>
+  <executions>
+    <execution>
+      <goals><goal>generate</goal></goals>
+      <configuration>
+        <inputSpec>${project.basedir}/src/main/openapi/openapi.yaml</inputSpec>
+        <apiPackage>org.example.api</apiPackage>
+        <modelPackage>org.example.api.model</modelPackage>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+</pre>
+
+<h2 id="options">Options</h2>
+<table style="width:100%;">
+  <tr>
+    <th>Option</th>
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>inputSpec</code></td>
+    <td><em>(required)</em></td>
+    <td>Path to the OpenAPI 3 YAML/JSON document.</td>
+  </tr>
+  <tr>
+    <td><code>apiPackage</code></td>
+    <td><em>(required)</em></td>
+    <td>Package for generated API interfaces.</td>
+  </tr>
+  <tr>
+    <td><code>modelPackage</code></td>
+    <td><code>${r"${apiPackage}"}.model</code></td>
+    <td>Package for generated DTO records/enums.</td>
+  </tr>
+  <tr>
+    <td><code>outputDirectory</code></td>
+    <td><code>target/generated-sources/avaje-openapi</code></td>
+    <td>Output root (added to compile source roots).</td>
+  </tr>
+  <tr>
+    <td><code>mode</code></td>
+    <td><code>CONTRACT</code></td>
+    <td>Generation mode. Only <code>CONTRACT</code> is implemented.</td>
+  </tr>
+  <tr>
+    <td><code>generateModels</code></td>
+    <td><code>true</code></td>
+    <td><code>false</code> = API interfaces only (reuse existing models). See <a href="/openapi-generators/models#api-only">DTO Models</a>.</td>
+  </tr>
+  <tr>
+    <td><code>generateRecordBuilders</code></td>
+    <td><code>false</code></td>
+    <td>Emit <code>@RecordBuilder</code> + static <code>builder()</code> factories on DTO records. See <a href="/openapi-generators/models#builders">DTO Models</a>.</td>
+  </tr>
+  <tr>
+    <td><code>generateJsonAnnotations</code></td>
+    <td><code>true</code></td>
+    <td>Emit JSON annotations (<code>@Json</code>, <code>readOnly</code>/<code>writeOnly</code>).</td>
+  </tr>
+  <tr>
+    <td><code>jsonStyle</code></td>
+    <td><code>AVAJE</code></td>
+    <td><code>AVAJE</code> (Avaje Jsonb) or <code>JACKSON</code>.</td>
+  </tr>
+  <tr>
+    <td><code>generateValidationAnnotations</code></td>
+    <td><code>true</code></td>
+    <td>Emit Bean Validation constraints. See <a href="/openapi-generators/validation">Validation</a>.</td>
+  </tr>
+  <tr>
+    <td><code>validationStyle</code></td>
+    <td><code>JAKARTA</code></td>
+    <td><code>JAKARTA</code> or <code>AVAJE</code>.</td>
+  </tr>
+  <tr>
+    <td><code>generateClientAnnotations</code></td>
+    <td><code>true</code></td>
+    <td>Emit <code>@Client</code> on generated interfaces.</td>
+  </tr>
+  <tr>
+    <td><code>generateOverloads</code></td>
+    <td><code>false</code></td>
+    <td>Emit convenience <code>default</code> overloads. See <a href="/openapi-generators/parameters#overloads">Overloads</a>.</td>
+  </tr>
+  <tr>
+    <td><code>overloadPolicy</code></td>
+    <td><code>NULLABLE_ONLY</code></td>
+    <td><code>EXPLICIT</code>, <code>NULLABLE_ONLY</code>, or <code>ALL_OPTIONAL</code>.</td>
+  </tr>
+  <tr>
+    <td><code>dateTimeType</code></td>
+    <td><code>OFFSET_DATE_TIME</code></td>
+    <td>Global type for <code>format: date-time</code>: <code>INSTANT</code>, <code>OFFSET_DATE_TIME</code>, <code>LOCAL_DATE_TIME</code>, <code>ZONED_DATE_TIME</code>. See <a href="/openapi-generators/type-mapping">Type Mapping</a>.</td>
+  </tr>
+  <tr>
+    <td><code>nullableAnnotation</code></td>
+    <td><code>org.jspecify.annotations.Nullable</code></td>
+    <td>Annotation for optional members; <code>NONE</code> disables <code>@Nullable</code>.</td>
+  </tr>
+  <tr>
+    <td><code>typeMappings</code></td>
+    <td><em>(none)</em></td>
+    <td>Map of schema <code>format</code>/<code>type</code> to fully-qualified Java type. See <a href="/openapi-generators/type-mapping#type-mappings">Type Mapping</a>.</td>
+  </tr>
+  <tr>
+    <td><code>failOnUnsupported</code></td>
+    <td><code>true</code></td>
+    <td>Fail the build when an unsupported OpenAPI feature is encountered.</td>
+  </tr>
+  <tr>
+    <td><code>cleanOutput</code></td>
+    <td><code>true</code></td>
+    <td>Delete previously generated output before regenerating.</td>
+  </tr>
+</table>
+
+<h2 id="param-names">Notes on generated parameter names</h2>
+<p>
+  Location annotations are always generated with an explicit wire name
+  (<code>@QueryParam("status")</code>), so a generated interface consumed via
+  <code>@Client.Import</code> needs no <code>-parameters</code> compiler flag. See
+  <a href="/openapi-generators/parameters">Parameters</a> and
+  <a href="/openapi-generators/contract-first">Contract-first client &amp; server</a>.
+</p>
+
+<h2 id="processors">Consuming-project processors</h2>
+<p>
+  The generated source is consumed by the standard Avaje annotation processors, added to the
+  consuming module's <code>annotationProcessorPaths</code> (and/or dependencies):
+</p>
+<ul>
+  <li><code>avaje-http-client-generator</code> — typed HTTP client from the interface</li>
+  <li><code>avaje-http-helidon-generator</code> / <code>-jex-generator</code> / <code>-javalin-generator</code> — server routes</li>
+  <li><code>avaje-jsonb-generator</code> — JSON adapters for DTO records</li>
+  <li><code>avaje-record-builder</code> — builders when <code>generateRecordBuilders=true</code></li>
+  <li><code>avaje-validator-generator</code> — when <code>validationStyle=AVAJE</code></li>
+</ul>
+
+<p><br><br><br><br></p>
+
+</body>
+</html>
