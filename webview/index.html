@@ -1,0 +1,422 @@
+<html>
+
+<head>
+  <meta name="layout" content="_layout/base-webview.html" />
+  <meta name="bread1" content="webview" href="/webview/" />
+  <#assign index="active">
+
+  <!-- JSON-LD: Machine-readable metadata for AI agents -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareLibrary",
+    "name": "Avaje Webview",
+    "description": "Wraps native platform webview engines (WebKitGTK, WKWebView, WebView2) to build modern cross-platform GUIs using Java 25 FFM, no native library embedding required",
+    "url": "https://avaje.io/webview/",
+    "repositoryUrl": "https://github.com/avaje/avaje-webview",
+    "issuesUrl": "https://github.com/avaje/avaje-webview/issues",
+    "releasesUrl": "https://github.com/avaje/avaje-webview/releases",
+    "discordUrl": "https://discord.gg/Qcqf9R27BR",
+    "applicationCategory": "GraphicalUserInterface",
+    "programLanguage": "Java",
+    "minimumJavaVersion": "25",
+    "latestVersion": "0.29",
+    "useCases": [
+      "Cross-platform desktop GUIs",
+      "Lightweight alternative to Electron/JavaFX",
+      "Embedding HTML/JS/CSS UIs in a Java app",
+      "GraalVM native image desktop apps"
+    ],
+    "notSuitableFor": [
+      "Mobile app UIs",
+      "Headless/server-side rendering"
+    ],
+    "features": [
+      {
+        "name": "Native FFM bindings",
+        "description": "Calls native webview libraries directly via Java 25 Foreign Function & Memory, no JNA or embedded natives",
+        "sinceVersion": "0.1",
+        "status": "stable"
+      },
+      {
+        "name": "Java-JavaScript bridge",
+        "description": "bind()/eval() to call Java from JS and JS from Java, with JSON argument/return marshalling",
+        "sinceVersion": "0.1",
+        "status": "stable"
+      },
+      {
+        "name": "Multi-window support",
+        "description": "Create additional windows at runtime on macOS, Linux, and Windows",
+        "sinceVersion": "0.1",
+        "status": "stable"
+      },
+      {
+        "name": "Window customization",
+        "description": "Borderless, transparent, fixed/min/max size, fullscreen, dark appearance, custom icon",
+        "sinceVersion": "0.1",
+        "status": "stable"
+      }
+    ],
+    "commonTasks": [
+      {
+        "title": "Build a basic webview window",
+        "description": "Use Webview.builder() with html() or navigate() and run()",
+        "guideUrl": "https://avaje.io/webview/#quick-start",
+        "difficulty": "beginner"
+      },
+      {
+        "title": "Call Java from JavaScript",
+        "description": "Bind a Java method as an async window global with webview.bind(...)",
+        "guideUrl": "https://avaje.io/webview/#bind",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Build a borderless/transparent window",
+        "description": "Combine borderless(true) and transparent(true) for a custom-chrome UI",
+        "guideUrl": "https://avaje.io/webview/#borderless",
+        "difficulty": "intermediate"
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <h1 id="overview">
+    <span class="logo">Avaje</span>&thinsp;Webview
+  </h1>
+
+  <table style="width: 100%;">
+    <tr>
+      <th>Discord</th>
+      <th>Source</th>
+      <th>API Docs</th>
+      <th>Issues</th>
+      <th>Releases</th>
+    </tr>
+    <tr>
+      <td><a href="https://discord.gg/Qcqf9R27BR">Discord</a></td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-webview">GitHub</a></td>
+      <td><a target="_blank" href="https://javadoc.io/doc/io.avaje.webview/avaje-webview">Javadoc</a></td>
+      <td><a target="_blank" href="https://github.com/avaje/avaje-webview/issues">GitHub</a></td>
+      <td><a href="https://github.com/avaje/avaje-webview/releases"><img
+            src="https://img.shields.io/maven-central/v/io.avaje.webview/avaje-webview.svg?label=Maven%20Central"></a></td>
+    </tr>
+  </table>
+
+  <p><br><br>
+    Avaje Webview wraps native platform webview engines to provide a clean interface for building
+    modern cross-platform GUIs. It uses <strong>Java 25 FFM</strong> (Foreign Function &amp; Memory)
+    to call native libraries directly, with no embedded native binaries and no JNA.
+  </p>
+
+  <h2 id="platform">Platform requirements</h2><hr/>
+
+  <table style="width: 100%;" class="table table-striped">
+    <tr>
+      <th>Platform</th>
+      <th>Engine</th>
+      <th>Requirement</th>
+    </tr>
+    <tr>
+      <td><strong>Linux</strong></td>
+      <td>WebKitGTK 6.0</td>
+      <td><code>libgtk-4</code>, <code>libwebkitgtk-6.0</code>, <code>libjavascriptcoregtk-6.0</code> must be installed</td>
+    </tr>
+    <tr>
+      <td><strong>macOS</strong></td>
+      <td>WKWebView</td>
+      <td>Built into macOS</td>
+    </tr>
+    <tr>
+      <td><strong>Windows</strong></td>
+      <td>WebView2 (Edge)</td>
+      <td>Pre-installed on Windows 10+</td>
+    </tr>
+  </table>
+
+  <h2 id="quick-start">Quick Start</h2><hr/>
+
+  <h4>1. Add <em>avaje-webview</em> dependency.</h4>
+  <pre content="xml">
+  <dependency>
+    <groupId>io.avaje.webview</groupId>
+    <artifactId>avaje-webview</artifactId>
+    <version>${avaje.webview.version}</version>
+  </dependency>
+  </pre>
+
+  <h4>2. JVM flags</h4>
+  <p>
+    On <strong>macOS</strong>, the first webview must be created on the OS main thread. Pass
+    <code>-XstartOnFirstThread</code> to the JVM:
+  </p>
+  <pre content="sh">
+java -XstartOnFirstThread --enable-native-access=ALL-UNNAMED -jar myapp.jar
+  </pre>
+
+  <h4>3. Build a Webview</h4>
+  <pre content="java">
+  Webview webview = Webview.builder()
+      .enableDeveloperTools(true)
+      .title("My App")
+      .html("<h1>Hello World</h1>")
+      .build();
+
+  webview.run();
+  </pre>
+
+  <p>Or navigate to a URL:</p>
+  <pre content="java">
+  Webview webview = Webview.builder()
+      .title("My App")
+      .navigate("https://avaje.io")
+      .build();
+
+  webview.run();
+  </pre>
+
+  <h2 id="options">Options</h2><hr/>
+
+  <h3 id="window-properties">Window Properties</h3>
+  <pre content="java">
+  Webview webview = Webview.builder()
+      .title("Configurable Window")
+      .width(1200)
+      .height(800)
+      .enableDeveloperTools(true) // Enable right-click > Inspect
+      .resizable(false)           // Lock to width/height, no user resize
+      .maximizable(false)         // Hide/disable the maximize button (ignored on Linux)
+      .maximize(true)             // Start maximized (ignored if fullscreen(true))
+      .fullscreen(true)           // Start fullscreen, takes precedence over maximize
+      .minSize(600, 400)          // Minimum size the user can resize to
+      .maxSize(1920, 1080)        // Maximum size the user can resize to
+      .build();
+
+  // Set window constraints after creation
+  webview.setMinSize(600, 400);
+  webview.setMaxSize(1920, 1080);
+
+  // Or lock to a fixed size
+  webview.setFixedSize(800, 600);
+
+  // Maximize or fullscreen
+  webview.maximizeWindow();
+  webview.fullscreen();
+
+  // Dark mode
+  webview.setDarkAppearance(true);
+  </pre>
+
+  <h3 id="borderless">Borderless Windows</h3>
+  <pre content="java">
+  Webview webview = Webview.builder()
+      .borderless(true) // No title bar, borders, or minimize/maximize/close buttons
+      .build();
+  </pre>
+
+  <p>
+    Combine with <code>webview.startWindowDrag()</code> to implement a custom draggable title
+    bar, since a borderless window has no native title bar for the user to grab.
+  </p>
+
+  <p>Keep the native outline (drop shadow and thin border) while still removing the title bar:</p>
+  <pre content="java">
+  Webview webview = Webview.builder()
+      .borderless(true, true) // outline=true keeps the native border/shadow
+      .build();
+  </pre>
+
+  <ul>
+    <li><strong>Windows</strong>: only the title bar area is removed; left/right/bottom borders and the DWM shadow remain.</li>
+    <li><strong>macOS</strong>: uses a transparent, hidden title bar so the window shadow/border are retained.</li>
+    <li><strong>Linux</strong>: the outline flag has no effect.</li>
+  </ul>
+
+  <h3 id="transparent">Transparent Windows</h3>
+  <pre content="java">
+  Webview webview = Webview.builder()
+      .borderless(true)
+      .transparent(true) // Window background is see-through wherever the page doesn't paint
+      .html("<body style='background:transparent'>...</body>")
+      .build();
+  </pre>
+
+  <p>
+    Combine with a page that only paints part of its area (e.g. <code>background: transparent</code>
+    plus a <code>backdrop-filter: blur(...)</code> card) to get a native-looking translucent window.
+    Usually paired with <code>borderless(true)</code> so there's no opaque title bar left behind.
+  </p>
+
+  <h3 id="child-windows">Child Windows</h3>
+  <pre content="java">
+  Webview parent = Webview.builder().title("Parent").build();
+
+  Webview child = Webview.builder()
+      .title("Child")
+      .parent(parent) // Blocks the parent's input until this window closes
+      .build();
+  </pre>
+
+  <p>
+    The parent window is disabled (blocked from mouse/keyboard input) as soon as the child is
+    built, and re-enabled automatically when the child closes.
+  </p>
+
+  <p>
+    Pass <code>true</code> as a second argument to <code>parent(...)</code> to keep the parent
+    locked to the child's position while dragging (Windows and macOS only currently):
+  </p>
+  <pre content="java">
+  Webview child = Webview.builder()
+      .parent(parent, true) // parent moves with the child when dragged
+      .build();
+  </pre>
+
+  <h3 id="window-icon">Set Window Icon</h3>
+  <pre content="java">
+  // From file path
+  webview.setIcon(Path.of("icon.ico"));
+
+  // From classpath resource
+  webview.setIcon(getClass().getResource("/icon.ico").toURI());
+  </pre>
+
+  <p>
+    <strong>Note:</strong> GTK4 dropped support for arbitrary file-based window icons. On Linux,
+    the app icon is set via the <code>.desktop</code> file and icon theme. <code>setIcon</code> is
+    a no-op on Linux.
+  </p>
+
+  <h2 id="bridge">Java-JavaScript Bridge</h2><hr/>
+
+  <h3 id="eval">Executing JavaScript from Java</h3>
+  <pre content="java">
+  Webview webview = Webview.builder()
+      .html("<html><body><h1 id='title'>Original</h1></body></html>")
+      .build();
+
+  // Execute JavaScript in the webview
+  webview.eval("document.getElementById('title').textContent = 'Updated!';");
+
+  webview.run();
+  </pre>
+
+  <h3 id="bind">Calling Java from JavaScript</h3>
+  <p>Bind Java functions as async <code>window</code> globals that return Promises:</p>
+  <pre content="java">
+  Webview webview = Webview.builder()
+      .title("Java Bridge Example")
+      .html("""
+          <!DOCTYPE html>
+          <html>
+          <body>
+             <button onclick="callJava()">Call Java</button>
+             <div id="result"></div>
+             <script>
+                 async function callJava() {
+                     try {
+                         const result = await greet('World');
+                         document.getElementById('result').textContent = result;
+                     } catch (error) {
+                         console.error('Java error:', error);
+                     }
+                 }
+             </script>
+          </body>
+          </html>
+      """)
+      .build();
+
+  // Bind Java method to JavaScript — args arrive as a JSON array string
+  webview.bind("greet", (String jsonArgs) -> {
+      return "\"Hello, " + jsonArgs + "!\""; // return value must be valid JSON
+  });
+
+  webview.run();
+  </pre>
+
+  <p>
+    Binding callbacks receive arguments as a JSON array string and must return a valid JSON
+    string. The JavaScript side receives the return value as the resolved Promise value.
+  </p>
+
+  <h3 id="complex-data">Complex Data Exchange</h3>
+  <pre content="java">
+  record User(String name, int age) {}
+  record UserRequest(String action, String userId) {}
+
+  Webview webview = Webview.builder()
+      .html("""
+          <script>
+              async function getUser() {
+                  const user = await fetchUser({ action: 'get', userId: '123' });
+                  console.log(user.name, user.age);
+              }
+          </script>
+      """)
+      .build();
+
+  webview.bind("fetchUser", (String jsonArgs) -> {
+      UserRequest request = Jsonb.instance().type(UserRequest.class).list().fromJson(jsonArgs).getFirst();
+      User user = new User("Alice", 30);
+      return Jsonb.instance().toJson(user);
+  });
+
+  webview.eval("getUser();");
+  webview.run();
+  </pre>
+
+  <h2 id="multiple-windows">Multiple Windows</h2><hr/>
+
+  <p>
+    Multiple windows are supported on all platforms. Additional windows can be created from any
+    thread once the first window's event loop is running.
+  </p>
+  <pre content="java">
+  try (var w1 = Webview.create(false)) {
+      w1.bind("openSecond", _ -> {
+          Thread.ofPlatform().start(() -> {
+              try (var w2 = Webview.create(false)) {
+                  w2.setHTML("<h1>Window 2</h1>");
+                  w2.run();
+              }
+          });
+          return "null";
+      });
+      w1.setHTML("<button onclick='openSecond()'>Open second window</button>");
+      w1.run();
+  }
+  </pre>
+
+  <p>
+    <strong>macOS constraint:</strong> the first <code>Webview</code> must be created on the OS
+    main thread (<code>-XstartOnFirstThread</code>). Additional windows may be created from
+    background threads.
+  </p>
+  <p>
+    <strong>Linux constraint:</strong> the first <code>Webview</code> must be created on the
+    thread that will call <code>run()</code>. All subsequent windows dispatch their init to that
+    thread automatically.
+  </p>
+
+  <h2 id="console">Console output</h2><hr/>
+
+  <pre content="java">
+  Webview webview = Webview.builder()
+      .redirectConsole(true) // Defaults to false
+      .build();
+  </pre>
+
+  <p>
+    With <code>redirectConsole(true)</code>, <code>console.log</code>, <code>console.warn</code>,
+    <code>console.error</code>, etc. are forwarded to <code>java.lang.System.Logger</code> under
+    the name <code>io.avaje.webview</code>. Configure your logging framework (e.g.
+    <a href="/simple-logger">Simple Logger</a>) to see webview JS console output.
+  </p>
+
+  <p><br><br><br><br></p>
+
+</body>
+
+</html>

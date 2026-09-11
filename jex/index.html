@@ -805,6 +805,23 @@
             .plugin(singleFile) // will serve the src/main/resources/example.txt
             .plugin(directoryCP); // will serve files from the /public classpath directory
   </pre>
+    <p>
+      Served resources can be sent with a <code>Content-Disposition</code> header, either fixed for every file
+      or computed per request:
+    </p>
+    <pre content="java">
+    StaticContent.ofFile("downloads")
+        .directoryIndex("index.html")
+        .contentDisposition(ContentDisposition.Type.ATTACHMENT)
+        .build();
+
+    StaticContent.ofFile("downloads")
+        .directoryIndex("index.html")
+        .contentDisposition((ctx, filename) -> filename.endsWith(".pdf")
+            ? ContentDisposition.inline(filename)
+            : ContentDisposition.attachment(filename))
+        .build();
+  </pre>
     <details>
       <summary>Available Configuration: (click to expand) </summary>
       <table style="width:75%;" class="table table-striped">
@@ -837,6 +854,14 @@
         <tr>
           <td><strong><code>putResponseHeader("key", value)</code></strong></td>
           <td>Adds a new response header to the configuration.</td>
+        </tr>
+        <tr>
+          <td><strong><code>contentDisposition(ContentDisposition.Type.ATTACHMENT)</code></strong></td>
+          <td>Sets the Content Disposition type sent with every served resource, using the served file's name as the filename.</td>
+        </tr>
+        <tr>
+          <td><strong><code>contentDisposition((ctx, filename) -> ...)</code></strong></td>
+          <td>Sets a function used to build the Content Disposition header per served resource. The function receives the request context and served filename, and may return null to send no header.</td>
         </tr>
         <tr>
           <td><strong><code>resourceLoader(clazz)</code></strong></td>

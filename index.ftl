@@ -108,6 +108,15 @@
         </td>
       </tr>
       <tr>
+        <th><a href="/webview">Webview</a></th>
+        <td>
+          <p>
+            Wraps native platform webview engines (WebKitGTK, WKWebView, WebView2) using Java 25 FFM
+            to build modern cross-platform GUIs, no embedded native libraries required.
+          </p><hr/>
+        </td>
+      </tr>
+      <tr>
         <th><a href="/prisms">Prisms</a></th>
         <td>
           <p>

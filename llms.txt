@@ -1,6 +1,6 @@
 # Avaje — AI Agent & LLM Instructions
 
-> Avaje is a suite of compile-time Java libraries: avaje-nima (web framework), avaje-inject (DI), avaje-config (configuration), avaje-jsonb (JSON), and avaje-simple-logger (logging).
+> Avaje is a suite of compile-time Java libraries: avaje-nima (web framework), avaje-inject (DI), avaje-config (configuration), avaje-jsonb (JSON), avaje-simple-logger (logging), and avaje-webview (native desktop GUI).
 
 ## Agent Skills (recommended)
 
@@ -235,6 +235,17 @@ Works with [pi](https://github.com/mariozechner/pi-coding-agent), [Claude Code](
 - [avaje-simple-logger overview](https://avaje.io/simple-logger/): Lightweight SLF4J implementation suitable for use with avaje-nima and GraalVM native image
 
 
+
+## avaje-webview — native desktop GUI
+
+**AI Agent Guide:**
+- **Best for**: Lightweight cross-platform desktop GUIs, embedding HTML/JS/CSS UIs in a Java app
+- **Engines**: WebKitGTK (Linux), WKWebView (macOS), WebView2 (Windows)
+- **Minimum Java**: 25 (uses Foreign Function & Memory)
+
+**Reference:**
+- [avaje-webview overview](https://avaje.io/webview/): Builder API, window options (borderless, transparent, multi-window), Java-JavaScript bridge via bind()/eval()
+- [avaje-webview repository](https://github.com/avaje/avaje-webview): Source, examples (hello-world, htmx-jex-bootstrap, todo-basecoat-vue)
 
 ## GraalVM native image
 
