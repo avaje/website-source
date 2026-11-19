@@ -20,7 +20,7 @@
     "applicationCategory": "GraphicalUserInterface",
     "programLanguage": "Java",
     "minimumJavaVersion": "25",
-    "latestVersion": "0.29",
+    "latestVersion": "0.31",
     "useCases": [
       "Cross-platform desktop GUIs",
       "Lightweight alternative to Electron/JavaFX",
@@ -55,6 +55,42 @@
         "description": "Borderless, transparent, fixed/min/max size, fullscreen, dark appearance, custom icon",
         "sinceVersion": "0.1",
         "status": "stable"
+      },
+      {
+        "name": "Window state control",
+        "description": "minimize/restore/unmaximize/exitFullscreen/focus/hide/show the window, query isMaximized/isMinimized/isFullscreen/getSize, showOnFirstLoad(false) to start hidden",
+        "sinceVersion": "0.30",
+        "status": "stable"
+      },
+      {
+        "name": "Window events",
+        "description": "onResize, onFocusChanged, onPageLoaded and onCloseRequested listeners",
+        "sinceVersion": "0.30",
+        "status": "stable"
+      },
+      {
+        "name": "JavaScript evaluation with results",
+        "description": "evalResult() returns a CompletableFuture with the JSON result of a JavaScript expression, awaiting Promises",
+        "sinceVersion": "0.30",
+        "status": "stable"
+      },
+      {
+        "name": "Navigation hooks",
+        "description": "onNavigate to allow/block navigations, onNewWindow for target=_blank/window.open, Webview.openExternal to open URLs in the default browser",
+        "sinceVersion": "0.31",
+        "status": "stable"
+      },
+      {
+        "name": "User agent and page URL",
+        "description": "userAgent()/setUserAgent() to set the User-Agent header, getPageUrl() to read the current page URL",
+        "sinceVersion": "0.31",
+        "status": "stable"
+      },
+      {
+        "name": "Content protection",
+        "description": "contentProtection()/setContentProtection() hide window contents from screenshots, recordings and screen shares (Windows and macOS)",
+        "sinceVersion": "0.31",
+        "status": "stable"
       }
     ],
     "commonTasks": [
@@ -74,6 +110,24 @@
         "title": "Build a borderless/transparent window",
         "description": "Combine borderless(true) and transparent(true) for a custom-chrome UI",
         "guideUrl": "https://avaje.io/webview/#borderless",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Read a value from the page",
+        "description": "Use webview.evalResult(expression) and handle the JSON result with thenAccept",
+        "guideUrl": "https://avaje.io/webview/#eval-result",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Open external links in the browser",
+        "description": "Use onNavigate to allow only app URLs and Webview.openExternal for the rest",
+        "guideUrl": "https://avaje.io/webview/#navigation",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Confirm before closing",
+        "description": "Use onCloseRequested returning false to keep the window open, then close() once confirmed",
+        "guideUrl": "https://avaje.io/webview/#window-events",
         "difficulty": "intermediate"
       }
     ]
@@ -134,6 +188,11 @@
       <td>Pre-installed on Windows 10+</td>
     </tr>
   </table>
+
+  <p>Linux install example (Debian/Ubuntu):</p>
+  <pre content="sh">
+sudo apt-get install libgtk-4-1 libwebkitgtk-6.0-4 libjavascriptcoregtk-6.0-1
+</pre>
 
   <h2 id="quick-start">Quick Start</h2><hr/>
 
@@ -197,16 +256,63 @@ java -XstartOnFirstThread --enable-native-access=ALL-UNNAMED -jar myapp.jar
   webview.setMinSize(600, 400);
   webview.setMaxSize(1920, 1080);
 
-  // Or lock to a fixed size
+  // Resize, or lock to a fixed size
+  webview.setSize(1024, 768);
   webview.setFixedSize(800, 600);
-
-  // Maximize or fullscreen
-  webview.maximizeWindow();
-  webview.fullscreen();
 
   // Dark mode
   webview.setDarkAppearance(true);
   </pre>
+
+  <h3 id="window-state">Window State</h3>
+  <p>Control and query the window state at runtime. The state-changing methods return the
+    <code>Webview</code> so they can be chained.</p>
+  <pre content="java">
+  webview.maximizeWindow();
+  webview.unmaximizeWindow();  // Back to the prior size and position
+  webview.minimizeWindow();
+  webview.restoreWindow();     // Restore after minimize
+  webview.fullscreen();
+  webview.exitFullscreen();
+  webview.focusWindow();       // Bring to front, restoring first if minimized
+
+  boolean maximized = webview.isMaximized();
+  boolean minimized = webview.isMinimized();
+  boolean fullscreen = webview.isFullscreen();
+  WindowSize size = webview.getSize(); // Content area size in logical pixels
+  </pre>
+
+  <ul>
+    <li><code>focusWindow()</code>: operating systems don't let applications steal focus freely.
+      If another application is in use, the window may only flash in the taskbar or bounce in the dock.</li>
+    <li><code>isMinimized()</code> may always return <code>false</code> on Linux, because many
+      Wayland compositors don't tell applications when they are minimized.</li>
+    <li><code>WindowSize</code> excludes the title bar and borders, except on Linux when GTK draws
+      the title bar itself.</li>
+  </ul>
+
+  <h3 id="hide-show">Hiding and Showing</h3>
+  <p>
+    By default the window shows itself once the first page has loaded, which avoids a flash of
+    blank content. Pass <code>showOnFirstLoad(false)</code> to keep it hidden until you call
+    <code>showWindow()</code>, for example to finish some setup first:
+  </p>
+  <pre content="java">
+  Webview webview = Webview.builder()
+      .showOnFirstLoad(false)
+      .navigate("http://localhost:8080")
+      .build();
+
+  webview.onPageLoaded(_ -> {
+      webview.eval("initApp()");
+      webview.showWindow();
+  });
+
+  webview.run();
+  </pre>
+
+  <p><code>hideWindow()</code> hides the window without closing it. The page keeps running,
+    and <code>showWindow()</code> brings it back.</p>
 
   <h3 id="borderless">Borderless Windows</h3>
   <pre content="java">
@@ -230,7 +336,7 @@ java -XstartOnFirstThread --enable-native-access=ALL-UNNAMED -jar myapp.jar
   <ul>
     <li><strong>Windows</strong>: only the title bar area is removed; left/right/bottom borders and the DWM shadow remain.</li>
     <li><strong>macOS</strong>: uses a transparent, hidden title bar so the window shadow/border are retained.</li>
-    <li><strong>Linux</strong>: the outline flag has no effect.</li>
+    <li><strong>Linux</strong>: the title bar is replaced with an empty one, so the window stays decorated and keeps its GTK border and shadow.</li>
   </ul>
 
   <h3 id="transparent">Transparent Windows</h3>
@@ -288,6 +394,100 @@ java -XstartOnFirstThread --enable-native-access=ALL-UNNAMED -jar myapp.jar
     a no-op on Linux.
   </p>
 
+  <h3 id="content-protection">Content Protection</h3>
+  <p>Hide the window's contents from screen capture, so screenshots, recordings, and screen
+    shares see a blank area instead:</p>
+  <pre content="java">
+  Webview webview = Webview.builder()
+      .contentProtection(true) // Hidden from capture from the moment it opens
+      .build();
+
+  // Toggle at runtime
+  webview.setContentProtection(false);
+  </pre>
+  <p>Supported on Windows and macOS. Does nothing on Linux.</p>
+
+  <h3 id="user-agent">User Agent</h3>
+  <pre content="java">
+  Webview webview = Webview.builder()
+      .userAgent("MyApp/1.0") // Defaults to the platform engine's user agent
+      .navigate("https://example.com")
+      .build();
+
+  // Change later, applies from the next page load
+  webview.setUserAgent("MyApp/1.1");
+  </pre>
+
+  <h2 id="events">Events and Navigation</h2><hr/>
+
+  <h3 id="window-events">Window Events</h3>
+  <pre content="java">
+  webview.onResize(size -> System.out.println("now " + size.width() + "x" + size.height()));
+  webview.onFocusChanged(focused -> System.out.println(focused ? "focused" : "unfocused"));
+  webview.onPageLoaded(url -> System.out.println("loaded " + url));
+  </pre>
+
+  <p>
+    <code>onPageLoaded</code> fires every time a page finishes loading, whether from
+    <code>navigate</code>, <code>setHTML</code>, or the user following a link. Read the current
+    URL at any time with <code>getPageUrl()</code> (content from <code>setHTML</code> reports
+    <code>about:blank</code>).
+  </p>
+
+  <p>
+    <code>onCloseRequested</code> lets you stop the user from closing the window, for example to
+    ask about unsaved changes first. Calling <code>close()</code> yourself always works, so you
+    can close for real once they confirm:
+  </p>
+  <pre content="java">
+  webview.onCloseRequested(() -> {
+    if (!hasUnsavedChanges()) {
+      return true;
+    }
+    webview.eval("askToClose()"); // the page asks, then calls a binding that runs webview.close()
+    return false;
+  });
+  </pre>
+
+  <h3 id="navigation">Navigation Hooks</h3>
+  <p>
+    <code>onNavigate</code> runs before the page goes somewhere else (a link click, a script
+    changing <code>location</code>, a form submission, a redirect, etc.). Return
+    <code>false</code> to stay put. A common use is keeping your app's own pages in the window
+    and sending everything else to the user's browser:
+  </p>
+  <pre content="java">
+  webview.onNavigate(url -> {
+    if (url.startsWith("https://myapp.example/")) {
+      return true;
+    }
+    Webview.openExternal(URI.create(url));
+    return false;
+  });
+  </pre>
+
+  <p>
+    The check runs on the UI thread, so keep it quick. Iframes are checked too, so an allowlist
+    needs to include anything the page embeds. Navigations started in Java with
+    <code>navigate</code> or <code>setHTML</code> are not checked.
+  </p>
+
+  <p>
+    <code>Webview.openExternal(uri)</code> opens an <code>http</code>/<code>https</code> URI in the
+    default browser, or a <code>mailto:</code> URI in the mail client.
+  </p>
+
+  <h3 id="new-window">New Window Requests</h3>
+  <p>
+    The webview never opens popup windows itself. By default, <code>target="_blank"</code> links
+    and <code>window.open</code> open in the default browser or mail client. Adding an
+    <code>onNewWindow</code> listener replaces that default, so you can open the URL in another
+    <code>Webview</code>, in this one, or not at all:
+  </p>
+  <pre content="java">
+  webview.onNewWindow(url -> webview.navigate(url)); // open in this window instead
+  </pre>
+
   <h2 id="bridge">Java-JavaScript Bridge</h2><hr/>
 
   <h3 id="eval">Executing JavaScript from Java</h3>
@@ -296,11 +496,52 @@ java -XstartOnFirstThread --enable-native-access=ALL-UNNAMED -jar myapp.jar
       .html("<html><body><h1 id='title'>Original</h1></body></html>")
       .build();
 
-  // Execute JavaScript in the webview
-  webview.eval("document.getElementById('title').textContent = 'Updated!';");
+  // Execute JavaScript in the webview once the page has loaded
+  webview.onPageLoaded(_ -> webview.eval("document.getElementById('title').textContent = 'Updated!';"));
 
   webview.run();
   </pre>
+
+  <p>
+    To run a script on every page load, register it with <code>setInitScript(script)</code>.
+    Use <code>setInitScript(script, true)</code> to inject it into nested iframes as well.
+  </p>
+
+  <h3 id="eval-result">Reading values back from JavaScript</h3>
+  <p>
+    <code>eval</code> doesn't give you anything back. When you need a value from the page, use
+    <code>evalResult</code>, which returns a <code>CompletableFuture</code> holding the result
+    as JSON:
+  </p>
+  <pre content="java">
+  webview.evalResult("document.getElementById('name').value")
+      .thenAccept(json -> System.out.println(json)); // "\"Ada\""
+
+  // await works too, and returned Promises are waited on
+  webview.evalResult("await fetch('/status').then(r => r.json())")
+      .thenAccept(json -> System.out.println(json));
+
+  // JavaScript errors fail the future with a JavaScriptException
+  webview.evalResult("missingFunction()")
+      .exceptionally(e -> {
+          System.out.println(e.getMessage()); // ReferenceError: ...
+          return null;
+      });
+  </pre>
+
+  <p>
+    The expression must be a single JavaScript expression; wrap several statements in an IIFE.
+    <code>undefined</code> comes back as <code>"null"</code>. The future fails with
+    <code>JavaScriptException</code> when the script has a syntax error, throws, rejects, or
+    returns something that can't be turned into JSON.
+  </p>
+
+  <p>
+    The future completes on the UI thread. From a background thread you can block on it with
+    <code>get()</code> or <code>join()</code>. On the UI thread, such as inside a binding,
+    blocking would freeze the window forever, so those calls throw
+    <code>IllegalStateException</code>. Use <code>thenAccept</code> and friends there.
+  </p>
 
   <h3 id="bind">Calling Java from JavaScript</h3>
   <p>Bind Java functions as async <code>window</code> globals that return Promises:</p>
@@ -338,12 +579,17 @@ java -XstartOnFirstThread --enable-native-access=ALL-UNNAMED -jar myapp.jar
 
   <p>
     Binding callbacks receive arguments as a JSON array string and must return a valid JSON
-    string. The JavaScript side receives the return value as the resolved Promise value.
+    string. The JavaScript side receives the return value as the resolved Promise value. Bindings
+    persist across page navigations; remove one with <code>unbind(name)</code>. The examples below
+    use <a href="/jsonb">avaje-jsonb</a>, but any JSON library works.
   </p>
 
   <h3 id="complex-data">Complex Data Exchange</h3>
   <pre content="java">
+  @Json
   record User(String name, int age) {}
+
+  @Json
   record UserRequest(String action, String userId) {}
 
   Webview webview = Webview.builder()
@@ -363,7 +609,7 @@ java -XstartOnFirstThread --enable-native-access=ALL-UNNAMED -jar myapp.jar
       return Jsonb.instance().toJson(user);
   });
 
-  webview.eval("getUser();");
+  webview.onPageLoaded(_ -> webview.eval("getUser();"));
   webview.run();
   </pre>
 
@@ -374,11 +620,10 @@ java -XstartOnFirstThread --enable-native-access=ALL-UNNAMED -jar myapp.jar
     thread once the first window's event loop is running.
   </p>
   <pre content="java">
-  try (var w1 = Webview.create(false)) {
+  try (var w1 = Webview.builder().build()) {
       w1.bind("openSecond", _ -> {
           Thread.ofPlatform().start(() -> {
-              try (var w2 = Webview.create(false)) {
-                  w2.setHTML("<h1>Window 2</h1>");
+              try (var w2 = Webview.builder().html("<h1>Window 2</h1>").build()) {
                   w2.run();
               }
           });
@@ -398,6 +643,10 @@ java -XstartOnFirstThread --enable-native-access=ALL-UNNAMED -jar myapp.jar
     <strong>Linux constraint:</strong> the first <code>Webview</code> must be created on the
     thread that will call <code>run()</code>. All subsequent windows dispatch their init to that
     thread automatically.
+  </p>
+  <p>
+    To touch a webview from a background thread, schedule the work on its event thread with
+    <code>webview.dispatch(() -> ...)</code>.
   </p>
 
   <h2 id="console">Console output</h2><hr/>

@@ -271,7 +271,7 @@ Works with [pi](https://github.com/mariozechner/pi-coding-agent), [Claude Code](
 - **Minimum Java**: 25 (uses Foreign Function & Memory)
 
 **Reference:**
-- [avaje-webview overview](https://avaje.io/webview/): Builder API, window options (borderless, transparent, multi-window), Java-JavaScript bridge via bind()/eval()
+- [avaje-webview overview](https://avaje.io/webview/): Builder API, window options (borderless, transparent, multi-window, content protection, user agent), window state (minimize/restore/focus/hide/show), events (onResize, onFocusChanged, onPageLoaded, onCloseRequested), navigation hooks (onNavigate, onNewWindow, openExternal), Java-JavaScript bridge via bind()/eval()/evalResult()
 - [avaje-webview repository](https://github.com/avaje/avaje-webview): Source, examples (hello-world, htmx-jex-bootstrap, todo-basecoat-vue)
 
 ## GraalVM native image
