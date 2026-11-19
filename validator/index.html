@@ -129,6 +129,7 @@
       can't annotate)</li>
     <li>Supports Avaje/Jakarta/Javax Constraint Annotations</li>
     <li>Validation Group Support</li>
+    <li>Constraint Payload Support</li>
     <li>Composable Contraints</li>
     <li>Inherited Contraints</li>
     <li>Cascaded Validation</li>
@@ -1036,6 +1037,35 @@
   <p>
     The next validation using the <code>CarChecks</code> group fails until the car passes the vehicle inspection.
   </p>
+
+  <h2 id="payload">Constraint Payload</h2><hr/>
+  <p>
+    Constraints can declare <code>payload</code> classes to attach metadata to a violation, such as a severity.
+    The payload classes of the violated constraint are available via <code>ConstraintViolation#payload()</code>.
+    Both <code>io.avaje.validation.constraints.Payload</code> and <code>jakarta.validation.Payload</code> are supported.
+  </p>
+  <pre content="java">
+    @Valid
+    public class Customer {
+
+      public interface Severity extends Payload {
+        interface Error extends Severity {}
+        interface Warning extends Severity {}
+      }
+
+      @NotBlank(payload = Severity.Error.class)
+      private String name;
+
+      ...
+    }
+  </pre>
+  <pre content="java">
+    var violation = validator.check(new Customer("")).iterator().next();
+
+    if (violation.payload().contains(Customer.Severity.Error.class)) {
+      ...
+    }
+  </pre>
 
   <h2 id="custom">Custom Constraints</h2><hr/>
   <p>

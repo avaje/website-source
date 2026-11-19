@@ -159,10 +159,30 @@
   </table>
 
   <p><br><br>
-    Avaje Webview wraps native platform webview engines to provide a clean interface for building
-    modern cross-platform GUIs. It uses <strong>Java 25 FFM</strong> (Foreign Function &amp; Memory)
-    to call native libraries directly.
+    Build desktop apps in Java with the web tools you already know. Avaje Webview opens a native
+    window backed by the operating system's own browser engine, so your UI is plain HTML, CSS and
+    JavaScript and your logic stays in Java. Use React, Vue, htmx, or no framework at all.
   </p>
+
+  <p>
+    It uses the iconic <strong>Java 25 FFM</strong> feature to call the
+    platform's webview directly. Avoiding JNI, bundled native libraries, and runtime dependencies
+    besides JSpecify annotations.
+  </p>
+ 
+  <ul>
+    <li>Provides a uniform API across all platforms</li>
+    <li>No bundled browser or bulky native libraries</li>
+    <li>Two-way bridge between Java and JavaScript</li>
+    <li>Borderless, transparent, and child windows</li>
+    <li>Multiple windows</li>
+    <li>Window state control (minimize/maximize/fullscreen/hide/focus)</li>
+    <li>Resize, focus, page load, and close request events</li>
+    <li>Navigation hooks to keep links in the app or open them in the browser</li>
+    <li>Content protection from screen capture</li>
+    <li>Full JPMS support (for jlink and jpackage)</li>
+    <li>Supports <a href="/graalvm">GraalVM native image</a></li>
+  </ul>
 
   <h2 id="platform">Platform requirements</h2><hr/>
 

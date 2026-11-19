@@ -149,6 +149,47 @@ ApiBuilder.post("/contacts/register", ctx -> {
   on every property that is a form parameter which becomes a lot of annotation noise on a large form.
 </p>
 
+<h3 id="form-prefix">@FormPrefix</h3>
+<p>
+  Use <code>@FormPrefix</code> on a field of a form bean to populate a nested bean from prefixed
+  form parameters. For example, <code>@FormPrefix("invoice") Address invoice</code> populates
+  the <code>Address</code> from the form parameters <code>invoice.street</code>, <code>invoice.city</code> and so on.
+</p>
+<pre content="java">
+public class PersonForm {
+
+  @FormParam("name")
+  public String name;
+
+  @FormPrefix("invoice")
+  public Address invoice;
+
+  @FormPrefix("shipping")
+  public Address shipping;
+}
+
+public class Address {
+
+  @FormParam("street")
+  public String street;
+
+  @FormParam("city")
+  public String city;
+}
+</pre>
+<pre content="java">
+// form params: name=bill&invoice.street=xxx&invoice.city=yyy&shipping.street=zzz
+@Form
+@Post("register")
+void register(PersonForm form) {
+  ...
+}
+</pre>
+<p>
+  The nested bean must have a no-arg constructor. Prefixes compose, so a nested bean can itself
+  contain <code>@FormPrefix</code> fields.
+</p>
+
 <h3 id="kotlin-data">Kotlin data class</h3>
 <p>
   Kotlin data classes are a natural fit for form beans.

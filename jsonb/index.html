@@ -1388,11 +1388,23 @@ public class Example {
     <tr><td>Parser char buffer</td><td><code>jsonb.parserCharBufferSize</code></td><td><code>JSONB_PARSER_CHAR_BUFFER_SIZE</code></td><td>4096</td></tr>
     <tr><td>Max number digits</td><td><code>jsonb.parserMaxNumberDigits</code></td><td><code>JSONB_PARSER_MAX_NUMBER_DIGITS</code></td><td>309</td></tr>
     <tr><td>Max string buffer</td><td><code>jsonb.parserMaxStringBuffer</code></td><td><code>JSONB_PARSER_MAX_STRING_BUFFER</code></td><td>50000</td></tr>
+    <tr><td>Max raw buffer</td><td><code>jsonb.parserMaxRawBuffer</code></td><td><code>JSONB_PARSER_MAX_RAW_BUFFER</code></td><td>10000000</td></tr>
   </table>
   <p>
     A system property always takes priority over the equivalent ENV var. The most commonly tuned
     setting is <code>parserMaxStringBuffer</code>. Raise it if a single JSON string value (e.g. a
     large text field or base64 blob) is larger than the default 50,000 characters:
+  </p>
+  <pre content="sh">
+# ENV var
+export JSONB_PARSER_MAX_STRING_BUFFER=500000
+
+# System property (JVM flag)
+-Djsonb.parserMaxStringBuffer=500000
+</pre>
+  <p>
+    <code>parserMaxRawBuffer</code> separately limits the raw JSON content retained when reading
+    a value as raw JSON (e.g. <code>@Json.Raw</code> properties).
   </p>
 
   <h2 id="modules">Additional Modules</h2><hr/>

@@ -24,6 +24,7 @@
       <li><a href="#form">@Form</a></li>
       <li><a href="#form-param">@FormParam</a></li>
       <li><a href="#form-beans">Form beans</a></li>
+      <li><a href="#form-prefix">@FormPrefix</a></li>
       <li><a href="#produces">@Produces</a></li>
       <li><a href="#header">@Header</a></li>
       <li><a href="#cookie">@Cookie</a></li>

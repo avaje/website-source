@@ -369,6 +369,44 @@ class Pump {
 }
 </pre>
 
+<p>
+  When placed on a constructor or <code>@Bean</code> method, <code>@External</code> applies to all of its parameters.
+</p>
+
+<pre content="java">
+@Factory
+class MyFactory {
+
+  @Bean
+  @External
+  Pump pump(Heater heater, ExternalWidget widget) {
+    return new Pump(heater, widget);
+  }
+}
+</pre>
+
+<p>
+  <code>@External</code> can also be used as a meta-annotation. An annotation that is annotated with
+  <code>@External</code> has the same effect, which is useful to combine it with conditions like <code>@RequiresBean</code>.
+</p>
+
+<pre content="java">
+@External
+@RequiresBean(ExternalWidget.class)
+@Target(ElementType.METHOD)
+public @interface RequiresExternalWidget {}
+
+@Factory
+class MyFactory {
+
+  @Bean
+  @RequiresExternalWidget
+  Pump pump(ExternalWidget widget) {
+    return new Pump(widget);
+  }
+}
+</pre>
+
 <h3 id="list">List</h3>
 <p>
   We can inject a <code>java.util.List&lt;T&gt;</code> of beans that implement an interface.
